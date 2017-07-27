@@ -1,0 +1,331 @@
+.travelers-page{
+	background-color: #e1e1e1;
+	.title{
+		padding: 40px 0px 5px 0;
+	}
+	.see-who{
+		font-size: 26px;
+		font-weight: 500;
+		margin-left: -15px;
+	}
+	.search-city{
+		// padding: 50px 0;
+	    width: 200px;
+	    float: right;
+	    .search-icon{
+	    	background-color: white;
+	    	border: none;
+	    	cursor: pointer;
+	    }
+	    .search-box{
+	    	border: none;
+	    	-webkit-box-shadow: none;
+		    box-shadow: none;
+		    -webkit-transition: none;
+		    -o-transition: none;
+	    }
+	}
+	.more-filters{
+		margin-top: 10px;
+		.filter-btn{
+			width: 100%;
+    		text-align: left;
+			span{
+				float:right;
+			}
+		}
+	}
+	.swappers-col{
+		height: 34vw;
+		overflow-y: scroll;
+		.no-results{
+			font-size: 16px;
+		}
+	}
+	.swappers{
+		.carousel-indicators{
+			display:none;
+		}
+		.appt-information{
+			display: flex;
+			background-color: rgba(255,255,255,0.5);
+			margin-bottom: 10px;
+			.appt-photos{
+				padding-left: 0;
+			}
+			.photo{
+				img{
+					object-fit: cover;
+				    width: 100%;
+				    height: 15vw;
+				    border: 1px solid lightslategray;
+				}
+			}
+			.rating{
+				padding-top: 5px;
+			    display: flex;
+    			align-items: center;
+				.number-reviews{
+					margin-left: 10px;
+				}
+			}
+			.info{
+				padding-top: 10px;
+    			font-size: 16px;
+			}
+			.description{
+				padding: 5px;
+			    font-size: 18px;
+			}
+			.property{
+				font-size: 16px;
+				padding: 5px;
+			}
+		}
+		.swapper{
+		    min-height: 15vw;
+		    .display-name{
+		    	padding: 10px 0;
+		    	display: flex;
+				align-items: center;
+		    }
+			.pic{
+			    background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				border-radius: 50%;
+				height: 5vw;
+				width: 5vw;
+			}
+			.name{
+    			font-size: 20px;
+			}
+			.info{
+				padding-top: 6px;
+    			font-size: 16px;
+			}
+			.view-profile{
+				position: absolute;
+    			bottom: 5px;
+    			right: 15px;
+			}
+		}
+	}
+	.filter-nav{
+		.md-sidenav-right{
+			left: ~"calc(100% - 15px)";
+			overflow: hidden;
+		}
+		.side-nav-inside{
+			height: 100%;
+    		overflow: auto;
+			.filters{
+				padding: 15px;
+				.control-label{
+					margin-top: 5px;
+					font-size: 18px;
+					outline: none;
+					&:focus{
+						outline: none;
+					}
+				}
+				.form-control{
+					font-size: 16px;
+				}
+				.dates{
+					position: relative;
+					.date-calendar{
+						position: absolute;
+						right: 10px;
+						top: 0;
+						padding: 6px;
+						font-size: 18px;
+					}
+				}
+				.more-options{
+					margin-top: 15px;
+					border-top: 1px solid lightgray;
+				}
+				.ameneties{
+					height: 0px;
+					overflow: hidden;
+					transition: 1s ease;
+					-webkit-transition: 1s ease;
+					&.show{
+						height: 150px;
+					}
+					ul{
+						padding-left: 20px;
+					}
+				}
+				.amenity-label {
+					display: flex;
+					align-items: center;
+				}
+				input[type=checkbox] {
+					margin-top: 0;
+					margin-right: 5px;
+				}
+			}
+			.filter-buttons{
+				position: absolute;
+				left: 0;
+				right: 15px;
+				bottom: 0;
+				background-color: #fff;
+				.search-btn{
+					float: right;
+					margin-left: 10px;
+				}
+				.clear-btn{
+					float: right;
+				}
+			}
+		}
+	}
+	.map{
+		height:34vw;
+		#travelerMarkerLayer {
+			img{
+				border-radius:50% !important;
+				width: 50px !important;
+				height: 50px !important;
+				display: block;
+				object-fit: cover;
+				transform: scale(0.75);
+				border:2px solid rgba(13, 134, 234, 0);
+				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
+    			box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
+				-webkit-transition: ease 1s; /* For Safari 3.1 to 6.0 */
+    			transition: ease 1s;
+				&:hover{
+					-ms-transform: scale(1.2); /* IE 9 */
+				    -webkit-transform: scale(1.2); /* Safari */
+				    transform: scale(1.2);
+				}
+			}
+		}
+		.infoWindowContent{
+			font-size: 16px;
+		    font-weight: bold;
+		    padding-top: 10px;
+		    color: #000;
+		    background-color: rgba(192,192,192,0.8);
+		}
+		.travelers{
+		    font-size:20px;
+		    text-align: center;
+		    font-weight: bold;
+			color: #045f79;
+		}
+		.map-photo{
+			width: 20vw;
+			height: 15vw;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+	}
+	.page-numbers{
+    	margin: 25px auto;
+		width: 30%;
+		.number{
+			outline: none;
+			color: #141714;
+			cursor: pointer;
+			font-size: 16px;
+			display: inline-block;
+			vertical-align: middle;
+			padding: 5px 10px;
+			&.current{
+				cursor: initial;
+				background-color: #045f79;
+				border-radius: 50%;
+				color: #fff;
+			}
+
+		}
+		.arrow{
+			outline: none;
+			color: #141714;
+			cursor: pointer;
+			font-size: 18px;
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0 16px;
+			border-radius: 50%;
+			border: 1px solid #141714;
+			width: 30px;
+    		height: 30px;
+			&.no-show{
+				color: transparent;
+				border: transparent;
+				cursor: auto;
+			}
+			.glyphicon{
+				padding: 4px;
+			}
+
+		}
+	}
+	//* white background and box outline */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div:last-child
+	{
+	    //* we have to use !important because we are overwritng inline styles */
+	    background-color: transparent !important;
+	    border-radius: 10px !important;
+	    box-shadow: none !important;
+	    width: 100% !important;
+	    height: 100% !important;
+	}
+
+	//* arrow colour */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div > div > div
+	{
+	    background-color: blue !important;
+	    display: none !important;
+	}
+
+	//* close button */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:last-child
+	{
+	    margin-right: 5px;
+	    margin-top: 5px;
+	}
+
+	//* image icon inside close button */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:last-child > img
+	{
+	    display: none;
+	}
+
+	//* positioning of infowindow */
+	.gm-style-iw
+	{
+	    //top: 22px !important;
+	    //left: 22px !important;
+	}
+}
+.daterangepicker_input{
+	display: none;
+}
+.month {
+	width: auto;
+	font-size: 18px;
+}
+.fa{
+	font-size: 18px;
+}
+.daterangepicker{
+	.calendar{
+		td{
+			font-size: 16px;
+			&.active{
+				background-color: #008500;
+			}
+			&.in-range{
+				background-color: #CFF4CF;
+			}
+		}
+	}
+}

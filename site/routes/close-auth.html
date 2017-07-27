@@ -1,0 +1,10 @@
+<script type="text/javascript">
+    if (window.opener) {
+
+      if(window.opener.loginCallBack) {
+        window.opener.loginCallBack(data);
+      }
+    }
+
+    window.opener.loginCallBack(data);
+</script> 

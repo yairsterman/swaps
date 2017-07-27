@@ -1,0 +1,113 @@
+<div class="header">
+  	<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+	  <a class="navbar-brand" href="" ng-click ="go('')">
+		  <div class="logo" style="background-image:url('http://localhost:3000/images/logo/logo.png')">
+		  </div>
+	  </a>
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+
+	      <li class="nav-item">
+              <div class="swap-now-form">
+                  <div class="">
+                      <label class="control-label">Where</label>
+                      <div class="where input-field">
+                          <input class="form-control" type="text" id="searchCity" ng-focus="autocompleteCities()" placeholder="Anywhere" ng-model="search.where">
+                      </div>
+                  </div>
+                  <div class="">
+                      <label class="control-label">When</label>
+                      <div class="dates input-field">
+                          <input class="form-control" type="text" name="searchDate" ng-focus="openDate()" placeholder="Anytime" ng-model="search.date"/>
+                          <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
+                      </div>
+                  </div>
+                  <div class="">
+                      <label class="control-label">Guests</label>
+                      <div class="guests input-field">
+                          <input class="form-control" type="number" placeholder="1" min="1" max="8" ng-model="search.guests">
+                      </div>
+                  </div>
+                  <div class="swap-now">
+                      <button type="button" class="btn btn-default go" ng-click="searchSwap()"></i>SWAP NOW!</button>
+                  </div>
+              </div>
+	      </li>
+	    </ul>
+	    <div class="login-area">
+		    <!-- <form class="form-inline my-2 my-lg-0">
+		      <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
+		    </form> -->
+		    <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
+		    	LOGIN
+		    </div>
+			 <div class="user-area" ng-if="user._id">
+			    <div class="profile-pic" style="background-image:url('{{user.image}}')">
+
+			    </div>
+			    <!-- <div class="username">
+			    	{{user.displayName}}
+			    </div> -->
+			    <div class="dropdown">
+				    <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
+				    <span class="caret"></span></div>
+					    <ul class="dropdown-menu">
+					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
+                          <li><a class="nav-link" href="" ng-click ="openFlyNow()">Plan Trip</a></li>
+					      <li><a href="" ng-click ="logout()">LOGOUT</a></li>
+				    </ul>
+			  </div>
+			 </div>
+		 </div>
+	  </div>
+	</nav>
+</div>
+
+<div id="loginModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="facebook-signin">
+      	<button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="flyNowModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="fly-now-model">
+                <div class="title">
+                    Enter your travel information
+                </div>
+                <div class="travel-info">
+                    <label class="control-label">Where</label>
+                    <div class="where input-field">
+                        <input class="form-control" type="text" id="where" placeholder="Anywhere" ng-model="fly.where">
+                    </div>
+                    <label class="control-label">When</label>
+                    <div class="dates input-field">
+                        <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="fly.date"/>
+                        <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                    <label class="control-label">Guests</label>
+                    <div class="guests input-field">
+                        <input class="form-control" type="number" placeholder="1" min="1" max="8" ng-model="fly.guests">
+                    </div>
+                    <div class="advanced" ng-click="go('account/swap')">
+                        Advanced
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-fly" data-dismiss="modal" ng-click="saveTravelInfo()">Go!</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,228 @@
+.profile-page{
+	background-color: #e1e1e1;
+	.photos{
+		height:30vw;
+		position: relative;
+		.main-photo{
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			margin: auto;
+			height: 100%;
+    		width: 100%;
+		}
+		.ng-image-gallery {
+			.ng-image-gallery-thumbnails{
+				.thumb{
+					display: none;
+				}
+			}
+		}
+	}
+	.info{
+		.info-row{
+		    margin-right: 0;
+	    	margin-left: 0;
+		}
+		.user-info{
+			width: 80%;
+		    position: relative;
+		    margin: auto;
+		    border-radius: 15px;
+		    margin-top: 20px;
+    		background-color: floralwhite;
+			.profile-pic{
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				border-radius: 50%;
+				height: 15vw;
+				width: 15vw;
+				margin: auto;
+				position: absolute;
+			    top: -7.5vw;
+			    right: 20%;
+			}
+			.personal{
+			    position: relative;
+				transition: ease 0.5s;
+				text-align: center;
+				font-size: 16px;
+				padding-top: 8vw;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				border-bottom: 1px solid lightgrey;
+				.name{
+					transition: ease 0.5s;
+				    text-align: center;
+				    font-size: 20px;
+				}
+				.hidden-personal{
+					border-radius: 15px;
+				    height: 0%;
+				    padding:0px;
+				    width: 100%;
+				    position: absolute;
+				    left: 0;
+				    top: 0;
+				    background-color: floralwhite;
+				    z-index: 10;
+				    transition: ease 0.5s;
+				    overflow: hidden;
+				}
+				&:hover{
+					.hidden-personal{
+						padding: 10px;
+					    height: 100%;
+					}
+				}
+			}
+			.swaps{
+			    text-align: center;
+			    font-size: 18px;
+			}
+			.text{
+				padding-bottom: 8px;
+			}
+			.dates{
+				text-align: left;
+				padding: 10px;
+				.traveling-cities{
+					.datefilter{
+						float: right;
+    					cursor: pointer;
+					}
+				}
+			}
+			.md-datepicker-input {
+			    font-size: 16px;
+			}
+			.md-calendar-date-selection-indicator {
+			    cursor: default;
+			}
+			.md-calendar-month-label:not(.md-calendar-month-label-disabled) {
+			    cursor: default;
+			}
+			.md-button{
+				height: 0;
+				min-height:34px;
+				padding: 4px;
+			}
+			.md-datepicker-input-container{
+				border: none;
+			}
+			.md-datepicker-triangle-button{
+				display: none;
+			}
+			.req-swap{
+				padding: 10px 20%;
+				.req-sent{
+					text-align: center;
+					font-size: 20px;
+					color: 	#204d74;
+				}
+			}
+			.btn-swap{
+				width: 100%;
+				font-size: 20px;
+			}
+		}
+		.appt-info{
+			padding: 0px 60px;
+    		margin: 20px 5px;
+    		border-radius: 15px;
+    		background-color: floralwhite;
+			.section{
+				border-bottom: 1px solid lightgrey;
+				padding: 15px;
+			}
+			.description-title{
+				font-size: 36px;
+			    font-weight: bold;
+			    padding: 10px 0;
+			}
+			.city{
+				font-size: 18px;
+			}
+			.rating{
+			    padding-top: 5px;
+			    display: flex;
+    			align-items: center;
+				.number-reviews{
+					margin-left: 10px;
+				}
+			}
+			.listing{
+				font-size: 16px;
+				text-align: center;
+				.fa{
+					font-size: 28px;
+				}
+			}
+			.title{
+				font-size: 26px;
+			    font-weight: bold;
+			    padding: 10px 0;
+			}
+			.text{
+				font-size: 16px;
+			}
+			.amenity{
+				padding: 5px 0;
+			    font-size: 18px;
+			    .fa{
+			        width: 20px;
+			    	margin-right: 5px;
+			    }
+			}
+			.unstyled-list{
+				list-style: none;
+			}
+			.reviews{
+				.review{
+				    border-bottom: 1px solid #d3d3d3;
+    				padding-top: 20px;
+					.reviewer-info{
+					    align-items: center;
+    					display: flex;
+						.review-photo{
+							background-position: center;
+							background-repeat: no-repeat;
+							background-size: cover;
+							border-radius: 50%;
+							height: 50px;
+							width: 50px;
+						}
+						.name{
+							margin-left: 15px;
+							font-size: 18px;
+							.city{
+								font-size: 16px;
+							}
+						}
+					}
+					.date{
+						float: right;
+						font-size: 16px;
+						font-weight: lighter;
+					}
+					.text{
+						padding: 15px 10px;
+					}
+				}
+			}
+		}
+	}
+}
+.modal-content{
+	padding: 15px;
+	.title{
+		padding-bottom: 10px;
+		font-size: 22px;
+    	text-align: center;
+	}
+	.btn-send{
+		float: left;
+	}
+}

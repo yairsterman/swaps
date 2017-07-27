@@ -1,0 +1,203 @@
+.home-page{
+	background-color: #e1e1e1;
+	.slider{
+		height:40vw;
+		position: relative;
+		img{
+			height:40vw;
+			width:100%;
+		}
+	}
+	.fly-now{
+		background-position: left;
+	    background-repeat: no-repeat;
+	    background-size: contain;
+	    height: 8vw;
+		background: #ffffff; /* Old browsers */
+		background: -moz-linear-gradient(left, #ffffff 15%, rgba(18,33,76,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(left, #ffffff 15%, rgba(18,33,76,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to right, #ffffff 15%, rgba(18,33,76,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='rgba(18,33,76,1)',GradientType=1 ); /* IE6-9 */
+		.fly-now-form{
+			display:flex;
+			padding: 2.5vw;
+			.form-group{
+				margin-right: 15px;
+			}
+			.swap-now{
+				font-size: 24px;
+				padding-right: 30px;
+				line-height: 1.3;
+			}
+			.md-button{
+				height: 0;
+				min-height:34px;
+				padding: 4px;
+			}
+			.md-datepicker-input-container{
+				border: none;
+			}
+			.md-datepicker-triangle-button{
+				display: none;
+			}
+			.go{
+				background-color: #103360;
+				color: white;
+				border-color: #103360;
+			}
+		}
+	}
+	.map-background{
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		-webkit-transition: ease 2s; /* For Safari 3.1 to 6.0 */
+		transition: ease 2s;
+	}
+	.gradient{
+		position: relative;
+
+		background: rgb(255,255,255); /* Old browsers */
+		background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(18,33,76,1) 10%, rgba(18,33,76,1) 90%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(18,33,76,1) 10%,rgba(18,33,76,1) 90%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(18,33,76,1) 10%,rgba(18,33,76,1) 90%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+
+        // background: rgb(18,33,76); /* Old browsers */
+		// background: -moz-radial-gradient(center, ellipse cover, rgba(18,33,76,1) 0%, rgba(18,33,76,1) 57%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+		// background: -webkit-radial-gradient(center, ellipse cover, rgba(18,33,76,1) 0%,rgba(18,33,76,1) 57%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		// background: radial-gradient(ellipse at center, rgba(18,33,76,1) 0%,rgba(18,33,76,1) 57%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		// filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12214c', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		//
+		// background: -moz-radial-gradient(center, ellipse cover, rgba(18,33,76,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 85%); /* FF3.6-15 */
+		// background: -webkit-radial-gradient(center, ellipse cover, rgba(18,33,76,1) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 85%); /* Chrome10-25,Safari5.1-6 */
+		// background: radial-gradient(ellipse at center, rgba(18,33,76,1) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 85%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		// filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12214c', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+		.info{
+			position: absolute;
+			left: 10px;
+			top: 10px;
+			z-index: 100;
+			padding: 15px;
+			background-color: rgba(192,192,192,0.6);
+			width: 20vw;
+			height: 6vw;
+			font-size: 1.6vw;
+			border-radius: 14px;
+			-webkit-transition: ease 1.5s; /* For Safari 3.1 to 6.0 */
+			transition: ease 1.5s;
+			overflow: hidden;
+			&.open{
+				height: 24vw;
+			}
+			.city{
+				font-size: 2vw;
+				font-weight: bold;
+				text-align: center;
+				margin-bottom: 10px;
+				-webkit-transition: ease 0.5s; /* For Safari 3.1 to 6.0 */
+				transition: ease 0.5s;
+			}
+			.traveler{
+				-webkit-transition: ease 0.5s; /* For Safari 3.1 to 6.0 */
+				transition: ease 0.5s;
+				display: flex;
+				align-items: center;
+				margin-bottom: 10px;
+				.profile-pic{
+					background-size: cover;
+					background-position: center;
+					background-repeat: no-repeat;
+					border-radius: 50%;
+					width: 6vw;
+					height: 6vw;
+					-webkit-transition: ease 0.5s; /* For Safari 3.1 to 6.0 */
+	    			transition: ease 0.5s;
+				}
+				.name{
+					-webkit-transition: ease 0.5s; /* For Safari 3.1 to 6.0 */
+	    			transition: ease 0.5s;
+					margin-left: 10px;
+				}
+			}
+			.search-city{
+				margin: 10px;
+				.search-button{
+					width: 100%;
+    				font-size: 1.8vw;
+				}
+			}
+		}
+	}
+	.map{
+		height:38vw;
+		margin: 0 10vw;
+		#markerLayer {
+			img{
+				border-radius:50% !important;
+				width: 30px !important;
+				height: 30px !important;
+				transform: scale(0);
+				display: block;
+				object-fit: cover;
+				-webkit-transition: ease 0.8s; /* For Safari 3.1 to 6.0 */
+    			transition: ease 0.8s;
+				&:hover{
+					-ms-transform: scale(1.2); /* IE 9 */
+				    -webkit-transform: scale(1.2); /* Safari */
+				    transform: scale(1.2);
+				}
+			}
+		}
+		.infoWindowContent{
+			font-size:16px;
+			color: white;
+		}
+		.travelers{
+		    font-size:20px;
+		    text-align: center;
+		    font-weight: bold;
+			color: #045f79;
+		}
+	}
+
+//* white background and box outline */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div:last-child
+	{
+	    //* we have to use !important because we are overwritng inline styles */
+	    background-color:rgba(192,192,192,0.8) !important;
+	    border-radius: 10px !important;
+	    box-shadow: none !important;
+	    width: auto !important;
+	    height: auto !important;
+	}
+
+	//* arrow colour */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div > div > div
+	{
+	    background-color: rgba(192,192,192,0.8) !important;
+	    display: none !important;
+	}
+
+	//* close button */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:last-child
+	{
+	    margin-right: 5px;
+	    margin-top: 5px;
+	}
+
+	//* image icon inside close button */
+	.gm-style > div:first-child > div + div > div:last-child > div > div:last-child > img
+	{
+	    display: none;
+	}
+
+	//* positioning of infowindow */
+	.gm-style-iw
+	{
+	    //top: 22px !important;
+	    //left: 22px !important;
+	}
+
+}
