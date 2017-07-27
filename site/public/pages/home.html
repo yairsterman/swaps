@@ -1,0 +1,62 @@
+
+<div class="home-page">
+  <!-- <div class="slider">
+    <div uib-carousel active="active" interval="5000" no-wrap="noWrapSlides">
+      <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+        <img ng-src="{{slide.image}}" style="margin:auto;">
+
+      </div>
+    </div>
+  </div> -->
+  <!-- <div class="map-background" style="background-image:url('{{mapBackground}}')"> -->
+      <div class="gradient">
+          <div class="info {{info?'open':''}}">
+              <div class="user-city" ng-if="info">
+                  <div class="city">
+                      {{info.title}}
+                  </div>
+                  <div class="traveler">
+                      <div class="profile-pic" style="background-image:url('{{info.icon.url}}')">
+                      </div>
+                      <div class="name">
+                          {{info.content}}
+                      </div>
+                  </div>
+                  <div class="amount">
+                      and {{info.amount}} others are looking to swap in {{userCity}}
+                  </div>
+                  <div class="search-city">
+                      <button type="button" class="btn btn-default search-button" ng-click="go(info.url)"></i>Search City</button>
+                  </div>
+              </div>
+              <div class="user-city" ng-if="!info">
+                  See who is traveling to {{userCity}}
+              </div>
+          </div>
+          <div class="map" id="map"></div>
+      </div>
+  <!-- </div> -->
+  <!-- <div class="fly-now" style="">
+      <div class="fly-now-form">
+          <div class="swap-now">
+              SWAP NOW
+          </div>
+          <div class="form-group">
+              <input type="text" class="form-control" id="where" placeholder="Where to" ng-model="swap.where">
+          </div>
+          <div class="form-group">
+              <div class="form-control" style="padding:0;">
+                  <md-datepicker ng-model="swap.departure" md-placeholder="Departure"></md-datepicker>
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="form-control" style="padding:0;">
+                  <md-datepicker ng-model="swap.return" md-placeholder="Return"></md-datepicker>
+              </div>
+          </div>
+          <div class="form-group">
+              <button type="button" class="btn btn-default go" ng-click="submit()"></i>GO!</button>
+          </div>
+      </div>
+  </div> -->
+</div>

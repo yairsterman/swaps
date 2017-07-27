@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Swaps</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/angular-material.min.css">
+    <link rel="stylesheet" href="/stylesheets/res/ng-image-gallery.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="/stylesheets/daterangepicker.css">
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/stylesheets/css/main.min.css">
+
+    <script src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw&libraries=places&language=en"></script>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/angular.min.js"></script>
+    <script src="/javascripts/angular-animate.min.js"></script>
+    <script src="/javascripts/angular-aria.min.js"></script>
+    <script src="/javascripts/angular-messages.min.js"></script>
+    <script src="/javascripts/angular-material.min.js"></script>
+    <script src="/javascripts/angular-route.min.js"></script>
+    <script src="/javascripts/ui-bootstrap-tpls.min.js"></script>
+    <script src="/javascripts/bootstrap-datepicker.min.js"></script>
+    <script src="/javascripts/moment.js"></script>
+    <script src="/javascripts/daterangepicker.js"></script>
+    <script src="/javascripts/ng-image-gallery.min.js"></script>
+    <script src="/javascripts/hammer.min.js"></script>
+
+    <script src="/javascripts/app.js"></script>
+    <script src="/javascripts/filters/filter.js"></script>
+    <script src="/javascripts/services/users.js"></script>
+    <script src="/javascripts/services/account.js"></script>
+    <script src="/javascripts/services/message.js"></script>
+    <script src="/javascripts/controllers/home.js"></script>
+    <script src="/javascripts/controllers/header.js"></script>
+    <script src="/javascripts/controllers/travelers.js"></script>
+    <script src="/javascripts/controllers/account.js"></script>
+    <script src="/javascripts/controllers/profile.js"></script>
+
+    <base href="/" />
+
+</head>
+<body ng-app="swapsApp">
+
+<div ng-include="'/pages/components/header.html'" ng-controller="headerController"></div>
+
+<div ng-view></div>
+
+</body>
+</html>
