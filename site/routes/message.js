@@ -162,7 +162,7 @@ router.post('/sendMessage', function(req, res, next) {
 	// });
 });
 
-router.post('sendRequest', function(req, res, next) {
+router.post('/sendRequest', function(req, res, next) {
 	var recipientId = req.body.recipientId;
 	var sender = req.body.user;
 	var now = Date.now();
@@ -188,9 +188,9 @@ router.post('sendRequest', function(req, res, next) {
 				message: message
 			}
 
-    saveRequest(sender._id, recipientId, 'Confirm')
+    saveRequest(sender._id, recipientId, departure, returnDate, 'Confirm')
 	.then(function(){
-		return saveRequest(recipientId, sender._id, 'Pending');
+		return saveRequest(recipientId, sender._id, departure, returnDate, 'Pending');
 	})
 	.then( function(){
 		return saveMessage(sender._id, recipientId, sender._id, newMessage);
@@ -279,7 +279,7 @@ function saveMessage(senderId, recipientId, messageId, message){
 	return defferd.promise;
 }
 
-function saveRequest(senderId, recipientId, status){
+function saveRequest(senderId, recipientId, departure, returnDate, status){
 	var defferd = Q.defer();
 	User.findOne({_id: senderId}, function (err, sender) {
 		if (err){
@@ -307,7 +307,6 @@ function saveRequest(senderId, recipientId, status){
 								returnDate : returnDate,
 								status: status
 							});
-							console.log(senderRequests);
 
 							User.update({_id: recipientId}, { $set: { requests: requests}}, function (err, updated) {
 								if (err){

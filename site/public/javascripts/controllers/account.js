@@ -143,7 +143,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.sendMessage = function(id){
       var message = $scope.send.message;
       $scope.send.message = '';
-    //   var user = {_id:"58f731c994b427e59aec391a",image:"http://localhost:3000/images/static/profile3.jpg",firstName:"Wan Ung",lastName:"Kuen"};
+     // var user = {_id:"590adf696da18fbca10e82be",image:"http://localhost:3000/images/static/profile3.jpg",firstName:"Wan Ung",lastName:"Kuen"};
       MessageService.sendMessage($scope.user, id, message).then(function(data){
         $rootScope.user = data.data;
         $scope.user = $rootScope.user;
@@ -174,7 +174,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         console.log($scope.swap.dates);
         $scope.swap.dates = null;
         // var user = {_id:"58f7324594b427e59aec391b",image:"http://localhost:3000/images/static/profile5.jpg",firstName:"Marisha",lastName:"Natarajan"};
-        MessageService.sendMessage($scope.user, $scope.currentMessager.id, request, dates).then(function(data){
+        MessageService.sendRequest($scope.user, $scope.currentMessager.id, request, dates).then(function(data){
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
             var objDiv = document.getElementById($scope.currentMessager.id);
