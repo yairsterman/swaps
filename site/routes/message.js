@@ -20,9 +20,9 @@ router.post('/sendMessage', function(req, res, next) {
 				isRequest: false,
 				message: message
 			}
-console.log(message);
-	saveMessage(sender._id, recipientId, newMessage).then(function(){
-		return saveMessage(recipientId, sender._id, newMessage);
+
+	saveMessage(sender._id, recipientId, sender._id, newMessage).then(function(){
+		return saveMessage(recipientId, sender._id, sender._id, newMessage);
 	})
 	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
@@ -188,15 +188,15 @@ router.post('sendRequest', function(req, res, next) {
 				message: message
 			}
 
-	sendRequest(sender._id, recipientId, 'Confirm')
+    saveRequest(sender._id, recipientId, 'Confirm')
 	.then(function(){
-		return sendRequest(recipientId, sender._id, 'Pending');
+		return saveRequest(recipientId, sender._id, 'Pending');
 	})
 	.then( function(){
-		return saveMessage(sender._id, recipientId, newMessage);
+		return saveMessage(sender._id, recipientId, sender._id, newMessage);
 	})
 	.then( function(){
-		return saveMessage(recipientId, sender._id, newMessage);
+		return saveMessage(recipientId, sender._id, sender._id, newMessage);
 	})
 	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
@@ -219,9 +219,9 @@ router.post('/confirmRequest', function(req, res, next) {
 	var sender = req.body.user;
 });
 
-function saveMessage(senderId, recipientId, message){
+function saveMessage(senderId, recipientId, messageId, message){
 	var defferd = Q.defer();
-	message.id = senderId;
+	message.id = messageId;
 	User.findOne({_id: senderId}, function (err, sender) {
 		if (err){
 			error.message = "Message not sent";
@@ -239,8 +239,8 @@ function saveMessage(senderId, recipientId, message){
 							var messages = user.messages;
 							var index = -1;
 							// find messages by sender
-							for(i = 0; i < messages.length; i++){
-								if(messages[i].id == sender._id){
+							for(var i = 0; i < messages.length; i++){
+								if(messages[i].id.toString() === sender._id.toString()){
 									messages[i].messages.push(message);
 									index = i;
 									break;

@@ -72,6 +72,8 @@ app.use(function(err, req, res, next) {
   res.render('error.html');
 });
 
+app.listen(3000);
+
 //compile less files
 
 // Load the file, convert to string
