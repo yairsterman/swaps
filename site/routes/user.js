@@ -108,51 +108,82 @@ function getRandomUsers(users){
 // Filter all returned users by the given filter params
 function filterUsers(users, query){
 	var filterdUsers = [];
-	var destination = query.dest.split('-')[0];
-	var dates;
-	var departure = 0; // default start date
-	var returnDate = 10000000000000; // default return date large number that is bigger than any other date
-	if(query.date){
-		dates = query.date.split('-');
-		departure = Date.parse(dates[0].trim());
-		returnDate = Date.parse(dates[1].trim());
-	}
+	var destination = query.dest;
+
 	for (var i = 0; i < users.length; i++) {
-		for (var j = 0; j < users[i].travelingInfo.length; j++) {
-			if(users[i].travelingInfo[j].dest.includes(destination) && users[i].travelingInfo[j].departure >= departure
-				&& users[i].travelingInfo[j].returnDate <= returnDate){
-					if(query.guests && users[i].apptInfo.guests < query.guests){
-		                continue;
-		            }
-		            if(query.property && users[i].apptInfo.property != query.property){
-		                continue;
-		            }
-		            if(query.room && users[i].apptInfo.room != query.room){
-		                continue;
-		            }
-		            if(query.kitchen == 'true' && !users[i].apptInfo.kitchen){
-		                continue;
-		            }
-		            if(query.wheelchair == 'true' && !users[i].apptInfo.wheelchair){
-		                continue;
-		            }
-		            if(query.kids == 'true' && !users[i].apptInfo.kids){
-		                continue;
-		            }
-		            if(query.smoking == 'true' && !users[i].apptInfo.smoking){
-		                continue;
-		            }
-		            if(query.pets == 'true' && !users[i].apptInfo.pets){
-		                continue;
-		            }
-		            if(query.parking == 'true' && !users[i].apptInfo.parking){
-		                continue;
-		            }
-					filterdUsers.push(users[i]);
+		if(filterDestination(users[i], destination) &&
+			filterDates(users[i], query.date, destination)) {
+			if(!users[i].apptInfo){
+                continue;
 			}
+			if(query.guests && (!users[i].apptInfo.guests || users[i].apptInfo.guests < query.guests) ){
+				continue;
+			}
+			if(query.property && users[i].apptInfo.property != query.property){
+				continue;
+			}
+			if(query.room && users[i].apptInfo.room != query.room){
+				continue;
+			}
+			if(query.kitchen == 'true' && !users[i].apptInfo.kitchen){
+				continue;
+			}
+			if(query.wheelchair == 'true' && !users[i].apptInfo.wheelchair){
+				continue;
+			}
+			if(query.kids == 'true' && !users[i].apptInfo.kids){
+				continue;
+			}
+			if(query.smoking == 'true' && !users[i].apptInfo.smoking){
+				continue;
+			}
+			if(query.pets == 'true' && !users[i].apptInfo.pets){
+				continue;
+			}
+			if(query.parking == 'true' && !users[i].apptInfo.parking){
+				continue;
+			}
+			filterdUsers.push(users[i]);
 		}
 	}
 	return filterdUsers
+}
+
+function filterDestination(user, destination){
+    for (var i = 0; i < user.travelingDest.length; i++) {
+		if(compareDestinations(user.travelingDest[i], destination)){
+			return true;
+		}
+	}
+}
+
+function filterDates(user, date, destination){
+	if(!date){
+		return true;
+	}
+	var searchDates = {};
+	var dates = date.split('-');
+    searchDates.departure = Date.parse(dates[0].trim());
+    searchDates.returnDate = Date.parse(dates[1].trim());
+    for (var i = 0; i < user.travelingInfo.length; i++) {
+        if(compareDestinations(user.travelingInfo[i].dest, destination)){
+        	if(compareDates(user.travelingInfo[i], searchDates)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function compareDates(userDates, searchDates){
+	return (searchDates.departure >= userDates.departure && searchDates.departure <= userDates.returnDate)
+		|| (searchDates.returnDate >= userDates.departure && searchDates.returnDate <= userDates.returnDate);
+}
+
+function compareDestinations(userDestination, destination){
+	userDestination = userDestination.split('-')[0].toLowerCase();
+	destination = destination.split('-')[0].toLowerCase();
+	return userDestination == destination;
 }
 
 module.exports = router;

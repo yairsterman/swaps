@@ -8,7 +8,7 @@ var app = express();
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Facebook cradentials
+//Facebook credentials
 var FACEBOOK_APP_ID = "1628077027210389";
 var FACEBOOK_APP_SECRET = "5a927f2caa3f5eb9a2eeaad0eaf1b225";
 
