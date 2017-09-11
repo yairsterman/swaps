@@ -1,5 +1,9 @@
 .home-page{
-	background-color: #e1e1e1;
+	background: rgb(0,114,191); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(0,114,191,1) 7%, rgba(120,161,188,1) 19%, rgba(255,255,255,1) 39%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(0,114,191,1) 7%,rgba(120,161,188,1) 19%,rgba(255,255,255,1) 39%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(0,114,191,1) 7%,rgba(120,161,188,1) 19%,rgba(255,255,255,1) 39%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0072bf', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 	.title{
 		font-size: 20px;
 		color: #2e6da4;
@@ -45,4 +49,116 @@
 		}
 	}
 
+
+	.title-container {
+		/*margin: 70px 295px;*/
+		width: 90%;
+		margin: 70px 295px 0px 295px;
+		padding: 30px;
+		/*font-size: 72px;*/
+		font-family: "Calibri Light", sans-serif;
+		float: left;
+		/*font-weight: bold;*/
+		/*letter-spacing: 2px;*/
+		color: white;
+	}
+
+	.title-container .title-swaps {
+		font-size: 72px;
+		font-family: Tahoma, sans-serif;
+		font-weight: bold;
+		letter-spacing: 2px;
+	}
+
+	.title-container .points-container {
+		padding: 40px 0px;
+		font-size: 30px;
+		letter-spacing: 1.5px;
+	}
+
+
+	.points-container-underline {
+		margin-top: -15px;
+		letter-spacing: -5px;
+	}
+
+	.find-swap {
+		margin: -20px 295px;
+		padding: 30px;
+		font-family: Arial, "Calibri Light", sans-serif;
+
+	}
+
+	.find-swap .find-text {
+		color: white;
+		font-weight: bold;
+		font-size: 22px;
+	}
+
+	.tse-list {
+		list-style-type: none;
+		margin-left: -40px;
+	}
+
+	.boxes .boxlist {
+		width: 150%;
+		margin: 10px 0px -5px -45px;
+	}
+
+	.boxes .boxlist li {
+		display: inline;
+		float: left;
+		margin: 5px;
+		padding: 10px 15px 10px 0px;
+		width: 250px;
+		/*border;*/
+		/*border-width: 95px;*/
+	}
+
+	.boxes .boxlist li input {
+		width: 250px;
+		background: white;
+		border: solid;
+		/*border-color: white;*/
+		border-color: rgba(0, 0, 0, 0.01);
+		border-width: 10px;
+	}
+
+
+	.boxes .boxlist li button {
+		width: 250px;
+		background: white;
+		color: #dcb581;
+		border: white solid;
+		/*border-color: white;*/
+		/*border-color: rgba(0, 0, 0, 0.01);*/
+		border-width: 10px;
+		border-radius: 0px;
+	}
+
+
+	.boxes .dropdown-list li {
+		display: inline;
+		float: left;
+		margin: 5px;
+		padding: 10px 15px 10px 0px;
+		width: 250px;
+	}
+
+
+	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+		/*color: silver;*/
+		color: #dcb581;
+	}
+
+	.btn-text {
+		float: left;
+	}
+
+	.caret {
+		float: right;
+	}
+	
+
 }
+
