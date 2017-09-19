@@ -6,11 +6,26 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.slideIndex = 0;
 
     $scope.cities = [
-        "../images/cities/london.jpg",
-        "../images/cities/paris.jpg",
-        "../images/cities/newyork.jpeg",
-        "../images/cities/sydney.jpg",
-        "../images/cities/rome.jpeg",
+        {
+            "normal": "../images/cities/updated/venice.jpg",
+            "faded": "../images/cities/updated/venice2.jpg"
+        },
+        {
+            "normal": "../images/cities/updated/miami.jpg",
+            "faded": "../images/cities/updated/miami2.jpg"
+        },
+        {
+            "normal": "../images/cities/updated/london.jpg",
+            "faded": "../images/cities/updated/london2.jpg"
+        },
+        {
+            "normal": "../images/cities/updated/sydney.jpg",
+            "faded": "../images/cities/updated/sydney2.jpg"
+        },
+        {
+            "normal": "../images/cities/updated/paris.jpg",
+            "faded": "../images/cities/updated/paris2.jpg"
+        },
     ];
 
     $scope.travel = "Travel anywhere you want.";
