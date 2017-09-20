@@ -27,7 +27,17 @@
 			margin: 0 10px 10px 0;
 			&.he-60{
 				height: 60%;
+				transition: all 2s ease;
+				background-image: url("../../images/cities/updated/venice.jpg");
+                background-size: cover;
+
+            }
+
+			&.he-60:hover {
+              transition: all 2s ease;
+              background-image: url("../../images/cities/updated/venice2.jpg");
 			}
+
 			&.he-40{
 				height: 40%;
 			}
@@ -152,7 +162,55 @@
 	.caret {
 		float: right;
 	}
+
+    .how-it-works-text {
+
+      padding: 1%;
+      padding-left: 4.5%;
+      padding-top: 7%;
+      font-family: Arial;
+      font-size: x-large;
+      color: #1463ff;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      width: 17%;
+
+    }
 	
+    .how-it-works {
+
+      background-image: url("../../images/cities/updated/longbeach.jpg");
+      height: 2600px;
+      background-size: contain;
+      align-content: center;
+      width: auto;
+      //margin: auto;
+      padding: 30px;
+
+
+
+      .how-inner-ticket {
+
+        background-color: white;
+        width: 30%;
+        height: 30%;
+        
+        .manlogo {
+          background-image: url("../../images/cities/updated/man-logo.JPG");
+        }
+        
+        .how-inner-sentences {
+
+          color: #dbc196;
+          font-family: Arial;
+          padding: 10%;
+          text-align: center;
+          font-size: large;
+
+        }
+      }
+
+    }
 
 }
 
