@@ -7,22 +7,27 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     $scope.cities = [
         {
+            "name": "Venice",
             "normal": "../images/cities/updated/venice.jpg",
             "faded": "../images/cities/updated/venice2.jpg"
         },
         {
+            "name": "Miami",
             "normal": "../images/cities/updated/miami.jpg",
             "faded": "../images/cities/updated/miami2.jpg"
         },
         {
+            "name": "London",
             "normal": "../images/cities/updated/london.jpg",
             "faded": "../images/cities/updated/london2.jpg"
         },
         {
+            "name": "Sydney",
             "normal": "../images/cities/updated/sydney.jpg",
             "faded": "../images/cities/updated/sydney2.jpg"
         },
         {
+            "name": "Paris",
             "normal": "../images/cities/updated/paris.jpg",
             "faded": "../images/cities/updated/paris2.jpg"
         },
