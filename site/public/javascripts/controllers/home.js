@@ -45,3 +45,25 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.tseList = [$scope.travel, $scope.switch, $scope.experience];
 });
 
+swapsApp.directive('scrollOnClick', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, $elm) {
+            $elm.on('click', function() {
+                $("body").animate({scrollTop: $elm.offset().top}, "slow");
+                $("body").animate({scrollBottom: 100}, "fast");
+            });
+        }
+    }
+});
+
+swapsApp.directive('scrollToTop', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, $elm) {
+            $elm.on('click', function() {
+                $("body").animate({scrollTop: 0}, "fast");
+        });
+        }
+    }
+});

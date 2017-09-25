@@ -9,9 +9,56 @@
                 <div class="points-container-border"></div>
             </div>
         </div>
+        <div class="button-div container" scroll-to-top>
+            <span class="glyphicon glyphicon-chevron-up"
+                  style="font-size: 1.5em; background-color: powderblue; text-align: center; width: 4%; height: 12%;"
+                  scroll-to-top></span>
+        </div>
         <div class="find-swap">
             <div class="find-text">Find a Swap</div>
             <div class="row">
+
+                <div class="container">
+                    <div class="input-group">
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control" placeholder="Where do you want to go?">
+                            <div class="input-group-addon dropdown">
+                                <button class="btn btn-secondary dropdown-toggle"
+                                        type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Anywhere <span class="glyphicon glyphicon-chevron-down"></span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control">
+                            <div class="input-group-addon dropdown">
+                                <button class="btn btn-secondary dropdown-toggle"
+                                        type="button" id="dropdownMenu2" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Anytime <span class="glyphicon glyphicon-calendar"></span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control">
+                            <!--<span class="input-group-addon">addon</span>-->
+                        </div>
+                    </div>
+
+
+                </div>
+
+
                 <div class="col-sm-4">
                     <!--Were do you want to go?-->
                 </div>
@@ -25,33 +72,38 @@
         </div>
     </div>
     <div class="title">
-        <strong>Featured Destinations</strong>
+        <strong scroll-on-click>Featured Destinations</strong>
     </div>
     <div class="featured-destinations">
         <div class="columns col-30">
-            <div class="city he-60 venice" ng-init="venice_img = cities[0].normal" ng-mouseover="venice_img = cities[0].faded"
+            <div class="city he-60 venice" ng-init="venice_img = cities[0].normal"
+                 ng-mouseover="venice_img = cities[0].faded"
                  ng-mouseout="venice_img = cities[0].normal"
                  ng-style="{'background-image': 'url(' + venice_img + ')','background-size': 'cover'}">
                 <div class="city-text">{{cities[0].name}}</div>
             </div>
-            <div class="city he-40 miami ng-init="miami_img = cities[1].normal" ng-mouseover="miami_img = cities[1].faded"
+            <div class="city he-40 miami ng-init=" miami_img=cities[1].normal"
+                 ng-mouseover="miami_img = cities[1].faded"
                  ng-mouseout="miami_img = cities[1].normal"
                  ng-style="{'background-image': 'url(' + miami_img + ')','background-size': 'cover'}">
                 <div class="city-text">{{cities[1].name}}</div>
             </div>
         </div>
         <div class="columns col-70">
-            <div class="city he-40 london" ng-init="london_img = cities[2].normal" ng-mouseover="london_img = cities[2].faded"
+            <div class="city he-40 london" ng-init="london_img = cities[2].normal"
+                 ng-mouseover="london_img = cities[2].faded"
                  ng-mouseout="london_img = cities[2].normal"
                  ng-style="{'background-image': 'url(' + london_img + ')','background-size': 'cover'}">
                 <div class="city-text">{{cities[2].name}}</div>
             </div>
-            <div class="city he-60 width-60 sydney" ng-init="sydney_img = cities[3].normal" ng-mouseover="sydney_img = cities[3].faded"
+            <div class="city he-60 width-60 sydney" ng-init="sydney_img = cities[3].normal"
+                 ng-mouseover="sydney_img = cities[3].faded"
                  ng-mouseout="sydney_img = cities[3].normal"
                  ng-style="{'background-image': 'url(' + sydney_img + ')','background-size': 'cover'}">
                 <div class="city-text">{{cities[3].name}}</div>
             </div>
-            <div class="city he-60 width-40 paris ng-init="paris_img = cities[4].normal" ng-mouseover="paris_img = cities[4].faded"
+            <div class="city he-60 width-40 paris ng-init=" paris_img=cities[4].normal"
+                 ng-mouseover="paris_img = cities[4].faded"
                  ng-mouseout="paris_img = cities[4].normal"
                  ng-style="{'background-image': 'url(' + paris_img + ')','background-size': 'cover'}">
                 <div class="city-text">{{cities[4].name}}</div>
@@ -59,24 +111,28 @@
         </div>
     </div>
     <div class="how-it-works-text">How does it work you ask?</div>
-    <div class="how-it-works">
-        <div class="how-inner-ticket">
-            <div class="logo">
-                <img class="logoimg img-responsive" src="../images/cities/updated/man-logo.JPG">
+    <div>
+        <div class="how-it-works">
+            <div class="how-inner-ticket">
+                <div class="logo">
+                    <img class="logoimg img-responsive" src="../images/cities/updated/man-logo.JPG">
+                </div>
+                <div class="how-inner-sentences">Join swaps in a simple free registration.</div>
+                <div class="logo">
+                    <img class="logoimg img-responsive" src="../images/cities/updated/house-logo.JPG">
+                </div>
+                <div class="how-inner-sentences">Look for swappers in your ideal travel destination, receive request
+                    from others.
+                </div>
+                <div class="logo">
+                    <img class="logoimg img-responsive" src="../images/cities/updated/plane-logo.JPG">
+                </div>
+                <div class="how-inner-sentences">Travel world wide and enjoy free accommodation.</div>
+                <button class="start-button">Start</button>
             </div>
-            <div class="how-inner-sentences">Join swaps in a simple free registration.</div>
-            <div class="logo">
-                <img class="logoimg img-responsive" src="../images/cities/updated/house-logo.JPG">
-            </div>
-            <div class="how-inner-sentences">Look for swappers in your ideal travel destination, receive request from others.</div>
-            <div class="logo">
-                <img class="logoimg img-responsive" src="../images/cities/updated/plane-logo.JPG">
-            </div>
-            <div class="how-inner-sentences">Travel world wide and enjoy free accommodation.</div>
-            <button class="start-button">Start</button>
+            <div class="ready">Ready for an adventure?</div>
+            <div class="ready-underline"></div>
         </div>
-        <div class="ready">Ready for an adventure?</div>
-        <div class="ready-underline"></div>
     </div>
     <div class="what-good-ticket">
         <div class="what-good-header">So what's so good about swaps?</div>
@@ -86,7 +142,8 @@
             <div class="what-underline"></div>
             <img class="what-images" src="../images/cities/updated/magnifying.JPG">
             <div class="inner-text">
-                Swaps helps you find new places for adventure, with advanced search you can plan yourself the perfect trip.
+                Swaps helps you find new places for adventure, with advanced search you can plan yourself the perfect
+                trip.
             </div>
         </div>
         <div class="location">
