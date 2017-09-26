@@ -39,7 +39,7 @@
 		    <!-- <form class="form-inline my-2 my-lg-0">
 		      <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
 		    </form> -->
-            <div class="login sign-up" data-toggle="modal" data-target="#signUpModal">
+            <div class="login sign-up" data-toggle="modal" data-target="#aboutModal">
                 About Us
             </div>
             <div class="underlined"></div>
@@ -78,8 +78,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="facebook-signin">
-      	<button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
-      </div>
+        <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
+    </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -87,6 +87,59 @@
 
   </div>
 </div>
+
+<div id="aboutModal" class="modal fade" role="dialog">
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="container about-text">
+
+            <div class="about-inner-text"><span class="swaps-text h1 bg-primary">Swaps</span> is and awesome modern way to travel around the globe,
+            switching houses and not worrying whether your house is on-fire or not
+        </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<div id="signUpModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container">
+            <div class="row">
+            <label>User Name:</label>
+                <input type="text" class="form-control" placeholder="">
+                <span class="user-comments">At least 5 characters. Case insensitive.</span>
+
+            </div>
+            <br>
+            <div class="row">
+                <label>Password:</label>
+                    <input type="password" class="form-control" placeholder="">
+                    <span class="user-comments">At least 6 characters. Case sensitive. Must include<br> uppercase character,
+                        lowercase character and a number.</span>
+
+            </div>
+            <br>
+            <div class="row">
+                <label>Verify Password:</label>
+                    <input type="password" class="form-control" placeholder="">
+
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div id="flyNowModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
