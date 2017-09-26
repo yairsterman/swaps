@@ -43,6 +43,30 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.howmany = "How many travellers?";
 
     $scope.tseList = [$scope.travel, $scope.switch, $scope.experience];
+
+
+
+    $scope.autocompleteCities = function(){
+        autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
+            types: ['(cities)']
+        });
+        autocompleteSearch.addListener('place_changed', function() {
+            $scope.search.where = autocompleteSearch.getPlace().name;
+        });
+    }
+
+    $scope.openDate = function(){
+        $('input[name="searchDate"]').daterangepicker({
+            autoApply: true,
+            opens: 'center',
+            locale: {
+                format: 'MMM DD'
+            }
+        });
+        $('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
+            $scope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+        });
+    }
 });
 
 swapsApp.directive('scrollOnClick', function() {
