@@ -262,4 +262,55 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         getTravelers(0);
 	});
 
+    // var address = value.address;
+    // var image = value.image;
+    // var name = value.firstName;
+    // var id = value._id;
+    // var photos = value.photos;
+    $scope.travelers = [
+        {
+            address: "Blah1",
+            image: "none",
+            firstName: "name1",
+            id: 1
+        },
+        {
+            address: "Blah2",
+            image: "none",
+            firstName: "name2",
+            id: 2
+        },
+        {
+            address: "Blah3",
+            image: "none",
+            firstName: "name3",
+            id: 3
+        },
+        {
+            address: "Blah4",
+            image: "none",
+            firstName: "name4",
+            id: 4
+        },
+        {
+            address: "Blah5",
+            image: "none",
+            firstName: "name5",
+            id: 5
+        },
+        {
+            address: "Blah6",
+            image: "none",
+            firstName: "name6",
+            id: 6
+        },
+        {
+            address: "Blah7",
+            image: "none",
+            firstName: "name7",
+            id: 7
+        },
+
+    ];
+
 });

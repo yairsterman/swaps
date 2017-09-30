@@ -19,6 +19,10 @@
                 </div>
             </div>
         </div>
+
+
+
+
         <div class="row">
             <div class="col-sm-7 swappers-col" id="swappers">
                 <div class="no-results" ng-if="totalUsers == 0">
@@ -180,6 +184,45 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+        <div class="container">
+         <div class="row">
+
+             <div class="people-list col-lg-7 col-md-7 col-sm-7 col-xs-7">
+
+                 <div class="row" ng-repeat="traveler in travelers">
+                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-if="$index % 3 == 0">
+                        {{traveler.firstName}} from first
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-if="$index % 3 == 1">
+                         {{traveler.firstName}} from sec
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-if="$index  % 3 == 2">
+                         {{traveler.firstName}} from thr
+                     </div>
+
+                 </div>
+
+             </div>
+
+             <div class="people-list col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+             </div>
+
+         </div>
+
+        </div>
+
+        <div class="loader" ng-if="loading">
+        </div>
+
+
         <div class="pages">
             <ul class="page-numbers">
                 <li class="arrow {{page + 1 > 1?'':'no-show'}}"  ng-click="prevPage()"><i class="glyphicon glyphicon-menu-left"></i></li>
