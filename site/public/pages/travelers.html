@@ -30,39 +30,98 @@
 
                 <div class="row">
 
-                    <div class="people-list col-lg-9 col-md-9 col-sm-9 col-xs-9" >
+                    <div class="people-list col-lg-8 col-md-8 col-sm-8 col-xs-8" >
 
-                        <div class="container" >
+                        <!--<div class="container" >-->
 
-                            <div class="row" >
+                            <!--<div class="row" >-->
 
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-repeat="guy in dum_trav">
+                                <div class="people-list col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-repeat="guy in dum_trav">
 
-                                    <span class="user-name">Name: {{guy.firstName}}</span>
+                                    <!--<span class="user-name">Name: {{guy.firstName}}</span>-->
                                     <br>
-                                    <div class="container">
-                                        <div class="row">
+                                    <!--<div class="container">-->
+                                        <!--<div class="row">-->
 
-                                            <div class="apartment-image col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                                <div class="container">
-                                                    <img class="rounded" src="{{guy.photos[0]}}" alt="photo">
+                                            <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                <img class="img-rounded" src="{{guy.photos[0]}}" alt="photo">
+                                                <div class="bg-info">
+                                                    Hi, I'm {{guy.firstName}}!
+                                                    <br><br>
+                                                    Description: {{guy.apptInfo.description}}
+                                                    <br><br>
+                                                    {{guy.apptInfo.room}} in {{guy.apptInfo.property}}
+                                                </div>
+
+                                                <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                    <span class="glyphicon glyphicon-user"></span><br>
+                                                    4 swappers
+                                                </div>
+                                                <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                    <span class="glyphicon glyphicon-bed"></span><br>
+                                                    6 beds
+                                                </div>
+                                                <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                    <span class="glyphicon glyphicon-star-empty"></span><br>
+                                                    264 comments
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                                <img class="prof_img img-circle" src="{{guy.image}}">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <img class="prof_img img-rounded" src="{{guy.image}}">
                                             </div>
-
-                                        </div>
-                                    </div>
+                                        <!--</div>-->
+                                    <!--</div>-->
 
                                 </div>
+                                <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
 
-                        </div>
+                                    <!--<span class="user-name">Name: {{guy.firstName}}</span>-->
+                                    <!--<br>-->
+                                    <!--<div class="container">-->
+                                        <!--<div class="row">-->
 
-                    </div>
+                                            <!--<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">-->
+                                                <!--<img class="rounded" src="{{guy.photos[0]}}" alt="photo">-->
+                                            <!--</div>-->
 
-                    <div class="map-view col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                                                <!--<img class="img-rounded" src="{{guy.image}}">-->
+                                            <!--</div>-->
+
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                                <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+
+                                    <!--<span class="user-name">Name: {{guy.firstName}}</span>-->
+                                    <!--<br>-->
+                                    <!--<div class="container">-->
+                                        <!--<div class="row">-->
+
+                                            <!--<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">-->
+                                                <!--<img class="rounded" src="{{guy.photos[0]}}" alt="photo">-->
+                                            <!--</div>-->
+
+                                            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                                                <!--<img class="img-rounded" src="{{guy.image}}">-->
+                                            <!--</div>-->
+
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+
+
+                            </div>
+
+
+                        <!--</div>-->
+
+                    <!--</div>-->
+
+                    <div class="map-view col-lg-4 col-md-4 col-sm-4 col-xs-4">
 
 
 
