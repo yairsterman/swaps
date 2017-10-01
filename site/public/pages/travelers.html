@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row title">
             <div class="see-who col-sm-8" ng-if="city != 'Anywhere'">
-                 See who in {{city}} is looking for a place in {{userCity}}
+                 See who in CITY is looking for a place in YOUR_CITY
             </div>
             <div class="see-who col-sm-8" ng-if="city == 'Anywhere'">
                  See who is looking for a place in {{userCity}}
@@ -23,165 +23,61 @@
 
 
 
-        <div class="row">
-            <div class="col-sm-7 swappers-col" id="swappers">
-                <div class="no-results" ng-if="totalUsers == 0">
-                    Sorry we couldn't find any matches, try widening your search.
-                </div>
-                <div class="swappers" ng-if="!loading">
-                    <div class="row appt-information" ng-repeat="traveler in travelers | filter: searchFilter()" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
-                        <div class="col-sm-6 appt-photos">
-                            <div class="photo">
-                                <div uib-carousel active="active" no-wrap="noWrapSlides">
-                                  <div uib-slide ng-repeat="photo in traveler.photos track by $index" index="$index">
-                                    <img ng-src="{{photo}}" style="margin:auto;">
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="description">
-                                {{traveler.apptInfo.description}}
-                            </div>
-                            <div class="property">
-                                {{traveler.apptInfo.property}}, {{traveler.apptInfo.room}} - {{traveler.apptInfo.guests}} guests
-                            </div>
-                            <div class="rating">
-                                <div class="icon-star"></div>
-                                <div class="icon-star" ng-if="traveler.rating > 1"></div>
-                                <div class="icon-star" ng-if="traveler.rating > 2"></div>
-                                <div class="icon-star" ng-if="traveler.rating > 3"></div>
-                                <div class="icon-star" ng-if="traveler.rating > 4"></div>
-                                <div class="number-reviews">{{traveler.reviews.length}} Reviews</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 swapper">
-                            <div class="row display-name">
-                                <div class="col-sm-3">
-                                    <div class="pic" style="background-image:url('{{traveler.image}}')">
-                                    </div>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="name">
-                                        {{traveler.firstName}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="info">
-                                {{traveler.city}}, {{traveler.country}}
-                            </div>
-                            <div class="info">
-                                {{traveler.age}}{{traveler.ocupation?', ' + traveler.ocupation:''}}
-                            </div>
-                            <div class="info">
-                                {{traveler.swaps}} swaps
-                            </div>
-                            <div class="info" ng-if="traveler.traveling">
-                                Looking to swap in:
-                                <div class="traveling-cities" ng-repeat="trip in traveler.travelingInfo | filter: travelingCities()">
-                                    <strong>{{trip.dest}}</strong>: {{trip.departure | date : 'MMM dd, yyyy'}} - {{trip.returnDate | date : 'MMM dd, yyyy'}}
-                                </div>
-                            </div>
-                            <div class="info" ng-if="!traveler.traveling">
-                                currently not swapping
-                            </div>
-                            <div class="view-profile">
-                                <button type="button" class="btn btn-default view-profile-btn" ng-click="go('profile/' + traveler._id)"></i>VIEW PROFILE</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="loader" ng-if="loading">
-                </div>
-            </div>
-            <div class="col-sm-5" style="overflow-x: hidden;">
-                <div class="filter-nav">
-                    <div ng-cloak>
-                        <!-- <section layout="row" flex> -->
-                            <md-sidenav class="md-sidenav-right" md-component-id="right" md-disable-backdrop md-whiteframe="4">
-                                <div class="side-nav-inside">
-                                    <div class="filters">
-                                        <label class="control-label">When</label>
-                                        <div class="dates">
-                                            <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="filter.date"/>
-                                            <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                                        </div>
-                                        <label class="control-label">Guests Allowed</label>
-                                        <select class="form-control appt-info" name="guests" id="select-guests" ng-model="filter.guests">
-                                          <option disabled="" value="Select...">Select...</option>
-                                          <option value="1">1</option>
-                                          <option value="2">2</option>
-                                          <option value="3">3</option>
-                                          <option value="4">4</option>
-                                          <option value="5">5</option>
-                                          <option value="6">6</option>
-                                          <option value="7">7</option>
-                                          <option value="8">8+</option>
-                                        </select>
-                                        <label class="control-label">Listing Type</label>
-                                        <select class="form-control appt-info" name="property" id="select-property" ng-model="filter.property">
-                                          <option disabled="" value="Select...">Select...</option>
-                                          <option ng-value="Apartment">Apartment</option>
-                                          <option ng-value="House">House</option>
-                                        </select>
-                                        <label class="control-label">Room</label>
-                                        <select class="form-control appt-info" name="room" id="select-room" ng-model="filter.room">
-                                          <option disabled="" value="Select...">Select...</option>
-                                          <option value="Private Room">Private Room</option>
-                                          <option value="Entire Place">Entire Place</option>
-                                        </select>
-                                        <div class="more-options">
-                                            <label class="control-label" ng-click="showAmeneties()">Basic Amenities <span><i class="glyphicon {{ameneties?'glyphicon-menu-up':'glyphicon-menu-down'}}"></i></span></label>
-                                            <div class="ameneties {{ameneties?'show':''}}">
-                                                <ul>
-                                                    <li>
-                                                        <label class="amenity-label">
-                                                            <input type="checkbox" name="amenity" value="" ng-model="filter.kitchen">
-                                                            Kitchen
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label class="amenity-label">
-                                                            <input type="checkbox" name="amenity" value="" ng-model="filter.wheelchair">
-                                                            Wheelchair accessable
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label class="amenity-label">
-                                                            <input type="checkbox" name="amenity" value="" ng-model="filter.kids">
-                                                            Kid friendly
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label class="amenity-label">
-                                                            <input type="checkbox" name="amenity" value="" ng-model="filter.smoking">
-                                                            Smoking allowed
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label class="amenity-label">
-                                                            <input type="checkbox" name="amenity" value="" ng-model="filter.pets">
-                                                            Pet allowed
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label class="amenity-label">
-                                                            <input type="checkbox" name="amenity" value="" ng-model="filter.parking">
-                                                            Parking
-                                                        </label>
-                                                    </li>
-                                                </ul>
+
+        <div clas="people-and-map">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="people-list col-lg-9 col-md-9 col-sm-9 col-xs-9" >
+
+                        <div class="container" >
+
+                            <div class="row" >
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-repeat="guy in dum_trav">
+
+                                    <span class="user-name">Name: {{guy.firstName}}</span>
+                                    <br>
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="apartment-image col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                <div class="container">
+                                                    <img class="rounded" src="{{guy.photos[0]}}" alt="photo">
+                                                </div>
                                             </div>
+
+                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                                <img class="prof_img img-circle" src="{{guy.image}}">
+                                            </div>
+
                                         </div>
                                     </div>
-                                    <div class="filter-buttons">
-                                        <button type="button" class="btn btn-primary search-btn" ng-click="search()" ng-disabled="loading"></i>Search</button>
-                                        <button type="button" class="btn btn-default clear-btn" ng-click="clear()"></i>Clear</button>
-                                    </div>
+
                                 </div>
-                            </md-sidenav>
-                        <!-- </section> -->
+
+                        </div>
+
                     </div>
-                    <div class="map" id="travelerMap"></div>
+
+                    <div class="map-view col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+
+
+                    </div>
+
+
+
                 </div>
+
+
+
+
+
+
+
             </div>
         </div>
 
@@ -190,45 +86,5 @@
 
 
 
-
-        <div class="container">
-         <div class="row">
-
-             <div class="people-list col-lg-7 col-md-7 col-sm-7 col-xs-7">
-
-                 <div class="row" ng-repeat="traveler in travelers">
-                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-if="$index % 3 == 0">
-                        {{traveler.firstName}} from first
-                     </div>
-                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-if="$index % 3 == 1">
-                         {{traveler.firstName}} from sec
-                     </div>
-                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-if="$index  % 3 == 2">
-                         {{traveler.firstName}} from thr
-                     </div>
-
-                 </div>
-
-             </div>
-
-             <div class="people-list col-lg-3 col-md-3 col-sm-3 col-xs-3">
-
-             </div>
-
-         </div>
-
-        </div>
-
-        <div class="loader" ng-if="loading">
-        </div>
-
-
-        <div class="pages">
-            <ul class="page-numbers">
-                <li class="arrow {{page + 1 > 1?'':'no-show'}}"  ng-click="prevPage()"><i class="glyphicon glyphicon-menu-left"></i></li>
-                <li class="number {{number == page + 1?'current':''}}" ng-repeat="number in pageNumbers" ng-click="getPage(number)">{{number}}</li>
-                <li class="arrow {{page + 1 < totalPages?'':'no-show'}}" ng-click="nextPage()"><i class="glyphicon glyphicon-menu-right"></i></li>
-            </ul>
-        </div>
      </div>
 </div>
