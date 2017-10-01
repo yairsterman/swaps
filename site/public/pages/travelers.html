@@ -31,30 +31,18 @@
                 <div class="row">
 
                     <div class="people-list col-lg-8 col-md-8 col-sm-8 col-xs-8" >
-
-                        <!--<div class="container" >-->
-
-                            <!--<div class="row" >-->
-
-                                <div class="guy-box he-40 col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-repeat="guy in dum_trav">
-
-                                    <!--<span class="user-name">Name: {{guy.firstName}}</span>-->
+                                <div class="guy-box col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group" ng-repeat="guy in dum_trav">
+                                <!--<div class="guy-box col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1" ng-repeat="guy in dum_trav">-->
                                     <br>
-                                    <!--<div class="container">-->
-                                        <!--<div class="row">-->
-
                                             <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                                <img class="img-responsive img-rounded" src="{{guy.photos[0]}}" alt="photo">
+                                                <img class="img-responsive" src="{{guy.photos[0]}}" alt="photo">
                                                 <div class="text-under-apt">
-                                                    Hi, I'm {{guy.firstName}}!
-                                                    <br><br>
                                                     <span class="apt-description">{{guy.apptInfo.description}}</span>
                                                     <br><br>
                                                     {{guy.apptInfo.room}} in {{guy.apptInfo.property}}
                                                 </div>
-
                                                 <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                     <span class="glyphicon glyphicon-user"></span>
                                                     4 <br>swappers
@@ -70,52 +58,13 @@
                                             </div>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                <img class="prof_img img-rounded" src="{{guy.image}}">
+                                                <img class="prof_img" src="{{guy.image}}">
+                                                <br>
+                                                <span style="font-weight: 600;">{{guy.firstName}}</span>
+                                                <br><br>
+                                                <span class="age-and-city">{{guy.age != null ? guy.age + " from" : ""}}<br>{{guy.city}}</span>
                                             </div>
-                                        <!--</div>-->
-                                    <!--</div>-->
-
                                 </div>
-                                <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
-
-                                    <!--<span class="user-name">Name: {{guy.firstName}}</span>-->
-                                    <!--<br>-->
-                                    <!--<div class="container">-->
-                                        <!--<div class="row">-->
-
-                                            <!--<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">-->
-                                                <!--<img class="rounded" src="{{guy.photos[0]}}" alt="photo">-->
-                                            <!--</div>-->
-
-                                            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
-                                                <!--<img class="img-rounded" src="{{guy.image}}">-->
-                                            <!--</div>-->
-
-                                        <!--</div>-->
-                                    <!--</div>-->
-
-                                <!--</div>-->
-                                <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
-
-                                    <!--<span class="user-name">Name: {{guy.firstName}}</span>-->
-                                    <!--<br>-->
-                                    <!--<div class="container">-->
-                                        <!--<div class="row">-->
-
-                                            <!--<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">-->
-                                                <!--<img class="rounded" src="{{guy.photos[0]}}" alt="photo">-->
-                                            <!--</div>-->
-
-                                            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
-                                                <!--<img class="img-rounded" src="{{guy.image}}">-->
-                                            <!--</div>-->
-
-                                        <!--</div>-->
-                                    <!--</div>-->
-
-                                <!--</div>-->
-
-
                             </div>
 
 
@@ -123,9 +72,96 @@
 
                     <!--</div>-->
 
-                    <div class="map-view col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="map-view col-lg-4 col-md-4 col-sm-4 col-xs-4" style="overflow-x: hidden;">
 
-
+                            <div class="filter-nav">
+                                <div ng-cloak>
+                                    <!-- <section layout="row" flex> -->
+                                    <md-sidenav class="md-sidenav-right" md-component-id="right" md-disable-backdrop md-whiteframe="4">
+                                        <div class="side-nav-inside">
+                                            <div class="filters">
+                                                <label class="control-label">When</label>
+                                                <div class="dates">
+                                                    <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="filter.date"/>
+                                                    <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
+                                                </div>
+                                                <label class="control-label">Guests Allowed</label>
+                                                <select class="form-control appt-info" name="guests" id="select-guests" ng-model="filter.guests">
+                                                    <option disabled="" value="Select...">Select...</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8+</option>
+                                                </select>
+                                                <label class="control-label">Listing Type</label>
+                                                <select class="form-control appt-info" name="property" id="select-property" ng-model="filter.property">
+                                                    <option disabled="" value="Select...">Select...</option>
+                                                    <option ng-value="Apartment">Apartment</option>
+                                                    <option ng-value="House">House</option>
+                                                </select>
+                                                <label class="control-label">Room</label>
+                                                <select class="form-control appt-info" name="room" id="select-room" ng-model="filter.room">
+                                                    <option disabled="" value="Select...">Select...</option>
+                                                    <option value="Private Room">Private Room</option>
+                                                    <option value="Entire Place">Entire Place</option>
+                                                </select>
+                                                <div class="more-options">
+                                                    <label class="control-label" ng-click="showAmeneties()">Basic Amenities <span><i class="glyphicon {{ameneties?'glyphicon-menu-up':'glyphicon-menu-down'}}"></i></span></label>
+                                                    <div class="ameneties {{ameneties?'show':''}}">
+                                                        <ul>
+                                                            <li>
+                                                                <label class="amenity-label">
+                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.kitchen">
+                                                                    Kitchen
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label class="amenity-label">
+                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.wheelchair">
+                                                                    Wheelchair accessable
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label class="amenity-label">
+                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.kids">
+                                                                    Kid friendly
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label class="amenity-label">
+                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.smoking">
+                                                                    Smoking allowed
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label class="amenity-label">
+                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.pets">
+                                                                    Pet allowed
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label class="amenity-label">
+                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.parking">
+                                                                    Parking
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="filter-buttons">
+                                                <button type="button" class="btn btn-primary search-btn" ng-click="search()" ng-disabled="loading"></i>Search</button>
+                                                <button type="button" class="btn btn-default clear-btn" ng-click="clear()"></i>Clear</button>
+                                            </div>
+                                        </div>
+                                    </md-sidenav>
+                                    <!-- </section> -->
+                                </div>
+                                <div class="map" id="travelerMap"></div>
 
                     </div>
 
