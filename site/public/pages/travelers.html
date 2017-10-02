@@ -38,12 +38,11 @@
                                             <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                                <!--<img class="img-responsive" src="{{guy.photos[0]}}" alt="photo">-->
+                                                <!--<img class="img-responsive" src="{{guy.photos[0]}}" alt="photo"> This image was instead of the carousel-->
 
 
 
                                                     <!--CAROUSEL START-->
-
 
 
                                                         <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -56,12 +55,14 @@
                                                             <!-- Wrapper for carousel items -->
                                                             <div class="carousel-inner">
                                                                 <div class="item active">
-                                                                    <img src="{{guy.photos[0]}}" alt="First Slide">
+                                                                    <img src="#" alt="First slide">
+                                                                    <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + guy.photos[0] + ')','background-size': 'cover'}">
+                                                                    </div>
                                                                 </div>
                                                                 <div class="item" ng-repeat="photo in guy.photos.slice(1,entries.length)">
-
-                                                                    <img src="{{photo}}" alt="{{$index}} slide">
-
+                                                                    <img src="#" alt="{{$index}} slide">
+                                                                    <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')','background-size': 'cover'}">
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <!-- Carousel controls -->
@@ -72,9 +73,6 @@
                                                                 <span class="glyphicon glyphicon-chevron-right"></span>
                                                             </div>
                                                         </div>
-
-
-
 
 
                                                     <!--CAROUSEL END-->
