@@ -262,56 +262,6 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         getTravelers(0);
 	});
 
-    // var address = value.address;
-    // var image = value.image;
-    // var name = value.firstName;
-    // var id = value._id;
-    // var photos = value.photos;
-    $scope.d_travelers = [
-        {
-            address: "Blah1",
-            image: "../images/tmp_trav_img/one.jpg",
-            firstName: "name1",
-            id: 1
-        },
-        {
-            address: "Blah2",
-            image: "../images/tmp_trav_img/two.jpg",
-            firstName: "name2",
-            id: 2
-        },
-        {
-            address: "Blah3",
-            image: "../images/tmp_trav_img/three.jpg",
-            firstName: "name3",
-            id: 3
-        },
-        {
-            address: "Blah4",
-            image: "../images/tmp_trav_img/four.jpg",
-            firstName: "name4",
-            id: 4
-        },
-        {
-            address: "Blah5",
-            image: "../images/tmp_trav_img/five.jpg",
-            firstName: "name5",
-            id: 5
-        },
-        {
-            address: "Blah6",
-            image: "../images/tmp_trav_img/six.jpg",
-            firstName: "name6",
-            id: 6
-        },
-        {
-            address: "Blah7",
-            image: "../images/tmp_trav_img/seven.jpg",
-            firstName: "name7",
-            id: 7
-        },
-
-    ];
 
 
 

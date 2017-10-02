@@ -38,7 +38,50 @@
                                             <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                                <img class="img-responsive" src="{{guy.photos[0]}}" alt="photo">
+                                                <!--<img class="img-responsive" src="{{guy.photos[0]}}" alt="photo">-->
+
+
+
+                                                    <!--CAROUSEL START-->
+
+
+
+                                                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                                            <!-- Carousel indicators -->
+                                                            <!--<ol class="carousel-indicators">-->
+                                                                <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
+                                                                <!--<li data-target="#myCarousel$index" data-slide-to="1"></li>-->
+                                                                <!--<li data-target="#myCarousel$index" data-slide-to="2"></li>-->
+                                                            <!--</ol>-->
+                                                            <!-- Wrapper for carousel items -->
+                                                            <div class="carousel-inner">
+                                                                <div class="item active">
+                                                                    <img src="{{guy.photos[0]}}" alt="First Slide">
+                                                                </div>
+                                                                <div class="item" ng-repeat="photo in guy.photos.slice(1,entries.length)">
+
+                                                                    <img src="{{photo}}" alt="{{$index}} slide">
+
+                                                                </div>
+                                                            </div>
+                                                            <!-- Carousel controls -->
+                                                            <div class="carousel-control left" data-slide="prev" onclick="$('#myCarousel').carousel('prev')">
+                                                                <span class="glyphicon glyphicon-chevron-left"></span>
+                                                            </div>
+                                                            <div class="carousel-control right" data-slide="next" onclick="$('#myCarousel').carousel('next')">
+                                                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+                                                    <!--CAROUSEL END-->
+
+
+
+
                                                 <div class="text-under-apt">
                                                     <span class="apt-description">{{guy.apptInfo.description}}</span>
                                                     <br><br>
@@ -59,7 +102,10 @@
                                             </div>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                <img class="prof_img" src="{{guy.image}}">
+                                                <!--<img class="prof_img" src="{{guy.image}}">-->
+                                                <div class="prof_img_cont">
+                                                    <div class="prof_img" ng-style="{'background-image': 'url(' + guy.image + ')','background-size': 'cover'}"></div>
+                                                </div>
                                                 <br>
                                                 <span style="font-weight: 600;">{{guy.firstName}}</span>
                                                 <br><br>
