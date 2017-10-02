@@ -7,7 +7,7 @@
 	.title{
 		font-size: 20px;
 		color: #2e6da4;
-		padding: 0 4vw;
+		padding: 0 6vw;
 	}
 
 	.button-div {
@@ -20,9 +20,9 @@
 	}
 
 	.featured-destinations{
-		height: 60vw;
-		margin: 2vw 4vw;
-		margin-right: ~'calc(4vw - 10px)';
+		height: 50vw;
+		margin: 2vw 6vw;
+		margin-right: ~'calc(6vw - 10px)';
 		.columns{
 			height: 100%;
 			float: left;
@@ -34,136 +34,18 @@
 			}
 		}
 		.city{
+			position: relative;
 			margin: 0 10px 10px 0;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
 			&.he-60{
 				height: 60%;
-				transition: all 2s ease;
-                //background-size: cover;
-
+				transition: all 0.4s ease;
             }
-			&.he-60:hover {
-              transition: all 2s ease;
-				//height: 70%;
-			}
 			&.he-40 {
 				height: 40%;
-			}
-			&.he-40:hover {
-				transition: all 2s ease;
-				//height: 50%;
-			}
-			&.venice{
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/venice.jpg");
-				//background-size: cover;
-
-				.city-text {
-					//display: none;
-					opacity: 0;
-					margin: auto;
-					width: 1%;
-					padding-top: 100%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: xx-large;
-					transition: all 2s ease;
-					color: white;
-					font-size: 7vw;
-				}
-			}
-			&.venice:hover {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/venice2.jpg");
-
-				.city-text {
-					opacity: 100;
-					display: block;
-					margin: auto;
-					width: 84%;
-					padding-top: 68%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: 500%;
-					transition: all 2s ease;
-					color: rgba(7, 2, 154, 0.95);
-					text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-					font-size: 7vw;
-				}
-			}
-			&.miami{
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/miami.jpg");
-				//background-size: cover;
-
-				.city-text {
-					//display: none;
-					opacity: 0;
-					margin: auto;
-					width: 1%;
-					padding-top: 10%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: xx-large;
-					transition: all 2s ease;
-					color: #ffe500;
-					font-size: 7vw;
-				}
-			}
-			&.miami:hover {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/miami2.jpg");
-
-				.city-text {
-					opacity: 100;
-					display: block;
-					margin: auto;
-					width: 77%;
-					padding-top: 60%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: 500%;
-					transition: all 2s ease;
-					color: rgb(230, 209, 0);
-					text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-					font-size: 7vw;
-				}
-			}
-			&.london {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/london.jpg");
-				//background-size: cover;
-
-				.city-text {
-					opacity: 0;
-					margin: auto;
-					width: 1%;
-					padding-bottom: 80%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: xx-large;
-					transition: all 2s ease;
-					color: rgba(0, 243, 255, 0.3);
-					font-size: 7vw;
-				}
-			}
-			&.london:hover {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/london2.jpg");
-
-				.city-text {
-					opacity: 100;
-					display: block;
-					margin: auto;
-					width: 30%;
-					padding-top: 20%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: 500%;
-					transition: all 2s ease;
-					color: rgb(100, 143, 146);
-					text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-					font-size: 7vw;
-				}
+				transition: all 0.4s ease;
 			}
 
 			&.width-60{
@@ -175,86 +57,25 @@
 				width: ~'calc(40% - 20px)';
 			}
 
-			&.sydney {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/sydney.jpg");
-				//background-size: cover;
-
+			.city-text {
+				transform: scale(0.1);
+				opacity: 0;
+				top: 50%;
+				position: absolute;
+				margin: auto;
+				width: 100%;
+				text-align: center;
+				font-weight: bold;
+				transition: all 0.4s ease;
+				color: #ffffff;
+				font-size: 22px;
+			}
+			&:hover{
 				.city-text {
-					opacity: 0;
-					margin: auto;
-					width: 1%;
-					padding-bottom: 80%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: xx-large;
-					//font-size: 17vh;
-					transition: all 2s ease;
-					color: rgba(0, 243, 255, 0.3);
-					font-size: 7vw;
+					transform: scale(1);
+					opacity: 1;
 				}
 			}
-
-			&.sydney:hover {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/sydney2.jpg");
-
-				.city-text {
-					opacity: 100;
-					display: block;
-					margin: auto;
-					width: 40%;
-					padding-top: 20%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					//font-size: 500%;
-					transition: all 2s ease;
-					color: rgb(72, 143, 241);
-					text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-					font-size: 7vw;
-				}
-			}
-
-			&.paris {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/paris.jpg");
-				//background-size: cover;
-
-				.city-text {
-					opacity: 0;
-					margin: auto;
-					width: 50%;
-					//padding-bottom: 80%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: xx-large;
-					transition: all 2s ease;
-					color: rgba(255, 168, 0, 0.3);
-					font-size: 7vw;
-				}
-			}
-
-			&.paris:hover {
-				transition: all 2s ease;
-				//background-image: url("../../images/cities/updated/paris2.jpg");
-
-				.city-text {
-					opacity: 100;
-					display: block;
-					margin: auto;
-					//width: 40%;
-					width: 83%;
-					padding-top: 20%;
-					font-weight: bold;
-					font-family: Arial, sans-serif;
-					font-size: 500%;
-					transition: all 2s ease;
-					color: rgb(241, 148, 0);
-					text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-					font-size: 7vw;
-				}
-			}
-
 			.img{
 				background-repeat: no-repeat;
 				background-position: center;

@@ -4,6 +4,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.user = $rootScope.user;
     $scope.map = null;
     $scope.slideIndex = 0;
+    $scope.featured = [];
 
     $scope.cities = [
         {
@@ -44,7 +45,15 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     $scope.tseList = [$scope.travel, $scope.switch, $scope.experience];
 
+    init();
 
+    $scope.changeImage = function(index){
+        $scope.featured[index] = $scope.cities[index].faded;
+    };
+
+    $scope.changeImageBack = function(index){
+        $scope.featured[index] = $scope.cities[index].normal;
+    };
 
     $scope.autocompleteCities = function(){
         autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
@@ -67,6 +76,12 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $scope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
         });
     }
+
+    function init(){
+        angular.forEach($scope.cities, function(value, key) {
+            $scope.featured[key] = value.normal;
+        });
+    }
 });
 
 swapsApp.directive('scrollOnClick', function() {
@@ -86,7 +101,7 @@ swapsApp.directive('scrollToTop', function() {
         restrict: 'A',
         link: function(scope, $elm) {
             $elm.on('click', function() {
-                $("body").animate({scrollTop: 0}, "fast");
+                $("body").animate({scrollTop: 0}, "slow");
         });
         }
     }

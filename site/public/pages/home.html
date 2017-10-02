@@ -16,48 +16,26 @@
         </div>
         <div class="find-swap">
             <div class="find-text">Find a Swap</div>
-            <!--<div class="row">-->
 
-                <div class="container">
-                    <div class="input-group">
+            <div class="row">
 
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" class="form-control" placeholder="Where to?" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
-                            <div class="d-white-bg input-group-addon dropdown">
-                                <button class="d-fill-parent btn btn-secondary dropdown-toggle"
-                                        type="button" id="dropdownMenu1" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Anywhere <span class="glyphicon glyphicon-chevron-down"></span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Action</a><br>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" class="form-control" placeholder="When?" name="searchDate" ng-focus="openDate()" ng-model="search.date">
-                            <div class="d-white-bg input-group-addon dropdown">
-                                <button class="d-fill-parent btn btn-secondary dropdown-toggle"
-                                        type="button" id="dropdownMenu2" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Anytime <span class="glyphicon glyphicon-calendar"></span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Action</a><br>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input type="number" class="form-control" placeholder="How many?" style="height: 80px;" min="1" max="15">
-                            <!--<span class="input-group-addon">addon</span>-->
-                        </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Where to?" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
+                    <div class="d-white-bg input-group-addon dropdown">
+
                     </div>
-
-
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="When?" name="searchDate" ng-focus="openDate()" ng-model="search.date">
+                    <div class="d-white-bg input-group-addon dropdown">
 
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <input type="number" class="form-control" placeholder="How many?" style="height: 80px;" min="1" max="15">
+                    <!--<span class="input-group-addon">addon</span>-->
+                </div>
+            </div>
 
                 <div class="col-sm-4">
                     <!--Were do you want to go?-->
@@ -76,37 +54,33 @@
     </div>
     <div class="featured-destinations">
         <div class="columns col-30">
-            <div class="city he-60 venice" ng-init="venice_img = cities[0].normal"
-                 ng-mouseover="venice_img = cities[0].faded"
-                 ng-mouseout="venice_img = cities[0].normal"
-                 ng-style="{'background-image': 'url(' + venice_img + ')','background-size': 'cover'}">
+            <div class="city he-60"
+                 ng-mouseover="changeImage(0)"
+                 ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
+
                 <div class="city-text">{{cities[0].name}}</div>
             </div>
-            <div class="city he-40 miami ng-init=" miami_img=cities[1].normal"
-                 ng-mouseover="miami_img = cities[1].faded"
-                 ng-mouseout="miami_img = cities[1].normal"
-                 ng-style="{'background-image': 'url(' + miami_img + ')','background-size': 'cover'}">
+            <div class="city he-40"
+                 ng-mouseover="changeImage(1)"
+                 ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
                 <div class="city-text">{{cities[1].name}}</div>
             </div>
         </div>
         <div class="columns col-70">
-            <div class="city he-40 london" ng-init="london_img = cities[2].normal"
-                 ng-mouseover="london_img = cities[2].faded"
-                 ng-mouseout="london_img = cities[2].normal"
-                 ng-style="{'background-image': 'url(' + london_img + ')','background-size': 'cover'}">
-                <div class="city-text">{{cities[2].name}}</div>
+            <div class="city he-40"
+                 ng-mouseover="changeImage(2)"
+                 ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
+            <div class="city-text">{{cities[2].name}}</div>
             </div>
-            <div class="city he-60 width-60 sydney" ng-init="sydney_img = cities[3].normal"
-                 ng-mouseover="sydney_img = cities[3].faded"
-                 ng-mouseout="sydney_img = cities[3].normal"
-                 ng-style="{'background-image': 'url(' + sydney_img + ')','background-size': 'cover'}">
-                <div class="city-text">{{cities[3].name}}</div>
+            <div class="city he-60 width-60 "
+                 ng-mouseover="changeImage(3)"
+                 ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
+            <div class="city-text">{{cities[3].name}}</div>
             </div>
-            <div class="city he-60 width-40 paris ng-init=" paris_img=cities[4].normal"
-                 ng-mouseover="paris_img = cities[4].faded"
-                 ng-mouseout="paris_img = cities[4].normal"
-                 ng-style="{'background-image': 'url(' + paris_img + ')','background-size': 'cover'}">
-                <div class="city-text">{{cities[4].name}}</div>
+            <div class="city he-60 width-40"
+                 ng-mouseover="changeImage(4)"
+                 ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
+            <div class="city-text">{{cities[4].name}}</div>
             </div>
         </div>
     </div>
