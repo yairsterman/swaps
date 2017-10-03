@@ -5,6 +5,9 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.map = null;
     $scope.slideIndex = 0;
     $scope.featured = [];
+    $scope.search = {
+        guests: 1
+    };
 
     $scope.cities = [
         {
@@ -46,6 +49,14 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.tseList = [$scope.travel, $scope.switch, $scope.experience];
 
     init();
+
+    $scope.searchSwap = function(){
+        var where = $scope.search.where;
+        if(!where || where == ''){
+            where	= 'Anywhere';
+        }
+        $location.url('/travelers/' + where + '?dates=' + $scope.search.when + '&guests=' + $scope.search.guests);
+    }
 
     $scope.changeImage = function(index){
         $scope.featured[index] = $scope.cities[index].faded;

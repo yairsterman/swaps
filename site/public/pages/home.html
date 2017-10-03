@@ -1,4 +1,6 @@
 <div class="home-page">
+    <div class="home-bg">
+    </div>
     <div class="section" id="findSwap">
         <div class="title-container">
             <div class="title-swaps">Swaps</div>
@@ -11,7 +13,7 @@
         </div>
         <div class="button-div container" scroll-to-top>
             <span class="glyphicon glyphicon-chevron-up"
-                  style="font-size: 1.5em; background-color: powderblue; text-align: center; width: 4%; height: 12%;"
+                  style="font-size: 1.5em; cursor: pointer"
                   scroll-to-top></span>
         </div>
         <div class="find-swap">
@@ -19,21 +21,17 @@
 
             <div class="row">
 
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Where to?" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
-                    <div class="d-white-bg input-group-addon dropdown">
-
-                    </div>
+                <div class="col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="When?" name="searchDate" ng-focus="openDate()" ng-model="search.date">
-                    <div class="d-white-bg input-group-addon dropdown">
-
-                    </div>
+                <div class="col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Anytime" name="searchDate" ng-focus="openDate()" ng-model="search.date">
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <input type="number" class="form-control" placeholder="How many?" style="height: 80px;" min="1" max="15">
-                    <!--<span class="input-group-addon">addon</span>-->
+                <div class="col-sm-4 col-xs-12 ">
+                    <div class="guests-search">
+                        <input type="number" class="form-control guests" placeholder="1" ng-model="search.guests" min="1" max="8">
+                        <button class="search" ng-click="searchSwap()">Search</button>
+                    </div>
                 </div>
             </div>
 
@@ -50,7 +48,7 @@
         </div>
     </div>
     <div class="title">
-        <strong scroll-on-click>Featured Destinations</strong>
+        <span scroll-on-click>Featured Destinations</span>
     </div>
     <div class="featured-destinations">
         <div class="columns col-30">
@@ -86,70 +84,82 @@
     </div>
     <div class="title">How does it<br>work you ask?</div>
     <div>
-        <div class="how-it-works">
-            <div class="how-inner-ticket">
-                <div class="logo">
-                    <img class="logoimg img-responsive" src="../images/cities/updated/man-logo.JPG">
+        <div class="how-it-works row">
+            <div class="how-inner-ticket col-md-5 col-sm-6 col-xs-12">
+                <div class="join">
+                    <div class="description-icon icon icon-plus1"></div>
                 </div>
                 <div class="how-inner-sentences">Join swaps in a simple free registration.</div>
-                <div class="logo">
-                    <img class="logoimg img-responsive" src="../images/cities/updated/house-logo.JPG">
+                <div class="">
+                    <div class="description-icon icon icon-bed"></div>
                 </div>
                 <div class="how-inner-sentences">Look for swappers in your ideal travel destination, receive request
                     from others.
                 </div>
-                <div class="logo">
-                    <img class="logoimg img-responsive" src="../images/cities/updated/plane-logo.JPG">
+                <div class="">
+                    <div class="description-icon icon icon-matos"></div>
                 </div>
                 <div class="how-inner-sentences">Travel world wide and enjoy free accommodation.</div>
                 <button class="start-button">Start</button>
             </div>
-            <div class="ready">Ready for an adventure?</div>
-            <div class="ready-underline"></div>
+            <div class="ready col-md-7 col-sm-6 col-xs-12">Are You in for <br> an Adventure?</div>
         </div>
     </div>
     <div class="what-good-ticket">
         <div class="what-good-header">So what's so good about swaps?</div>
         <div class="what-good-header-underline"></div>
-        <div class="too-easy">
-            <div class="headers">Too easy</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/magnifying.JPG">
-            <div class="inner-text">
-                Swaps helps you find new places for adventure, with advanced search you can plan yourself the perfect
-                trip.
+        <div class="empty-space"></div>
+        <div class="explanations">
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-house"></div> </div>
+                <div>
+                    <div class="headers">Too easy</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        Swaps helps you find new places for adventure, with advanced search you can plan yourself the perfect
+                        trip.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="location">
-            <div class="headers">Location, location, location</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/target.JPG">
-            <div class="inner-text">
-                With swaps you can travel and stay in new exciting locations and get to experience life as a local.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-target"></div> </div>
+                <div>
+                    <div class="headers">Location, location, location</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        With swaps you can travel and stay in new exciting locations and get to experience life as a local.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="safety">
-            <div class="headers">Safety first</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/key.JPG">
-            <div class="inner-text">
-                Here in swaps we make sure that you give and receive a proper accommodation.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-keys"></div> </div>
+                <div>
+                    <div class="headers">Safety first</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        Here in swaps we make sure that you give and receive a proper accommodation.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="talkbout">
-            <div class="headers">Wanna talk about it?</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/letter.JPG">
-            <div class="inner-text">
-                Here you get to chat with your fellow swappers and make your staying easy and comfortable for everyone.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-envelope"></div> </div>
+                <div>
+                    <div class="headers">Wanna talk about it?</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        Here you get to chat with your fellow swappers and make your staying easy and comfortable for everyone.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="best4last">
-            <div class="headers">Best for last</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/moneybag.JPG">
-            <div class="inner-text">
-                By using swaps, you save money on travelling worldwide and enjoy free staying around the globe.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-money"></div> </div>
+                <div>
+                    <div class="headers">Best for last</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        By using swaps, you save money on travelling worldwide and enjoy free staying around the globe.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
