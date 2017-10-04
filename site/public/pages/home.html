@@ -1,4 +1,6 @@
 <div class="home-page">
+    <div class="home-bg">
+    </div>
     <div class="section" id="findSwap">
         <div class="title-container">
             <div class="title-swaps">Swaps</div>
@@ -11,53 +13,27 @@
         </div>
         <div class="button-div container" scroll-to-top>
             <span class="glyphicon glyphicon-chevron-up"
-                  style="font-size: 1.5em; background-color: powderblue; text-align: center; width: 4%; height: 12%;"
+                  style="font-size: 1.5em; cursor: pointer"
                   scroll-to-top></span>
         </div>
         <div class="find-swap">
             <div class="find-text">Find a Swap</div>
-            <!--<div class="row">-->
 
-                <div class="container">
-                    <div class="input-group">
+            <div class="row">
 
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" class="form-control" placeholder="Where to?" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
-                            <div class="d-white-bg input-group-addon dropdown">
-                                <button class="d-fill-parent btn btn-secondary dropdown-toggle"
-                                        type="button" id="dropdownMenu1" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Anywhere <span class="glyphicon glyphicon-chevron-down"></span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Action</a><br>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" class="form-control" placeholder="When?" name="searchDate" ng-focus="openDate()" ng-model="search.date">
-                            <div class="d-white-bg input-group-addon dropdown">
-                                <button class="d-fill-parent btn btn-secondary dropdown-toggle"
-                                        type="button" id="dropdownMenu2" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Anytime <span class="glyphicon glyphicon-calendar"></span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Action</a><br>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input type="number" class="form-control" placeholder="How many?" style="height: 80px;" min="1" max="15">
-                            <!--<span class="input-group-addon">addon</span>-->
-                        </div>
-                    </div>
-
-
+                <div class="col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
                 </div>
-
+                <div class="col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Anytime" name="searchDate" ng-focus="openDate()" ng-model="search.date">
+                </div>
+                <div class="col-sm-4 col-xs-12 ">
+                    <div class="guests-search">
+                        <input type="number" class="form-control guests" placeholder="1" ng-model="search.guests" min="1" max="8">
+                        <button class="search" ng-click="searchSwap()">Search</button>
+                    </div>
+                </div>
+            </div>
 
                 <div class="col-sm-4">
                     <!--Were do you want to go?-->
@@ -72,110 +48,118 @@
         </div>
     </div>
     <div class="title">
-        <strong scroll-on-click>Featured Destinations</strong>
+        <span scroll-on-click>Featured Destinations</span>
     </div>
     <div class="featured-destinations">
         <div class="columns col-30">
-            <div class="city he-60 venice" ng-init="venice_img = cities[0].normal"
-                 ng-mouseover="venice_img = cities[0].faded"
-                 ng-mouseout="venice_img = cities[0].normal"
-                 ng-style="{'background-image': 'url(' + venice_img + ')','background-size': 'cover'}">
+            <div class="city he-60"
+                 ng-mouseover="changeImage(0)"
+                 ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
+
                 <div class="city-text">{{cities[0].name}}</div>
             </div>
-            <div class="city he-40 miami ng-init=" miami_img=cities[1].normal"
-                 ng-mouseover="miami_img = cities[1].faded"
-                 ng-mouseout="miami_img = cities[1].normal"
-                 ng-style="{'background-image': 'url(' + miami_img + ')','background-size': 'cover'}">
+            <div class="city he-40"
+                 ng-mouseover="changeImage(1)"
+                 ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
                 <div class="city-text">{{cities[1].name}}</div>
             </div>
         </div>
         <div class="columns col-70">
-            <div class="city he-40 london" ng-init="london_img = cities[2].normal"
-                 ng-mouseover="london_img = cities[2].faded"
-                 ng-mouseout="london_img = cities[2].normal"
-                 ng-style="{'background-image': 'url(' + london_img + ')','background-size': 'cover'}">
-                <div class="city-text">{{cities[2].name}}</div>
+            <div class="city he-40"
+                 ng-mouseover="changeImage(2)"
+                 ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
+            <div class="city-text">{{cities[2].name}}</div>
             </div>
-            <div class="city he-60 width-60 sydney" ng-init="sydney_img = cities[3].normal"
-                 ng-mouseover="sydney_img = cities[3].faded"
-                 ng-mouseout="sydney_img = cities[3].normal"
-                 ng-style="{'background-image': 'url(' + sydney_img + ')','background-size': 'cover'}">
-                <div class="city-text">{{cities[3].name}}</div>
+            <div class="city he-60 width-60 "
+                 ng-mouseover="changeImage(3)"
+                 ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
+            <div class="city-text">{{cities[3].name}}</div>
             </div>
-            <div class="city he-60 width-40 paris ng-init=" paris_img=cities[4].normal"
-                 ng-mouseover="paris_img = cities[4].faded"
-                 ng-mouseout="paris_img = cities[4].normal"
-                 ng-style="{'background-image': 'url(' + paris_img + ')','background-size': 'cover'}">
-                <div class="city-text">{{cities[4].name}}</div>
+            <div class="city he-60 width-40"
+                 ng-mouseover="changeImage(4)"
+                 ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
+            <div class="city-text">{{cities[4].name}}</div>
             </div>
         </div>
     </div>
-    <div class="how-it-works-text">How does it work you ask?</div>
+    <div class="title">How does it<br>work you ask?</div>
     <div>
-        <div class="how-it-works">
-            <div class="how-inner-ticket">
-                <div class="logo">
-                    <img class="logoimg img-responsive" src="../images/cities/updated/man-logo.JPG">
+        <div class="how-it-works row">
+            <div class="how-inner-ticket col-md-5 col-sm-6 col-xs-12">
+                <div class="join">
+                    <div class="description-icon icon icon-plus1"></div>
                 </div>
                 <div class="how-inner-sentences">Join swaps in a simple free registration.</div>
-                <div class="logo">
-                    <img class="logoimg img-responsive" src="../images/cities/updated/house-logo.JPG">
+                <div class="">
+                    <div class="description-icon icon icon-bed"></div>
                 </div>
                 <div class="how-inner-sentences">Look for swappers in your ideal travel destination, receive request
                     from others.
                 </div>
-                <div class="logo">
-                    <img class="logoimg img-responsive" src="../images/cities/updated/plane-logo.JPG">
+                <div class="">
+                    <div class="description-icon icon icon-matos"></div>
                 </div>
                 <div class="how-inner-sentences">Travel world wide and enjoy free accommodation.</div>
                 <button class="start-button">Start</button>
             </div>
-            <div class="ready">Ready for an adventure?</div>
-            <div class="ready-underline"></div>
+            <div class="ready col-md-7 col-sm-6 col-xs-12">Are You in for <br> an Adventure?</div>
         </div>
     </div>
     <div class="what-good-ticket">
         <div class="what-good-header">So what's so good about swaps?</div>
         <div class="what-good-header-underline"></div>
-        <div class="too-easy">
-            <div class="headers">Too easy</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/magnifying.JPG">
-            <div class="inner-text">
-                Swaps helps you find new places for adventure, with advanced search you can plan yourself the perfect
-                trip.
+        <div class="empty-space"></div>
+        <div class="explanations">
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-house"></div> </div>
+                <div>
+                    <div class="headers">Too easy</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        Swaps helps you find new places for adventure, with advanced search you can plan yourself the perfect
+                        trip.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="location">
-            <div class="headers">Location, location, location</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/target.JPG">
-            <div class="inner-text">
-                With swaps you can travel and stay in new exciting locations and get to experience life as a local.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-target"></div> </div>
+                <div>
+                    <div class="headers">Location, location, location</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        With swaps you can travel and stay in new exciting locations and get to experience life as a local.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="safety">
-            <div class="headers">Safety first</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/key.JPG">
-            <div class="inner-text">
-                Here in swaps we make sure that you give and receive a proper accommodation.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-keys"></div> </div>
+                <div>
+                    <div class="headers">Safety first</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        Here in swaps we make sure that you give and receive a proper accommodation.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="talkbout">
-            <div class="headers">Wanna talk about it?</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/letter.JPG">
-            <div class="inner-text">
-                Here you get to chat with your fellow swappers and make your staying easy and comfortable for everyone.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-envelope"></div> </div>
+                <div>
+                    <div class="headers">Wanna talk about it?</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        Here you get to chat with your fellow swappers and make your staying easy and comfortable for everyone.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="best4last">
-            <div class="headers">Best for last</div>
-            <div class="what-underline"></div>
-            <img class="what-images" src="../images/cities/updated/moneybag.JPG">
-            <div class="inner-text">
-                By using swaps, you save money on travelling worldwide and enjoy free staying around the globe.
+            <div class="single">
+                <div class="what-images"> <div class="icon description-icon icon-money"></div> </div>
+                <div>
+                    <div class="headers">Best for last</div>
+                    <div class="what-underline"></div>
+                    <div class="inner-text">
+                        By using swaps, you save money on travelling worldwide and enjoy free staying around the globe.
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -20,31 +20,30 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/get-user-by-travelingDest', function(req, res, next) {
-	// getQueryParams(req.query);
 	var destination = req.query.dest.split('-')[0];
 	var from = req.query.from;
 	var page = parseInt(req.query.page);
     if(from){
-		var params;
-		if(from == 'Anywhere'){
-			params = {travelingDest: {$regex: destination, $options: 'i'}};
+		var params = {};
+		if(req.query.dest && req.query.dest != 'undefined'){
+			params.travelingDest = {$regex: destination, $options: 'i'};
 		}
-		else{
-			params = {travelingDest: {$regex: destination, $options: 'i'}, city:{$regex: from, $options: 'i'}};
+		if(from.toLowerCase() != 'anywhere'){
+			params.city = {$regex: from, $options: 'i'};
 		}
-         User.find(params, {firstName:true, lastName:true, age:true, gender:true, image:true, country:true, city:true, address:true, swaps:true, traveling:true, travelingDest:true, travelingInfo:true, aboutMe:true, ocupation:true, photos:true, reviews:true, apptInfo:true, rating:true}, function (err, users) {
-            if (err){
-                error.message = "error finding users";
-                res.json(error);
-            }
+		User.find(params, {firstName:true, lastName:true, age:true, gender:true, image:true, country:true, city:true, address:true, swaps:true, traveling:true, travelingDest:true, travelingInfo:true, aboutMe:true, ocupation:true, photos:true, reviews:true, apptInfo:true, rating:true}, function (err, users) {
+			if (err){
+				error.message = "error finding users";
+				res.json(error);
+			}
 			var filterdUsers = filterUsers(users, req.query);
 			var length = filterdUsers.length;
 			// return the users according to the given page number
 			console.log((page + 1) * USERS_PER_PAGE);
 			filterdUsers.splice((page + 1) * USERS_PER_PAGE);
 			filterdUsers.splice(0, page * USERS_PER_PAGE);
-            res.json({users: filterdUsers, total: length, page: page});
-        });
+			res.json({users: filterdUsers, total: length, page: page});
+		});
     }
     else{
         User.find({travelingDest: {$regex: destination, $options: 'i'}}, {firstName:true, lastName:true, age:true, gender:true, image:true, country:true, city:true, address:true, swaps:true, traveling:true, travelingDest:true, travelingInfo:true, aboutMe:true, ocupation:true, photos:true, reviews:true, apptInfo:true, rating:true}, function (err, users) {
@@ -181,6 +180,9 @@ function compareDates(userDates, searchDates){
 }
 
 function compareDestinations(userDestination, destination){
+	if(!userDestination || !destination || userDestination == 'undefined' || destination == 'undefined'){
+		return true;
+	}
 	userDestination = userDestination.split('-')[0].toLowerCase();
 	destination = destination.split('-')[0].toLowerCase();
 	return userDestination == destination;
