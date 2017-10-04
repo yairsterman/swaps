@@ -263,7 +263,15 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
 	});
 
 
+    $scope.carouselPrev = function (identifyier) {
+        $('#myCarousel' + identifyier).carousel('prev');
+        // console.log(identifyier);
+    };
 
+    $scope.carouselNext = function (identifyier) {
+        $('#myCarousel' + identifyier).carousel('next');
+        // console.log(identifyier);
+    };
 
 
     $scope.dum_trav = [{

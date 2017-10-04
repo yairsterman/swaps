@@ -45,7 +45,8 @@
                                                     <!--CAROUSEL START-->
 
 
-                                                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                                        <!--<div id="myCarousel" class="carousel slide" data-ride="carousel">-->
+                                                    <div ng-attr-id="{{'myCarousel' + guy._id}}"  class="carousel slide" data-ride="carousel">
                                                             <!-- Carousel indicators -->
                                                             <!--<ol class="carousel-indicators">-->
                                                                 <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
@@ -66,10 +67,11 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Carousel controls -->
-                                                            <div class="carousel-control left" data-slide="prev" onclick="$('#myCarousel').carousel('prev')">
+                                                            <!--<div class="carousel-control left" data-slide="prev" onclick="$('#myCarousel'+guy._id).carousel('prev')">-->
+                                                            <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(guy._id)">
                                                                 <span class="glyphicon glyphicon-chevron-left"></span>
                                                             </div>
-                                                            <div class="carousel-control right" data-slide="next" onclick="$('#myCarousel').carousel('next')">
+                                                            <div class="carousel-control right" data-slide="next" ng-click="carouselNext(guy._id)">
                                                                 <span class="glyphicon glyphicon-chevron-right"></span>
                                                             </div>
                                                         </div>
