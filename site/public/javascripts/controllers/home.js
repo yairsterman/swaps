@@ -90,6 +90,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     function init(){
         angular.forEach($scope.cities, function(value, key) {
+            $scope.featured[key] = value.faded;
             $scope.featured[key] = value.normal;
         });
     }
