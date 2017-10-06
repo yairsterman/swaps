@@ -273,6 +273,47 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         // console.log(identifyier);
     };
 
+    $scope.dumPageCount = function(dumCount) {
+        var counter = Math.ceil(dumCount.length / 6);
+        var pageArr = [];
+        for (var i = 1; i <= counter; ++i) {
+            pageArr.push(i);
+        }
+        return pageArr;
+
+        console.log("The pages are: " + pageArr);
+    };
+
+
+    $scope.isPageListShort = function(travArr) {
+        return Math.ceil(travArr.length / 6) <= 10 ? true : false;
+    }
+
+    // $scope.pageCountArr = dumPageCount(dum_trav);
+
+    //  Returns false if the list's length is greater than 10
+    //  This function will generate a page list of the form:
+    //  "1, 2, ..., currPage-1, currPage, currPage+1, ..., lastPage-1, lastPage"
+    $scope.pageListToShow = function(currPage, pageList) {
+        var retList = [];
+        if (pageList.length <= 10) {
+            for (var i = 0; i < pageList.length; ++i) {
+                retList.push(pageList[i]);
+            }
+            return retList;
+        }
+        console.log("pageList.length = " + pageList.length);
+
+        var retList = [1, 2, "..." ,currPage - 1, currPage];
+        if (currPage != pageList[pageList.length - 1] && currPage != pageList[pageList.length - 2])
+            retList.push(currPage + 1);
+        retList.push("...", pageList[pageList.length - 2], pageList[pageList.length - 1]);
+        return retList;
+    };
+
+    $scope.dum_trav = [];
+
+    console.log($scope.pageListToShow(0, $scope.dumPageCount($scope.dum_trav)));
 
     $scope.dum_trav = [{
         "_id" : "58f72f6594b427e59aec3916",

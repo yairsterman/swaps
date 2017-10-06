@@ -33,7 +33,6 @@
 
                     <div class="people-list col-lg-8 col-md-8 col-sm-12 col-xs-12" >
                                 <div class="guy-box col-lg-5 col-md-5 col-sm-5 col-xs-12 form-group col-lg-offset-1 col-md-offset-1 col-sm-offset-1" ng-repeat="guy in dum_trav">
-                                <!--<div class="guy-box col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1" ng-repeat="guy in dum_trav">-->
                                     <br>
                                             <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -112,7 +111,21 @@
                                                 <span class="age-and-city">{{guy.age != null ? guy.age + " from" : ""}}<br>{{guy.city}}</span>
                                             </div>
                                 </div>
-                            </div>
+
+                        <div class="travelers-result-pages">
+                            <ul class="page-list" ng-if="isPageListShort(dum_trav)">
+                                <li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">
+                                    <a href="#">{{num}}</a>
+                                </li>
+                            </ul>
+                            <ul class="page-list" ng-if="!isPageListShort(dum_trav)">
+                                <li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">
+                                    <a href="#">{{num}}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
 
 
 
