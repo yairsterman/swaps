@@ -112,21 +112,48 @@
                                             </div>
                                 </div>
 
-                        <div class="travelers-result-pages">
-                            <ul class="page-list" ng-if="isPageListShort(dum_trav)">
-                                <li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">
-                                    <a href="#">{{num}}</a>
-                                </li>
-                            </ul>
-                            <ul class="page-list" ng-if="!isPageListShort(dum_trav)">
-                                <li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">
-                                    <a href="#">{{num}}</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <!--<div class="travelers-result-pages">-->
+                            <!--<ul class="page-list" ng-if="isPageListShort(dum_trav)">-->
+                                <!--<li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">-->
+                                    <!--<a href="#">{{num}}</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                            <!--<ul class="page-list" ng-if="!isPageListShort(dum_trav)">-->
+                                <!--<li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">-->
+                                    <!--<a href="#">{{num}}</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
 
                     </div>
-
+                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageIndicator = 1">
+                        <ul class="page-list" ng-if="isPageListShort(dum_trav)">
+                            <li>
+                                <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(1, dum_trav)"
+                                        ng-show="{{pageIndicator > 0}}">Prev</button>
+                            </li>
+                            <li class="page-number"
+                                ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">
+                                <a href="#">{{num}}</a>
+                            </li>
+                            <li>
+                                <button class="next-btn btn btn-primary" ng-click="nextPage_damir(1, dum_trav)">Next</button>
+                            </li>
+                        </ul>
+                        {{pageIndicator}}
+                        <ul class="page-list" ng-if="!isPageListShort(dum_trav)">
+                            <li>
+                                <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(1, dum_trav)"
+                                        ng-show="{{pageIndicator > 0}}">Prev</button>
+                            </li>
+                            <li ng-repeat="num in pageListToShow(0, dumPageCount(dum_trav)) track by $index">
+                                <a href="#">{{num}}</a>
+                            </li>
+                            <li>
+                                <button class="next-btn btn btn-primary" ng-click="nextPage_damir(1, dum_trav)">Next</button>
+                            </li>
+                        </ul>
+                    </div>
 
 
                     <!--------------------------------------------------MAP SECTION--------------------------------------------->

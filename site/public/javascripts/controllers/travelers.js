@@ -263,16 +263,20 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
 	});
 
 
+
+
+
+
     $scope.carouselPrev = function (identifyier) {
         $('#myCarousel' + identifyier).carousel('prev');
-        // console.log(identifyier);
     };
 
     $scope.carouselNext = function (identifyier) {
         $('#myCarousel' + identifyier).carousel('next');
-        // console.log(identifyier);
     };
 
+    //  Counting pages by diving 6 search matches per page.
+    //  Currently counting the dummy user array.
     $scope.dumPageCount = function(dumCount) {
         var counter = Math.ceil(dumCount.length / 6);
         var pageArr = [];
@@ -280,14 +284,12 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
             pageArr.push(i);
         }
         return pageArr;
-
-        console.log("The pages are: " + pageArr);
     };
 
 
     $scope.isPageListShort = function(travArr) {
         return Math.ceil(travArr.length / 6) <= 10 ? true : false;
-    }
+    };
 
     // $scope.pageCountArr = dumPageCount(dum_trav);
 
@@ -310,6 +312,31 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         retList.push("...", pageList[pageList.length - 2], pageList[pageList.length - 1]);
         return retList;
     };
+
+
+
+    $scope.pageIndicator = 1;
+
+    // The name is to avoid duplicates with Yair's code
+    $scope.nextPage_damir = function(currPage, travelersList) {
+        retArr = [];
+        for (var i = currPage * 6; i < (currPage + 1) * 6; ++i) {
+            retArr.push(travelersList[i]);
+        }
+        ++$scope.pageIndicator;
+        console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
+        return retArr;
+    };
+
+    $scope.prevPage_damir = function(currPage, travelersList) {
+        retArr = [];
+        for (var i = (currPage - 1) * 6; i < currPage * 6; ++i) {
+            retArr.push(travelersList[i]);
+        }
+        --$scope.pageIndicator;
+        return retArr;
+    };
+
 
     $scope.dum_trav = [];
 
