@@ -314,28 +314,57 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     };
 
 
+    $scope.pageCount = function(travelersList) {
+        return Math.ceil(travelersList.length / 6);
+    };
+    $scope.pageIndicator = 0;
+    $scope.arr = [];
 
-    $scope.pageIndicator = 1;
+    // Retrieve the first user page
+    $scope.firstPage = function(travelersList) {
+        retArr = [];
+        for (var i = 0; i < 6; ++i) {
+            retArr.push(travelersList[i]);
+        }
+        $scope.pageIndicator = 1;
+        $scope.arr = retArr;
+        return retArr;
+    };
+
 
     // The name is to avoid duplicates with Yair's code
     $scope.nextPage_damir = function(currPage, travelersList) {
         retArr = [];
-        for (var i = currPage * 6; i < (currPage + 1) * 6; ++i) {
+        for (var i = currPage * 6; i < (currPage + 1) * 6 && i < travelersList.length; ++i) {
             retArr.push(travelersList[i]);
         }
         ++$scope.pageIndicator;
         console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
+        $scope.arr = retArr;
         return retArr;
     };
 
     $scope.prevPage_damir = function(currPage, travelersList) {
         retArr = [];
-        for (var i = (currPage - 1) * 6; i < currPage * 6; ++i) {
+        for (var i = (currPage - 2) * 6; i < (currPage - 1) * 6; ++i) {
             retArr.push(travelersList[i]);
         }
         --$scope.pageIndicator;
+        console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
+        $scope.arr = retArr;
         return retArr;
     };
+
+    $scope.goToPage = function(pageNum, travelersList) {
+        retArr = [];
+        for (var i = (pageNum - 1) * 6; i < pageNum * 6 && i < travelersList.length; ++i) {
+            retArr.push(travelersList[i]);
+        }
+        $scope.pageIndicator = pageNum;
+        $scope.arr = retArr;
+    };
+
+
 
 
     $scope.dum_trav = [];
