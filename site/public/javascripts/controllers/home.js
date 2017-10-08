@@ -9,6 +9,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         guests: 1
     };
 
+    var autocompleteSearch;
+
     $scope.cities = [
         {
             "name": "Venice",
@@ -37,17 +39,6 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         },
     ];
 
-    $scope.travel = "Travel anywhere you want.";
-    $scope.switch = "Switch homes with fellow travellers.";
-    $scope.experience = "Experience living as a local.";
-    $scope.underline = "___________";
-    $scope.findSwap = "Find a swap!";
-    $scope.where = "Where do you want to go?";
-    $scope.when = "When do you want to go?";
-    $scope.howmany = "How many travellers?";
-
-    $scope.tseList = [$scope.travel, $scope.switch, $scope.experience];
-
     init();
 
     $scope.searchSwap = function(){
@@ -67,11 +58,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     };
 
     $scope.autocompleteCities = function(){
-        autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
-            types: ['(cities)']
-        });
         autocompleteSearch.addListener('place_changed', function() {
-            $scope.search.where = autocompleteSearch.getPlace().name;
+            $scope.search.where = autocompleteSearch.getPlace().formatted_address;
         });
     }
 
@@ -92,6 +80,9 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         angular.forEach($scope.cities, function(value, key) {
             $scope.featured[key] = value.faded;
             $scope.featured[key] = value.normal;
+        });
+        autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
+            types: ['(cities)']
         });
     }
 });

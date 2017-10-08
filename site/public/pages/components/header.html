@@ -6,41 +6,28 @@
 	  </a>
 
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <!--<ul class="pull-right navbar-nav mr-auto">-->
-
-	      <!--<li class="nav-item">-->
-              <!--<div class="swap-now-form">-->
-                  <!--<div class="">-->
-                      <!--<label class="control-label">Where</label>-->
-                      <!--<div class="where input-field">-->
-                          <!--<input class="form-control" type="text" id="searchCity" ng-focus="autocompleteCities()" placeholder="Anywhere" ng-model="search.where">-->
-                      <!--</div>-->
+          <div class="search">
+              <!--<div class="row">-->
+                  <!--<div class="col-sm-4 col-xs-12">-->
+                      <!--<input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">-->
                   <!--</div>-->
-                  <!--<div class="">-->
-                      <!--<label class="control-label">When</label>-->
-                      <!--<div class="dates input-field">-->
-                          <!--<input class="form-control" type="text" name="searchDate" ng-focus="openDate()" placeholder="Anytime" ng-model="search.date"/>-->
-                          <!--<span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>-->
-                      <!--</div>-->
+                  <!--<div class="col-sm-4 col-xs-12">-->
+                      <!--<input type="text" class="form-control" placeholder="Anytime" name="searchDate" ng-focus="openDate()" ng-model="search.date">-->
                   <!--</div>-->
-                  <!--<div class="">-->
-                      <!--<label class="control-label">Guests</label>-->
-                      <!--<div class="guests input-field">-->
-                          <!--<input class="form-control" type="number" placeholder="1" min="1" max="8" ng-model="search.guests">-->
+                  <!--<div class="col-sm-4 col-xs-12 ">-->
+                      <!--<div class="guests-search">-->
+                          <!--<input type="number" class="form-control guests" placeholder="1" ng-model="search.guests" min="1" max="8">-->
+                          <!--<button class="search" ng-click="searchSwap()">Search</button>-->
                       <!--</div>-->
-                  <!--</div>-->
-                  <!--<div class="swap-now">-->
-                      <!--<button type="button" class="btn btn-default go" ng-click="searchSwap()"></i>SWAP NOW!</button>-->
                   <!--</div>-->
               <!--</div>-->
-	      <!--</li>-->
-	    <!--</ul>-->
+          </div>
 	    <div class="login-area">
 		    <!-- <form class="form-inline my-2 my-lg-0">
 		      <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
 		    </form> -->
             <div class="login sign-up" data-toggle="modal" data-target="#aboutModal">
-                About Us
+                How it Works
             </div>
             <div class="underlined"></div>
             <div class="login sign-up" data-toggle="modal" data-target="#signUpModal">
@@ -48,7 +35,7 @@
             </div>
             <div class="underlined"></div>
 		    <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
-		    	Sign In
+		    	Login
 		    </div>
             <div class="underlined"></div>
 			 <div class="user-area" ng-if="user._id">

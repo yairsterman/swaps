@@ -5,9 +5,9 @@
         <div class="title-container">
             <div class="title-swaps">Swaps</div>
             <div class="points-container">
-                Travel anywhere you want.<br>
-                Switch homes with fellow travellers.<br>
-                Experience living as a local.<br>
+                Travel Anywhere.<br>
+                Switch Homes.<br>
+                Live as a Local.<br>
                 <div class="points-container-border"></div>
             </div>
         </div>
@@ -17,34 +17,26 @@
                   scroll-to-top></span>
         </div>
         <div class="find-swap">
-            <div class="find-text">Find a Swap</div>
+            <!--<div class="find-text">Find a Swap</div>-->
 
             <div class="row">
 
                 <div class="col-sm-4 col-xs-12">
+                    <label for="searchCity">Where</label>
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">
                 </div>
                 <div class="col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Anytime" name="searchDate" ng-focus="openDate()" ng-model="search.date">
+                    <label for="searchDate">When</label>
+                    <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">
                 </div>
                 <div class="col-sm-4 col-xs-12 ">
+                    <label for="guests">How Many?</label>
                     <div class="guests-search">
-                        <input type="number" class="form-control guests" placeholder="1" ng-model="search.guests" min="1" max="8">
+                        <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
                         <button class="search" ng-click="searchSwap()">Search</button>
                     </div>
                 </div>
             </div>
-
-                <div class="col-sm-4">
-                    <!--Were do you want to go?-->
-                </div>
-                <div class="col-sm-4">
-                    <!--When do you want to go?-->
-                </div>
-                <div class="col-sm-4">
-                    <!--How many travellers?-->
-                </div>
-            <!--</div>-->
         </div>
     </div>
     <div class="title">
