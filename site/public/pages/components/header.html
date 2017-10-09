@@ -1,106 +1,123 @@
 <div class="header">
-  	<nav class="navbar navbar-default navbar-toggleable-md navbar-light bg-faded">
-	  <a class="navbar-brand" href="" ng-click ="go('')">
-		  <div class="logo" style="background-image:url('../../images/logo/logo.psd')">
-		  </div>
-	  </a>
-
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-	    <div class="login-area">
-
-            <div class="login sign-up" data-toggle="modal" data-target="#aboutModal">
-                About Us
+    <nav class="navbar navbar-default navbar-toggleable-md navbar-light bg-faded">
+        <a class="navbar-brand" href="" ng-click ="go('')">
+            <div class="logo" style="background-image:url('../../images/logo/logo.psd')">
             </div>
-            <div class="underlined"></div>
-            <div class="login sign-up" data-toggle="modal" data-target="#signUpModal">
-                Sign Up
-            </div>
-            <div class="underlined"></div>
-		    <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
-		    	Sign In
-		    </div>
-            <div class="underlined"></div>
-			 <div class="user-area" ng-if="user._id">
-			    <div class="profile-pic" style="background-image:url('{{user.image}}')">
+        </a>
 
-			    </div>
-			    <!-- <div class="username">
-			    	{{user.displayName}}
-			    </div> -->
-			    <div class="dropdown">
-				    <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
-				    <span class="caret"></span></div>
-					    <ul class="dropdown-menu">
-					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
-                          <li><a class="nav-link" href="" ng-click ="openFlyNow()">Plan Trip</a></li>
-					      <li><a href="" ng-click ="logout()">LOGOUT</a></li>
-				    </ul>
-			  </div>
-			 </div>
-		 </div>
-	  </div>
-	</nav>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="search">
+                <!--<div class="row">-->
+                <!--<div class="col-sm-4 col-xs-12">-->
+                <!--<input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-focus="autocompleteCities()" ng-model="search.where">-->
+                <!--</div>-->
+                <!--<div class="col-sm-4 col-xs-12">-->
+                <!--<input type="text" class="form-control" placeholder="Anytime" name="searchDate" ng-focus="openDate()" ng-model="search.date">-->
+                <!--</div>-->
+                <!--<div class="col-sm-4 col-xs-12 ">-->
+                <!--<div class="guests-search">-->
+                <!--<input type="number" class="form-control guests" placeholder="1" ng-model="search.guests" min="1" max="8">-->
+                <!--<button class="search" ng-click="searchSwap()">Search</button>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="login-area">
+                <!-- <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
+                </form> -->
+                <div class="login sign-up" data-toggle="modal" data-target="#aboutModal">
+                    How it Works
+                </div>
+                <div class="underlined"></div>
+                <div class="login sign-up" data-toggle="modal" data-target="#signUpModal">
+                    Sign Up
+                </div>
+                <div class="underlined"></div>
+                <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
+                    Login
+                </div>
+                <div class="underlined"></div>
+                <div class="user-area" ng-if="user._id">
+                    <div class="profile-pic" style="background-image:url('{{user.image}}')">
+
+                    </div>
+                    <!-- <div class="username">
+                        {{user.displayName}}
+                    </div> -->
+                    <div class="dropdown">
+                        <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
+                            <span class="caret"></span></div>
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
+                            <li><a class="nav-link" href="" ng-click ="openFlyNow()">Plan Trip</a></li>
+                            <li><a href="" ng-click ="logout()">LOGOUT</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
 
 <div id="loginModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="facebook-signin">
-        <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
-    </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="facebook-signin">
+                <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
-  </div>
+    </div>
 </div>
 
 <div id="aboutModal" class="modal fade" role="dialog">
-<div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-        <div class="container about-text">
+            <div class="container about-text">
 
-            <div class="about-inner-text"><span class="swaps-text h1 bg-primary">Swaps</span> is an awesome modern way to travel around the globe,
-            switching houses and not worrying whether your house is on-fire or not
+                <div class="about-inner-text"><span class="swaps-text h1 bg-primary">Swaps</span> is an awesome modern way to travel around the globe,
+                    switching houses and not worrying whether your house is on-fire or not
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
         </div>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-
     </div>
-</div>
 </div>
 
 <div id="signUpModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="container">
-            <div class="row">
-            <label>User Name:</label>
-                <input type="text" class="form-control" placeholder="">
-                <span class="user-comments">At least 5 characters. Case insensitive.</span>
+                <div class="row">
+                    <label>User Name:</label>
+                    <input type="text" class="form-control" placeholder="">
+                    <span class="user-comments">At least 5 characters. Case insensitive.</span>
 
-            </div>
-            <br>
-            <div class="row">
-                <label>Password:</label>
+                </div>
+                <br>
+                <div class="row">
+                    <label>Password:</label>
                     <input type="password" class="form-control" placeholder="">
                     <span class="user-comments">At least 6 characters. Case sensitive. Must include<br> uppercase character,
                         lowercase character and a number.</span>
 
-            </div>
-            <br>
-            <div class="row">
-                <label>Verify Password:</label>
+                </div>
+                <br>
+                <div class="row">
+                    <label>Verify Password:</label>
                     <input type="password" class="form-control" placeholder="">
 
-            </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
