@@ -317,9 +317,9 @@
 		overflow-y: auto;
 		height: 760px;
 		color: #2da5e1;
-		-webkit-box-shadow: inset 9px 6px 113px -19px rgba(0,0,0,0.44),  9px 6px 113px -19px rgba(0,0,0,0.44);
-		-moz-box-shadow: inset 9px 6px 113px -19px rgba(0,0,0,0.44),  9px 6px 113px -19px rgba(0,0,0,0.44);
-		box-shadow: inset 9px 6px 113px -19px rgba(0,0,0,0.44), 9px 6px 113px -19px rgba(0,0,0,0.44);
+		-webkit-box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2),  9px 6px 113px -40px rgba(0,0,0,0.2);
+		-moz-box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2),  9px 6px 113px -40px rgba(0,0,0,0.2);
+		box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2), 9px 6px 113px -40px rgba(0,0,0,0.2);
 		-webkit-border-radius: 2%;
 		-moz-border-radius: 2%;
 		border-radius: 2%;
@@ -410,14 +410,27 @@
 				padding: 10px;
 			}
 
-			a:hover:not(.active) {
+			button:hover:not(.active) {
 				background-color: #ddd;
 			}
 
-			a.active {
+			button.active {
 				background-color: rgba(55, 217, 255, 0.64);
 				color: white;
 			}
+
+
+		}
+
+		.next-btn {
+			top: 100%;
+			position: absolute;
+			right: 46%;
+		}
+		.prev-btn {
+			top: 100%;
+			position: absolute;
+			left: 46%;
 		}
 
 

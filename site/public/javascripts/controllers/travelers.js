@@ -7,6 +7,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     $scope.search= {};
     $scope.filter = {};
     var filter = {};
+    const PAGE_DIVIDOR = 10;
 
     if($location.search().dates && $location.search().dates != 'undefined'){
         $scope.filter.date = $location.search().dates;
@@ -183,7 +184,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
                     mapTypeId: google.maps.MapTypeId.ROADMAP,
                     mapTypeControl: false,
                     scrollwheel: false
-                }
+                };
 
                 $scope.map = new google.maps.Map(document.getElementById('travelerMap'), mapOptions);
                 deleteMarkers();
@@ -235,20 +236,20 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
                 var id = value._id;
                 var photos = value.photos;
                 value.address = value.city;
-                geocoder.geocode( { 'address': address}, function(results, status) {
-                  if (status == google.maps.GeocoderStatus.OK) {
-                    location = results[0].geometry.location;
-                    var marker = {
-                      id : id,
-                      desc : name,
-                      photos: photos,
-                      image : image,
-                      lat : location.lat().toFixed(3),
-                      long : location.lng().toFixed(3)
-                    };
-                    createMarker(marker);
-                  }
-                });
+                // geocoder.geocode( { 'address': address}, function(results, status) {
+                //   if (status == google.maps.GeocoderStatus.OK) {
+                //     location = results[0].geometry.location;
+                //     var marker = {
+                //       id : id,
+                //       desc : name,
+                //       photos: photos,
+                //       image : image,
+                //       lat : location.lat().toFixed(3),
+                //       long : location.lng().toFixed(3)
+                //     };
+                //     createMarker(marker);
+                //   }
+                // });
           });
           $scope.travelers = travelers;
           countPages();
@@ -275,10 +276,10 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         $('#myCarousel' + identifyier).carousel('next');
     };
 
-    //  Counting pages by diving 6 search matches per page.
+    //  Counting pages by diving PAGE_DIVIDOR search matches per page.
     //  Currently counting the dummy user array.
     $scope.dumPageCount = function(dumCount) {
-        var counter = Math.ceil(dumCount.length / 6);
+        var counter = Math.ceil(dumCount.length / PAGE_DIVIDOR);
         var pageArr = [];
         for (var i = 1; i <= counter; ++i) {
             pageArr.push(i);
@@ -288,10 +289,9 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
 
 
     $scope.isPageListShort = function(travArr) {
-        return Math.ceil(travArr.length / 6) <= 10 ? true : false;
+        return Math.ceil(travArr.length / PAGE_DIVIDOR) <= 10;
     };
 
-    // $scope.pageCountArr = dumPageCount(dum_trav);
 
     //  Returns false if the list's length is greater than 10
     //  This function will generate a page list of the form:
@@ -302,28 +302,37 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
             for (var i = 0; i < pageList.length; ++i) {
                 retList.push(pageList[i]);
             }
+            $scope.pageList = retList;
             return retList;
         }
-        console.log("pageList.length = " + pageList.length);
+        if (currPage == 1 || currPage == 2) {
+            retList = [1, 2, "..." , pageList[Math.floor(pageList.length / 2) - 1], pageList[Math.floor(pageList.length / 2)], pageList[Math.floor(pageList.length / 2) + 1],
+                "...", pageList[pageList.length - 2], pageList[pageList.length - 1]];
+        } else {
+            retList = [1, "..." , currPage - 1, currPage];
+            if (currPage != pageList[pageList.length - 1] && currPage != pageList[pageList.length - 2])
+                retList.push(currPage + 1);
+            retList.push("...", pageList[pageList.length - 2], pageList[pageList.length - 1]);
+        }
 
-        var retList = [1, 2, "..." ,currPage - 1, currPage];
-        if (currPage != pageList[pageList.length - 1] && currPage != pageList[pageList.length - 2])
-            retList.push(currPage + 1);
-        retList.push("...", pageList[pageList.length - 2], pageList[pageList.length - 1]);
+        $scope.pageList = retList;
         return retList;
     };
 
-
+    // Get the list page count by dividing to PAGE_DIVIDOR users per page
     $scope.pageCount = function(travelersList) {
-        return Math.ceil(travelersList.length / 6);
+        return Math.ceil(travelersList.length / PAGE_DIVIDOR);
     };
+
     $scope.pageIndicator = 0;
+    $scope.pageList = [];
     $scope.arr = [];
+
 
     // Retrieve the first user page
     $scope.firstPage = function(travelersList) {
         retArr = [];
-        for (var i = 0; i < 6; ++i) {
+        for (var i = 0; i < PAGE_DIVIDOR; ++i) {
             retArr.push(travelersList[i]);
         }
         $scope.pageIndicator = 1;
@@ -335,41 +344,43 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     // The name is to avoid duplicates with Yair's code
     $scope.nextPage_damir = function(currPage, travelersList) {
         retArr = [];
-        for (var i = currPage * 6; i < (currPage + 1) * 6 && i < travelersList.length; ++i) {
+        for (var i = currPage * PAGE_DIVIDOR; i < (currPage + 1) * PAGE_DIVIDOR && i < travelersList.length; ++i) {
             retArr.push(travelersList[i]);
         }
         ++$scope.pageIndicator;
         console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
         $scope.arr = retArr;
+        $scope.pageList = $scope.pageListToShow(currPage + 1, $scope.dumPageCount(travelersList));
         return retArr;
     };
 
     $scope.prevPage_damir = function(currPage, travelersList) {
         retArr = [];
-        for (var i = (currPage - 2) * 6; i < (currPage - 1) * 6; ++i) {
+        for (var i = (currPage - 2) * PAGE_DIVIDOR; i < (currPage - 1) * PAGE_DIVIDOR; ++i) {
             retArr.push(travelersList[i]);
         }
         --$scope.pageIndicator;
         console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
         $scope.arr = retArr;
+        $scope.pageList = $scope.pageListToShow(currPage - 1, $scope.dumPageCount(travelersList));
         return retArr;
     };
 
     $scope.goToPage = function(pageNum, travelersList) {
         retArr = [];
-        for (var i = (pageNum - 1) * 6; i < pageNum * 6 && i < travelersList.length; ++i) {
+        for (var i = (pageNum - 1) * PAGE_DIVIDOR; i < pageNum * PAGE_DIVIDOR && i < travelersList.length; ++i) {
             retArr.push(travelersList[i]);
         }
         $scope.pageIndicator = pageNum;
         $scope.arr = retArr;
+        $scope.pageList = $scope.pageListToShow(pageNum, $scope.dumPageCount(travelersList));
     };
 
 
+    console.log("Page list: " + $scope.pageList)
 
 
-    $scope.dum_trav = [];
 
-    console.log($scope.pageListToShow(0, $scope.dumPageCount($scope.dum_trav)));
 
     $scope.dum_trav = [{
         "_id" : "58f72f6594b427e59aec3916",
@@ -1668,5 +1679,21 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
             ]
         }
     ];
+
+    //  Just generating new objects to test larger arrays
+    for (var i = 0; i < 100; ++i) {
+        for (var j = 0; j < Math.floor(Math.random() * 4); ++j) {
+            var newTrav = {};
+            for (var k in $scope.dum_trav[j]) {
+                newTrav[k] = $scope.dum_trav[j][k];
+            }
+            newTrav._id = Math.floor(Math.random() * 10000);
+            $scope.dum_trav.push(newTrav);
+        }
+    }
+
+    console.log($scope.pageListToShow(1, $scope.dumPageCount($scope.dum_trav)));
+    console.log($scope.dum_trav);
+    $scope.pageListToShow(1, $scope.dumPageCount($scope.dum_trav));
 
 });
