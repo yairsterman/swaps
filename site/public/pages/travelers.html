@@ -31,8 +31,8 @@
 
                 <div class="row">
 
-                    <div class="people-list col-lg-8 col-md-8 col-sm-12 col-xs-12" ng-init="$scope.arr = firstPage(dum_trav)">
-                                <div class="guy-box col-lg-5 col-md-5 col-sm-5 col-xs-12 form-group col-lg-offset-1 col-md-offset-1 col-sm-offset-1" ng-repeat="guy in arr">
+                    <div class="people-list col-lg-8 col-md-8 col-sm-12 col-xs-12" ng-init="firstPage(dum_trav)">
+                                <div class="guy-box col-lg-5 col-md-5 col-sm-5 col-xs-12 form-group col-lg-offset-1 col-md-offset-1 col-sm-offset-1" ng-repeat="guy in userListToShow">
                                     <br>
                                             <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -214,20 +214,20 @@
                             <ul class="page-list" ng-if="isPageListShort(dum_trav)">
                                 <li class="page-number"
                                     ng-repeat="num in pageList track by $index">
-                                    <button ng-click="arr = goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
+                                    <button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
                                 </li>
                             </ul>
                             {{pageIndicator}}
                             <ul class="page-list" ng-if="!isPageListShort(dum_trav)">
                                 <li class="page-number"
                                     ng-repeat="num in pageList track by $index">
-                                    <button ng-click="arr = goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
+                                    <button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
                                 </li>
                             </ul>
 
-                            <button class="page-number prev-btn btn btn-primary" ng-click="arr = prevPage_damir(pageIndicator, dum_trav)"
+                            <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator, dum_trav)"
                                     ng-show="pageIndicator > 1">Prev</button>
-                            <button class="next-btn btn btn-primary" ng-click="arr = nextPage_damir(pageIndicator, dum_trav)"
+                            <button class="next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator, dum_trav)"
                                     ng-show="pageIndicator < pageCount(dum_trav)">Next</button>
 
                         </div>
