@@ -68,12 +68,23 @@
 			display: flex;
 		    align-items: center;
 		    float: right;
-		    margin-top: 26px;
+		    margin-top: 10px;
 			.login{
 				color: rgba(255,245,225,0.8);
-				padding:13px 20px;
-				font-size: 20px;
+				padding: 16px;
+				font-size: 16px;
 				cursor: pointer;
+				&:hover{
+					.underlined{
+						width: 28px;
+					}
+				}
+			}
+			.underlined{
+				transition: 0.3s ease;
+				width: 0;
+				border-bottom: 2px solid rgba(255,255,255,0.5);
+				padding-top: 5px;
 			}
 			.user-area{
 				display: flex;

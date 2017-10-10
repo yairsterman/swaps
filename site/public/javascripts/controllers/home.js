@@ -7,8 +7,6 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.featured = [];
     $scope.search = {
         guests: 1,
-        where: 'Anywhere',
-        date: 'Anytime'
     };
 
     var autocompleteSearch;
