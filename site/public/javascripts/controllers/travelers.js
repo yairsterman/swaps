@@ -268,6 +268,15 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
 
 
 
+    function scrollToTop(){
+        $('.people-list').animate({
+            scrollTop: 0
+        }, 1000, function(){
+
+        });
+    }
+
+
     $scope.carouselPrev = function (identifyier) {
         $('#myCarousel' + identifyier).carousel('prev');
     };
@@ -361,6 +370,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
         $scope.userListToShow = retArr;
         $scope.pageList = $scope.pageListToShow(currPage + 1, $scope.dumPageCount(travelersList));
+        scrollToTop();
         return retArr;
     };
 
@@ -374,6 +384,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         console.log("Page: " + $scope.pageIndicator + ", list: " + retArr);
         $scope.userListToShow = retArr;
         $scope.pageList = $scope.pageListToShow(currPage - 1, $scope.dumPageCount(travelersList));
+        scrollToTop();
         return retArr;
     };
 
@@ -386,6 +397,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         $scope.pageIndicator = pageNum;
         $scope.userListToShow = retArr;
         $scope.pageList = $scope.pageListToShow(pageNum, $scope.dumPageCount(travelersList));
+        scrollToTop();
     };
 
 

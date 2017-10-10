@@ -22,7 +22,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         alert("Geocoder failed");
     }
 
-	//var geocoder =  new google.maps.Geocoder();
+	var geocoder =  new google.maps.Geocoder();
 
 	var address = {
       types: ['address']
