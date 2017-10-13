@@ -1,5 +1,11 @@
+//#navbarSupportedContent {
+//	-webkit-box-shadow: 4px 7px 33px 0px rgba(0,0,0,0.75);
+//	-moz-box-shadow: 4px 7px 33px 0px rgba(0,0,0,0.75);
+//	box-shadow: 3px -2px 19px 0px rgba(0,0,0,0.75);
+//}
 .travelers-page{
-	background-color: #e1e1e1;
+	//background-color: #e1e1e1;
+	background-color: #fcfcfc;
 	.title{
 		padding: 40px 0px 5px 0;
 	}
@@ -9,7 +15,6 @@
 		margin-left: -15px;
 	}
 	.search-city{
-		// padding: 50px 0;
 	    width: 200px;
 	    float: right;
 	    .search-icon{
@@ -305,6 +310,129 @@
 	    //top: 22px !important;
 	    //left: 22px !important;
 	}
+
+	.people-list {
+		clear: both;
+		overflow-y: auto;
+		height: 760px;
+		color: #2da5e1;
+		-webkit-box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2),  9px 6px 113px -40px rgba(0,0,0,0.2);
+		-moz-box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2),  9px 6px 113px -40px rgba(0,0,0,0.2);
+		box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2), 9px 6px 113px -40px rgba(0,0,0,0.2);
+		-webkit-border-radius: 2%;
+		-moz-border-radius: 2%;
+		border-radius: 2%;
+
+
+		.guy-box {
+			background-color: #ffffff;
+			padding: 0;
+			-webkit-box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
+			-moz-box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
+			box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
+			font-family: Arial, "Calibri Light", sans-serif;
+
+			img {
+				max_width: 100%;
+				max_height: 100%;
+				height: 100px;
+			}
+
+			.apartment-image {
+				padding-right: 0;
+			}
+
+			.apt-img {
+				width: 100%;
+			}
+			.prof_img_cont{
+				margin-left: -26%;
+
+				.prof_img {
+					height: 100px;
+					width: 100%;
+				}
+			}
+
+
+			.apt-description {
+				font-weight: 600;
+			}
+
+			.text-under-apt {
+				height: 80px;
+				overflow-y: auto;
+				background-color: #fcfcfc;;
+			}
+
+			.tiny-text {
+				margin-top: auto;
+				font-size: 80%;
+			}
+
+			.age-and-city {
+
+			}
+
+			.carousel-image {
+				width: 100%;
+				height: 100%;
+				top: 0%;
+				right: 0;
+				left: 0;
+				padding-bottom: 0;
+			}
+		}
+	}
+
+	::-webkit-scrollbar {
+		display: none;
+	}
+
+
+
+	.travelers-result-pages {
+		display: inline-block;
+		text-decoration: none;
+
+		.page-list {
+			color: black;
+			margin: auto;
+			width: 42%;
+			text-decoration: none;
+			list-style-type: none;
+
+			.page-number {
+				float: left;
+				padding: 10px;
+			}
+
+			button:hover:not(.active) {
+				background-color: #ddd;
+			}
+
+			button.active {
+				background-color: rgba(55, 217, 255, 0.64);
+				color: white;
+			}
+
+
+		}
+
+		.next-btn {
+			top: 100%;
+			position: absolute;
+			right: 46%;
+		}
+		.prev-btn {
+			top: 100%;
+			position: absolute;
+			left: 46%;
+		}
+
+
+	}
+
 }
 .daterangepicker_input{
 	display: none;
@@ -329,3 +457,68 @@
 		}
 	}
 }
+
+
+
+
+
+
+// Extra small screen / phone
+// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
+@screen-xs:                  480px;
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+
+@media (max-width: @screen-xs-max) {
+	.guy-box {
+		position: relative;
+		height: 32%;
+	}
+}
+
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+
+}
+
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+
+}
+
+@media (min-width: @screen-lg-min) {
+
+	.people-list {
+		width: 62%;
+		margin-left: 2%;
+
+		.guy-box {
+			margin-top: 4%;
+			margin-left: 4%;
+		}
+	}
+}
+
+
