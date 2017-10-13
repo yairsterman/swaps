@@ -148,11 +148,11 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
 
         google.maps.event.addListener(marker, 'click', function(){
             $location.url('/' + marker.url);
-            // var a = document.createElement("a");
-            // a.id = "tempA"
-            // a.target = "_self";
-            // a.href = "http://localhost:3000/#/" + marker.url; // change to actual url
-            // a.click();
+            var a = document.createElement("a");
+            a.id = "tempA"
+            a.target = "_self";
+            a.href = "http://localhost:3000/#/" + marker.url; // change to actual url
+            a.click();
         });
 
 
@@ -236,20 +236,20 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
                 var id = value._id;
                 var photos = value.photos;
                 value.address = value.city;
-                // geocoder.geocode( { 'address': address}, function(results, status) {
-                //   if (status == google.maps.GeocoderStatus.OK) {
-                //     location = results[0].geometry.location;
-                //     var marker = {
-                //       id : id,
-                //       desc : name,
-                //       photos: photos,
-                //       image : image,
-                //       lat : location.lat().toFixed(3),
-                //       long : location.lng().toFixed(3)
-                //     };
-                //     createMarker(marker);
-                //   }
-                // });
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                  if (status == google.maps.GeocoderStatus.OK) {
+                    location = results[0].geometry.location;
+                    var marker = {
+                      id : id,
+                      desc : name,
+                      photos: photos,
+                      image : image,
+                      lat : location.lat().toFixed(3),
+                      long : location.lng().toFixed(3)
+                    };
+                    createMarker(marker);
+                  }
+                });
           });
           $scope.travelers = travelers;
           countPages();
@@ -267,21 +267,15 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     /* ----------------------------------------------------- */
 
 
-
-    function scrollToTop(){
-        $('.people-list').animate({
-            scrollTop: 0
-        }, 1000, function(){
-
-        });
-    }
-
-
-    $scope.carouselPrev = function (identifyier) {
+    $scope.carouselPrev = function (identifyier, event) {
+        event.preventDefault();
+        event.stopPropagation();
         $('#myCarousel' + identifyier).carousel('prev');
     };
 
-    $scope.carouselNext = function (identifyier) {
+    $scope.carouselNext = function (identifyier, event) {
+        event.preventDefault();
+        event.stopPropagation();
         $('#myCarousel' + identifyier).carousel('next');
     };
 

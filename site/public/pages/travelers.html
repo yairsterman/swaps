@@ -1,242 +1,208 @@
 <div class="travelers-page">
-    <div class="container">
-        <div class="row title">
-            <div class="see-who col-sm-8" ng-if="city != 'Anywhere'">
-                 See who in CITY is looking for a place in YOUR_CITY
+    <div class="filters">
+    </div>
+    <div class="people-and-map">
+        <div class="">
+            <div class="row mg-0">
+                <div class="travelers-list col-md-8 col-sm-12" id="swappers">
+                    <div class="mg-0 row">
+                        <div class= "traveler-col col-lg-4 col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}">
+                            <div class="traveler" ng-click="go('profile/'+traveler._id)">
+                                <div class="apartment-info">
+                                    <div class="images">
+                                        <div class="">
+                                            <!--CAROUSEL START-->
+                                            <div ng-attr-id="{{'myCarousel' + traveler._id}}"  class="carousel slide" data-ride="carousel" data-interval="false">
+                                                <!-- Carousel indicators -->
+                                                <!--<ol class="carousel-indicators">-->
+                                                    <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
+                                                    <!--<li data-target="#myCarousel$index" data-slide-to="1"></li>-->
+                                                    <!--<li data-target="#myCarousel$index" data-slide-to="2"></li>-->
+                                                <!--</ol>-->
+                                                <!-- Wrapper for carousel items -->
+                                                <div class="carousel-inner">
+                                                    <div class="item active">
+                                                        <img src="#" alt="First slide">
+                                                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + traveler.photos[0] + ')','background-size': 'cover'}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="item" ng-repeat="photo in traveler.photos.slice(1,entries.length)">
+                                                        <img src="#" alt="{{$index}} slide">
+                                                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')','background-size': 'cover'}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Carousel controls -->
+                                                <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
+                                                    <span class="carousel-control-arrow icon icon-arrow-left"></span>
+                                                </div>
+                                                <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
+                                                    <span class="carousel-control-arrow icon icon-arrow-right"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-img" style="background-image: url('{{traveler.image}}')">
+                                            
+                                        </div>
+                                            <!--CAROUSEL END-->
+                                        <div class="user-info">
+                                            <div class="apt-title">
+                                                {{traveler.apptInfo.description}}
+                                            </div>
+                                            <div class="apt-sub-title">
+                                                {{traveler.apptInfo.room}} in {{traveler.firstName}}'s {{traveler.apptInfo.property}}
+                                            </div>
+                                            <div class="rating">
+                                                <span class="glyphicon glyphicon-star-empty" ng-if="traveler.reviews.length > 0"></span>
+                                                <span class="glyphicon glyphicon-star-empty" ng-if="traveler.rating > 1"></span>
+                                                <span class="glyphicon glyphicon-star-empty" ng-if="traveler.rating > 2"></span>
+                                                <span class="glyphicon glyphicon-star-empty" ng-if="traveler.rating > 3"></span>
+                                                <span class="glyphicon glyphicon-star-empty" ng-if="traveler.rating > 4"></span>
+                                                <span class="number-reviews" ng-if="traveler.rating > 0">{{traveler.reviews.length}}</span>
+                                                <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
+                                            </div>
+                                            <div class="basics">
+                                                <div class="tiny-text">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                    {{traveler.apptInfo.guests}} Guests
+                                                </div>
+                                                <div class="tiny-text">
+                                                    <span class="glyphicon glyphicon-bed"></span>
+                                                    6 beds
+                                                </div>
+                                                <div class="tiny-text">
+                                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                                    15 Mutual Friends
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--------------------------------------------------MAP SECTION--------------------------------------------->
+                <div class="map-view col-md-4 col-xs-12" style="overflow-x: hidden;">
+
+                        <div class="filter-nav">
+                            <div ng-cloak>
+                                <md-sidenav class="md-sidenav-right" md-component-id="right" md-disable-backdrop md-whiteframe="4">
+                                    <div class="side-nav-inside">
+                                        <div class="filters">
+                                            <label class="control-label">When</label>
+                                            <div class="dates">
+                                                <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="filter.date"/>
+                                                <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                            <label class="control-label">Guests Allowed</label>
+                                            <select class="form-control appt-info" name="guests" id="select-guests" ng-model="filter.guests">
+                                                <option disabled="" value="Select...">Select...</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8+</option>
+                                            </select>
+                                            <label class="control-label">Listing Type</label>
+                                            <select class="form-control appt-info" name="property" id="select-property" ng-model="filter.property">
+                                                <option disabled="" value="Select...">Select...</option>
+                                                <option ng-value="Apartment">Apartment</option>
+                                                <option ng-value="House">House</option>
+                                            </select>
+                                            <label class="control-label">Room</label>
+                                            <select class="form-control appt-info" name="room" id="select-room" ng-model="filter.room">
+                                                <option disabled="" value="Select...">Select...</option>
+                                                <option value="Private Room">Private Room</option>
+                                                <option value="Entire Place">Entire Place</option>
+                                            </select>
+                                            <div class="more-options">
+                                                <label class="control-label" ng-click="showAmeneties()">Basic Amenities <span><i class="glyphicon {{ameneties?'glyphicon-menu-up':'glyphicon-menu-down'}}"></i></span></label>
+                                                <div class="ameneties {{ameneties?'show':''}}">
+                                                    <ul>
+                                                        <li>
+                                                            <label class="amenity-label">
+                                                                <input type="checkbox" name="amenity" value="" ng-model="filter.kitchen">
+                                                                Kitchen
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="amenity-label">
+                                                                <input type="checkbox" name="amenity" value="" ng-model="filter.wheelchair">
+                                                                Wheelchair accessable
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="amenity-label">
+                                                                <input type="checkbox" name="amenity" value="" ng-model="filter.kids">
+                                                                Kid friendly
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="amenity-label">
+                                                                <input type="checkbox" name="amenity" value="" ng-model="filter.smoking">
+                                                                Smoking allowed
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="amenity-label">
+                                                                <input type="checkbox" name="amenity" value="" ng-model="filter.pets">
+                                                                Pet allowed
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="amenity-label">
+                                                                <input type="checkbox" name="amenity" value="" ng-model="filter.parking">
+                                                                Parking
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="filter-buttons">
+                                            <button type="button" class="btn btn-primary search-btn" ng-click="search()" ng-disabled="loading"></i>Search</button>
+                                            <button type="button" class="btn btn-default clear-btn" ng-click="clear()"></i>Clear</button>
+                                        </div>
+                                    </div>
+                                </md-sidenav>
+                                <!-- </section> -->
+                            </div>
+                            <div class="map" id="travelerMap"></div>
+                </div>
             </div>
-            <div class="see-who col-sm-8" ng-if="city == 'Anywhere'">
-                 See who is looking for a place in {{userCity}}
-            </div>
-            <div class="search-city col-sm-4">
-                <form class="input-group" ng-submit="searchCity()">
-                    <input type="text" class="form-control search-box" id="city" placeholder="Search cities" ng-model="search.city">
-                    <span class="input-group-addon search-icon" ng-click="searchCity()">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </span>
-                </form>
-                <div class="more-filters">
-                    <button type="button" class="btn btn-default filter-btn" ng-click="openFilters()"></i>More Filters <span><i class="glyphicon {{filtersOpen?'glyphicon-minus':'glyphicon-plus'}}"></i></span></button>
+
+                <div class="row">
+
+                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageList = pageListToShow(1, dumPageCount(dum_trav))">
+                        <ul class="page-list" ng-if="isPageListShort(dum_trav)">
+                            <li class="page-number"
+                                ng-repeat="num in pageList track by $index">
+                                <button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
+                            </li>
+                        </ul>
+                        {{pageIndicator}}
+                        <ul class="page-list" ng-if="!isPageListShort(dum_trav)">
+                            <li class="page-number"
+                                ng-repeat="num in pageList track by $index">
+                                <button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
+                            </li>
+                        </ul>
+
+                        <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator, dum_trav)"
+                                ng-show="pageIndicator > 1">Prev</button>
+                        <button class="next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator, dum_trav)"
+                                ng-show="pageIndicator < pageCount(dum_trav)">Next</button>
+
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
-        <div clas="people-and-map">
-
-            <div class="container-fluid">
-
-                <div class="row">
-
-                    <div class="people-list col-lg-8 col-md-8 col-sm-12 col-xs-12" ng-init="firstPage(dum_trav)">
-                                <div class="guy-box col-lg-5 col-md-5 col-sm-5 col-xs-12 form-group col-lg-offset-1 col-md-offset-1 col-sm-offset-1" ng-repeat="guy in userListToShow">
-                                    <br>
-                                            <div class="apartment-image col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                                <!--<img class="img-responsive" src="{{guy.photos[0]}}" alt="photo"> This image was instead of the carousel-->
-
-
-
-                                                    <!--CAROUSEL START-->
-
-
-                                                        <!--<div id="myCarousel" class="carousel slide" data-ride="carousel">-->
-                                                    <div ng-attr-id="{{'myCarousel' + guy._id}}"  class="carousel slide" data-ride="carousel">
-                                                            <!-- Carousel indicators -->
-                                                            <!--<ol class="carousel-indicators">-->
-                                                                <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
-                                                                <!--<li data-target="#myCarousel$index" data-slide-to="1"></li>-->
-                                                                <!--<li data-target="#myCarousel$index" data-slide-to="2"></li>-->
-                                                            <!--</ol>-->
-                                                            <!-- Wrapper for carousel items -->
-                                                            <div class="carousel-inner">
-                                                                <div class="item active">
-                                                                    <img src="#" alt="First slide">
-                                                                    <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + guy.photos[0] + ')','background-size': 'cover'}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="item" ng-repeat="photo in guy.photos.slice(1,entries.length)">
-                                                                    <img src="#" alt="{{$index}} slide">
-                                                                    <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')','background-size': 'cover'}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Carousel controls -->
-                                                            <!--<div class="carousel-control left" data-slide="prev" onclick="$('#myCarousel'+guy._id).carousel('prev')">-->
-                                                            <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(guy._id)">
-                                                                <span class="glyphicon glyphicon-chevron-left"></span>
-                                                            </div>
-                                                            <div class="carousel-control right" data-slide="next" ng-click="carouselNext(guy._id)">
-                                                                <span class="glyphicon glyphicon-chevron-right"></span>
-                                                            </div>
-                                                        </div>
-
-
-                                                    <!--CAROUSEL END-->
-
-
-
-
-                                                <div class="text-under-apt">
-                                                    <span class="apt-description">{{guy.apptInfo.description}}</span>
-                                                    <br><br>
-                                                    {{guy.apptInfo.room}} in {{guy.apptInfo.property}}
-                                                </div>
-                                                <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                    <span class="glyphicon glyphicon-user"></span>
-                                                    4 <br>swappers
-                                                </div>
-                                                <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                    <span class="glyphicon glyphicon-bed"></span>
-                                                    6 <br>beds
-                                                </div>
-                                                <div class="tiny-text col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                                    15 <br>comments
-                                                </div>
-                                            </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                <!--<img class="prof_img" src="{{guy.image}}">-->
-                                                <div class="prof_img_cont">
-                                                    <div class="prof_img" ng-style="{'background-image': 'url(' + guy.image + ')','background-size': 'cover'}"></div>
-                                                </div>
-                                                <br>
-                                                <span style="font-weight: 600;">{{guy.firstName}}</span>
-                                                <br><br>
-                                                <span class="age-and-city">{{guy.age != null ? guy.age + " from" : ""}}<br>{{guy.city}}</span>
-                                            </div>
-                                </div>
-
-                    </div>
-
-
-                    <!--------------------------------------------------MAP SECTION--------------------------------------------->
-                    <div class="map-view col-lg-4 col-md-4 col-sm-12 col-xs-12" style="overflow-x: hidden;">
-
-                            <div class="filter-nav">
-                                <div ng-cloak>
-                                    <md-sidenav class="md-sidenav-right" md-component-id="right" md-disable-backdrop md-whiteframe="4">
-                                        <div class="side-nav-inside">
-                                            <div class="filters">
-                                                <label class="control-label">When</label>
-                                                <div class="dates">
-                                                    <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="filter.date"/>
-                                                    <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                                                </div>
-                                                <label class="control-label">Guests Allowed</label>
-                                                <select class="form-control appt-info" name="guests" id="select-guests" ng-model="filter.guests">
-                                                    <option disabled="" value="Select...">Select...</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8+</option>
-                                                </select>
-                                                <label class="control-label">Listing Type</label>
-                                                <select class="form-control appt-info" name="property" id="select-property" ng-model="filter.property">
-                                                    <option disabled="" value="Select...">Select...</option>
-                                                    <option ng-value="Apartment">Apartment</option>
-                                                    <option ng-value="House">House</option>
-                                                </select>
-                                                <label class="control-label">Room</label>
-                                                <select class="form-control appt-info" name="room" id="select-room" ng-model="filter.room">
-                                                    <option disabled="" value="Select...">Select...</option>
-                                                    <option value="Private Room">Private Room</option>
-                                                    <option value="Entire Place">Entire Place</option>
-                                                </select>
-                                                <div class="more-options">
-                                                    <label class="control-label" ng-click="showAmeneties()">Basic Amenities <span><i class="glyphicon {{ameneties?'glyphicon-menu-up':'glyphicon-menu-down'}}"></i></span></label>
-                                                    <div class="ameneties {{ameneties?'show':''}}">
-                                                        <ul>
-                                                            <li>
-                                                                <label class="amenity-label">
-                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.kitchen">
-                                                                    Kitchen
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label class="amenity-label">
-                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.wheelchair">
-                                                                    Wheelchair accessable
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label class="amenity-label">
-                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.kids">
-                                                                    Kid friendly
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label class="amenity-label">
-                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.smoking">
-                                                                    Smoking allowed
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label class="amenity-label">
-                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.pets">
-                                                                    Pet allowed
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label class="amenity-label">
-                                                                    <input type="checkbox" name="amenity" value="" ng-model="filter.parking">
-                                                                    Parking
-                                                                </label>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="filter-buttons">
-                                                <button type="button" class="btn btn-primary search-btn" ng-click="search()" ng-disabled="loading"></i>Search</button>
-                                                <button type="button" class="btn btn-default clear-btn" ng-click="clear()"></i>Clear</button>
-                                            </div>
-                                        </div>
-                                    </md-sidenav>
-                                    <!-- </section> -->
-                                </div>
-                                <div class="map" id="travelerMap"></div>
-                    </div>
-                </div>
-
-                    <div class="row">
-
-                        <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageList = pageListToShow(1, dumPageCount(dum_trav))">
-                            <ul class="page-list" ng-if="isPageListShort(dum_trav)">
-                                <li class="page-number"
-                                    ng-repeat="num in pageList track by $index">
-                                    <button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
-                                </li>
-                            </ul>
-                            {{pageIndicator}}
-                            <ul class="page-list" ng-if="!isPageListShort(dum_trav)">
-                                <li class="page-number"
-                                    ng-repeat="num in pageList track by $index">
-                                    <button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>
-                                </li>
-                            </ul>
-
-                            <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator, dum_trav)"
-                                    ng-show="pageIndicator > 1">Prev</button>
-                            <button class="next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator, dum_trav)"
-                                    ng-show="pageIndicator < pageCount(dum_trav)">Next</button>
-
-                        </div>
-
-                    </div>
-
-            </div>
-        </div>
-     </div>
 </div>
 
 

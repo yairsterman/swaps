@@ -4,8 +4,7 @@
 //	box-shadow: 3px -2px 19px 0px rgba(0,0,0,0.75);
 //}
 .travelers-page{
-	//background-color: #e1e1e1;
-	background-color: #fcfcfc;
+	background-color: #fafafa;
 	.title{
 		padding: 40px 0px 5px 0;
 	}
@@ -15,181 +14,204 @@
 		margin-left: -15px;
 	}
 	.search-city{
-	    width: 200px;
-	    float: right;
-	    .search-icon{
-	    	background-color: white;
-	    	border: none;
-	    	cursor: pointer;
-	    }
-	    .search-box{
-	    	border: none;
-	    	-webkit-box-shadow: none;
-		    box-shadow: none;
-		    -webkit-transition: none;
-		    -o-transition: none;
-	    }
-	}
-	.more-filters{
-		margin-top: 10px;
-		.filter-btn{
-			width: 100%;
-    		text-align: left;
-			span{
-				float:right;
-			}
+		width: 200px;
+		float: right;
+		.search-icon{
+			background-color: white;
+			border: none;
+			cursor: pointer;
+		}
+		.search-box{
+			border: none;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+			-webkit-transition: none;
+			-o-transition: none;
 		}
 	}
-	.swappers-col{
-		height: 34vw;
+	.filters{
+		position: relative;
+		z-index: 999;
+		border-top: 1px solid rgba(13,120,173,0.1);
+		height: 6vw;
+		background-color: #fff;
+		-webkit-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
+		-moz-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
+		box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
+	}
+	.mg-0{
+		margin: 0;
+	}
+	.travelers-list {
 		overflow-y: scroll;
-		.no-results{
-			font-size: 16px;
+		height: 46vw;
+		padding: 0;
+		@media (max-width: @screen-sm-max) {
+			height: 36vw;
 		}
-	}
-	.swappers{
-		.carousel-indicators{
-			display:none;
+		@media (max-width: @screen-xs-max) {
+			height: 80vw;
 		}
-		.appt-information{
-			display: flex;
-			background-color: rgba(255,255,255,0.5);
-			margin-bottom: 10px;
-			.appt-photos{
-				padding-left: 0;
+		.traveler-col{
+			padding: 10px;
+		}
+		.traveler {
+			position: relative;
+			background-color: #ffffff;
+			padding: 5px;
+			-webkit-box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
+			-moz-box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
+			box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
+			height: 24vw;
+			cursor: pointer;
+			@media (max-width: @screen-sm-max) {
+				height: 34vw;
 			}
-			.photo{
-				img{
-					object-fit: cover;
-				    width: 100%;
-				    height: 15vw;
-				    border: 1px solid lightslategray;
+			@media (max-width: @screen-xs-max) {
+				height: 60vw;
+			}
+			&:focus{
+				outline: none;
+			}
+			.carousel{
+				height: 16vw;
+				@media (max-width: @screen-sm-max) {
+					height: 22vw;
+				}
+				@media (max-width: @screen-xs-max) {
+					height: 40vw;
+				}
+				.carousel-inner{
+					height: 100%;
+				}
+				.item{
+					height: 100%;
+				}
+			}
+			.carousel-control{
+				transition: 0.3s ease;
+				background-image: -webkit-linear-gradient(left,rgba(255,255,255,.3) 0,rgba(255,255,255,.0001) 100%);
+				background-image: -o-linear-gradient(left,rgba(255,255,255,.3) 0,rgba(255,255,255,.0001));
+				background-image: -webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.3)),to(rgba(255,255,255,.0001)));
+				background-image: linear-gradient(to right,rgba(255,255,255,.3) 0,rgba(255,255,255,.0001) 100%);
+				.carousel-control-arrow{
+					position: absolute;
+					top: ~'calc(50% - 50px)';
+					left: ~'calc(50% - 50px)';
+				}
+				&.right{
+					background-image: -webkit-linear-gradient(right,rgba(255,255,255,.3) 0,rgba(255,255,255,.0001) 100%);
+					background-image: -o-linear-gradient(right,rgba(255,255,255,.3) 0,rgba(255,255,255,.0001));
+					background-image: -webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.3)),to(rgba(255,255,255,.0001)));
+					background-image: linear-gradient(to left,rgba(255,255,255,.3) 0,rgba(255,255,255,.0001) 100%);
+				}
+			}
+			.profile-img{
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				border: 1px solid #fafafa;
+				width: 6vw;
+				height: 6vw;
+				border-radius: 50%;
+				position: absolute;
+				top: 11.5vw;
+				right: 10px;
+				@media (max-width: @screen-sm-max) {
+					width: 8vw;
+					height: 8vw;
+					top: 16vw;
+				}
+				@media (max-width: @screen-xs-max) {
+					width: 15vw;
+					height: 15vw;
+					top: 29vw;
+				}
+			}
+
+			.user-info{
+				color: #045F79;
+				height: 7vw;
+				padding-top: 1vw;
+				overflow: hidden;
+				@media (max-width: @screen-sm-max) {
+					height: 11vw;
+				}
+				@media (max-width: @screen-xs-max) {
+					height: 17vw;
+				}
+				.apt-title{
+					font-size: 14px;
+					font-weight: 500;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					height: 16px;
+					@media (max-width: @screen-xs-max) {
+						font-size: 12px;
+						height: 14px;
+					}
+				}
+				.apt-sub-title{
+					font-size: 12px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					height: 14px;
+					@media (max-width: @screen-xs-max) {
+						font-size: 10px;
+						height: 12px;
+					}
 				}
 			}
 			.rating{
-				padding-top: 5px;
-			    display: flex;
-    			align-items: center;
-				.number-reviews{
-					margin-left: 10px;
+				 display: flex;
+				 align-items: center;
+				 .number-reviews{
+					 margin-left: 10px;
+				 }
+				.new-appt{
+
+				}
+			 }
+			.basics{
+				display: flex;
+				.tiny-text {
+					padding-right: 15px;
+					margin-top: 5px;
+					font-size: 10px;
+					@media (max-width: @screen-xs-max) {
+						margin-top: 0;
+						font-size: 9px;
+					}
 				}
 			}
-			.info{
-				padding-top: 10px;
-    			font-size: 16px;
+
+			.age-and-city {
+
 			}
-			.description{
-				padding: 5px;
-			    font-size: 18px;
-			}
-			.property{
-				font-size: 16px;
-				padding: 5px;
-			}
-		}
-		.swapper{
-		    min-height: 15vw;
-		    .display-name{
-		    	padding: 10px 0;
-		    	display: flex;
-				align-items: center;
-		    }
-			.pic{
-			    background-position: center;
-				background-repeat: no-repeat;
-				background-size: cover;
-				border-radius: 50%;
-				height: 5vw;
-				width: 5vw;
-			}
-			.name{
-    			font-size: 20px;
-			}
-			.info{
-				padding-top: 6px;
-    			font-size: 16px;
-			}
-			.view-profile{
-				position: absolute;
-    			bottom: 5px;
-    			right: 15px;
+
+			.carousel-image {
+				width: 100%;
+				height: 100%;
+				top: 0%;
+				right: 0;
+				left: 0;
+				padding-bottom: 0;
 			}
 		}
 	}
-	.filter-nav{
-		.md-sidenav-right{
-			left: ~"calc(100% - 15px)";
-			overflow: hidden;
-		}
-		.side-nav-inside{
-			height: 100%;
-    		overflow: auto;
-			.filters{
-				padding: 15px;
-				.control-label{
-					margin-top: 5px;
-					font-size: 18px;
-					outline: none;
-					&:focus{
-						outline: none;
-					}
-				}
-				.form-control{
-					font-size: 16px;
-				}
-				.dates{
-					position: relative;
-					.date-calendar{
-						position: absolute;
-						right: 10px;
-						top: 0;
-						padding: 6px;
-						font-size: 18px;
-					}
-				}
-				.more-options{
-					margin-top: 15px;
-					border-top: 1px solid lightgray;
-				}
-				.ameneties{
-					height: 0px;
-					overflow: hidden;
-					transition: 1s ease;
-					-webkit-transition: 1s ease;
-					&.show{
-						height: 150px;
-					}
-					ul{
-						padding-left: 20px;
-					}
-				}
-				.amenity-label {
-					display: flex;
-					align-items: center;
-				}
-				input[type=checkbox] {
-					margin-top: 0;
-					margin-right: 5px;
-				}
-			}
-			.filter-buttons{
-				position: absolute;
-				left: 0;
-				right: 15px;
-				bottom: 0;
-				background-color: #fff;
-				.search-btn{
-					float: right;
-					margin-left: 10px;
-				}
-				.clear-btn{
-					float: right;
-				}
-			}
-		}
+	.map-view{
+		padding: 0;
 	}
 	.map{
-		height:34vw;
+		height: 46vw;
+		@media (max-width: @screen-sm-max) {
+			height: 36vw;
+		}
+		@media (max-width: @screen-xs-max) {
+			height: 80vw;
+		}
 		#travelerMarkerLayer {
 			img{
 				border-radius:50% !important;
@@ -200,27 +222,27 @@
 				transform: scale(0.75);
 				border:2px solid rgba(13, 134, 234, 0);
 				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
-    			box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
+				box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
 				-webkit-transition: ease 1s; /* For Safari 3.1 to 6.0 */
-    			transition: ease 1s;
+				transition: ease 1s;
 				&:hover{
 					-ms-transform: scale(1.2); /* IE 9 */
-				    -webkit-transform: scale(1.2); /* Safari */
-				    transform: scale(1.2);
+					-webkit-transform: scale(1.2); /* Safari */
+					transform: scale(1.2);
 				}
 			}
 		}
 		.infoWindowContent{
 			font-size: 16px;
-		    font-weight: bold;
-		    padding-top: 10px;
-		    color: #000;
-		    background-color: rgba(192,192,192,0.8);
+			font-weight: bold;
+			padding-top: 10px;
+			color: #000;
+			background-color: rgba(192,192,192,0.8);
 		}
 		.travelers{
-		    font-size:20px;
-		    text-align: center;
-		    font-weight: bold;
+			font-size:20px;
+			text-align: center;
+			font-weight: bold;
 			color: #045f79;
 		}
 		.map-photo{
@@ -232,7 +254,7 @@
 		}
 	}
 	.page-numbers{
-    	margin: 25px auto;
+		margin: 25px auto;
 		width: 30%;
 		.number{
 			outline: none;
@@ -261,7 +283,7 @@
 			border-radius: 50%;
 			border: 1px solid #141714;
 			width: 30px;
-    		height: 30px;
+			height: 30px;
 			&.no-show{
 				color: transparent;
 				border: transparent;
@@ -275,115 +297,42 @@
 	}
 	//* white background and box outline */
 	.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div:last-child
-	{
-	    //* we have to use !important because we are overwritng inline styles */
-	    background-color: transparent !important;
-	    border-radius: 10px !important;
-	    box-shadow: none !important;
-	    width: 100% !important;
-	    height: 100% !important;
+{
+		//* we have to use !important because we are overwritng inline styles */
+		background-color: transparent !important;
+		border-radius: 10px !important;
+		box-shadow: none !important;
+		width: 100% !important;
+		height: 100% !important;
 	}
 
 	//* arrow colour */
 	.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div > div > div
-	{
-	    background-color: blue !important;
-	    display: none !important;
+{
+		background-color: blue !important;
+		display: none !important;
 	}
 
 	//* close button */
 	.gm-style > div:first-child > div + div > div:last-child > div > div:last-child
-	{
-	    margin-right: 5px;
-	    margin-top: 5px;
+{
+		margin-right: 5px;
+		margin-top: 5px;
 	}
 
 	//* image icon inside close button */
 	.gm-style > div:first-child > div + div > div:last-child > div > div:last-child > img
-	{
-	    display: none;
+{
+		display: none;
 	}
 
 	//* positioning of infowindow */
 	.gm-style-iw
-	{
-	    //top: 22px !important;
-	    //left: 22px !important;
+{
+		//top: 22px !important;
+		//left: 22px !important;
 	}
 
-	.people-list {
-		clear: both;
-		overflow-y: auto;
-		height: 760px;
-		color: #2da5e1;
-		-webkit-box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2),  9px 6px 113px -40px rgba(0,0,0,0.2);
-		-moz-box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2),  9px 6px 113px -40px rgba(0,0,0,0.2);
-		box-shadow: inset 9px 6px 113px -40px rgba(0,0,0,0.2), 9px 6px 113px -40px rgba(0,0,0,0.2);
-		-webkit-border-radius: 2%;
-		-moz-border-radius: 2%;
-		border-radius: 2%;
-
-
-		.guy-box {
-			background-color: #ffffff;
-			padding: 0;
-			-webkit-box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
-			-moz-box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
-			box-shadow: 5px 6px 15px -6px rgba(0,0,0,0.39);
-			font-family: Arial, "Calibri Light", sans-serif;
-
-			img {
-				max_width: 100%;
-				max_height: 100%;
-				height: 100px;
-			}
-
-			.apartment-image {
-				padding-right: 0;
-			}
-
-			.apt-img {
-				width: 100%;
-			}
-			.prof_img_cont{
-				margin-left: -26%;
-
-				.prof_img {
-					height: 100px;
-					width: 100%;
-				}
-			}
-
-
-			.apt-description {
-				font-weight: 600;
-			}
-
-			.text-under-apt {
-				height: 80px;
-				overflow-y: auto;
-				background-color: #fcfcfc;;
-			}
-
-			.tiny-text {
-				margin-top: auto;
-				font-size: 80%;
-			}
-
-			.age-and-city {
-
-			}
-
-			.carousel-image {
-				width: 100%;
-				height: 100%;
-				top: 0%;
-				right: 0;
-				left: 0;
-				padding-bottom: 0;
-			}
-		}
-	}
 
 	::-webkit-scrollbar {
 		display: none;
