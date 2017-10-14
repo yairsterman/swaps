@@ -1,6 +1,7 @@
 var tr = null;
-swapsApp.controller('travelersController', function($scope, $rootScope, $location, $routeParams,  $mdSidenav, UsersService) {
+swapsApp.controller('travelersController', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService) {
     tr = $scope;
+    $rootScope.homepage = false;
     $scope.city = $routeParams.city;
     $scope.user = $rootScope.user;
     $scope.yourCity = $rootScope.userCity;
@@ -10,6 +11,8 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     $scope.checkedRoomTypes =[];
     var filter = {};
     const PAGE_DIVIDOR = 10;
+    $anchorScroll();
+
 
     if($location.search().dates && $location.search().dates != 'undefined'){
         $scope.filter.date = $location.search().dates;

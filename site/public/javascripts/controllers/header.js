@@ -1,16 +1,21 @@
 var he = null;
-swapsApp.controller('headerController', function($scope, $rootScope, $location, $document, UsersService, AccountService) {
+swapsApp.controller('headerController', function($scope, $rootScope, $location, $document, UsersService, AccountService, $interval) {
 	he = $scope;
 	$scope.user = $rootScope.user;
+	$scope.homepage = $rootScope.homepage;
 	if($rootScope.user && $rootScope.user.city){
 		$rootScope.userCity = $rootScope.user.city;
     }
 	$scope.fly ={
 		guests: 1
 	};
-	$scope.search ={
-		guests: 1
-	};
+	if(!$rootScope.search){
+        $rootScope.search ={
+            guests: 1
+        };
+	}
+
+    var autocompleteSearch;
 
 	function successFunction(position) {
         var lat = position.coords.latitude;
@@ -27,11 +32,19 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	var address = {
       types: ['address']
     };
-	// var autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('where'), address);
-	var autocomplete;
-	var autocompleteSearch;
 
-	$scope.loginCallBack = function(userId){
+    var elementsReady = $interval(function() {
+        var input = $('#searchCityHeader');
+        if (input) {
+            autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCityHeader'), {
+                types: ['(cities)']
+            });
+            $interval.cancel(elementsReady);
+        }
+    }, 100);
+
+
+    $scope.loginCallBack = function(userId){
 		UsersService.getUser(userId).then(function(data){
 			$rootScope.user = data.data;
 			$scope.user = $rootScope.user;
@@ -41,13 +54,16 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	    });
     };
 
-	$scope.searchSwap = function(){
-		var where = $scope.search.where;
-		if(!where || where == ''){
-			where	= 'Anywhere';
-		}
-		$location.url('/travelers/' + where + '?dates=' + $scope.search.when + '&guests=' + $scope.search.guests);
-	}
+    $scope.searchSwap = function(){
+        var where = $rootScope.search.where;
+        if(!where || where == ''){
+            where	= 'Anywhere';
+        }
+        else{
+            where = where.split(',')[0]
+        }
+        $scope.go('travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
+    }
 
 	$scope.openDate = function(){
 		$('input[name="searchDate"]').daterangepicker({
@@ -58,16 +74,13 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	        }
 		});
 		$('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
-	      $scope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+            $rootScope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
 	  	});
 	}
 
 	$scope.autocompleteCities = function(){
-		autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
-		  types: ['(cities)']
-		});
-		autocompleteSearch.addListener('place_changed', function() {
-			$scope.search.where = autocompleteSearch.getPlace().name;
+        autocompleteSearch.addListener('place_changed', function() {
+            $rootScope.search.where = autocompleteSearch.getPlace().name;
 		});
 	}
 
@@ -84,6 +97,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	});
 
 	$scope.go = function(path){
+        $(window).unbind('scroll');
 		$('#flyNowModal').modal('hide');
 	   $location.url('/' + path);
 	}

@@ -1,13 +1,27 @@
 <div class="header">
-  	<nav class="navbar navbar-default navbar-toggleable-md navbar-light bg-faded">
+  	<nav class="navbar navbar-default navbar-toggleable-md navbar-light bg-faded {{$root.homepage?'':'navbar-other'}}">
 	  <a class="navbar-brand" href="" ng-click ="go('')">
 		  <div class="logo" style="background-image:url('../../images/logo/logo.png')">
 		  </div>
 	  </a>
 
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="search">
-
+          <div class="find-swap">
+              <!--<div class="start-swapping">Start Swapping</div>-->
+              <div class="row header-search-area">
+                  <div class="search-field left col-sm-4 col-xs-12">
+                      <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeader" ng-focus="autocompleteCities()" ng-model="search.where">
+                  </div>
+                  <div class="search-field col-sm-4 col-xs-12">
+                      <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">
+                  </div>
+                  <div class="search-field right col-sm-4 col-xs-12 ">
+                      <div class="guests-search">
+                          <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
+                      </div>
+                      <button class="search icon icon-search" ng-click="searchSwap()"></button>
+                  </div>
+              </div>
           </div>
 	    <div class="login-area">
 		    <!-- <form class="form-inline my-2 my-lg-0">

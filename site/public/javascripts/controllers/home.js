@@ -5,9 +5,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.map = null;
     $scope.slideIndex = 0;
     $scope.featured = [];
-    $scope.search = {
-        guests: 1,
-    };
+
+    $rootScope.homepage = true;
 
     var autocompleteSearch;
 
@@ -42,14 +41,20 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     init();
 
     $scope.searchSwap = function(){
-        var where = $scope.search.where;
+        var where = $rootScope.search.where;
         if(!where || where == ''){
             where	= 'Anywhere';
         }
         else{
             where = where.split(',')[0]
         }
-        $location.url('/travelers/' + where + '?dates=' + $scope.search.when + '&guests=' + $scope.search.guests);
+        $scope.go('/travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
+    }
+
+    $scope.go = function(path){
+        $(window).unbind('scroll');
+        $rootScope.homepage = false;
+        $location.url(path);
     }
 
     $scope.changeImage = function(index){
@@ -62,7 +67,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     $scope.autocompleteCities = function(){
         autocompleteSearch.addListener('place_changed', function() {
-            $scope.search.where = autocompleteSearch.getPlace().formatted_address;
+            $rootScope.search.where = autocompleteSearch.getPlace().formatted_address;
         });
     }
 
@@ -75,7 +80,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             }
         });
         $('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+            $rootScope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
         });
     }
 
@@ -110,9 +115,12 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                 } else {
                     $('.navbar').removeClass('opacity');
                     $timeout(function(){
+                        if($('.navbar').hasClass('opacity')){
+                            $('.navbar').removeClass('opacity');
+                        }
                         $('.navbar').removeClass('navbar-other');
                         $('.navbar').removeClass('sticky');
-                    },500)
+                    },500);
                 }
             });
             $interval.cancel(elementsReady);
