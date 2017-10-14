@@ -103,15 +103,17 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $(window).scroll(function() {                  // assign scroll event listener
                 var currentScroll = $(window).scrollTop(); // get current position
                 if (currentScroll >= fixmeTop) {
-                    $('.navbar').addClass('navbar-other').addClass('no-opacity');
-                    $timeout(function(){
-                        if(!$('.navbar').hasClass('navbar-other')){
-                            $('.navbar').addClass('navbar-other');
-                        }
-                        $('.navbar').addClass('sticky');
-                        $('.navbar').addClass('opacity');
-                        $('.navbar').removeClass('no-opacity');
-                    },500)
+                    if(!$('.navbar').hasClass('navbar-other')){
+                        $('.navbar').addClass('navbar-other').addClass('no-opacity');
+                        $timeout(function(){
+                            if(!$('.navbar').hasClass('navbar-other')){
+                                $('.navbar').addClass('navbar-other');
+                            }
+                            $('.navbar').addClass('sticky');
+                            $('.navbar').addClass('opacity');
+                            $('.navbar').removeClass('no-opacity');
+                        },500)
+                    }
                 } else {
                     $('.navbar').removeClass('opacity');
                     $timeout(function(){
