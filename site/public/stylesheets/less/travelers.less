@@ -35,6 +35,9 @@
 		}
 		.dropdown-menu{
 			padding: 10px;
+			&:focus{
+				outline: none;
+			}
 		}
 		.amenities{
 			width: 30vw;
@@ -419,34 +422,6 @@
 	}
 
 }
-.daterangepicker_input{
-	display: none;
-}
-.month {
-	width: auto;
-	font-size: 18px;
-}
-.fa{
-	font-size: 18px;
-}
-.daterangepicker{
-	.calendar{
-		td{
-			font-size: 16px;
-			&.active{
-				background-color: #008500;
-			}
-			&.in-range{
-				background-color: #CFF4CF;
-			}
-		}
-	}
-}
-
-
-
-
-
 
 // Extra small screen / phone
 // Note: Deprecated @screen-xs and @screen-phone as of v3.0.1

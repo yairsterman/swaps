@@ -7,6 +7,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     $scope.search= {};
     $scope.filter = {};
     $scope.checkedAmenities =[];
+    $scope.checkedRoomTypes =[];
     var filter = {};
     const PAGE_DIVIDOR = 10;
 
@@ -16,10 +17,20 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     if($location.search().guests){
         $scope.filter.guests = $location.search().guests;
     }
-    $('input[name="datefilter"]').daterangepicker({
-          autoApply: true,
-          opens: 'center'
-      });
+    $('#filterDates').daterangepicker({
+        autoApply: true,
+        clearBtn: true,
+        opens: 'center',
+        locale: {
+            format: 'MMM DD'
+        }
+    });
+
+    $scope.openDate = function(){
+        $('#filterDates').on('apply.daterangepicker', function(ev, picker) {
+            $scope.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+        });
+    }
 
     $scope.searchCity = function(){
     	$scope.city = $scope.search.city;
@@ -40,7 +51,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     $scope.checkAmenity = function(index, event){
         event.preventDefault();
         event.stopPropagation();
-        if($scope.isChecked(index)){
+        if($scope.isCheckedAmenity(index)){
             $scope.checkedAmenities.splice($scope.checkedAmenities.indexOf(index),1);
         }
         else{
@@ -48,8 +59,23 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         }
     }
 
-    $scope.isChecked = function(index){
+    $scope.isCheckedAmenity = function(index){
         return $scope.checkedAmenities.includes(index);
+    }
+
+    $scope.checkRoomType = function(index, event){
+        event.preventDefault();
+        event.stopPropagation();
+        if($scope.isCheckedRoomType(index)){
+            $scope.checkedRoomTypes.splice($scope.checkedRoomTypes.indexOf(index),1);
+        }
+        else{
+            $scope.checkedRoomTypes.push(index);
+        }
+    }
+
+    $scope.isCheckedRoomType = function(index){
+        return $scope.checkedRoomTypes.includes(index);
     }
 
     $scope.search = function(){
@@ -205,13 +231,14 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
                 $scope.map = new google.maps.Map(document.getElementById('travelerMap'), mapOptions);
                 deleteMarkers();
                 myoverlay.setMap($scope.map);
+                getAmenities();
+                getRoomTypes();
+                getTravelers(0);
             }
         });
     }
 
     init();
-    getAmenities();
-    getTravelers(0);
 
     function scrollToProfile(id){
         var profile = document.getElementById(id);
@@ -289,6 +316,15 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
             {name:"WiFi",id:3},
             {name:"Parking",id:4},
             {name:"Air Conditioning",id:5},
+        ];
+    }
+
+    function getRoomTypes(){
+        //TODO get amenities from /utils
+        $scope.roomTypes = [
+            {name:"Private Room",id:0},
+            {name:"Entire Home",id:1},
+            {name:"Shared Room",id:2},
         ];
     }
 
