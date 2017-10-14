@@ -168,6 +168,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         });
     }
 
+
 	// var elementsReady = $interval(function() {
     //   var input = $document[0].getElementById('address');
     //   if (input) {

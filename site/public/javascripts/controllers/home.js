@@ -88,6 +88,36 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             types: ['(cities)']
         });
     }
+
+    var fixmeTop;     // get initial position of the element
+
+    var elementsReady = $interval(function() {
+        var input = $('.navbar');
+        if (input) {
+            fixmeTop = $('.search-area').offset().top + 80;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeTop) {
+                    $('.navbar').addClass('navbar-other').addClass('no-opacity');
+                    $timeout(function(){
+                        if(!$('.navbar').hasClass('navbar-other')){
+                            $('.navbar').addClass('navbar-other');
+                        }
+                        $('.navbar').addClass('sticky');
+                        $('.navbar').addClass('opacity');
+                        $('.navbar').removeClass('no-opacity');
+                    },500)
+                } else {
+                    $('.navbar').removeClass('opacity');
+                    $timeout(function(){
+                        $('.navbar').removeClass('navbar-other');
+                        $('.navbar').removeClass('sticky');
+                    },500)
+                }
+            });
+            $interval.cancel(elementsReady);
+        }
+    }, 100);
 });
 
 swapsApp.directive('scrollOnClick', function() {

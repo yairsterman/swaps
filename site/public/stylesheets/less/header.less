@@ -1,9 +1,27 @@
 .header{
 	background-color: rgba(13,120,173,1);
+	height: 80px;
+	&.default-header{
+		background-color: #ffffff;
+	}
 	.navbar{
 	    margin-bottom: 0;
 		position: relative;
 		z-index: 999;
+		&.no-opacity{
+			opacity: 0;
+		}
+		&.sticky{
+			position: fixed;
+			width: 100%;
+			top: 0;
+			right: 0;
+			opacity: 0;
+			transition: 0.5s ease;
+			&.opacity{
+				opacity: 1;
+			}
+		}
 		.navbar-brand{
 			padding: 0;
 		}
@@ -11,7 +29,7 @@
 		    height: 80px;
 		    padding-left: 20px;
 		}
-		.navbar-default {
+		&.navbar-default {
 			background-color: rgba(13,120,173,1);
 			border: 0;
 			border: none;
@@ -25,12 +43,23 @@
 			}
 		}
 
+		&.navbar-other {
+			background-color: #ffffff;
+			.login-area{
+				.login{
+					color: rgba(13,120,173,1);
+				}
+				.underlined{
+					border-bottom: 2px solid rgba(13,120,173,0.4);
+				}
+			}
+		}
 		.logo{
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: contain;
-			height: 100px;
-			width: 100px;
+			height: 80px;
+			width: 80px;
 		}
 		.navbar-nav{
 		    list-style-type: none;
@@ -60,9 +89,6 @@
 					}
 				}
 			}
-		}
-		.navbar-collapse {
-			background-color: rgba(13,120,173,1);
 		}
 		.login-area{
 			display: flex;
