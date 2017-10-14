@@ -1,15 +1,62 @@
 <div class="profile-page">
-	<div class="photos">
-		<div class="gallery">
-			<ng-image-gallery
-		      images="images"
-		      methods="methods"
-		      img-anim="slide"
-		    ></ng-image-gallery>
-	    </div>
-	    <div class="main-photo" style="background-image:url('{{profile.photos[0]}}')" ng-click="openGallery()">
-	    </div>
-  	</div>
+
+	<div class="appt-slider-and-profpic container-fluid">
+
+		<div class="row">
+
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+				<div class="photos">
+					<div class="gallery">
+						<ng-image-gallery
+								images="images"
+								methods="methods"
+								img-anim="slide"
+						></ng-image-gallery>
+					</div>
+					<div class="main-photo" style="background-image:url('{{profile.photos[0]}}')"
+						 ng-click="openGallery()">
+					</div>
+
+
+				</div>
+
+			</div>
+
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+				<div class="photos prof-pic" style="background-image:url('https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/1977210_10154039364980601_336080314_n.jpg?oh=59bcee2232b43318d5bb1ae99b00a989&oe=5A85C492')">
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<div class="main-section container">
+
+		<div class="row">
+
+			<div class="apt-description col-lg-9 col-md-9 col-sm-9 col-xs-9">
+
+				<div class="description-title">
+					{{profile.apptInfo.description}}
+				</div>
+				<div class="under-title">
+					{{profile.apptInfo.room}} • {{profile.city}}
+				</div>
+
+			</div>
+			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+			</div>
+
+		</div>
+
+	</div>
+
+
   	<div class="info">
   		<div class="row info-row">
 		  	<div class="col-sm-8">
