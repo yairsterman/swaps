@@ -15,6 +15,7 @@ var index = require('./routes/index');
 var users = require('./routes/user');
 var account = require('./routes/account');
 var message = require('./routes/message');
+var utils = require('./routes/utils');
 
 var app = express();
 
@@ -51,6 +52,7 @@ app.use('/', index);
 app.use('/user', users);
 app.use('/account', account);
 app.use('/message', message);
+app.use('/utils', utils);
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 

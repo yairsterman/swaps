@@ -6,6 +6,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     $scope.yourCity = $rootScope.userCity;
     $scope.search= {};
     $scope.filter = {};
+    $scope.checkedAmenities =[];
     var filter = {};
     const PAGE_DIVIDOR = 10;
 
@@ -34,6 +35,21 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     $scope.openFilters = function(){
          $mdSidenav('right').toggle();
          $scope.filtersOpen = !$scope.filtersOpen;
+    }
+
+    $scope.checkAmenity = function(index, event){
+        event.preventDefault();
+        event.stopPropagation();
+        if($scope.isChecked(index)){
+            $scope.checkedAmenities.splice($scope.checkedAmenities.indexOf(index),1);
+        }
+        else{
+            $scope.checkedAmenities.push(index);
+        }
+    }
+
+    $scope.isChecked = function(index){
+        return $scope.checkedAmenities.includes(index);
     }
 
     $scope.search = function(){
@@ -194,6 +210,7 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     }
 
     init();
+    getAmenities();
     getTravelers(0);
 
     function scrollToProfile(id){
@@ -262,6 +279,18 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
         $scope.yourCity = $rootScope.userCity;
         getTravelers(0);
 	});
+
+    function getAmenities(){
+        //TODO get amenities from /utils
+        $scope.amenities = [
+            {name:"Kitchen",id:0},
+            {name:"Heating",id:1},
+            {name:"Elevator",id:2},
+            {name:"WiFi",id:3},
+            {name:"Parking",id:4},
+            {name:"Air Conditioning",id:5},
+        ];
+    }
 
 
     /* ----------------------------------------------------- */

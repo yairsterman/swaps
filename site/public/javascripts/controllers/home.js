@@ -46,6 +46,9 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         if(!where || where == ''){
             where	= 'Anywhere';
         }
+        else{
+            where = where.split(',')[0]
+        }
         $location.url('/travelers/' + where + '?dates=' + $scope.search.when + '&guests=' + $scope.search.guests);
     }
 

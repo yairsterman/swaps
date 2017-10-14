@@ -13,31 +13,62 @@
 		font-weight: 500;
 		margin-left: -15px;
 	}
-	.search-city{
-		width: 200px;
-		float: right;
-		.search-icon{
-			background-color: white;
-			border: none;
-			cursor: pointer;
-		}
-		.search-box{
-			border: none;
-			-webkit-box-shadow: none;
-			box-shadow: none;
-			-webkit-transition: none;
-			-o-transition: none;
-		}
-	}
 	.filters{
 		position: relative;
+		display: flex;
+		padding: 5px 15px;
 		z-index: 999;
 		border-top: 1px solid rgba(13,120,173,0.1);
-		height: 6vw;
+		height: 4vw;
 		background-color: #fff;
 		-webkit-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		-moz-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
+		.filter-button{
+			font-size: 14px;
+			padding-right: 3vw;
+			background-color: transparent;
+			border: none;
+			width: auto;
+			text-align: left;
+			color: #045F79;
+		}
+		.dropdown-menu{
+			padding: 10px;
+		}
+		.amenities{
+			width: 30vw;
+		}
+		.filter{
+			display: flex;
+			color: #045F79;
+			padding: 4px 0;
+			.filter-checkbox{
+				position: relative;
+				border: 1px solid rgba(13,120,173,0.4);
+				margin-right: 8px;
+				width: 15px;
+				height: 15px;
+				&:focus{
+					outline: none;
+				}
+			}
+			.check{
+				position: absolute;
+				top: -8px;
+				transform: scale(0);
+				transition: 0.3s ease;
+				&:focus{
+					outline: none;
+				}
+				&.checked{
+					transform: scale(1);
+				}
+			}
+		}
+	}
+	.people-and-map{
+		padding: 0 0 0 10px;
 	}
 	.mg-0{
 		margin: 0;
@@ -53,7 +84,7 @@
 			height: 80vw;
 		}
 		.traveler-col{
-			padding: 10px;
+			padding: 5px;
 		}
 		.traveler {
 			position: relative;
@@ -86,6 +117,11 @@
 				}
 				.item{
 					height: 100%;
+				}
+				.carousel-caption{
+					background-position: center;
+					background-size: cover;
+					background-repeat: no-repeat;
 				}
 			}
 			.carousel-control{
@@ -202,7 +238,7 @@
 		}
 	}
 	.map-view{
-		padding: 0;
+		padding: 0 0 0 5px;
 	}
 	.map{
 		height: 46vw;
