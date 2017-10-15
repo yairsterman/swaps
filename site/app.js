@@ -15,6 +15,7 @@ var index = require('./routes/index');
 var users = require('./routes/user');
 var account = require('./routes/account');
 var message = require('./routes/message');
+var utils = require('./routes/utils');
 
 var app = express();
 
@@ -24,7 +25,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -51,6 +52,7 @@ app.use('/', index);
 app.use('/user', users);
 app.use('/account', account);
 app.use('/message', message);
+app.use('/utils', utils);
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 

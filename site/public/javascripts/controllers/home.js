@@ -5,11 +5,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.map = null;
     $scope.slideIndex = 0;
     $scope.featured = [];
-    $scope.search = {
-        guests: 1,
-        where: 'Anywhere',
-        date: 'Anytime'
-    };
+
+    $rootScope.homepage = true;
 
     var autocompleteSearch;
 
@@ -44,11 +41,20 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     init();
 
     $scope.searchSwap = function(){
-        var where = $scope.search.where;
+        var where = $rootScope.search.where;
         if(!where || where == ''){
             where	= 'Anywhere';
         }
-        $location.url('/travelers/' + where + '?dates=' + $scope.search.when + '&guests=' + $scope.search.guests);
+        else{
+            where = where.split(',')[0]
+        }
+        $scope.go('/travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
+    }
+
+    $scope.go = function(path){
+        $(window).unbind('scroll');
+        $rootScope.homepage = false;
+        $location.url(path);
     }
 
     $scope.changeImage = function(index){
@@ -61,7 +67,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     $scope.autocompleteCities = function(){
         autocompleteSearch.addListener('place_changed', function() {
-            $scope.search.where = autocompleteSearch.getPlace().formatted_address;
+            $rootScope.search.where = autocompleteSearch.getPlace().formatted_address;
         });
     }
 
@@ -74,7 +80,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             }
         });
         $('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+            $rootScope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
         });
     }
 
@@ -87,6 +93,41 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             types: ['(cities)']
         });
     }
+
+    var fixmeTop;     // get initial position of the element
+
+    var elementsReady = $interval(function() {
+        var input = $('.navbar');
+        if (input) {
+            fixmeTop = $('.search-area').offset().top + 80;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeTop) {
+                    if(!$('.navbar').hasClass('navbar-other')){
+                        $('.navbar').addClass('navbar-other').addClass('no-opacity');
+                        $timeout(function(){
+                            if(!$('.navbar').hasClass('navbar-other')){
+                                $('.navbar').addClass('navbar-other');
+                            }
+                            $('.navbar').addClass('sticky');
+                            $('.navbar').addClass('opacity');
+                            $('.navbar').removeClass('no-opacity');
+                        },500)
+                    }
+                } else {
+                    $('.navbar').removeClass('opacity');
+                    $timeout(function(){
+                        if($('.navbar').hasClass('opacity')){
+                            $('.navbar').removeClass('opacity');
+                        }
+                        $('.navbar').removeClass('navbar-other');
+                        $('.navbar').removeClass('sticky');
+                    },500);
+                }
+            });
+            $interval.cancel(elementsReady);
+        }
+    }, 100);
 });
 
 swapsApp.directive('scrollOnClick', function() {
@@ -94,8 +135,8 @@ swapsApp.directive('scrollOnClick', function() {
         restrict: 'A',
         link: function(scope, $elm) {
             $elm.on('click', function() {
-                $("body").animate({scrollTop: $elm.offset().top}, "slow");
-                $("body").animate({scrollBottom: 100}, "fast");
+                $("html").animate({scrollTop: $elm.offset().top}, "slow");
+                $("html").animate({scrollBottom: 100}, "fast");
             });
         }
     }
@@ -106,7 +147,7 @@ swapsApp.directive('scrollToTop', function() {
         restrict: 'A',
         link: function(scope, $elm) {
             $elm.on('click', function() {
-                $("body").animate({scrollTop: 0}, "slow");
+                $("html").animate({scrollTop: 0}, "slow");
         });
         }
     }

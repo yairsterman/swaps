@@ -110,7 +110,6 @@
 		width: 70%;
 		margin: auto;
 		padding: 30px;
-		padding-bottom: 0;
 		.title-swaps {
 			color: rgba(255, 245, 225, 1);
 			font-size: 56px;
@@ -126,7 +125,7 @@
 			.points-container-border{
 				width: 12%;
 				padding-top: 20px;
-				border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+				border-bottom: 3px solid rgba(255, 255, 255, 0.5);
 			}
 		}
 	}
@@ -134,18 +133,16 @@
 		width: 70%;
 		margin: auto;
 		padding: 30px;
+		.start-swapping{
+			padding-bottom: 10px;
+			padding-left: 5px;
+			font-size: 18px;
+			color: rgba(255, 245, 225, 1);
+		}
 		.search-area{
 			margin: 0;
-			background-color: #ffffff;
-			border-radius: 5px;
 			.search-field{
-				padding: 0;
-				&.left{
-					border-right: 1px solid rgba(199, 167, 104, 0.3)
-				}
-				&.right{
-					border-left: 1px solid rgba(199, 167, 104, 0.3)
-				}
+				padding: 0 2px;
 			}
 		}
 		.find-text {
@@ -155,18 +152,21 @@
 			margin-bottom: 1vw;
 		}
 		label{
-			color: #555;
+			color: rgba(199, 167, 104, 1);
 			font-size: 16px;
 			font-weight: 500;
 			margin-bottom: 0;
 			padding: 10px;
+			width: 100%;
+			background-color: #ffffff;
 		}
 		.form-control {
-			border-radius: 5px;
+			border-radius: 0;
 			border: none;
-			color: #555;
+			color: rgba(199, 167, 104, 1);
 			font-size: 16px;
 			box-shadow: none;
+			height: 42px;
 			&:focus{
 				border-color: #0d78ad;
 				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13,120,173,.6);
@@ -187,15 +187,15 @@
 		.search{
 			position: absolute;
 			font-weight: 600;
-			top: 0;
+			bottom: 0;
 			right: 0;
-			margin: 18px 10px;
+			margin: 10px;
 			padding: 6px 10px;
 			font-size: 16px;
 			background-color: white;
 			border: 2px #0d78ad solid;
 			color: #0d78ad;
-			border-radius: 5px;
+			border-radius: 0;
 			&:focus{
 				outline: none;
 			}
@@ -208,7 +208,7 @@
 	}
 
 	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-		color: #c7a768;
+		color: rgba(199, 167, 104, 0.8);
 	}
 
 	.btn-text {
@@ -247,34 +247,10 @@
 			text-align: center;
 			color: #a4a8ad;
 		}
-      	.how-inner-ticket {
-			float: left;
-			background-color: white;
-			height: auto;
-			padding-top: 2%;
-			.ticket-title{
-				font-weight: 500;
-				color: #848a91;
-				text-align: center;
-				font-size: 16px;
-				padding-bottom: 20px;
-			}
-			.join{
-				padding-right: 8%;
-			}
-			.how-inner-sentences {
-				color: #a4a8ad;
-				text-align: center;
-				width: 60%;
-				margin: auto;
-				font-size: 16px;
-				padding-bottom: 3%;
-			}
-      	}
 		.start-button {
 			display: table;
 			margin: 3vw auto;
-			width: 33%;
+			width: 25%;
 			font-size: 18px;
 			font-weight: 500;
 			text-align: center;
@@ -283,7 +259,7 @@
 			background-color: white;
 			border: 2px #0d78ad solid;
 			color: #0d78ad;
-			border-radius: 5px;
+			border-radius: 0;
 			&:hover{
 				color: rgba(255, 245, 225, 0.8);
 				background-color: #0d78ad;
@@ -306,39 +282,69 @@
 			height: 3%;
 		}
     }
+	.how-inner-ticket {
+		float: left;
+		background-color: white;
+		height: auto;
+		padding-top: 2%;
+		.ticket-title{
+			font-weight: 500;
+			color: #848a91;
+			text-align: center;
+			font-size: 16px;
+			padding-bottom: 20px;
+		}
+		.join{
+			//padding-right: 8%;
+		}
+		.how-inner-sentences {
+			color: #a4a8ad;
+			text-align: center;
+			width: 60%;
+			margin: auto;
+			font-size: 16px;
+			padding-bottom: 3%;
+		}
+	}
 
 	.what-good-ticket {
 		margin: auto;
 		width: 75%;
-		margin-top: -6%;
+		margin-top: -5vw;
 		background-color: rgb(250, 250, 250);
 
 		.what-good-header {
 			margin: auto;
-			padding-top: 3%;
-			padding-bottom: 2%;
 			color: #0d78ad;
-			font-weight: 700;
-			font-size: 20px;
+			font-size: 40px;
 			text-align: center;
+			font-weight: 400;
+			padding: 2vw 8vw;
+		}
+		.what-good-sub{
+			font-size: 16px;
+			text-align: center;
+			color: #0d78ad;
 		}
 
-		.what-good-header-underline {
-			margin: auto;
-			display: block;
-			width: 12%;
-			padding-bottom: 0%;
-			border-bottom: 3px solid #0d78ad;
-		}
 		.empty-space{
-			padding: 3% 0;
+			padding: 4vw 0;
 		}
 		.explanations{
-			width: 67%;
 			.single{
 				display: flex;
 				align-items: flex-end;
 				padding-bottom: 3vw;
+			}
+			.how-inner-ticket {
+				background-color: transparent;
+				.ticket-title{
+					color: #c7a768;;
+					font-weight: 600;
+				}
+				.how-inner-sentences{
+					color: #c7a768;
+				}
 			}
 		}
 		.headers {
@@ -367,3 +373,59 @@
 		}
 	}
 }
+// Extra small screen / phone
+// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
+@screen-xs:                  480px;
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+
+@media (max-width: @screen-xs-max) {
+
+	.home-page {
+		#findSwap.section {
+			.find-swap {
+				.search-area {
+					border: 1px solid #e1e1e1;
+				}
+			}
+		}
+	}
+
+}
+
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+
+}
+
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+
+}
+
+@media (min-width: @screen-lg-min) {
+
+}
+

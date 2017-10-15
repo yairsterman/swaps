@@ -8,7 +8,7 @@ var fs = require('fs');
 var multer  = require('multer');
 var upload = multer({dest:  'uploads/',limits: {files: 8}});
 
-const siteUrl = "http://localhost:3000/";
+const siteUrl = "http://swapshome.com:3000/";
 
 var error = {
 	error: true,
