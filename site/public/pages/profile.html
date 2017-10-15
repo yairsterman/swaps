@@ -44,11 +44,56 @@
 					{{profile.apptInfo.description}}
 				</div>
 				<div class="under-title">
-					{{profile.apptInfo.room}} • {{profile.city}}
+					{{profile.apptInfo.room}} {{traveler.apptInfo.property != null ? "in " + traveler.apptInfo.property : ""}} • {{profile.city}}
 				</div>
 
 			</div>
 			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+				<div class="swapper-name">
+					{{profile.firstName}} {{profile.lastName}}
+				</div>
+				<div class="under-name">
+					{{profile.age}} • {{profile.ocupation}}
+				</div>
+				<div class="mutual-friends">
+					<div class="icon icon-man"></div>
+					<div class="mutual-friends-text">3 Mutual friends</div>
+				</div>
+				<div class="separator"></div>
+
+				<div>
+					<div class="about-me">About me</div>
+					<div class="about-text description-text">{{profile.aboutMe}}</div>
+				</div>
+
+				<br><br>
+				<div>
+					<div class="contact-host">Contact the host</div>
+				</div>
+
+				<div class="separator"></div>
+
+				<div>
+					<div class="about-me">About my house</div>
+					<div class="row">
+						<div class="icon-plus-checkbox">
+							<div class="pet-icon"></div>
+							<div class="description-text">Pet Friendly</div>
+							<div class="check-container"><div class="checkbox-div"></div></div>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="icon-plus-checkbox">
+							<div class="smoke-icon"></div>
+							<div class="description-text">Smoking Friendly</div>
+							<div class="check-container"><div class="checkbox-div"></div></div>
+						</div>
+					</div>
+
+				</div>
+
 
 			</div>
 
@@ -57,230 +102,230 @@
 	</div>
 
 
-  	<div class="info">
-  		<div class="row info-row">
-		  	<div class="col-sm-8">
-			  	<div class="appt-info">
-		  			<div class="section">
-					  	<div class="description-title">
-					  		{{profile.apptInfo.description}}
-						</div>
-						<div class="city">
-					  		{{profile.city}}, {{profile.country}}
-						</div>
-						<div class="rating">
-                            <div class="icon-star"></div>
-                            <div class="icon-star" ng-if="profile.rating > 1"></div>
-                            <div class="icon-star" ng-if="profile.rating > 2"></div>
-                            <div class="icon-star" ng-if="profile.rating > 3"></div>
-                            <div class="icon-star" ng-if="profile.rating > 4"></div>
-                            <div class="number-reviews">{{profile.reviews.length}} Reviews</div>
-                        </div>
-					</div>
-					<div class="section row">
-						<div class="col-sm-4">
-						  	<div class="listing">
-								<i class="fa fa-home" aria-hidden="true"></i></br>
-						  		{{profile.apptInfo.property}}
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="listing">
-							<i class="fa fa-bed" aria-hidden="true"></i></br>
-						  		{{profile.apptInfo.room}}
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="listing">
-							<i class="fa fa-users" aria-hidden="true"></i></br>
-						  		{{profile.apptInfo.guests}} guests
-							</div>
-						</div>
-					</div>
-					<div class="section">
-						<div class="title">
-							About this place
-						</div>
-						<div class="text">
-							{{profile.apptInfo.about}}
-						</div>
-					</div>
-					<div class="section">
-						<div class="title">
-							Amenities
-						</div>
-						<ul class="unstyled-list">
-							<li ng-if="profile.apptInfo.essentials">
-								<div class="amenity">
-									<i class="fa fa-bath" aria-hidden="true"></i> Essentials
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.wifi">
-								<div class="amenity">
-									<i class="fa fa-wifi" aria-hidden="true"></i> Wifi
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.airconditioning">
-								<div class="amenity">
-									<i class="fa fa-snowflake-o" aria-hidden="true"></i> Air conditioning
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.heating">
-								<div class="amenity">
-									<i class="fa fa-sun-o" aria-hidden="true"></i> Heating
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.kitchen">
-								<div class="amenity">
-									<i class="fa fa-cutlery" aria-hidden="true"></i> Kitchen
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.events">
-								<div class="amenity">
-									<i class="fa fa-music" aria-hidden="true"></i> Can host events
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.tv">
-								<div class="amenity">
-									<i class="fa fa-television" aria-hidden="true"></i> Tv
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.wheelchair">
-								<div class="amenity">
-									<i class="fa fa-wheelchair" aria-hidden="true"></i> Wheelchair accessable
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.transportation">
-								<div class="amenity">
-									<i class="fa fa-bus" aria-hidden="true"></i> Public transportation
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.kids">
-								<div class="amenity">
-									<i class="fa fa-futbol-o" aria-hidden="true"></i> Kid friendly
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.parking">
-								<div class="amenity">
-									<i class="fa fa-product-hunt" aria-hidden="true"></i> Parking
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.elevator">
-								<div class="amenity">
-									<i class="fa fa-building-o" aria-hidden="true"></i> Elevator
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.washing">
-								<div class="amenity">
-									<i class="fa fa-shower" aria-hidden="true"></i> Washing machine
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.dryer">
-								<div class="amenity">
-									<i class="fa fa-shopping-basket" aria-hidden="true"></i> Dryer
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.smoking">
-								<div class="amenity">
-									<i class="fa fa-exclamation-circle" aria-hidden="true"></i> Smoking allowed
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.pool">
-								<div class="amenity">
-									<i class="fa fa-tint" aria-hidden="true"></i> Pool
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.pets">
-								<div class="amenity">
-									<i class="fa fa-paw" aria-hidden="true"></i> Pets allowed
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.bathroom">
-								<div class="amenity">
-									<i class="fa fa-bath" aria-hidden="true"></i> Private bathroom
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div class="section">
-						<div class="title">
-							Reviews
-						</div>
-						<div class="reviews">
-							<div class="review" ng-repeat="review in profile.reviews">
-								<div class="row" >
-									<div class="col-sm-6" >
-										<div class="reviewer-info" >
-											<div class="review-photo" style="background-image:url('{{review.image}}')" ng-click="go('profile/'+review.userId)">
-					   						</div>
-											<div class="name">
-												{{review.name}}
-												<div class="city">
-													{{review.city}}, {{review.country}}
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6" >
-										<div class="date">
-												{{review.date | date: 'MMMM yyyy'}}
-										</div>
-									</div>
-								</div>
-								<div class="text">
-									{{review.review}}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4 fix-scroll">
-			  	<div class="user-info">
-				  	<div class="profile-pic" style="background-image:url('{{profile.image}}')">
-					</div>
+  	<!--<div class="info">-->
+  		<!--<div class="row info-row">-->
+		  	<!--<div class="col-sm-8">-->
+			  	<!--<div class="appt-info">-->
+		  			<!--<div class="section">-->
+					  	<!--<div class="description-title">-->
+					  		<!--{{profile.apptInfo.description}}-->
+						<!--</div>-->
+						<!--<div class="city">-->
+					  		<!--{{profile.city}}, {{profile.country}}-->
+						<!--</div>-->
+						<!--<div class="rating">-->
+                            <!--<div class="icon-star"></div>-->
+                            <!--<div class="icon-star" ng-if="profile.rating > 1"></div>-->
+                            <!--<div class="icon-star" ng-if="profile.rating > 2"></div>-->
+                            <!--<div class="icon-star" ng-if="profile.rating > 3"></div>-->
+                            <!--<div class="icon-star" ng-if="profile.rating > 4"></div>-->
+                            <!--<div class="number-reviews">{{profile.reviews.length}} Reviews</div>-->
+                        <!--</div>-->
+					<!--</div>-->
+					<!--<div class="section row">-->
+						<!--<div class="col-sm-4">-->
+						  	<!--<div class="listing">-->
+								<!--<i class="fa fa-home" aria-hidden="true"></i></br>-->
+						  		<!--{{profile.apptInfo.property}}-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="col-sm-4">-->
+							<!--<div class="listing">-->
+							<!--<i class="fa fa-bed" aria-hidden="true"></i></br>-->
+						  		<!--{{profile.apptInfo.room}}-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="col-sm-4">-->
+							<!--<div class="listing">-->
+							<!--<i class="fa fa-users" aria-hidden="true"></i></br>-->
+						  		<!--{{profile.apptInfo.guests}} guests-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="section">-->
+						<!--<div class="title">-->
+							<!--About this place-->
+						<!--</div>-->
+						<!--<div class="text">-->
+							<!--{{profile.apptInfo.about}}-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="section">-->
+						<!--<div class="title">-->
+							<!--Amenities-->
+						<!--</div>-->
+						<!--<ul class="unstyled-list">-->
+							<!--<li ng-if="profile.apptInfo.essentials">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-bath" aria-hidden="true"></i> Essentials-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.wifi">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-wifi" aria-hidden="true"></i> Wifi-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.airconditioning">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-snowflake-o" aria-hidden="true"></i> Air conditioning-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.heating">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-sun-o" aria-hidden="true"></i> Heating-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.kitchen">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-cutlery" aria-hidden="true"></i> Kitchen-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.events">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-music" aria-hidden="true"></i> Can host events-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.tv">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-television" aria-hidden="true"></i> Tv-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.wheelchair">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-wheelchair" aria-hidden="true"></i> Wheelchair accessable-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.transportation">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-bus" aria-hidden="true"></i> Public transportation-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.kids">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-futbol-o" aria-hidden="true"></i> Kid friendly-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.parking">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-product-hunt" aria-hidden="true"></i> Parking-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.elevator">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-building-o" aria-hidden="true"></i> Elevator-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.washing">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-shower" aria-hidden="true"></i> Washing machine-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.dryer">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-shopping-basket" aria-hidden="true"></i> Dryer-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.smoking">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-exclamation-circle" aria-hidden="true"></i> Smoking allowed-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.pool">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-tint" aria-hidden="true"></i> Pool-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.pets">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-paw" aria-hidden="true"></i> Pets allowed-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li ng-if="profile.apptInfo.bathroom">-->
+								<!--<div class="amenity">-->
+									<!--<i class="fa fa-bath" aria-hidden="true"></i> Private bathroom-->
+								<!--</div>-->
+							<!--</li>-->
+						<!--</ul>-->
+					<!--</div>-->
+					<!--<div class="section">-->
+						<!--<div class="title">-->
+							<!--Reviews-->
+						<!--</div>-->
+						<!--<div class="reviews">-->
+							<!--<div class="review" ng-repeat="review in profile.reviews">-->
+								<!--<div class="row" >-->
+									<!--<div class="col-sm-6" >-->
+										<!--<div class="reviewer-info" >-->
+											<!--<div class="review-photo" style="background-image:url('{{review.image}}')" ng-click="go('profile/'+review.userId)">-->
+					   						<!--</div>-->
+											<!--<div class="name">-->
+												<!--{{review.name}}-->
+												<!--<div class="city">-->
+													<!--{{review.city}}, {{review.country}}-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+									<!--<div class="col-sm-6" >-->
+										<!--<div class="date">-->
+												<!--{{review.date | date: 'MMMM yyyy'}}-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="text">-->
+									<!--{{review.review}}-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="col-sm-4 fix-scroll">-->
+			  	<!--<div class="user-info">-->
+				  	<!--<div class="profile-pic" style="background-image:url('{{profile.image}}')">-->
+					<!--</div>-->
 
-					<div class="personal">
-						<div class="name text">
-							{{profile.firstName}}
-						</div>
-						<div class="text">
-							{{profile.age}},{{profile.gender}}
-						</div>
-						<div class="text">
-							{{profile.ocupation}}
-						</div>
-						<div class="text" style="text-align:left;">
-							{{profile.aboutMe}}
-						</div>
-					</div>
-					<div class="swaps text">
-						Swaps: {{profile.swaps}}
-					</div>
-					<div class="traveling text">
-						<div class="not-swapping" ng-if="!profile.traveling">
-							Currently not swapping
-							<i id="datefilter0"></i>
-						</div>
-						<div class="swaps swapping" ng-if="profile.traveling">
-							Looking to swap in:
-							<div class="dates">
-								<div class="traveling-cities" ng-repeat="trip in profile.travelingInfo track by $index">
-									<strong>{{trip.dest}}</strong>: {{trip.departure | date : 'MM/dd/yy'}} - {{trip.returnDate | date : 'MM/dd/yy'}}
-									<i id="datefilter{{$index}}" class="datefilter glyphicon glyphicon-calendar fa fa-calendar"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="req-swap">
-						<input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="openRequest()" ng-hide="messageSent">
-						<div class="req-sent" ng-show="messageSent">
-							Request Sent
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+					<!--<div class="personal">-->
+						<!--<div class="name text">-->
+							<!--{{profile.firstName}}-->
+						<!--</div>-->
+						<!--<div class="text">-->
+							<!--{{profile.age}},{{profile.gender}}-->
+						<!--</div>-->
+						<!--<div class="text">-->
+							<!--{{profile.ocupation}}-->
+						<!--</div>-->
+						<!--<div class="text" style="text-align:left;">-->
+							<!--{{profile.aboutMe}}-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="swaps text">-->
+						<!--Swaps: {{profile.swaps}}-->
+					<!--</div>-->
+					<!--<div class="traveling text">-->
+						<!--<div class="not-swapping" ng-if="!profile.traveling">-->
+							<!--Currently not swapping-->
+							<!--<i id="datefilter0"></i>-->
+						<!--</div>-->
+						<!--<div class="swaps swapping" ng-if="profile.traveling">-->
+							<!--Looking to swap in:-->
+							<!--<div class="dates">-->
+								<!--<div class="traveling-cities" ng-repeat="trip in profile.travelingInfo track by $index">-->
+									<!--<strong>{{trip.dest}}</strong>: {{trip.departure | date : 'MM/dd/yy'}} - {{trip.returnDate | date : 'MM/dd/yy'}}-->
+									<!--<i id="datefilter{{$index}}" class="datefilter glyphicon glyphicon-calendar fa fa-calendar"></i>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="req-swap">-->
+						<!--<input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="openRequest()" ng-hide="messageSent">-->
+						<!--<div class="req-sent" ng-show="messageSent">-->
+							<!--Request Sent-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
 	</div>
 </div>
 <div id="requestModal" class="modal fade" role="dialog">
@@ -298,4 +343,5 @@
 			  </div>
 		</div>
 	</div>
+</div>
 </div>
