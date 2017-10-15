@@ -38,7 +38,9 @@
 
 		<div class="row">
 
-			<div class="apt-description col-lg-9 col-md-9 col-sm-9 col-xs-9">
+			<!--Left section-->
+
+			<div class="apt-description col-lg-9 col-md-9 col-sm-9 col-xs-6">
 
 				<div class="description-title">
 					{{profile.apptInfo.description}}
@@ -47,8 +49,46 @@
 					{{profile.apptInfo.room}} {{traveler.apptInfo.property != null ? "in " + traveler.apptInfo.property : ""}} • {{profile.city}}
 				</div>
 
+				<div class="simple-apt-info">
+					<div class="icon icon-man simple-apt-info-content"></div>
+					<div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}} swappers</div>
+					<div class="icon icon-bed simple-apt-info-content"></div>
+					<div class="bed-count simple-apt-info-content">6 beds</div>
+					<div class="icon icon-duck simple-apt-info-content"></div>
+					<div class="bath-count simple-apt-info-content">1 bath</div>
+					<div class="icon icon-door simple-apt-info-content"></div>
+					<div class="room-count simple-apt-info-content">3 bedrooms</div>
+				</div>
+
+				<br>
+				<div class="separator"></div>
+
+				<div class="container-fluid">
+					<div class="row">
+
+						<div class="col-xs-2 left-side-description">General</div>
+						<div class="col-xs-10 right-side-elaboration">{{profile.apptInfo.about}}</div>
+
+					</div>
+					<br><br><br>
+					<div class="row">
+						<div class="col-xs-2 left-side-description">Location & Space</div>
+						<div class="col-xs-10 right-side-elaboration">
+							{{profile.apptInfo.about}}
+							{{profile.apptInfo.about}}
+							{{profile.apptInfo.about}}
+							{{profile.apptInfo.about}}
+						</div>
+					</div>
+
+				</div>
+
+
 			</div>
-			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+			<!--Right section-->
+
+			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-6">
 
 				<div class="swapper-name">
 					{{profile.firstName}} {{profile.lastName}}
@@ -80,7 +120,10 @@
 						<div class="icon-plus-checkbox">
 							<div class="pet-icon"></div>
 							<div class="description-text">Pet Friendly</div>
-							<div class="check-container"><div class="checkbox-div"></div></div>
+							<div class="check-container">
+								<div class="checkbox-div" ng-show="profile.apptInfo.pets" style="background-image: url('../images/icons/V.png')"></div>
+								<div class="checkbox-div" ng-show="!profile.apptInfo.pets" style="background-image: url('../images/icons/X.png')"></div>
+							</div>
 						</div>
 
 					</div>
@@ -88,7 +131,10 @@
 						<div class="icon-plus-checkbox">
 							<div class="smoke-icon"></div>
 							<div class="description-text">Smoking Friendly</div>
-							<div class="check-container"><div class="checkbox-div"></div></div>
+							<div class="check-container">
+								<div class="checkbox-div" ng-show="profile.apptInfo.smoking" style="background-image: url('../images/icons/V.png')"></div>
+								<div class="checkbox-div" ng-show="!profile.apptInfo.smoking" style="background-image: url('../images/icons/X.png')"></div>
+							</div>
 						</div>
 					</div>
 
