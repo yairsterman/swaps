@@ -24,7 +24,7 @@
 
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 
-				<div class="photos prof-pic" style="background-image:url('https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/1977210_10154039364980601_336080314_n.jpg?oh=59bcee2232b43318d5bb1ae99b00a989&oe=5A85C492')">
+				<div class="photos prof-pic" style="background-image:url('{{profile.image}}')">
 				</div>
 
 			</div>
@@ -81,10 +81,208 @@
 						</div>
 					</div>
 
+					<br><br>
+
+					<div class="row">
+						<div class="icon-plus"></div>
+						<div class="plain-text">Read more</div>
+					</div>
+
+					<div class="separator" style="margin: 4% 0;"></div>
+
+
+
+					<div class="row">
+						<div class="col-xs-2 left-side-description">Basic amenities</div>
+						<div class="col-xs-4 right-side-elaboration">
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon kitchen-icon"></div>
+									<div class="description-text">Kitchen</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.kitchen" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.kitchen" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon tv-icon"></div>
+									<div class="description-text">TV</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.tv" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.tv" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon wifi-icon"></div>
+									<div class="description-text">Wi-Fi</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.wifi" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.wifi" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon ac-icon"></div>
+									<div class="description-text">Air Conditioning</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.airconditioning" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.airconditioning" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon heat-icon"></div>
+									<div class="description-text">Heating</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.heating"
+											 style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.heating"
+											 style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon washer-icon"></div>
+									<div class="description-text">Washer</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.washing"
+											 style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.washing"
+											 style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon dryer-icon"></div>
+									<div class="description-text">Dryer</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.dryer" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.dryer" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon hairdryer-icon"></div>
+									<div class="description-text">Hair Dryer</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.dryer" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.dryer" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon bathtub-icon"></div>
+									<div class="description-text">Bathtub</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.bathroom" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.bathroom" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-xs-2 left-side-description facilities">House facilities</div>
+						<div class="col-xs-4 right-side-elaboration">
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon elevator-icon"></div>
+									<div class="description-text">Elevator</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.elevator" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.elevator" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon parking-icon"></div>
+									<div class="description-text">Parking space</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.parking" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.parking" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon pool-icon"></div>
+									<div class="description-text">Pool</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.pool" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.pool" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon hottub-icon"></div>
+									<div class="description-text">Hot tub</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.pool" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.pool" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon fireplace-icon"></div>
+									<div class="description-text">Fireplace</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.pool" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.pool" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="icon-plus-checkbox">
+									<div class="icon garden-icon"></div>
+									<div class="description-text">Garden</div>
+									<div class="check-container">
+										<div class="checkbox-div" ng-show="profile.apptInfo.pool" style="background-image: url('../images/icons/V.png')"></div>
+										<div class="checkbox-div" ng-show="!profile.apptInfo.pool" style="background-image: url('../images/icons/X.png')"></div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+
+					<div class="separator" style="margin: 4% 0;"></div>
+
 				</div>
 
 
 			</div>
+
+
+
 
 			<!--Right section-->
 
