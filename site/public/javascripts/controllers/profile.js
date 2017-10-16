@@ -134,6 +134,23 @@ swapsApp.controller('profileController', function($scope, $rootScope, $routePara
         "pool": "Pool"
     };
 
+    //  Generates a boolean array of length 5 according to the rating:
+    //  5 stars will generate [true, true, true, true, true]
+    //  3 stars will generate [true, true, true, false, false] etc.
+    $scope.generateStars = function(rating) {
+        var ret = [];
+        var i = 1;
+        while (i <= rating) {
+            ret.push(true);
+            ++i;
+        }
+        while (i <= 5) {
+            ret.push(false);
+            ++i;
+        }
+        return ret;
+    };
+
     var backup_profile = {
         "_id": "58ff444b241286110c78e7fe",
         "firstName": "Yair",

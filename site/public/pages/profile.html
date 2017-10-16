@@ -134,6 +134,35 @@
 
 					<div class="separator" style="margin: 4% 0;"></div>
 
+
+                    <div class="container-fluid">
+
+                        <div class="col-xs-2 left-side-description">Comments</div>
+                        <div class="col-xs-10 right-side-elaboration">
+                            <div class="comments-header">{{profile.reviews.length}} Comments!</div>
+                            <br>
+                            <div class="comments-smaller-header">Total ranking</div>
+                            <div class="stars" ng-repeat="star in generateStars(profile.rating) track by $index">
+                                <div class="star icon-star-full" ng-if="star">fullstar</div>
+                                <div class="star icon-star-empty" ng-if="!star"></div>
+                            </div>
+
+                            <br><br>
+
+                            <div class="left-floaters-likes">
+                                <div class="icon icon-like"></div>
+                                <div class="like-count">COUNT Likes</div>
+                                <div class="icon icon-dislike"></div>
+                                <div class="like-count">COUNT Dislikes</div>
+                                <div class="icon icon-flag"></div>
+                                <div class="like-count">COUNT Reports</div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
 				</div>
 
 
