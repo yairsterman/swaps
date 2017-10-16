@@ -113,6 +113,27 @@ swapsApp.controller('profileController', function($scope, $rootScope, $routePara
     }, 100);
 
 
+    $scope.basicAmenities = {
+    "kitchen": "Kitchen",
+    "tv": "TV",
+    "wifi": "Wi-Fi",
+    "airconditioning": "Air Conditioning",
+    "washer": "Washer",
+    "dryer": "Dryer",
+    "heating": "Heating"
+    // "pets",
+    // "wheelchair",
+    // "babies",
+    // "smoking",
+    // "bathroom"
+    };
+
+    $scope.houseFacilities = {
+        "elevator": "Elevator",
+        "parking": "Parking Space",
+        "pool": "Pool"
+    };
+
     var backup_profile = {
         "_id": "58ff444b241286110c78e7fe",
         "firstName": "Yair",
