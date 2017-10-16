@@ -118,7 +118,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $routePara
     "tv": "TV",
     "wifi": "Wi-Fi",
     "airconditioning": "Air Conditioning",
-    "washer": "Washer",
+    "washing": "Washer",
     "dryer": "Dryer",
     "heating": "Heating"
     // "pets",
