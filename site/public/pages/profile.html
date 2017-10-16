@@ -142,7 +142,8 @@
                             <div class="comments-header">{{profile.reviews.length}} Comments!</div>
                             <br>
                             <div class="comments-smaller-header">Total ranking</div>
-                            <div class="stars" ng-repeat="star in generateStars(profile.rating) track by $index">
+                            <div class="no-rating stars" ng-if="profile.rating < 0">No rating yet</div>
+                            <div class="stars" ng-if="profile.rating >= 0" ng-repeat="star in generateStars(profile.rating) track by $index">
                                 <div class="star icon-star-full" ng-if="star">fullstar</div>
                                 <div class="star icon-star-empty" ng-if="!star"></div>
                             </div>
