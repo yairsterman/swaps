@@ -1,5 +1,5 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location) {
+swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
@@ -85,25 +85,27 @@ swapsApp.controller('profileController', function($scope, $rootScope, $routePara
         }
     }
 
-    var vw = (document.documentElement.clientWidth/100);
     var fixmeTop;     // get initial position of the element
+
+    $.fn.scrollBottom = function() {
+        return $document.height() - this.scrollTop() - this.height();
+    };
 
     var elementsReady = $interval(function() {
         var input = $('.fix-scroll');
-        var dates = document.getElementById('datefilter0');
-        if (input && dates && $scope.profile) {
+        if (input && $scope.profile) {
             setDates();
-            fixmeTop = $('.fix-scroll').offset().top - (7.5 * vw);
+            fixmeTop = $('.fix-scroll').offset().top;
             $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollTop(); // get current position
-                if (currentScroll >= fixmeTop) {           // apply position: fixed if you
-                    $('.fix-scroll').css({                      // scroll to that element or below it
+                var currentScroll = $(window).scrollBottom(); // get current position
+                if (currentScroll < fixmeTop) {           // apply position: fixed if you
+                    $('.profile-description').css({                      // scroll to that element or below it
                         position: 'fixed',
-                        top: '7.5vw',
+                        bottom: '0',
                         right: '0'
                     });
                 } else {                                    // apply position: static
-                    $('.fix-scroll').css({                      // if you scroll above it
+                    $('.profile-description').css({                      // if you scroll above it
                         position: 'static'
                     });
                 }
