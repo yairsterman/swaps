@@ -130,25 +130,3 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     }, 100);
 });
 
-swapsApp.directive('scrollOnClick', function() {
-    return {
-        restrict: 'A',
-        link: function(scope, $elm) {
-            $elm.on('click', function() {
-                $("html").animate({scrollTop: $elm.offset().top}, "slow");
-                $("html").animate({scrollBottom: 100}, "fast");
-            });
-        }
-    }
-});
-
-swapsApp.directive('scrollToTop', function() {
-    return {
-        restrict: 'A',
-        link: function(scope, $elm) {
-            $elm.on('click', function() {
-                $("html").animate({scrollTop: 0}, "slow");
-        });
-        }
-    }
-});
