@@ -1,3 +1,4 @@
+
 swapsApp.directive('scrollOnClick', function() {
     return {
         restrict: 'A',
@@ -13,7 +14,7 @@ swapsApp.directive('scrollOnClick', function() {
 swapsApp.directive('scrollToTop', function() {
     return {
         restrict: 'A',
-        controller: 'homeController',
+        // controller: 'homeController',
         link: function(scope, $elm) {
             $elm.on('click', function() {
                 $("html").animate({scrollTop: 0}, "fast");
