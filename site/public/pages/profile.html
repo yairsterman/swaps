@@ -42,32 +42,45 @@
 
 			<div class="apt-description col-lg-9 col-md-9 col-sm-9 col-xs-6">
 
-				<div class="description-title">
-					{{profile.apptInfo.description}}
-                    {{profile.apptInfo.description}}
-                    {{profile.apptInfo.description}}
-                    {{profile.apptInfo.description}}
-                    {{profile.apptInfo.description}}
-                    {{profile.apptInfo.description}}
-                    {{profile.apptInfo.description}}
+				<div class="caption-upto-separator">
+
+					<div class="description-title">
+						{{profile.apptInfo.description}}
+						{{profile.apptInfo.description}}
+						{{profile.apptInfo.description}}
+						{{profile.apptInfo.description}}
+						{{profile.apptInfo.description}}
+						{{profile.apptInfo.description}}
+						{{profile.apptInfo.description}}
+
+					</div>
+					<div class="under-title">
+						{{profile.apptInfo.room}} {{traveler.apptInfo.property != null ? "in " + traveler.apptInfo.property : ""}} • {{profile.city}}
+					</div>
+
+					<div class="simple-apt-info">
+						<div class="col-md-3 col-xs-6">
+							<div class="icon icon-man simple-apt-info-content"></div>
+							<div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}} swappers</div>
+						</div>
+						<div class="col-md-3 col-xs-6">
+							<div class="icon icon-bed simple-apt-info-content"></div>
+							<div class="bed-count simple-apt-info-content">6 beds</div>
+						</div>
+						<div class="col-md-3 col-xs-6">
+							<div class="icon icon-duck simple-apt-info-content"></div>
+							<div class="bath-count simple-apt-info-content">1 bath</div>
+						</div>
+						<div class="col-md-3 col-xs-6">
+							<div class="icon icon-door simple-apt-info-content"></div>
+							<div class="room-count simple-apt-info-content">3 bedrooms</div>
+						</div>
+
+
+					</div>
 
 				</div>
-				<div class="under-title">
-					{{profile.apptInfo.room}} {{traveler.apptInfo.property != null ? "in " + traveler.apptInfo.property : ""}} • {{profile.city}}
-				</div>
 
-				<div class="simple-apt-info">
-					<div class="icon icon-man simple-apt-info-content"></div>
-					<div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}} swappers</div>
-					<div class="icon icon-bed simple-apt-info-content"></div>
-					<div class="bed-count simple-apt-info-content">6 beds</div>
-					<div class="icon icon-duck simple-apt-info-content"></div>
-					<div class="bath-count simple-apt-info-content">1 bath</div>
-					<div class="icon icon-door simple-apt-info-content"></div>
-					<div class="room-count simple-apt-info-content">3 bedrooms</div>
-				</div>
-
-				<br>
 				<div class="separator"></div>
 
 				<div class="container-fluid">
@@ -176,16 +189,20 @@
 
 			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-6 fix-scroll">
 
-				<div class="swapper-name">
-					{{profile.firstName}} {{profile.lastName}}
+
+				<div class="name-and-mutual-friends">
+					<div class="swapper-name">
+						{{profile.firstName}} {{profile.lastName}}
+					</div>
+					<div class="under-name">
+						{{profile.age}} • {{profile.ocupation}}
+					</div>
+					<div class="mutual-friends">
+						<div class="icon icon-man"></div>
+						<div class="mutual-friends-text">3 Mutual friends</div>
+					</div>
 				</div>
-				<div class="under-name">
-					{{profile.age}} • {{profile.ocupation}}
-				</div>
-				<div class="mutual-friends">
-					<div class="icon icon-man"></div>
-					<div class="mutual-friends-text">3 Mutual friends</div>
-				</div>
+
 				<div class="separator separator-more-padding"></div>
 
 				<div>
