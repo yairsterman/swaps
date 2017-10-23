@@ -52,7 +52,7 @@ passport.use(new FacebookStrategy({
             email: profile._json.email,
             facebookId: profile.id,
             image: profile._json.picture.data.url,
-            ocupation: '',
+            occupation: '',
             aboutMe: '',
             country: '',
             city: '',
