@@ -152,7 +152,7 @@
 					<div class="separator" style="margin: 4% 0;"></div>
 
 
-                    <div class="container-fluid">
+                    <div class="container-fluid comments-container">
                         <div class="row">
                             <div class="col-xs-2 left-side-description">Comments</div>
                             <div class="col-xs-10 right-side-elaboration">
@@ -177,7 +177,33 @@
                                     <div class="like-count">COUNT Reports</div>
                                 </div>
                             </div>
+
                         </div>
+
+						<div class="separator before-comments"></div>
+
+						<div class="row comments-show">
+
+							<div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
+
+								<div class="col-md-2 dead-space"></div>
+
+								<div class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
+								</div>
+								<div class="col-md-8 commenter-comment-section">
+									<div class="commenter-name">{{commenter.name}}</div>
+									<div class="commenter-country-and-age">
+										{{commenter.country}}
+									</div>
+									<div class="commenter-comment">
+										{{commenter.review}}
+									</div>
+								</div>
+
+								<div class="separator"></div>
+
+							</div>
+						</div>
                     </div>
 				</div>
 			</div>

@@ -292,4 +292,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             }]
     };
 
+    $scope.profile = backup_profile;
+
 });
