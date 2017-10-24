@@ -94,14 +94,14 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     var elementsReady = $interval(function() {
         var input = $('.fix-scroll');
         if (input && $scope.profile) {
-            setDates();
-            fixmeTop = $('.fix-scroll').offset().top;
+            // setDates();
+            fixmeTop = $('.fix-scroll').offset().top - 25;
             $(window).scroll(function() {                  // assign scroll event listener
                 var currentScroll = $(window).scrollBottom(); // get current position
-                if (currentScroll < fixmeTop) {           // apply position: fixed if you
+                if ($(this).scrollTop() >= fixmeTop) {           // apply position: fixed if you
                     $('.profile-description').css({                      // scroll to that element or below it
                         position: 'fixed',
-                        bottom: '0',
+                        top: '0',
                         right: '0'
                     });
                 } else {                                    // apply position: static

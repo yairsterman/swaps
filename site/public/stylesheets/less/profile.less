@@ -301,10 +301,78 @@
 					}
 				}
 			}
+			.map-section {
+				.country-and-city {
+					font-size: 120%;
+					color: #616161;
+					font-weight: bold;
+				}
+				.address {
+					font-size: 120%;
+					font-weight: 100;
+					color: #616161;
+				}
+			}
 
 			.row {
 				margin-bottom: 2%;
 			}
+
+
+			// MAP
+			.map-view{
+				padding: 0 0 0 5px;
+			}
+			.map{
+				height: 46vw;
+				@media (max-width: @screen-sm-max) {
+					height: 36vw;
+				}
+				@media (max-width: @screen-xs-max) {
+					height: 80vw;
+				}
+				#travelerMarkerLayer {
+					img{
+						border-radius:50% !important;
+						width: 50px !important;
+						height: 50px !important;
+						display: block;
+						object-fit: cover;
+						transform: scale(0.75);
+						border:2px solid rgba(13, 134, 234, 0);
+						-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
+						box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
+						-webkit-transition: ease 1s; /* For Safari 3.1 to 6.0 */
+						transition: ease 1s;
+						&:hover{
+							-ms-transform: scale(1.2); /* IE 9 */
+							-webkit-transform: scale(1.2); /* Safari */
+							transform: scale(1.2);
+						}
+					}
+				}
+				.infoWindowContent{
+					font-size: 16px;
+					font-weight: bold;
+					padding-top: 10px;
+					color: #000;
+					background-color: rgba(192,192,192,0.8);
+				}
+				.travelers{
+					font-size:20px;
+					text-align: center;
+					font-weight: bold;
+					color: #045f79;
+				}
+				.map-photo{
+					width: 20vw;
+					height: 15vw;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+				}
+			}
+			// END MAP
 
 		}
 
