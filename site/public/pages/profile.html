@@ -40,7 +40,7 @@
 
 			<!--Left section-->
 
-			<div class="apt-description col-lg-9 col-md-9 col-sm-9 col-xs-6">
+			<div class="apt-description col-lg-9 col-md-9 col-sm-9 col-xs-9">
 
 				<div class="caption-upto-separator">
 
@@ -67,6 +67,10 @@
 							<div class="icon icon-bed simple-apt-info-content"></div>
 							<div class="bed-count simple-apt-info-content">6 beds</div>
 						</div>
+
+						<!--The following line is to fix the bootstrap grid on small screens-->
+						<div class="clearfix visible-xs"></div>
+
 						<div class="col-md-3 col-xs-6">
 							<div class="icon icon-duck simple-apt-info-content"></div>
 							<div class="bath-count simple-apt-info-content">1 bath</div>
@@ -81,10 +85,13 @@
 
 				</div>
 
-				<div class="separator"></div>
+				<div class="separator" style="clear: left"></div>
 
 				<div class="container-fluid">
 					<div class="row">
+
+						<!--The following line is to fix the bootstrap grid on small screens-->
+						<div class="clearfix visible-xs"></div>
 
 						<div class="col-xs-2 left-side-description">General</div>
 						<div class="col-xs-10 right-side-elaboration">{{profile.apptInfo.about}}</div>
@@ -113,8 +120,8 @@
 
 
 					<div class="row">
-						<div class="col-xs-2 left-side-description">Basic amenities</div>
-						<div class="col-xs-4 right-side-elaboration">
+						<div class="col-md-2 col-xs-4 left-side-description">Basic amenities</div>
+						<div class="col-md-4 col-xs-8 right-side-elaboration">
 
 
                             <div class="row" ng-repeat="(keyname, amenity) in basicAmenities">
@@ -130,8 +137,8 @@
 
 
 						</div>
-						<div class="col-xs-2 left-side-description facilities">House facilities</div>
-						<div class="col-xs-4 right-side-elaboration">
+						<div class="col-md-2 col-xs-4 left-side-description facilities">House facilities</div>
+						<div class="col-md-4 col-xs-8 right-side-elaboration">
 
 
                             <div class="row" ng-repeat="(keyname, amenity) in houseFacilities | limitTo: 2">
@@ -154,8 +161,8 @@
 
                     <div class="container-fluid comments-container">
                         <div class="row">
-                            <div class="col-xs-2 left-side-description">Comments</div>
-                            <div class="col-xs-10 right-side-elaboration">
+                            <div class="col-md-2 col-xs-12 left-side-description">Comments</div>
+                            <div class="col-md-10 col-xs-12 right-side-elaboration">
                                 <div class="comments-header">{{profile.reviews.length}} Comments!</div>
                                 <br>
                                 <div class="comments-smaller-header">Total ranking</div>
@@ -215,6 +222,7 @@
 							<div class="country-and-city">{{profile.country}} • {{profile.city}}</div>
 							<br>
 							<div class="address">{{profile.address.substr(0, profile.address.indexOf(','));}}</div>
+							<div class="address">{{profile.address}}</div>
 						</div>
 
 
@@ -240,7 +248,7 @@
 
 			<!--Right section-->
 
-			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-6 fix-scroll">
+			<div class="profile-description col-lg-3 col-md-3 col-sm-3 col-xs-3 fix-scroll">
 
 
 				<div class="name-and-mutual-friends">

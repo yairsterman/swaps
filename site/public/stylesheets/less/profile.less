@@ -53,6 +53,10 @@
 				height: 62px;
 				transition: ease 0.3s;
 
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+				}
+
 				&:hover {
 					transition: ease 0.3s;
 					white-space: normal;
@@ -77,13 +81,22 @@
 					padding-top: 1%;
 					padding-right: 3%;
 					font-size: 150%;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 14px;
+						clear: left;
+
+						&.icon {
+							width: 30px;
+							height: 30px;
+						}
+					}
 				}
 
 				.icon {
 					width: 50px;
 					height: 50px;
 					background-size: contain;
-					//background-image: url("../../images/icons/man.png");
 					background-position: 0px 0px;
 					float: left;
 				}
@@ -103,12 +116,20 @@
 				}
 			}
 
+
+
 			.left-side-description {
-				//margin-left: -20%;
 				font-size: 150%;
 				color: #0d78ad;
 				font-weight: bold;
 				text-align: center;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 10px;
+				}
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
 			}
 			.facilities {
 
@@ -116,6 +137,13 @@
 			.right-side-elaboration {
 				font-size: 120%;
 				color: #616161;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+				}
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
 			}
 			.icon-plus {
 				background-image: url("../../images/icons/plus1.png");
@@ -159,6 +187,11 @@
 				background-size: contain;
 				width: 50px;
 				height: 60px;
+
+				@media (max-width: @screen-xs-max) {
+					width: 30px;
+					height: 30px;
+				}
 			}
 
 			.description-text {
@@ -393,6 +426,13 @@
 				font-weight: bold;
 				padding: 10px 0;
 				color: #0d78ad;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+				}
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
 			}
 			.under-name {
 				font-size: 24px;
@@ -458,6 +498,10 @@
 					margin-top: 5%;
 					margin-left: 7%;
 					margin-right: 4%;
+					@media (max-width: @screen-xs-max) {
+						width: 10px;
+						height: 10px;
+					}
 
 					.checkbox-div {
 						float: left;
@@ -468,6 +512,11 @@
 						height: 30px;
 						margin-top: -8px;
 						margin-left: 0;
+
+						@media (max-width: @screen-xs-max) {
+							width: 24px;
+							height: 26px;
+						}
 					}
 				}
 			}
@@ -597,6 +646,7 @@
 				font-size: 36px;
 			    font-weight: bold;
 			    padding: 10px 0;
+
 			}
 			.city{
 				font-size: 18px;
@@ -725,134 +775,134 @@
 @screen-md-max:              (@screen-lg-min - 1);
 
 
-@media (max-width: @screen-xs-max) {
-	.profile-page {
-		.appt-slider-and-profpic {
-			margin-top: 1%;
-			//width: 95%;
-
-			.photos{
-				height:30vw;
-				position: relative;
-				.main-photo{
-					background-position: center;
-					background-repeat: no-repeat;
-					background-size: cover;
-					margin: auto;
-					height: 100%;
-					width: 100%;
-					padding-right: 102%;
-				}
-				.ng-image-gallery {
-					.ng-image-gallery-thumbnails{
-						.thumb{
-							display: none;
-						}
-					}
-				}
-			}
-			.prof-pic {
-				background-repeat: no-repeat;
-				background-size: cover;
-			}
-		}
-
-		.main-section {
-			.apt-description {
-				margin-top: 2%;
-
-				.description-title {
-					font-size: 32px;
-					font-weight: bold;
-					padding: 10px 0;
-					color: #0d78ad;
-				}
-				.under-title {
-					font-size: 24px;
-					color: #616161;
-					font-size: 142%;
-					font-weight: 100;
-				}
-				.simple-apt-info {
-					display: inline-flex;
-
-					.simple-apt-info-content {
-
-					}
-				}
-			}
-
-			.profile-description {
-				margin-top: 2%;
-
-				.swapper-name {
-					font-size: 32px;
-					font-weight: bold;
-					padding: 10px 0;
-					color: #0d78ad;
-				}
-				.under-name {
-					font-size: 24px;
-					color: #616161;
-					font-size: 142%;
-					font-weight: 100;
-				}
-
-				.mutual-friends {
-					.icon-man {
-						background-position: -207px -5px;
-						float: left;
-					}
-					.mutual-friends-text {
-						margin-top: 5%;
-						margin-left: 16%;
-						padding-top: 4%;
-						color: #616161;
-					}
-				}
-				.about-me {
-					font-size: 120%;
-					font-weight: bold;
-					color: #0d78ad;
-					margin-bottom: 4%;
-				}
-				.contact-host {
-					font-size: 120%;
-					font-weight: bold;
-					color: #616161;
-					margin-bottom: 4%;
-				}
-				.icon-plus-checkbox {
-					.pet-icon {
-						float: left;
-						background-image: url("../../images/icons/pets.png");
-						display: block;
-						background-size: contain;
-						width: 30px;
-						height: 30px;
-					}
-					.smoke-icon {
-
-						width: 30px;
-						height: 30px;
-					}
-					.description-text {
-
-					}
-
-					.check-container {
-
-
-						.checkbox-div {
-
-						}
-					}
-				}
-
-			}
-		}
-	}
-}
+//@media (max-width: @screen-xs-max) {
+//	.profile-page {
+//		.appt-slider-and-profpic {
+//			margin-top: 1%;
+//			//width: 95%;
+//
+//			.photos{
+//				height:30vw;
+//				position: relative;
+//				.main-photo{
+//					background-position: center;
+//					background-repeat: no-repeat;
+//					background-size: cover;
+//					margin: auto;
+//					height: 100%;
+//					width: 100%;
+//					padding-right: 102%;
+//				}
+//				.ng-image-gallery {
+//					.ng-image-gallery-thumbnails{
+//						.thumb{
+//							display: none;
+//						}
+//					}
+//				}
+//			}
+//			.prof-pic {
+//				background-repeat: no-repeat;
+//				background-size: cover;
+//			}
+//		}
+//
+//		.main-section {
+//			.apt-description {
+//				margin-top: 2%;
+//
+//				.description-title {
+//					font-size: 32px;
+//					font-weight: bold;
+//					padding: 10px 0;
+//					color: #0d78ad;
+//				}
+//				.under-title {
+//					font-size: 24px;
+//					color: #616161;
+//					font-size: 142%;
+//					font-weight: 100;
+//				}
+//				.simple-apt-info {
+//					display: inline-flex;
+//
+//					.simple-apt-info-content {
+//
+//					}
+//				}
+//			}
+//
+//			.profile-description {
+//				margin-top: 2%;
+//
+//				.swapper-name {
+//					font-size: 32px;
+//					font-weight: bold;
+//					padding: 10px 0;
+//					color: #0d78ad;
+//				}
+//				.under-name {
+//					font-size: 24px;
+//					color: #616161;
+//					font-size: 142%;
+//					font-weight: 100;
+//				}
+//
+//				.mutual-friends {
+//					.icon-man {
+//						background-position: -207px -5px;
+//						float: left;
+//					}
+//					.mutual-friends-text {
+//						margin-top: 5%;
+//						margin-left: 16%;
+//						padding-top: 4%;
+//						color: #616161;
+//					}
+//				}
+//				.about-me {
+//					font-size: 120%;
+//					font-weight: bold;
+//					color: #0d78ad;
+//					margin-bottom: 4%;
+//				}
+//				.contact-host {
+//					font-size: 120%;
+//					font-weight: bold;
+//					color: #616161;
+//					margin-bottom: 4%;
+//				}
+//				.icon-plus-checkbox {
+//					.pet-icon {
+//						float: left;
+//						background-image: url("../../images/icons/pets.png");
+//						display: block;
+//						background-size: contain;
+//						width: 30px;
+//						height: 30px;
+//					}
+//					.smoke-icon {
+//
+//						width: 30px;
+//						height: 30px;
+//					}
+//					.description-text {
+//
+//					}
+//
+//					.check-container {
+//
+//
+//						.checkbox-div {
+//
+//						}
+//					}
+//				}
+//
+//			}
+//		}
+//	}
+//}
 
 @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
 
