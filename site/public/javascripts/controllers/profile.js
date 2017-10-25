@@ -95,13 +95,15 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         var input = $('.fix-scroll');
         if (input && $scope.profile) {
             // setDates();
-            fixmeTop = $('.fix-scroll').offset().top - 25;
+            // fixmeTop = $('.fix-scroll').offset().top - 25;
+            fixmeTop = $('.fix-scroll').offset().top;
+            var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
             $(window).scroll(function() {                  // assign scroll event listener
                 var currentScroll = $(window).scrollBottom(); // get current position
-                if ($(this).scrollTop() >= fixmeTop) {           // apply position: fixed if you
+                if ($(this).scrollTop() >= -bottom) {           // apply position: fixed if you
                     $('.profile-description').css({                      // scroll to that element or below it
                         position: 'fixed',
-                        top: '0',
+                        bottom: '0',
                         right: '0'
                     });
                 } else {                                    // apply position: static
@@ -110,6 +112,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                     });
                 }
             });
+            console.log(bottom);
             $interval.cancel(elementsReady);
         }
     }, 100);
