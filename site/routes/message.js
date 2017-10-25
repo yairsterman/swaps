@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var Q = require('q');
+var Data = require('../user_data/data.js');
 
 var error = {
 	error: true,
@@ -16,7 +17,6 @@ router.post('/sendMessage', function(req, res, next) {
 	var now = Date.now();
 	var newMessage = {
 				date: now,
-				read: false,
 				isRequest: false,
 				message: message
 			}
@@ -61,14 +61,13 @@ router.post('/sendRequest', function(req, res, next) {
 	var newMessage = {
 				id: sender._id,
 				date: now,
-				read: false,
 				isRequest: true,
 				message: message
 			}
 
-    saveRequest(sender._id, recipientId, departure, returnDate, 'Confirm')
+    saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending)
 	.then(function(){
-		return saveRequest(recipientId, sender._id, departure, returnDate, 'Pending');
+		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending);
 	})
 	.then( function(){
 		return saveMessage(sender._id, recipientId, sender._id, newMessage);
@@ -95,6 +94,20 @@ router.post('/sendRequest', function(req, res, next) {
 router.post('/confirmRequest', function(req, res, next) {
 	var recipientId = req.body.recipientId;
 	var sender = req.body.user;
+    var departure;
+    var returnDate;
+    if(req.body.dates){
+        var dates = req.body.dates.split('-');
+        departure = Date.parse(dates[0].trim());
+        returnDate = Date.parse(dates[1].trim());
+    }
+    confirmRequest(sender._id, recipientId, departure, returnDate).then(function(){
+    	res.json({status: 'success', message: 'confirmed'});
+	},
+	function(err){
+		res.json(err);
+	});
+
 });
 
 function saveMessage(senderId, recipientId, messageId, message){
@@ -120,6 +133,7 @@ function saveMessage(senderId, recipientId, messageId, message){
 							for(var i = 0; i < messages.length; i++){
 								if(messages[i].id.toString() === sender._id.toString()){
 									messages[i].messages.push(message);
+									messages[i].read = false;
 									index = i;
 									break;
 								}
@@ -130,6 +144,7 @@ function saveMessage(senderId, recipientId, messageId, message){
 									id: sender._id,
 									image: sender.image,
 									name: sender.firstName + ' ' + sender.lastName,
+									read: false,
 									messages: [message]
 								});
 							}
@@ -208,6 +223,72 @@ function saveRequest(senderId, recipientId, departure, returnDate, status){
 		}
 	});
 	return defferd.promise;
+}
+
+function confirmRequest(senderId, recipientId, departure, returnDate){
+    var deferd = Q.defer();
+    User.findOne({_id: senderId})
+		.then(function (err, sender) {
+			if (err || !sender._id){
+				error.message = "Request not sent";
+				deferd.reject(error);
+			}
+			else {
+				var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
+                if(requestIndex == -1){
+                    error.message = "no request found";
+                    deferd.reject(error);
+                }
+				sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
+                return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+            }
+		})
+    	.then(function (err) {
+            if (err) {
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else {
+                return User.findOne({_id: recipientId});
+            }
+        })
+		.then(function(err, recipient){
+			if (err || !recipient._id){
+				error.message = "Request not sent";
+				deferd.reject(error);
+			}
+			else{
+				var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
+				if(requestIndex == -1){
+                    error.message = "no request found";
+                    deferd.reject(error);
+				}
+				recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
+				return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
+			}
+		})
+		.then(function (err, updated) {
+			if (err){
+				console.log("Request not sent" + err);
+				error.message = "Request not sent";
+				deferd.reject(error);
+			}
+			else{
+				console.log("updated DB");
+				deferd.resolve();
+			}
+		});
+	return deferd.promise;
+}
+
+function findRequest(requests, id, departure, returnDate){
+	for(var i = 0; i < requests.length; i++){
+		var request = requests[i];
+		if(request.id == id && request.departure == departure && request.returnDate == returnDate){
+			return i;
+		}
+	}
+	return -1;
 }
 
 module.exports = router;
