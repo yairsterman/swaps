@@ -92,6 +92,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     };
 
     var elementsReady = $interval(function() {
+        $('.circle-profile-pic').hide();
         var input = $('.fix-scroll');
         if (input && $scope.profile) {
             // setDates();
@@ -106,10 +107,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                         bottom: '0',
                         right: '0'
                     });
+                    $('.circle-profile-pic').fadeIn(500);
                 } else {                                    // apply position: static
                     $('.profile-description').css({                      // if you scroll above it
                         position: 'static'
                     });
+                    $('.circle-profile-pic').fadeOut(500);
                 }
             });
             console.log(bottom);

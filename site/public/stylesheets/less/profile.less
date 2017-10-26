@@ -81,6 +81,7 @@
 					padding-top: 1%;
 					padding-right: 3%;
 					font-size: 150%;
+					color: #616161;
 
 					@media (max-width: @screen-xs-max) {
 						font-size: 14px;
@@ -170,6 +171,11 @@
 				margin-left: 7%;
 				margin-right: 4%;
 
+				@media (max-width: @screen-xs-max) {
+					width: 10px;
+					height: 10px;
+				}
+
 				.checkbox-div {
 					float: left;
 					//background-image: url("../../images/icons/V.png");
@@ -179,6 +185,11 @@
 					height: 30px;
 					margin-top: -8px;
 					margin-left: 0;
+
+					@media (max-width: @screen-xs-max) {
+						width: 24px;
+						height: 26px;
+					}
 				}
 			}
 			.icon {
@@ -311,6 +322,12 @@
 						background-position: center;
 						background-repeat: no-repeat;
 						background-size: cover;
+
+						@media (max-width: @screen-xs-max) {
+							height: 50px;
+							width: 50px;
+							float: left;
+						}
 					}
 					.commenter-name {
 						font-size: 120%;
@@ -339,11 +356,21 @@
 					font-size: 120%;
 					color: #616161;
 					font-weight: bold;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 10px;
+						text-align: center;
+					}
 				}
 				.address {
 					font-size: 120%;
 					font-weight: 100;
 					color: #616161;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 14px;
+						text-align: center;
+					}
 				}
 			}
 
@@ -420,6 +447,23 @@
 
 			.name-and-mutual-friends {
 				height: 120px;
+
+				.circle-profile-pic {
+					height: 100px;
+					width: 100px;
+					border-radius: 50%;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+					float: right;
+					margin-right: 18px;
+
+					@media (max-width: @screen-xs-max) {
+						width: 50px;
+						height: 50px;
+						margin-right: 10px;
+					}
+				}
 			}
 			.swapper-name {
 				font-size: 32px;
@@ -439,18 +483,39 @@
 				color: #616161;
 				font-size: 142%;
 				font-weight: 100;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+					text-align: center;
+				}
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
 			}
 
 			.mutual-friends {
 				.icon-man {
 					background-position: -207px -5px;
 					float: left;
+
+
+					@media (max-width: @screen-xs-max) {
+						width: 30px;
+						height: 30px;
+						background-size: 185px 185px;
+						background-position: -144px -5px;
+					}
 				}
 				.mutual-friends-text {
 					margin-top: 5%;
 					margin-left: 16%;
 					padding-top: 4%;
 					color: #616161;
+					font-size: 130%;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 10px;
+					}
 				}
 			}
 			.about-me {
@@ -458,12 +523,29 @@
 				font-weight: bold;
 				color: #0d78ad;
 				margin-bottom: 4%;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+				}
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
+			}
+			.about-text {
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 10px;
+				}
 			}
 			.contact-host {
 				font-size: 120%;
 				font-weight: bold;
 				color: #616161;
 				margin-bottom: 4%;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 14px;
+				}
 			}
 			.icon-plus-checkbox {
 				.pet-icon {
@@ -473,6 +555,12 @@
 					background-size: contain;
 					width: 50px;
 					height: 50px;
+					
+					@media (max-width: @screen-xs-max) {
+						width: 30px;
+						height: 30px;
+						margin-left: 30px;
+					}
 				}
 				.smoke-icon {
 					float: left;
@@ -481,12 +569,22 @@
 					background-size: contain;
 					width: 50px;
 					height: 50px;
+
+					@media (max-width: @screen-xs-max) {
+						width: 30px;
+						height: 30px;
+						margin-left: 30px;
+					}
 				}
 				.description-text {
 					float: left;
 					padding: 8% 0 0 6%;
 					font-size: 122%;
 					color: #616161;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 12px;
+					}
 				}
 
 				.check-container {
