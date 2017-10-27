@@ -146,6 +146,30 @@
 					font-size: 18px;
 				}
 			}
+
+			.read-more-activation {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+			}
+			.read-more-button {
+				width: fit-content;
+
+				@media (max-width: @screen-xs-max) {
+					&.plain-text {
+						font-size: 14px;
+						width: 114px;
+					}
+					&.icon-plus {
+						width: 30px;
+						height: 30px;
+						margin-right: 4%;
+					}
+				}
+			}
+
 			.icon-plus {
 				background-image: url("../../images/icons/plus1.png");
 				width: 38px;
@@ -327,6 +351,7 @@
 							height: 50px;
 							width: 50px;
 							float: left;
+							margin-right: 7%;
 						}
 					}
 					.commenter-name {
@@ -449,8 +474,8 @@
 				height: 120px;
 
 				.circle-profile-pic {
-					height: 100px;
-					width: 100px;
+					//height: 100px;
+					//width: 100px;
 					border-radius: 50%;
 					background-position: center;
 					background-repeat: no-repeat;

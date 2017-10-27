@@ -2,6 +2,7 @@
 
 const visibleUserData = {
     accessible: {
+        displayName:true,
         firstName:true,
         age:true,
         gender:true,

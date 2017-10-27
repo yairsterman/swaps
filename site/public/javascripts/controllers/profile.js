@@ -1,5 +1,5 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location) {
+swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $window) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
@@ -92,7 +92,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     };
 
     var elementsReady = $interval(function() {
-        $('.circle-profile-pic').hide();
+        // $('.circle-profile-pic').hide();
         var input = $('.fix-scroll');
         if (input && $scope.profile) {
             // setDates();
@@ -107,18 +107,62 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                         bottom: '0',
                         right: '0'
                     });
-                    $('.circle-profile-pic').fadeIn(500);
+                    // console.log(window.innerWidth);
+                    if (window.innerWidth > 768) {
+                        // $('.circle-profile-pic').fadeIn(500);
+                        $('.circle-profile-pic').css({
+                            'transition': 'all 0.4s ease',
+                            '-webkit-transition': 'all 0.4s ease',
+                            '-moz-transition': 'all 0.4s ease',
+                            '-o-transition': 'all 0.4s ease',
+                            width: '100px',
+                            height: '100px',
+                            opacity: '1',
+                            'margin-top': '0',
+                            'margin-right': '0'
+                        }, 200);
+                    } else {
+                        $('.circle-profile-pic').fadeIn(500);
+                    }
                 } else {                                    // apply position: static
                     $('.profile-description').css({                      // if you scroll above it
                         position: 'static'
                     });
-                    $('.circle-profile-pic').fadeOut(500);
+                    // $('.circle-profile-pic').fadeOut(500);
+                    if (window.innerWidth > 768) {
+                        $('.circle-profile-pic').css({
+                            'transition': 'all 0.4s ease',
+                            '-webkit-transition': 'all 0.4s ease',
+                            '-moz-transition': 'all 0.4s ease',
+                            '-o-transition': 'all 0.4s ease',
+                            'width': '10px',
+                            'height': '10px',
+                            opacity: '0',
+                            'margin-top': '-270px',
+                            'margin-right': '200px'
+                        }, 200);
+                    } else {
+                        $('.circle-profile-pic').fadeOut(500);
+                    }
+                    // $('.circle-profile-pic').text("@media (max-width: @screen-xs-max) {width: 50px; height: 50px; margin-right: 10px;}")
                 }
             });
-            console.log(bottom);
             $interval.cancel(elementsReady);
         }
     }, 100);
+
+    $scope.more = true;
+    $scope.readMore = function() {
+        if ($scope.more) {
+            $('.grab-read-more').removeClass('read-more-activation');
+            $('.plain-text.read-more-button').html('Read less');
+            $scope.more = false;
+        } else {
+            $('.grab-read-more').addClass('read-more-activation');
+            $('.plain-text.read-more-button').html('Read more');
+            $scope.more = true;
+        }
+    };
 
 
     $scope.basicAmenities = {

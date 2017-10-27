@@ -94,13 +94,13 @@
 						<div class="clearfix visible-xs"></div>
 
 						<div class="col-xs-2 left-side-description">General</div>
-						<div class="col-xs-10 right-side-elaboration">{{profile.apptInfo.about}}</div>
+						<div class="col-xs-10 right-side-elaboration grab-read-more read-more-activation">{{profile.apptInfo.about}}</div>
 
 					</div>
 					<br><br><br>
 					<div class="row">
 						<div class="col-xs-2 left-side-description">Location & Space</div>
-						<div class="col-xs-10 right-side-elaboration">
+						<div class="col-xs-10 right-side-elaboration grab-read-more read-more-activation">
 							{{profile.apptInfo.about}}
 							{{profile.apptInfo.about}}
 							{{profile.apptInfo.about}}
@@ -111,8 +111,8 @@
 					<br><br>
 
 					<div class="row">
-						<div class="icon-plus"></div>
-						<div class="plain-text">Read more</div>
+						<div class="icon-plus read-more-button" ng-click="readMore()"></div>
+						<div class="plain-text read-more-button" ng-click="readMore()">Read more</div>
 					</div>
 
 					<div class="separator" style="margin: 4% 0;"></div>
@@ -253,13 +253,14 @@
 
 				<div class="name-and-mutual-friends">
 					<div class="swapper-name">
-						{{profile.firstName}} {{profile.lastName}}
+						<!--{{profile.firstName}} {{profile.lastName}}-->
+						{{profile.displayName}}
 					</div>
 
 					<div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
 
 					<div class="under-name">
-						{{profile.age}} • {{profile.ocupation}}
+						{{profile.age}} • {{profile.occupation}}
 					</div>
 					<div class="mutual-friends">
 						<div class="icon icon-man"></div>
