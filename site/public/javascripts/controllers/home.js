@@ -92,7 +92,16 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
             types: ['(cities)']
         });
+
+        UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0).then(function(data) {
+            $scope.travelers = data.data.users;
+        });
     }
+
+    $.fn.scrollBottom = function() {
+        return $document.height() - this.scrollTop() - this.height();
+    };
+
 
     var fixmeTop;     // get initial position of the element
 
@@ -123,6 +132,24 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                         $('.navbar').removeClass('navbar-other');
                         $('.navbar').removeClass('sticky');
                     },500);
+                }
+            });
+            var fixmeHow = $('.how-it-works').offset().top + 100;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollBottom(); // get current position
+                if (currentScroll < fixmeHow) {
+                    $('.how-it-works').css({'height': '48vw'});
+                    $timeout(function(){
+                        $('.description-icon').css({'animation': 'bounce 1s'});
+                        $('.description-icon').css({'transform': 'scale(0.8)'});
+                    },1000)
+                }
+            });
+            var fixmeborder = $('.points-container-border').offset().top + 20;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeborder) {
+                    $('.swappers-border').css({'width': '12%'});
                 }
             });
             $interval.cancel(elementsReady);

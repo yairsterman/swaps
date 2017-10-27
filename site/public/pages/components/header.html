@@ -1,5 +1,5 @@
 <div class="header">
-  	<nav class="navbar navbar-default navbar-toggleable-md navbar-light bg-faded {{$root.homepage?'':'navbar-other'}}">
+  	<nav class="navbar navbar-default navbar-toggleable-md navbar-light bg-faded">
 	  <a class="navbar-brand" href="" ng-click ="go('')">
 		  <div class="logo" style="background-image:url('../../images/logo/logo.png')">
 		  </div>
@@ -32,11 +32,11 @@
                 <div class="underlined"></div>
             </div>
             <div class="login sign-up" data-toggle="modal" data-target="#signUpModal">
-                Sign Up
+                Join
                 <div class="underlined"></div>
             </div>
 		    <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
-		    	Login
+		    	Log In
                 <div class="underlined"></div>
             </div>
 			 <div class="user-area" ng-if="user._id">

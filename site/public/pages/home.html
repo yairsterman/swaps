@@ -1,13 +1,9 @@
 <div class="home-page">
-    <div class="home-bg">
-    </div>
-    <div class="section" id="findSwap">
+    <div class="section main-section" id="findSwap">
         <div class="title-container">
             <div class="title-swaps">Swaps</div>
             <div class="points-container">
-                Travel Anywhere<div></div>
-                Switch Homes<div></div>
-                Live as a Local<div></div>
+                Home Is Wherever<div></div>
                 <div class="points-container-border"></div>
             </div>
         </div>
@@ -27,7 +23,7 @@
                     <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">
                 </div>
                 <div class="search-field right col-sm-4 col-xs-12 ">
-                    <label for="guests">How Many</label>
+                    <label for="guests">Guests</label>
                     <div class="guests-search">
                         <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
                     </div>
@@ -36,38 +32,77 @@
             </div>
         </div>
     </div>
-    <div class="title">
-        <span scroll-on-click>Featured Destinations</span>
-    </div>
-    <div class="section featured-destinations">
-        <div class="columns col-30">
-            <div class="city he-60"
-                 ng-mouseover="changeImage(0)"
-                 ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
-
-                <div class="city-text">{{cities[0].name}}</div>
-            </div>
-            <div class="city he-40"
-                 ng-mouseover="changeImage(1)"
-                 ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
-                <div class="city-text">{{cities[1].name}}</div>
-            </div>
+    <div class="section">
+        <div class="title swappers">
+            <span scroll-on-click>Swappers looking for a place in {{userCity}}</span>
+            <div class="swappers-border"></div>
         </div>
-        <div class="columns col-70">
-            <div class="city he-40"
-                 ng-mouseover="changeImage(2)"
-                 ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
-            <div class="city-text">{{cities[2].name}}</div>
-            </div>
-            <div class="city he-60 width-60 "
-                 ng-mouseover="changeImage(3)"
-                 ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
-            <div class="city-text">{{cities[3].name}}</div>
-            </div>
-            <div class="city he-60 width-40"
-                 ng-mouseover="changeImage(4)"
-                 ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
-            <div class="city-text">{{cities[4].name}}</div>
+        <div class="travelers-list">
+            <div class="mg-0 row">
+                <div class= "traveler-col col-sm-4 col-xs-12" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}">
+                    <div class="traveler" ng-click="go('profile/'+traveler._id)">
+                        <div class="">
+                            <!--CAROUSEL START-->
+                            <div ng-attr-id="{{'myCarousel' + traveler._id}}"  class="carousel slide" data-ride="carousel" data-interval="false">
+                                <!-- Wrapper for carousel items -->
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <img src="#" alt="First slide">
+                                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + traveler.photos[0] + ')'}">
+                                        </div>
+                                    </div>
+                                    <div class="item" ng-repeat="photo in traveler.photos.slice(1,entries.length)">
+                                        <img src="#" alt="{{$index}} slide">
+                                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')'}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Carousel controls -->
+                                <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
+                                    <span class="carousel-control-arrow icon icon-arrow-left"></span>
+                                </div>
+                                <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
+                                    <span class="carousel-control-arrow icon icon-arrow-right"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-img" style="background-image: url('{{traveler.image}}')">
+
+                        </div>
+                        <!--CAROUSEL END-->
+                        <div class="user-info">
+                            <div class="apt-title">
+                                {{traveler.apptInfo.description}}
+                            </div>
+                            <div class="apt-sub-title">
+                                {{traveler.apptInfo.room}} in {{traveler.firstName}}'s {{traveler.apptInfo.property}}
+                            </div>
+                            <div class="rating">
+                                <span class="icon icon-star" ng-if="traveler.reviews.length > 0"></span>
+                                <span class="icon icon-star" ng-if="traveler.rating > 1"></span>
+                                <span class="icon icon-star" ng-if="traveler.rating > 2"></span>
+                                <span class="icon icon-star" ng-if="traveler.rating > 3"></span>
+                                <span class="icon icon-star" ng-if="traveler.rating > 4"></span>
+                                <span class="number-reviews" ng-if="traveler.rating > 0">{{traveler.reviews.length}}</span>
+                                <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
+                            </div>
+                            <div class="basics">
+                                <div class="tiny-text">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    {{traveler.apptInfo.guests}} Guests
+                                </div>
+                                <div class="tiny-text">
+                                    <span class="glyphicon glyphicon-bed"></span>
+                                    6 beds
+                                </div>
+                                <div class="tiny-text">
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    15 Mutual Friends
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -98,6 +133,41 @@
             </div>
             <div class="col-xs-12">
                 <button class="start-button">Start</button>
+            </div>
+        </div>
+    </div>
+    <div class="title" id="featuredDestinations">
+        <span scroll-on-click>Featured Destinations</span>
+    </div>
+    <div class="section featured-destinations">
+        <div class="columns col-30">
+            <div class="city he-60"
+                 ng-mouseover="changeImage(0)"
+                 ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
+
+                <div class="city-text">{{cities[0].name}}</div>
+            </div>
+            <div class="city he-40"
+                 ng-mouseover="changeImage(1)"
+                 ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
+                <div class="city-text">{{cities[1].name}}</div>
+            </div>
+        </div>
+        <div class="columns col-70">
+            <div class="city he-40"
+                 ng-mouseover="changeImage(2)"
+                 ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
+                <div class="city-text">{{cities[2].name}}</div>
+            </div>
+            <div class="city he-60 width-60 "
+                 ng-mouseover="changeImage(3)"
+                 ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
+                <div class="city-text">{{cities[3].name}}</div>
+            </div>
+            <div class="city he-60 width-40"
+                 ng-mouseover="changeImage(4)"
+                 ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
+                <div class="city-text">{{cities[4].name}}</div>
             </div>
         </div>
     </div>
