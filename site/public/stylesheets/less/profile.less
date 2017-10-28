@@ -847,12 +847,20 @@
 		width: 30px;
 		height: 47px;
 		background-size: 270px;
+		animation: spin 2s;
+		transform: rotate(360deg);
 	}
 	.separator {
 		display: block;
 		margin: 8% 0;
 		border-bottom: 1px solid #bababa;
 		width: 100%;
+	}
+	.hiddenn {
+		opacity: 0; !important;
+	}
+	.visible {
+		opacity: 1;
 	}
 }
 .modal-content{

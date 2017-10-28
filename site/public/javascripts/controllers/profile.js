@@ -164,6 +164,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
     };
 
+    // $(document).ready(function() {
+    //     $('.icon').addClass("hiddenn").viewportChecker({
+    //         classToAdd: 'visible animated fadeIn',
+    //         offset: 100
+    //     });
+    // });
+
 
     $scope.basicAmenities = {
     "kitchen": "Kitchen",
