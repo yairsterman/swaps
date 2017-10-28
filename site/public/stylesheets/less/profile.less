@@ -55,6 +55,7 @@
 
 				@media (max-width: @screen-xs-max) {
 					font-size: 12px;
+					height: 26px;
 				}
 
 				&:hover {
@@ -62,6 +63,10 @@
 					white-space: normal;
 					color: #0d9ce2;
 					height: 200px;
+
+					@media (max-width: @screen-xs-max) {
+						height: 110px;
+					}
 				}
 			}
 			.under-title {
@@ -465,6 +470,12 @@
 
 		.profile-description {
 			margin-top: 2%;
+
+			@media (max-width: @screen-xs-max) {
+				-webkit-box-shadow: -7px -1px 51px -20px rgba(0,0,0,0.75);
+				-moz-box-shadow: -7px -1px 51px -20px rgba(0,0,0,0.75);
+				box-shadow: -7px -1px 51px -20px rgba(0,0,0,0.75);
+			}
 
 			.separator-more-padding {
 				padding-top: 15%;
