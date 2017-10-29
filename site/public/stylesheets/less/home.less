@@ -29,6 +29,9 @@
 			text-align: center;
 			font-size: 30px;
 			font-weight: 400;
+			@media (max-width: @screen-xs-max) {
+				font-size: 20px;
+			}
 		}
 	}
 	.mg-10{
@@ -51,6 +54,9 @@
 			background-size: cover;
 			background-repeat: no-repeat;
 			position: relative;
+			@media (max-width: @screen-xs-max) {
+				height: 140vw;
+			}
 		}
 	}
 	.featured-destinations{
@@ -124,6 +130,9 @@
 		width: 70%;
 		margin: auto;
 		padding: 12px 30px;
+		@media (max-width: @screen-xs-max) {
+			width: 100%;
+		}
 		.title-swaps {
 			color: #fff;
 			font-size: 56px;
@@ -157,6 +166,10 @@
 		position: absolute;
 		left: 15%;
 		bottom: 0;
+		@media (max-width: @screen-xs-max) {
+			width: 100%;
+			left: 0;
+		}
 		.start-swapping{
 			padding-bottom: 10px;
 			padding-left: 5px;
@@ -265,6 +278,7 @@
 		height: 0vw;
 		transition: 1.6s ease;
 		overflow: hidden;
+
 		.inner-section{
 			background-color: #ffffff;
 			transition: 1.5s ease;

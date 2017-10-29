@@ -124,7 +124,7 @@ function filterUsers(users, query){
 }
 
 function filterGuests(user, guests){
-    if(guests && (!user.apptInfo.guests || user.apptInfo.guests < guests) ){
+    if(guests && user.apptInfo && (!user.apptInfo.guests || user.apptInfo.guests < guests) ){
         return false;
     }
     return true;
@@ -138,12 +138,17 @@ function filterProperty(user, propertyType){
 }
 
 function filterAmenities(user, amenities){
-    for(var i = 0; i < amenities.length; i++){
-    	if(!user.apptInfo.amenities.includes(amenities[i])){
-			return false;
-		}
-	}
-	return true;
+    if(amenities && user.apptInfo.amenities){
+        for(var i = 0; i < amenities.length; i++){
+            if(!user.apptInfo.amenities.includes(amenities[i])){
+                return false;
+            }
+        }
+        return true;
+    }
+    else{
+        return true;
+    }
 }
 
 function filterDestination(user, destination){

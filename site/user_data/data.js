@@ -2,7 +2,6 @@
 
 const visibleUserData = {
     accessible: {
-        displayName:true,
         firstName:true,
         age:true,
         gender:true,
@@ -60,6 +59,7 @@ const visibleUserData = {
         reviews:true,
         apptInfo:true,
         rating:true,
+        radius:true,
         messages: true,
         requests: true
     }

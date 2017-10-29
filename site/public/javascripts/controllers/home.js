@@ -134,10 +134,10 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                     },500);
                 }
             });
-            var fixmeHow = $('.how-it-works').offset().top + 100;
+            var fixmeHomes = $('#featuredHomes').offset().top;
             $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollBottom(); // get current position
-                if (currentScroll < fixmeHow) {
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeHomes) {
                     $('.how-it-works').css({'height': '48vw'});
                     $timeout(function(){
                         $('.description-icon').css({'animation': 'bounce 1s'});
