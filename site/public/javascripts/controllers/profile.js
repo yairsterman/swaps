@@ -104,7 +104,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 if ($(this).scrollTop() >= -bottom) {           // apply position: fixed if you
                     $('.profile-description').css({                      // scroll to that element or below it
                         position: 'fixed',
-                        bottom: '0',
+                        bottom: '10px',
                         right: '0'
                     });
                     // console.log(window.innerWidth);
