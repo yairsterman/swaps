@@ -1,12 +1,12 @@
 var tr = null;
 swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location', '$routeParams', '$anchorScroll', '$mdSidenav',
-    'UsersService', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService) {
+    'UsersService', 'Utils', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService, Utils) {
     tr = $scope;
     $rootScope.homepage = false;
     $scope.city = $routeParams.city;
     $scope.user = $rootScope.user;
     $scope.yourCity = $rootScope.userCity;
-    $scope.search= {};
+    $scope.search = {};
     $scope.filter = {};
     $scope.checkedAmenities =[];
     $scope.checkedRoomTypes =[];
@@ -181,10 +181,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         marker.content = '<div class="infoWindowContent">' + info.desc + '</div>';
         marker.photos = info.photos;
 
-        google.maps.event.addListener(marker, 'mouseover', function(){
+        google.maps.event.addListener(marker, 'mouseover', function(event){
             $scope.currentApptPhoto = marker.photos[0];
-            // infoWindow.setContent('<div class="map-photo" style="background-image:url('  + marker.photos[0] +')">' +'</div>' + marker.content);
-            // infoWindow.open($scope.map, marker);
             scrollToProfile(marker.id);
         });
 
@@ -245,10 +243,11 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     init();
 
     function scrollToProfile(id){
+        $('#swappers').stop();
         var profile = document.getElementById(id);
         $('#swappers').animate({
             scrollTop: profile.offsetTop
-        }, 1000, function(){
+        }, 1500, function(){
 
         });
 
@@ -277,27 +276,21 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
             $scope.totalUsers = data.data.total;
             $scope.page = parseInt(data.data.page);
             angular.forEach(travelers, function(value, key) {
-                var location;
-                var address = value.address;
+                var location = value.location;
                 var image = value.image;
                 var name = value.firstName;
                 var id = value._id;
                 var photos = value.photos;
                 value.address = value.city;
-                geocoder.geocode( { 'address': address}, function(results, status) {
-                  if (status == google.maps.GeocoderStatus.OK) {
-                    location = results[0].geometry.location;
-                    var marker = {
-                      id : id,
-                      desc : name,
-                      photos: photos,
-                      image : image,
-                      lat : location.lat().toFixed(3),
-                      long : location.lng().toFixed(3)
-                    };
-                    createMarker(marker);
-                  }
-                });
+                var marker = {
+                  id : id,
+                  desc : name,
+                  photos: photos,
+                  image : image,
+                  lat : location.lat,
+                  long : location.long
+                };
+                createMarker(marker);
           });
           $scope.travelers = travelers;
           countPages();
@@ -312,24 +305,15 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 	});
 
     function getAmenities(){
-        //TODO get amenities from /utils
-        $scope.amenities = [
-            {name:"Kitchen",id:0},
-            {name:"Heating",id:1},
-            {name:"Elevator",id:2},
-            {name:"WiFi",id:3},
-            {name:"Parking",id:4},
-            {name:"Air Conditioning",id:5},
-        ];
+        Utils.getAmenities().then(function(data){
+            $scope.amenities = data.data;
+        });
     }
 
     function getRoomTypes(){
-        //TODO get amenities from /utils
-        $scope.roomTypes = [
-            {name:"Private Room",id:0},
-            {name:"Entire Home",id:1},
-            {name:"Shared Room",id:2},
-        ];
+        Utils.getPropertyType().then(function(data){
+            $scope.roomTypes = data.data;
+        });
     }
 
 

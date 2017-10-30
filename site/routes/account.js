@@ -4,12 +4,27 @@ var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var path = require('path');
 var fs = require('fs');
+var Q = require('q');
 var Data = require('../user_data/data.js');
 
 var multer  = require('multer');
 var upload = multer({dest:  'uploads/',limits: {files: 8}});
 
-const siteUrl = "http://swapshome.com:3000/";
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+    provider: 'google',
+
+    // Optional depending on the providers
+    httpAdapter: 'https', // Default
+    apiKey: 'AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw', // for Mapquest, OpenCage, Google Premier
+    formatter: null         // 'gpx', 'string', ...
+};
+
+var geocoder = NodeGeocoder(options);
+
+
+const siteUrl = "http://localhost:3000/";
 
 var error = {
 	error: true,
@@ -18,28 +33,43 @@ var error = {
 
 router.post('/edit-profile', function(req, res, next) {
 	var id = req.body._id;
-	var country = req.body.country;
-	var city = req.body.city;
 	var address = req.body.address;
 	var email = req.body.email;
     var aboutMe = req.body.aboutMe;
     var ocupation = req.body.ocupation;
-    User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: ocupation}}, function (err, updated) {
-        if (err){
-        	error.message = err;
-        	res.json(error);
+    var location = {};
+
+    geocoder.geocode(address)
+    .then(function(geo) {
+        location.lat = geo[0].latitude.toFixed(3);
+        location.long = geo[0].longitude.toFixed(3);
+        var country = geo[0].country;
+        var city = geo[0].city;
+        if(!city){
+            city = geo[0].administrativeLevels.level1long;
         }
-        else{
-            User.findOne({_id:id}, function (err, user) {
+        User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: ocupation, location: location}},
+            function (err, updated) {
                 if (err){
                     error.message = err;
                     res.json(error);
                 }
                 else{
-                    res.json(user);
+                    User.findOne({_id: id}, function (err, user) {
+                        if (err){
+                            error.message = err;
+                            res.json(error);
+                        }
+                        else{
+                            res.json(user);
+                        }
+                    });
                 }
             });
-        }
+    })
+    .catch(function(err) {
+        error.message = err;
+        res.json(error);
     });
 });
 

@@ -63,7 +63,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
    	$scope.saveChanges = function(){
      	AccountService.editProfile($scope.edit).then(function(data){
-     		if(data.error){
+     		if(data.data.error){
      			console.log("error");
      		}
      		else{

@@ -9,6 +9,7 @@ const visibleUserData = {
         country:true,
         city:true,
         radius:true,
+        location:true,
         swaps:true,
         traveling:true,
         travelingDest:true,
@@ -29,6 +30,7 @@ const visibleUserData = {
         country:true,
         city:true,
         radius:true,
+        location:true,
         swaps:true,
         traveling:true,
         travelingDest:true,
@@ -60,6 +62,7 @@ const visibleUserData = {
         apptInfo:true,
         rating:true,
         radius:true,
+        location:true,
         messages: true,
         requests: true
     }

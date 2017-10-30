@@ -26,6 +26,7 @@ var UserSchema = new mongoose.Schema({
     reviews: Array,
     photos: Array,
     radius: {},
+    location: {},
     apptInfo: {},
     paymentInfo: {},
     updated_at: { type: Date, default: Date.now },
