@@ -59,6 +59,7 @@ const visibleUserData = {
         reviews:true,
         apptInfo:true,
         rating:true,
+        radius:true,
         messages: true,
         requests: true
     }

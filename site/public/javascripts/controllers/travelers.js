@@ -1,5 +1,6 @@
 var tr = null;
-swapsApp.controller('travelersController', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService) {
+swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location', '$routeParams', '$anchorScroll', '$mdSidenav',
+    'UsersService', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService) {
     tr = $scope;
     $rootScope.homepage = false;
     $scope.city = $routeParams.city;
@@ -914,4 +915,4 @@ swapsApp.controller('travelersController', function($scope, $rootScope, $locatio
     // console.log($scope.dum_trav);
     // $scope.pageListToShow(1, $scope.dumPageCount($scope.dum_trav));
 
-});
+}]);
