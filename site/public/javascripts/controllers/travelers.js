@@ -306,13 +306,13 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
     function getAmenities(){
         Utils.getAmenities().then(function(data){
-            $scope.amenities = data.data;
+            $scope.amenities = data;
         });
     }
 
     function getRoomTypes(){
         Utils.getPropertyType().then(function(data){
-            $scope.roomTypes = data.data;
+            $scope.roomTypes = data;
         });
     }
 
