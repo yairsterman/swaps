@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var path = require('path');
 var fs = require('fs');
+var Data = require('../user_data/data.js');
 
 var multer  = require('multer');
 var upload = multer({dest:  'uploads/',limits: {files: 8}});
@@ -23,7 +24,7 @@ router.post('/edit-profile', function(req, res, next) {
 	var email = req.body.email;
     var aboutMe = req.body.aboutMe;
     var ocupation = req.body.ocupation;
-    User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, ocupation: ocupation}}, function (err, updated) {
+    User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: ocupation}}, function (err, updated) {
         if (err){
         	error.message = err;
         	res.json(error);

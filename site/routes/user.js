@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
+var Data = require('../user_data/data.js');
 
 var error = {
 	error: true,
@@ -31,7 +32,7 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
 		if(from.toLowerCase() != 'anywhere'){
 			params.city = {$regex: from, $options: 'i'};
 		}
-		User.find(params, {firstName:true, lastName:true, age:true, gender:true, image:true, country:true, city:true, address:true, swaps:true, traveling:true, travelingDest:true, travelingInfo:true, aboutMe:true, ocupation:true, photos:true, reviews:true, apptInfo:true, rating:true}, function (err, users) {
+		User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
 			if (err){
 				error.message = "error finding users";
 				res.json(error);
@@ -46,7 +47,7 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
 		});
     }
     else{
-        User.find({travelingDest: {$regex: destination, $options: 'i'}}, {firstName:true, lastName:true, age:true, gender:true, image:true, country:true, city:true, address:true, swaps:true, traveling:true, travelingDest:true, travelingInfo:true, aboutMe:true, ocupation:true, photos:true, reviews:true, apptInfo:true, rating:true}, function (err, users) {
+        User.find({travelingDest: {$regex: destination, $options: 'i'}}, Data.getVisibleUserData().accessible, function (err, users) {
             if (err){
                 error.message = "error finding users";
                 res.json(error);
@@ -77,7 +78,7 @@ router.get('/get-user', function(req, res, next) {
 router.get('/get-profile', function(req, res, next) {
     var id = req.query.id;
 
-    User.findOne({_id:id}, {firstName:true, lastName:true, age:true, gender:true, image:true, country:true, city:true, address:true, swaps:true, traveling:true, travelingDest:true, travelingInfo:true, aboutMe:true, ocupation:true, photos:true, reviews:true, apptInfo:true, rating:true}, function (err, user) {
+    User.findOne({_id:id}, Data.getVisibleUserData().accessible, function (err, user) {
         if (err) return next(err);
         console.log(user);
         res.json(user);
@@ -110,42 +111,39 @@ function filterUsers(users, query){
 	var destination = query.dest;
 
 	for (var i = 0; i < users.length; i++) {
-		if(filterDestination(users[i], destination) &&
-			filterDates(users[i], query.date, destination)) {
-			if(!users[i].apptInfo){
-                continue;
-			}
-			if(query.guests && (!users[i].apptInfo.guests || users[i].apptInfo.guests < query.guests) ){
-				continue;
-			}
-			if(query.property && users[i].apptInfo.property != query.property){
-				continue;
-			}
-			if(query.room && users[i].apptInfo.room != query.room){
-				continue;
-			}
-			if(query.kitchen == 'true' && !users[i].apptInfo.kitchen){
-				continue;
-			}
-			if(query.wheelchair == 'true' && !users[i].apptInfo.wheelchair){
-				continue;
-			}
-			if(query.kids == 'true' && !users[i].apptInfo.kids){
-				continue;
-			}
-			if(query.smoking == 'true' && !users[i].apptInfo.smoking){
-				continue;
-			}
-			if(query.pets == 'true' && !users[i].apptInfo.pets){
-				continue;
-			}
-			if(query.parking == 'true' && !users[i].apptInfo.parking){
-				continue;
-			}
+		let user = users[i];
+		if(filterDestination(user, destination) &&
+			filterDates(user, query.date, destination) &&
+            	filterGuests(user, query.guests) &&
+            		filterProperty(user, query.property) &&
+            			filterAmenities(user, query.ameneties)) {
 			filterdUsers.push(users[i]);
 		}
 	}
 	return filterdUsers
+}
+
+function filterGuests(user, guests){
+    if(guests && (!user.apptInfo.guests || user.apptInfo.guests < guests) ){
+        return false;
+    }
+    return true;
+}
+
+function filterProperty(user, propertyType){
+    if(propertyType && user.apptInfo.property != propertyType){
+        return false;
+    }
+    return true;
+}
+
+function filterAmenities(user, amenities){
+    for(var i = 0; i < amenities.length; i++){
+    	if(!user.apptInfo.amenities.includes(amenities[i])){
+			return false;
+		}
+	}
+	return true;
 }
 
 function filterDestination(user, destination){
