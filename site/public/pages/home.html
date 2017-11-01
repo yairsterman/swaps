@@ -40,68 +40,7 @@
         <div class="travelers-list">
             <div class="mg-0 row">
                 <div class= "traveler-col col-sm-4 col-xs-12" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}">
-                    <div class="traveler" ng-click="go('profile/'+traveler._id)">
-                        <div class="">
-                            <!--CAROUSEL START-->
-                            <div ng-attr-id="{{'myCarousel' + traveler._id}}"  class="carousel slide" data-ride="carousel" data-interval="false">
-                                <!-- Wrapper for carousel items -->
-                                <div class="carousel-inner">
-                                    <div class="item active">
-                                        <img src="#" alt="First slide">
-                                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + traveler.photos[0] + ')'}">
-                                        </div>
-                                    </div>
-                                    <div class="item" ng-repeat="photo in traveler.photos.slice(1,entries.length)">
-                                        <img src="#" alt="{{$index}} slide">
-                                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')'}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Carousel controls -->
-                                <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
-                                    <span class="carousel-control-arrow icon icon-arrow-left"></span>
-                                </div>
-                                <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
-                                    <span class="carousel-control-arrow icon icon-arrow-right"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="profile-img" style="background-image: url('{{traveler.image}}')">
-
-                        </div>
-                        <!--CAROUSEL END-->
-                        <div class="user-info">
-                            <div class="apt-title">
-                                {{traveler.apptInfo.description}}
-                            </div>
-                            <div class="apt-sub-title">
-                                {{traveler.apptInfo.room}} in {{traveler.firstName}}'s {{traveler.apptInfo.property}}
-                            </div>
-                            <div class="rating">
-                                <span class="icon icon-star" ng-if="traveler.reviews.length > 0"></span>
-                                <span class="icon icon-star" ng-if="traveler.rating > 1"></span>
-                                <span class="icon icon-star" ng-if="traveler.rating > 2"></span>
-                                <span class="icon icon-star" ng-if="traveler.rating > 3"></span>
-                                <span class="icon icon-star" ng-if="traveler.rating > 4"></span>
-                                <span class="number-reviews" ng-if="traveler.rating > 0">{{traveler.reviews.length}}</span>
-                                <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
-                            </div>
-                            <div class="basics">
-                                <div class="tiny-text">
-                                    <span class="glyphicon glyphicon-user"></span>
-                                    {{traveler.apptInfo.guests}} Guests
-                                </div>
-                                <div class="tiny-text">
-                                    <span class="glyphicon glyphicon-bed"></span>
-                                    6 beds
-                                </div>
-                                <div class="tiny-text">
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    15 Mutual Friends
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <swapper-home traveler="traveler"></swapper-home>
                 </div>
             </div>
         </div>
