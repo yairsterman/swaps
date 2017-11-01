@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://swapshome:3000/auth/facebook/callback",
+    callbackURL: "http://swapshome.com:3000/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday']
   },
   function(accessToken, refreshToken, profile, done) {
