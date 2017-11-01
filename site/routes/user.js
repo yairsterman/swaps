@@ -111,7 +111,7 @@ function filterUsers(users, query){
 	var destination = query.dest;
 
 	for (var i = 0; i < users.length; i++) {
-		let user = users[i];
+		var user = users[i];
 		if(filterDestination(user, destination) &&
 			filterDates(user, query.date, destination) &&
             	filterGuests(user, query.guests) &&
