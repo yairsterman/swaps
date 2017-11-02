@@ -275,10 +275,12 @@
 		background-attachment: fixed;
 		align-content: center;
 		padding: 0 8vw;
-		height: 0vw;
+		height: 48vw;
 		transition: 1.6s ease;
 		overflow: hidden;
-
+		@media (max-width: @screen-xs-max) {
+			height: 80vw;
+		}
 		.inner-section{
 			background-color: #ffffff;
 			transition: 1.5s ease;
@@ -391,7 +393,7 @@
 			.how-inner-ticket {
 				background-color: transparent;
 				.ticket-title{
-					color: #c7a768;;
+					color: #c7a768;
 					font-weight: 600;
 				}
 				.how-inner-sentences{

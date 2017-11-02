@@ -18,6 +18,7 @@ const visibleUserData = {
         occupation:true,
         photos:true,
         reviews:true,
+        comments:true,
         apptInfo:true,
         rating:true
     },
@@ -39,6 +40,7 @@ const visibleUserData = {
         occupation:true,
         photos:true,
         reviews:true,
+        comments:true,
         apptInfo:true,
         rating:true
     },
@@ -59,6 +61,7 @@ const visibleUserData = {
         occupation:true,
         photos:true,
         reviews:true,
+        comments:true,
         apptInfo:true,
         rating:true,
         radius:true,

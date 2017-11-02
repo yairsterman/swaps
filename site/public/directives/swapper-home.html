@@ -35,27 +35,33 @@
         <div class="apt-title">
             {{traveler.apptInfo.description}}
         </div>
-        <div class="rating">
-            <span class="icon icon-star" ng-if="traveler.reviews.length > 0"></span>
-            <span class="icon icon-star" ng-if="traveler.rating > 1"></span>
-            <span class="icon icon-star" ng-if="traveler.rating > 2"></span>
-            <span class="icon icon-star" ng-if="traveler.rating > 3"></span>
-            <span class="icon icon-star" ng-if="traveler.rating > 4"></span>
-            <span class="number-reviews" ng-if="traveler.rating > 0">{{traveler.reviews.length}}</span>
+        <div class="rating" ng-if="traveler.comments.length > 0">
+            <span class="icon icon-fullstar-small" ></span>
+            <span class="icon {{traveler.rating > 1?traveler.rating < 2?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
+            <span class="icon {{traveler.rating > 2?traveler.rating < 3?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
+            <span class="icon {{traveler.rating > 3?traveler.rating < 4?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
+            <span class="icon {{traveler.rating > 4?traveler.rating < 5?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
+            <span class="number-reviews">{{traveler.comments.length}}</span>
+        </div>
+        <div class="rating" ng-if="traveler.comments.length == 0">
             <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
         </div>
         <div class="basics">
             <div class="tiny-text">
-                <span class="glyphicon glyphicon-user"></span>
+                <span class="icon icon-man-small"></span>
                 {{traveler.apptInfo.guests}} Guests
             </div>
             <div class="tiny-text">
-                <span class="glyphicon glyphicon-bed"></span>
+                <span class="icon icon-door-small"></span>
+                1 room
+            </div>
+            <div class="tiny-text">
+                <span class="icon icon-bed-small"></span>
                 6 beds
             </div>
             <div class="tiny-text">
-                <span class="glyphicon glyphicon-star-empty"></span>
-                15 Mutual Friends
+                <span class="icon icon-duck-small"></span>
+                2 baths
             </div>
         </div>
     </div>

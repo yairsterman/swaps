@@ -9,7 +9,7 @@ swapsApp.directive('swapperHome', function() {
     }
 });
 
-function swapperHomeController($scope, $location){
+function swapperHomeController($scope, $rootScope, $location){
     $scope.carouselPrev = function (id, event) {
         event.preventDefault();
         event.stopPropagation();
@@ -23,6 +23,8 @@ function swapperHomeController($scope, $location){
     };
 
     $scope.go = function(path){
+        $(window).unbind('scroll');
+        $rootScope.homepage = false;
         $location.url(path);
     }
 }
