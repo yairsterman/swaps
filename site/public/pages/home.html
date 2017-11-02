@@ -40,6 +40,7 @@
         <div class="travelers-list">
             <div class="mg-0 row">
                 <div class= "traveler-col col-sm-4 col-xs-12" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}">
+                    <div class="push-pin icon {{$index==0?'icon-pin-green':$index==1?'icon-pin-blue':$index==2?'icon-pin-red':''}}"></div>
                     <swapper-home traveler="traveler"></swapper-home>
                 </div>
             </div>

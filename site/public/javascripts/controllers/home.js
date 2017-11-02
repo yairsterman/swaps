@@ -107,7 +107,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     var elementsReady = $interval(function() {
         var input = $('.navbar');
-        if (input) {
+        if (input.length > 0) {
             fixmeTop = $('.search-area').offset().top + 80;
             $(window).scroll(function() {                  // assign scroll event listener
                 var currentScroll = $(window).scrollTop(); // get current position
@@ -138,11 +138,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $(window).scroll(function() {                  // assign scroll event listener
                 var currentScroll = $(window).scrollTop(); // get current position
                 if (currentScroll >= fixmeHomes) {
-                    $('.how-it-works').css({'height': '48vw'});
-                    $timeout(function(){
-                        $('.description-icon').css({'animation': 'bounce 1s'});
-                        $('.description-icon').css({'transform': 'scale(0.8)'});
-                    },1000)
+                    $('.description-icon').css({'animation': 'bounce 1s'});
+                    $('.description-icon').css({'transform': 'scale(0.8)'});
                 }
             });
             var fixmeborder = $('.points-container-border').offset().top + 20;

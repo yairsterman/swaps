@@ -35,7 +35,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 
     var elementsReady = $interval(function() {
         var input = $('#searchCityHeader');
-        if (input) {
+        if (input.length > 0) {
             autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCityHeader'), {
                 types: ['(cities)']
             });
