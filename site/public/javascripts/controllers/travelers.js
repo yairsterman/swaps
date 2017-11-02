@@ -268,6 +268,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         }
     }
 
+
+
     function getTravelers(page){
         $scope.loading = true;
         deleteMarkers();
@@ -297,6 +299,48 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
           $scope.loading = false;
         });
     }
+
+
+    //                              Pagination related
+    // function initTravelers() {
+    //     countPages();
+    //     var pageCounter = $scope.totalPages;
+    //     console.log(pageCounter)
+    //     $scope.travelers = [];
+    //     for (var i = 0; i < pageCounter; ++i) {
+    //
+    //         UsersService.getUserByTravelingDest($rootScope.userCity, $scope.city, i, $scope.filter).then(function(data) {
+    //             var travelers = data.data.users;
+    //             $scope.totalUsers = data.data.total;
+    //             $scope.page = parseInt(data.data.page);
+    //             angular.forEach(travelers, function (value, key) {
+    //                 var location = value.location;
+    //                 var image = value.image;
+    //                 var name = value.firstName;
+    //                 var id = value._id;
+    //                 var photos = value.photos;
+    //                 value.address = value.city;
+    //                 var marker = {
+    //                     id: id,
+    //                     desc: name,
+    //                     photos: photos,
+    //                     image: image,
+    //                     lat: location.lat,
+    //                     long: location.long
+    //                 };
+    //                 createMarker(marker);
+    //             });
+    //
+    //
+    //             $scope.travelers.concat(travelers);
+    //         });
+    //     }
+    // }
+    //
+    // initTravelers();
+    // console.log($scope.travelers);
+    //
+
 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;

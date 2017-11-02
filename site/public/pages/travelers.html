@@ -48,9 +48,13 @@
             <div class="row mg-0">
                 <div class="travelers-list col-md-8 col-sm-12" id="swappers">
                     <div class="mg-0 row">
-                        <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
+                        <!--<div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">-->
+                        <div class= "traveler-col col-sm-6 col-xs-12" dir-paginate="traveler in travelers | itemsPerPage:8" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
                               <swapper-home traveler="traveler"></swapper-home>
                         </div>
+                    </div>
+                    <div class="row pagination-pages">
+                        <dir-pagination-controls></dir-pagination-controls>
                     </div>
                 </div>
                 <!--------------------------------------------------MAP SECTION--------------------------------------------->

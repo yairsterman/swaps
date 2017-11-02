@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular-ui-bootstrap": "^2.5.6",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "css-loader": "^0.28.0",
