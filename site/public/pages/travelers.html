@@ -48,7 +48,7 @@
             <div class="row mg-0">
                 <div class="travelers-list col-md-8 col-sm-12" id="swappers">
                     <div class="mg-0 row">
-                        <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
+                        <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers | limitTo: usersToShow" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
                         <!--<div class= "traveler-col col-sm-6 col-xs-12" dir-paginate="traveler in travelers | itemsPerPage:8" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">-->
                               <swapper-home traveler="traveler"></swapper-home>
                         </div>
@@ -69,7 +69,7 @@
 
 
                 <div class="row">
-                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageListToShow(1, dumPageCount)">
+                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="goToPage(1)">
                         <div class="page-list" ng-if="isPageListShort()">
                             <div class="page-number btn-group" role="group"
                                 ng-repeat="num in pageList track by $index">
@@ -90,9 +90,11 @@
                 </div>
                 <div class="row">
                     <div class="next-prev-buttons">
-                        <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator)"
+                        <!--<button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator)"-->
+                        <button class="page-number prev-btn btn btn-primary" ng-click="goToPage(pageIndicator - 1)"
                                 ng-show="pageIndicator > 1">Prev</button>
-                        <button class="page-number next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator)"
+                        <!--<button class="page-number next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator)"-->
+                        <button class="page-number next-btn btn btn-primary" ng-click="goToPage(pageIndicator + 1)"
                                 ng-show="pageIndicator < totalPages">Next</button>
                     </div>
                 </div>

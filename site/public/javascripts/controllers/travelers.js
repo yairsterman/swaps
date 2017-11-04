@@ -13,6 +13,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     var filter = {};
     const PAGE_DIVIDOR = 10;
     $scope.currPage = 0;
+    $scope.usersToShow = 10;
     $anchorScroll();
 
 
@@ -411,23 +412,30 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     };
 
 
-    // The name is to avoid duplicates with Yair's code
+    // The name is to avoid duplicates with Yair's code     -- Function not in use
     $scope.nextPage_damir = function(currPage) {
         ++$scope.pageIndicator;
+        if ($scope.pageIndicator == $scope.totalPages) {
+            $scope.usersToShow = $scope.totalUsers % $scope.totalPages;
+        } else {
+            $scope.usersToShow = PAGE_DIVIDOR;
+        }
         $scope.pageList = $scope.pageListToShow(currPage + 1, $scope.dumPageCount());
         scrollToTop();
-        // getTravelers(currPage++);
         getTravelers($scope.pageIndicator - 1);
         $scope.userListToShow = $scope.travelers;
+
+        console.log("USERS TO SHOW = " + $scope.usersToShow);
+
         return $scope.travelers;
     };
 
-    // Previous page of user list
+    // Previous page of user list       -- Function not in use
     $scope.prevPage_damir = function(currPage) {
         --$scope.pageIndicator;
+        $scope.usersToShow = PAGE_DIVIDOR;
         $scope.pageList = $scope.pageListToShow(currPage - 1, $scope.dumPageCount());
         scrollToTop();
-        // getTravelers(--currPage);
         getTravelers($scope.pageIndicator - 1);
         $scope.userListToShow = $scope.travelers;
         return $scope.travelers;
@@ -436,6 +444,11 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     // Jump to page "pageNum" of the list "travelerList"
     $scope.goToPage = function(pageNum) {
         $scope.pageIndicator = pageNum;
+        if ($scope.pageIndicator == $scope.totalPages) {
+            $scope.usersToShow = $scope.totalUsers % $scope.totalPages;
+        } else {
+            $scope.usersToShow = PAGE_DIVIDOR;
+        }
         $scope.pageList = $scope.pageListToShow(pageNum, $scope.dumPageCount());
         scrollToTop();
         getTravelers(pageNum - 1);
