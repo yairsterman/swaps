@@ -444,6 +444,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
     init();
     $scope.pageIndicator = 1;
+    $scope.goToPage(1);
+    $scope.pageList = $scope.pageListToShow(1, $scope.dumPageCount());
 
 
 }]);

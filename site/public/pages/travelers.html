@@ -69,20 +69,20 @@
 
 
                 <div class="row">
-                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageList = pageListToShow(0, dumPageCount())">
-                        <ul class="page-list" ng-if="isPageListShort()">
-                            <li class="page-number"
+                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageListToShow(1, dumPageCount)">
+                        <div class="page-list" ng-if="isPageListShort()">
+                            <div class="page-number btn-group" role="group"
                                 ng-repeat="num in pageList track by $index">
-                                <button ng-click="goToPage(num)" ng-disabled="pageIndicator == num">{{num}}</button>
-                            </li>
-                        </ul>
-                        {{pageIndicator}}
-                        <ul class="page-list" ng-if="!isPageListShort()">
-                            <li class="page-number"
+                                <button type="button" class="btn btn-default" ng-click="goToPage(num)" ng-disabled="pageIndicator == num">{{num}}</button>
+                            </div>
+                        </div>
+                        <!--{{pageIndicator}}-->
+                        <div class="page-list" ng-if="!isPageListShort()">
+                            <div class="page-number btn-group" role="group"
                                 ng-repeat="num in pageList track by $index">
-                                <button ng-click="goToPage(num)" ng-disabled="pageIndicator == num - 1">{{num}}</button>
-                            </li>
-                        </ul>
+                                <button type="button" class="btn btn-default" ng-click="goToPage(num)" ng-disabled="pageIndicator == num">{{num}}</button>
+                            </div>
+                        </div>
 
 
                     </div>
