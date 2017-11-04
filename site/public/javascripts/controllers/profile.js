@@ -1,5 +1,5 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $window) {
+swapsApp.controller('profileController', function($timeout, $scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $window) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
@@ -208,6 +208,80 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
         return ret;
     };
+
+
+
+
+
+
+    var geocoder =  new google.maps.Geocoder();
+
+    $scope.marker;
+
+    var infoWindow = new google.maps.InfoWindow();
+
+    var createMarker = function (){
+        var shape ={coords:[17,17,18],type:'circle'};
+
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: new google.maps.LatLng($scope.profile.location.lat, $scope.profile.location.long),
+            animation: google.maps.Animation.DROP,
+            icon: {url:$scope.profile.image, size:new google.maps.Size(50,50)},
+            title: $scope.profile.address,
+            // url: 'profile/'+info.id,
+            optimized: false
+        });
+
+        marker.id = $scope.profile.id;
+
+        // marker.content = '<div class="infoWindowContent">' + info.desc + '</div>';
+        // marker.photos = info.photos;
+
+        $scope.marker = marker;
+    };
+
+
+    var myoverlay = new google.maps.OverlayView();
+    myoverlay.draw = function () {
+        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
+        this.getPanes().markerLayer.id='travelerMarkerLayer';
+    };
+
+
+
+
+    function initMap(){
+        var center = $scope.profile.city;
+
+        geocoder.geocode( {'address': center}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+
+                var location = results[0].geometry.location;
+
+                var mapOptions = {
+                    zoom: 12,
+                    center: new google.maps.LatLng($scope.profile.location.lat, $scope.profile.location.long),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapTypeControl: false,
+                    scrollwheel: false
+                };
+
+                $scope.map = new google.maps.Map(document.getElementById('profileMap'), mapOptions);
+                myoverlay.setMap($scope.map);
+            }
+        });
+
+
+    }
+
+    $timeout(function() {
+        initMap();
+        createMarker();
+        $scope.marker.setMap($scope.map);
+        console.log("Map initialized");
+    }, 3000);
+
 
     var backup_profile = {
         "_id": "58ff444b241286110c78e7fe",
