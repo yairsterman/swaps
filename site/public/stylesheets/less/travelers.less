@@ -235,18 +235,17 @@
 
 
 	.travelers-result-pages {
-		display: inline-block;
+		display: inline-flex;
 		text-decoration: none;
 
 		.page-list {
 			color: black;
 			margin: auto;
-			width: 42%;
+			display: inline-flex;
 			text-decoration: none;
 			list-style-type: none;
 
 			.page-number {
-				float: left;
 				padding: 10px;
 			}
 
@@ -262,18 +261,20 @@
 
 		}
 
-		.next-btn {
-			top: 100%;
-			position: absolute;
-			right: 46%;
-		}
-		.prev-btn {
-			top: 100%;
-			position: absolute;
-			left: 46%;
-		}
 
 
+	}
+	.next-prev-buttons {
+		text-align: center;
+
+		//.next-btn {
+		//	 top: 100%;
+		//	 right: 46%;
+		// }
+		//.prev-btn {
+		//	top: 100%;
+		//	left: 46%;
+		//}
 	}
 
 }

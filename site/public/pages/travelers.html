@@ -48,44 +48,60 @@
             <div class="row mg-0">
                 <div class="travelers-list col-md-8 col-sm-12" id="swappers">
                     <div class="mg-0 row">
-                        <!--<div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">-->
-                        <div class= "traveler-col col-sm-6 col-xs-12" dir-paginate="traveler in travelers | itemsPerPage:8" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
+                        <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
+                        <!--<div class= "traveler-col col-sm-6 col-xs-12" dir-paginate="traveler in travelers | itemsPerPage:8" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">-->
                               <swapper-home traveler="traveler"></swapper-home>
                         </div>
                     </div>
-                    <div class="row pagination-pages">
-                        <dir-pagination-controls></dir-pagination-controls>
-                    </div>
+                    <!--<div class="row pagination-pages">-->
+                        <!--<dir-pagination-controls></dir-pagination-controls>-->
+                    <!--</div>-->
                 </div>
                 <!--------------------------------------------------MAP SECTION--------------------------------------------->
                 <div class="map-view col-md-4 col-xs-12" style="overflow-x: hidden;">
                     <div class="map" id="travelerMap"></div>
                 </div>
             </div>
-                <!--<div class="row">-->
-                    <!--<div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageList = pageListToShow(1, dumPageCount(dum_trav))">-->
-                        <!--<ul class="page-list" ng-if="isPageListShort(dum_trav)">-->
-                            <!--<li class="page-number"-->
-                                <!--ng-repeat="num in pageList track by $index">-->
-                                <!--<button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                        <!--{{pageIndicator}}-->
-                        <!--<ul class="page-list" ng-if="!isPageListShort(dum_trav)">-->
-                            <!--<li class="page-number"-->
-                                <!--ng-repeat="num in pageList track by $index">-->
-                                <!--<button ng-click="goToPage(num, dum_trav)" ng-disabled="pageIndicator == num">{{num}}</button>-->
-                            <!--</li>-->
-                        <!--</ul>-->
 
-                        <!--<button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator, dum_trav)"-->
-                                <!--ng-show="pageIndicator > 1">Prev</button>-->
-                        <!--<button class="next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator, dum_trav)"-->
-                                <!--ng-show="pageIndicator < pageCount(dum_trav)">Next</button>-->
 
-                    <!--</div>-->
 
-                <!--</div>-->
+
+
+
+                <div class="row">
+                    <div class="travelers-result-pages col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-init="pageList = pageListToShow(0, dumPageCount())">
+                        <ul class="page-list" ng-if="isPageListShort()">
+                            <li class="page-number"
+                                ng-repeat="num in pageList track by $index">
+                                <button ng-click="goToPage(num)" ng-disabled="pageIndicator == num">{{num}}</button>
+                            </li>
+                        </ul>
+                        {{pageIndicator}}
+                        <ul class="page-list" ng-if="!isPageListShort()">
+                            <li class="page-number"
+                                ng-repeat="num in pageList track by $index">
+                                <button ng-click="goToPage(num)" ng-disabled="pageIndicator == num - 1">{{num}}</button>
+                            </li>
+                        </ul>
+
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="next-prev-buttons">
+                        <button class="page-number prev-btn btn btn-primary" ng-click="prevPage_damir(pageIndicator)"
+                                ng-show="pageIndicator > 1">Prev</button>
+                        <button class="page-number next-btn btn btn-primary" ng-click="nextPage_damir(pageIndicator)"
+                                ng-show="pageIndicator < totalPages">Next</button>
+                    </div>
+                </div>
+
+
+
+
+
+
             </div>
         </div>
     </div>
