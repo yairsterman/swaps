@@ -235,13 +235,104 @@
 			.icon {
 				float: left;
 				display: block;
-				background-size: contain;
+
+				background-image: url(../../images/spritesheet12.png);
+				background-size: 365px 290px;
 				width: 50px;
-				height: 60px;
+				height: 50px;
 
 				@media (max-width: @screen-xs-max) {
 					width: 30px;
 					height: 30px;
+					background-size: 223px 182px;
+					background-repeat: repeat;
+
+				}
+
+				&.kitchen-icon {
+					background-position: -4px -179px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -4px -113px;
+					}
+				}
+				&.tv-icon {
+					background-position: -308px -122px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -412px -76px;
+					}
+				}
+				&.wifi-icon {
+					background-image: url("../../images/icons/FLAG.png");
+				}
+				&.airconditioning-icon {
+					background-position: -240px -237px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -370px -150px;
+					}
+				}
+				&.heating-icon {
+					background-position: -47px -121px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -252px -76px;
+					}
+				}
+				&.washing-icon {
+					background-position: -298px -179px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -629px -112px;
+					}
+				}
+				&.dryer-icon {
+					background-position: -64px -62px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -262px -39px;
+					}
+				}
+				&.hairdryer-icon {
+					background-image: url("../../images/icons/FLAG.png");
+				}
+				&.bathtub-icon {
+					background-image: url("../../images/icons/FLAG.png");
+				}
+				&.elevator-icon {
+					background-position: -122px -62px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -298px -39px;
+					}
+				}
+				&.parking-icon {
+					background-position: -4px -235px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -226px -148px;
+					}
+				}
+				&.pool-icon {
+					background-image: url("../../images/icons/FLAG.png");
+				}
+				&.hottub-icon {
+					background-image: url("../../images/icons/FLAG.png");
+				}
+				&.fireplace-icon {
+					background-position: -106px -120px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -288px -75px;
+					}
+				}
+				&.garden-icon {
+					background-position: -298px -62px;
+
+					@media (max-width: @screen-xs-max) {
+						background-position: -406px -39px;
+					}
 				}
 			}
 
@@ -251,51 +342,7 @@
 				font-size: 122%;
 				color: #616161;
 			}
-			.kitchen-icon {
-				background-image: url("../../images/icons/kitchen.png");
-			}
-			.tv-icon {
-				background-image: url("../../images/icons/TV.png");
-			}
-			.wifi-icon {
-				background-image: url("../../images/icons/FLAG.png");
-			}
-			.airconditioning-icon {
-				background-image: url("../../images/icons/airconditioning.png");
-			}
-			.heating-icon {
-				background-image: url("../../images/icons/heating.png");
-			}
-			.washing-icon {
-				background-image: url("../../images/icons/washer.png");
-			}
-			.dryer-icon {
-				background-image: url("../../images/icons/dryer.png");
-			}
-			.hairdryer-icon {
-				background-image: url("../../images/icons/FLAG.png");
-			}
-			.bathtub-icon {
-				background-image: url("../../images/icons/FLAG.png");
-			}
-			.elevator-icon {
-				background-image: url("../../images/icons/elevator.png");
-			}
-			.parking-icon {
-				background-image: url("../../images/icons/Parking.png");
-			}
-			.pool-icon {
-				background-image: url("../../images/icons/FLAG.png");
-			}
-			.hottub-icon {
-				background-image: url("../../images/icons/FLAG.png");
-			}
-			.fireplace-icon {
-				background-image: url("../../images/icons/homeswap.png");
-			}
-			.garden-icon {
-				background-image: url("../../images/icons/tree.png");
-			}
+
 			.icon-star-full {
 				background-image: url("../../images/spritesheet12.png");
 				width: 33px;
