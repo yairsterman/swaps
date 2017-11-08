@@ -375,18 +375,24 @@
 				float: left;
 				width: 100%;
 
-				.icon-like{
-					float: left;
-					background-image: url("../../images/icons/like.png");
+
+				.icon {
+					background-image: url(../../images/spritesheet12.png);
+					background-size: 365px 290px;
+					width: 50px;
+					height: 50px;
+
+					&.icon-like{
+						background-position: -63px -178px;
+					}
+					&.icon-dislike {
+						background-position: -63px -178px;
+					}
+					&.icon-flag {
+						background-position: -238px -61px;
+					}
 				}
-				.icon-dislike {
-					float: left;
-					background-image: url("../../images/icons/dislike.png");
-				}
-				.icon-flag {
-					float: left;
-					background-image: url("../../images/icons/FLAG.png");
-				}
+
 				.like-count {
 					float: left;
 					margin: 3% 3%;
