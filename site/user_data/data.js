@@ -90,7 +90,8 @@ const amenities = [
 
 const requestStatus ={
     pending: 0,
-    confirmed: 1
+    confirmed: 1,
+    canceled: 2,
 };
 
 const propertyType =[

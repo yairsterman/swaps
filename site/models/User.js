@@ -25,6 +25,7 @@ var UserSchema = new mongoose.Schema({
     messages: Array,
     reviews: Array,
     photos: Array,
+    favorites: Array,
     radius: {},
     location: {},
     apptInfo: {},

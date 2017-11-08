@@ -24,7 +24,7 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 
-const siteUrl = "http://localhost:3000/";
+const siteUrl = "http://swapshome.com:3000/";
 
 var error = {
 	error: true,
@@ -103,7 +103,6 @@ router.post('/update-travel-info', function(req, res, next) {
 	var departure = Date.parse(dates[0].trim());
 	var returnDate = Date.parse(dates[1].trim());
 	var newInfo = {
-		id: Math.floor((Math.random() * 999999) + 111111),
 		dest: where,
 		departure: departure,
 		returnDate: returnDate
@@ -117,6 +116,7 @@ router.post('/update-travel-info', function(req, res, next) {
 		else{
 			var travelingInfo = user.travelingInfo;
 			var travelingDest = user.travelingDest;
+            newInfo._id = travelingInfo.length + 1;
 			travelingInfo.push(newInfo);
 			travelingDest.push(where);
 			User.update({_id: id}, { $set: {travelingInfo: travelingInfo, travelingDest: travelingDest, traveling: true}}, function (err, updated) {

@@ -53,10 +53,6 @@ router.post('/sendRequest', function(req, res, next) {
 		var dates = req.body.dates.split('-');
 		departure = Date.parse(dates[0].trim());
 		returnDate = Date.parse(dates[1].trim());
-		request = true;
-		console.log(message);
-		console.log(departure);
-		console.log(returnDate);
 	}
 	var newMessage = {
 				id: sender._id,
@@ -65,9 +61,9 @@ router.post('/sendRequest', function(req, res, next) {
 				message: message
 			}
 
-    saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending)
+    saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, sender._id)
 	.then(function(){
-		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending);
+		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, sender._id);
 	})
 	.then( function(){
 		return saveMessage(sender._id, recipientId, sender._id, newMessage);
@@ -94,20 +90,38 @@ router.post('/sendRequest', function(req, res, next) {
 router.post('/confirmRequest', function(req, res, next) {
 	var recipientId = req.body.recipientId;
 	var sender = req.body.user;
-    var departure;
-    var returnDate;
-    if(req.body.dates){
-        var dates = req.body.dates.split('-');
-        departure = Date.parse(dates[0].trim());
-        returnDate = Date.parse(dates[1].trim());
-    }
+    var departure = req.body.departure;
+    var returnDate = req.body.returnDate;
     confirmRequest(sender._id, recipientId, departure, returnDate).then(function(){
     	res.json({status: 'success', message: 'confirmed'});
 	},
 	function(err){
 		res.json(err);
 	});
+});
 
+router.post('/cancelRequest', function(req, res) {
+    var recipientId = req.body.recipientId;
+    var sender = req.body.user;
+    var departure = req.body.departure;
+    var returnDate = req.body.returnDate;
+    cancelRequest(sender._id, recipientId, departure, returnDate).then(function(){
+            res.json({status: 'success', message: 'canceled'});
+        },
+        function(err){
+            res.json(err);
+        });
+});
+
+router.post('/readMessage', function(req, res) {
+    var recipientId = req.body.recipientId;
+    var senderId = req.body.user._id;
+    markedMessageRead(senderId, recipientId).then(function(){
+            res.json({status: 'success', message: 'read'});
+        },
+        function(err){
+            res.json(err);
+        });
 });
 
 function saveMessage(senderId, recipientId, messageId, message){
@@ -172,7 +186,7 @@ function saveMessage(senderId, recipientId, messageId, message){
 	return defferd.promise;
 }
 
-function saveRequest(senderId, recipientId, departure, returnDate, status){
+function saveRequest(senderId, recipientId, departure, returnDate, status, sentBy){
 	var defferd = Q.defer();
 	User.findOne({_id: senderId}, function (err, sender) {
 		if (err){
@@ -192,12 +206,14 @@ function saveRequest(senderId, recipientId, departure, returnDate, status){
 							var index = -1;
 
 							requests.unshift({
-								id: sender._id,
+								_id: requests.length + 1,
+								userId: sender._id,
 								image: sender.image,
 								name: sender.firstName + ' ' + sender.lastName,
 								city: sender.city,
 								departure: departure,
 								returnDate : returnDate,
+                                sentBy: sentBy,
 								status: status
 							});
 
@@ -281,14 +297,136 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 	return deferd.promise;
 }
 
-function findRequest(requests, id, departure, returnDate){
-	for(var i = 0; i < requests.length; i++){
-		var request = requests[i];
-		if(request.id == id && request.departure == departure && request.returnDate == returnDate){
+function cancelRequest(senderId, recipientId, departure, returnDate){
+    var deferd = Q.defer();
+    User.findOne({_id: senderId})
+        .then(function (err, sender) {
+            if (err || !sender._id){
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else {
+                var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
+                if(requestIndex == -1){
+                    error.message = "no request found";
+                    deferd.reject(error);
+                }
+                sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
+                return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+            }
+        })
+        .then(function (err) {
+            if (err) {
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else {
+                return User.findOne({_id: recipientId});
+            }
+        })
+        .then(function(err, recipient){
+            if (err || !recipient._id){
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else{
+                var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
+                if(requestIndex == -1){
+                    error.message = "no request found";
+                    deferd.reject(error);
+                }
+                recipient.requests[requestIndex].status = Data.getRequestStatus().canceled;
+                return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
+            }
+        })
+        .then(function (err, updated) {
+            if (err){
+                console.log("Request not sent" + err);
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else{
+                console.log("updated DB");
+                deferd.resolve();
+            }
+        });
+    return deferd.promise;
+}
+
+function markedMessageRead(senderId, recipientId){
+    var deferd = Q.defer();
+    User.findOne({_id: senderId})
+        .then(function (err, sender) {
+            if (err || !sender._id){
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else {
+                var messageIndex = findMessage(sender.messages, recipientId);
+                if(messageIndex == -1){
+                    error.message = "no request found";
+                    deferd.reject(error);
+                }
+                sender.messages[messageIndex].read = true
+                return User.update({_id: sender._id}, {$set: {messages: sender.messages}});
+            }
+        })
+        .then(function (err) {
+            if (err) {
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else {
+                return User.findOne({_id: recipientId});
+            }
+        })
+        .then(function(err, recipient){
+            if (err || !recipient._id){
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else{
+                var messageIndex = findMessage(recipient.messages, senderId);
+                if(messageIndex == -1){
+                    error.message = "no request found";
+                    deferd.reject(error);
+                }
+                recipient.messages[messageIndex].read = true;
+                return User.update({_id: recipient._id}, {$set: {messages: recipient.messages}});
+            }
+        })
+        .then(function (err, updated) {
+            if (err){
+                console.log("Request not sent" + err);
+                error.message = "Request not sent";
+                deferd.reject(error);
+            }
+            else{
+                console.log("updated DB");
+                deferd.resolve();
+            }
+        });
+    return deferd.promise;
+}
+
+function findMessage(messages, id){
+	for(var i = 0; i < messages.length; i++){
+		var message = messages[i];
+		if(message.id == id){
 			return i;
 		}
 	}
 	return -1;
+}
+
+function findRequest(requests, id, departure, returnDate){
+    for(var i = 0; i < requests.length; i++){
+        var request = requests[i];
+        if(request.id == id && request.departure == departure && request.returnDate == returnDate){
+            return i;
+        }
+    }
+    return -1;
 }
 
 module.exports = router;
