@@ -171,7 +171,7 @@
 				-webkit-box-orient: vertical;
 			}
 			.read-more-button {
-				width: fit-content;
+				//width: fit-content;
 
 				@media (max-width: @screen-xs-max) {
 					&.plain-text {
@@ -184,16 +184,18 @@
 						margin-right: 4%;
 					}
 				}
+
+				&.icon-plus {
+					background-image: url(../../images/spritesheet12.png);
+					background-size: 485px 398px;
+					width: 38px;
+					height: 38px;
+					background-position: -205px -346px;
+					float: left;
+				}
 			}
 
-			.icon-plus {
-				background-image: url("../../images/icons/plus1.png");
-				width: 38px;
-				height: 38px;
-				background-position: 1px -31px;
-				background-size: 214%;
-				float: left;
-			}
+
 			.plain-text {
 				font-size: 120%;
 				font-weight: bold;
