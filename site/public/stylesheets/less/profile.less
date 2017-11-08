@@ -111,23 +111,51 @@
 						background-image: url(../../images/spritesheet12.png);
 						background-size: 430px 364px;
 						background-position: -78px -10px;
+
+						@media (max-width: @screen-xs-max) {
+							width: 30px;
+							height: 30px;
+							background-size: 650%;
+							background-position: -33px -1px;
+						}
 					}
 					&.icon-man {
 						background-image: url(../../images/spritesheet12.png);
 						background-size: 425px 350px;
 						background-position: -152px -220px;
+
+						@media (max-width: @screen-xs-max) {
+							width: 30px;
+							height: 30px;
+							background-size: 650%;
+							background-position: -64px -94px;
+						}
 					}
 					&.icon-duck {
 						/////////////INSERT DUCK ICON HERE
 						background-image: url(../../images/spritesheet12.png);
 						background-size: 760px 623px;
 						background-position: -246px -43px;
+
+						@media (max-width: @screen-xs-max) {
+							width: 30px;
+							height: 30px;
+							background-size: 1440%;
+							background-position: -138px -22px;
+						}
 					}
 					&.icon-door {
 						/////////////INSERT DOOR ICON HERE
 						background-image: url(../../images/spritesheet12.png);
 						background-position: -759px 0px;
 						background-size: 1012px 679px;
+
+						@media (max-width: @screen-xs-max) {
+							width: 30px;
+							height: 30px;
+							background-size: 1440%;
+							background-position: -320px 4px;
+						}
 					}
 				}
 
@@ -190,7 +218,7 @@
 					background-size: 485px 398px;
 					width: 38px;
 					height: 38px;
-					background-position: -205px -346px;
+					background-position: -204px -346px;
 					float: left;
 				}
 			}
@@ -384,20 +412,38 @@
 					width: 50px;
 					height: 50px;
 
+					@media (max-width: @screen-xs-max) {
+						background-size: 223px 182px;
+						width: 30px;
+						height: 30px;
+					}
+
 					&.icon-like{
 						background-position: -63px -178px;
+
+						@media (max-width: @screen-xs-max) {
+							background-position: -39px -112px;
+						}
 					}
 					&.icon-dislike {
 						background-position: -63px -178px;
+
+						@media (max-width: @screen-xs-max) {
+							background-position: -39px -112px;
+						}
 					}
 					&.icon-flag {
 						background-position: -238px -61px;
+
+						@media (max-width: @screen-xs-max) {
+							background-position: -147px -39px;
+						}
 					}
 				}
 
 				.like-count {
 					float: left;
-					margin: 3% 3%;
+					//margin: 3% 3%;
 				}
 			}
 
@@ -607,8 +653,8 @@
 					@media (max-width: @screen-xs-max) {
 						width: 30px;
 						height: 30px;
-						background-size: 185px 185px;
-						background-position: -144px -5px;
+						background-size: 650%;
+						background-position: -63px -93px;
 					}
 				}
 				.mutual-friends-text {
@@ -665,6 +711,8 @@
 					@media (max-width: @screen-xs-max) {
 						width: 30px;
 						height: 30px;
+						background-size: 650%;
+						background-position: -32px -125px;
 						//margin-left: 30px;
 					}
 				}
@@ -680,7 +728,8 @@
 					@media (max-width: @screen-xs-max) {
 						width: 30px;
 						height: 30px;
-						//margin-left: 30px;
+						background-size: 650%;
+						background-position: -54px -63px;
 					}
 				}
 				.description-text {
