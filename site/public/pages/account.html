@@ -335,7 +335,7 @@
                         </div>
                     </div>
                     <div class="send-message" ng-if="conversationIsOpen">
-                        <input type="button" class="btn btn-primary btn-swap {{currentConversationStatus == 0?'btn-pending':''}} {{currentConversationStatus == 1?'btn-confirm':''}}" value="{{currentConversationStatus == 0?'Pending':currentConversationStatus == 1?'Confirmed':currentConversationStatus == -1?'Swap':''}}" ng-disabled ="" ng-click="swap()">
+                        <input type="button" class="btn btn-primary btn-swap {{currentConversationStatus == 0?'btn-pending':''}} {{currentConversationStatus == 1?'btn-confirm':''}}" value="{{currentConversationStatus == 0?'Pending':currentConversationStatus == 1?'Confirmed':currentConversationStatus == -1?'Swap':''}}" ng-disabled ="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1" ng-click="swap()">
                         <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
                         <input type="button" class="btn btn-primary btn-send" value="Send" ng-click="sendMessage()" ng-disabled="send.message == '' ">

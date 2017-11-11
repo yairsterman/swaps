@@ -143,7 +143,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.conversationIsOpen = true;
         $scope.send.message = '';
         $scope.messageIndex = $index;
-        $scope.currentConversationStatus = $scope.requestStatus($scope.currentConversationId);
+        $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
+        $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
         if(!$scope.currentConversation.read){
             MessageService.readMessage($scope.user, $scope.currentConversationId).then(function(data){
                 if(!data.error){
@@ -160,10 +161,13 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.send.message = '';
         // var user = {_id:"590adf696da18fbca10e82be",image:"http://localhost:3000/images/static/profile3.jpg",firstName:"Wan Ung",lastName:"Kuen"};
         MessageService.sendMessage($scope.user, $scope.currentConversationId, message).then(function(data){
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
-            $scope.currentConversation.messages.push({message:message,id:$scope.user._id});
-            scrollMessagesToTop();
+            if(!data.error){
+                $rootScope.user = data.data;
+                $scope.user = $rootScope.user;
+                $scope.currentConversation.messages.push({message:message,id:$scope.user._id});
+                scrollMessagesToTop();
+                scrollMessagesToTop();
+            }
         });
     }
 
@@ -239,6 +243,16 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             }
         }
         return -1;
+    };
+
+    $scope.getRequest = function(id){
+        for(var i = 0; i < $scope.user.requests.length; i++){
+            var request = $scope.user.requests[i];
+            if(request.userId == id){
+                return request;
+            }
+        }
+        return null;
     };
 
     function scrollMessagesToTop(){

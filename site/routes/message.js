@@ -66,10 +66,10 @@ router.post('/sendRequest', function(req, res, next) {
 		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, sender._id);
 	})
 	.then( function(){
-		return saveMessage(sender._id, recipientId, sender._id, newMessage, true);
+		return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
 	})
 	.then( function(){
-		return saveMessage(recipientId, sender._id, sender._id, newMessage, false);
+		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
 	})
 	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
