@@ -1,9 +1,9 @@
 swapsApp.service('MessageService', function($http){
 
-   this.sendMessage = function(user, recepient, message, dates) {
+   this.sendMessage = function(user, recipient, message, dates) {
    	  var data = {
    	  	user: user,
-   	  	recipientId: recepient,
+   	  	recipientId: recipient,
    	  	message: message,
         dates: dates
    	  };
@@ -15,10 +15,10 @@ swapsApp.service('MessageService', function($http){
         });
    };
 
-    this.sendRequest = function(user, recepient, message, dates) {
+    this.sendRequest = function(user, recipient, message, dates) {
         var data = {
             user: user,
-            recipientId: recepient,
+            recipientId: recipient,
             dates: dates
         };
         return $http.post('message/sendRequest', data).then(function(data){
@@ -29,17 +29,30 @@ swapsApp.service('MessageService', function($http){
             });
     };
 
-   this.confirmRequest = function(user, recepient) {
-   	  var data = {
-   	  	user: user,
-   	  	recipientId: recepient,
-   	  };
-      return $http.post('message/confirmRequest', data).then(function(data){
-           return data;
-        },
-        function(){
-             console.log("error")
-        });
-   };
+   this.confirmRequest = function(user, recipient) {
+        var data = {
+            user: user,
+            recipientId: recipient,
+        };
+        return $http.post('message/confirmRequest', data).then(function(data){
+                return data;
+            },
+            function(){
+                console.log("error")
+            });
+    };
+
+    this.readMessage = function(user, recipient) {
+        var data = {
+            user: user,
+            recipientId: recipient,
+        };
+        return $http.post('message/readMessage', data).then(function(data){
+                return data;
+            },
+            function(){
+                console.log("error")
+            });
+    };
 
 });

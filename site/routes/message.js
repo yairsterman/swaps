@@ -21,8 +21,8 @@ router.post('/sendMessage', function(req, res, next) {
 				message: message
 			}
 
-	saveMessage(sender._id, recipientId, sender._id, newMessage).then(function(){
-		return saveMessage(recipientId, sender._id, sender._id, newMessage);
+	saveMessage(sender._id, recipientId, sender._id, newMessage, false).then(function(){
+		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
 	})
 	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
@@ -66,10 +66,10 @@ router.post('/sendRequest', function(req, res, next) {
 		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, sender._id);
 	})
 	.then( function(){
-		return saveMessage(sender._id, recipientId, sender._id, newMessage);
+		return saveMessage(sender._id, recipientId, sender._id, newMessage, true);
 	})
 	.then( function(){
-		return saveMessage(recipientId, sender._id, sender._id, newMessage);
+		return saveMessage(recipientId, sender._id, sender._id, newMessage, false);
 	})
 	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
@@ -124,7 +124,7 @@ router.post('/readMessage', function(req, res) {
         });
 });
 
-function saveMessage(senderId, recipientId, messageId, message){
+function saveMessage(senderId, recipientId, messageId, message, markedRead){
 	var defferd = Q.defer();
 	message.id = messageId;
 	User.findOne({_id: senderId}, function (err, sender) {
@@ -140,14 +140,14 @@ function saveMessage(senderId, recipientId, messageId, message){
 						defferd.reject(error);
 					}
 					else{
-						if(user._id){
+						if(user){
 							var messages = user.messages;
 							var index = -1;
 							// find messages by sender
 							for(var i = 0; i < messages.length; i++){
 								if(messages[i].id.toString() === sender._id.toString()){
 									messages[i].messages.push(message);
-									messages[i].read = false;
+									messages[i].read = markedRead;
 									index = i;
 									break;
 								}
@@ -158,7 +158,7 @@ function saveMessage(senderId, recipientId, messageId, message){
 									id: sender._id,
 									image: sender.image,
 									name: sender.firstName + ' ' + sender.lastName,
-									read: false,
+									read: markedRead,
 									messages: [message]
 								});
 							}
@@ -259,8 +259,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
                 return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
             }
 		})
-    	.then(function (err) {
-            if (err) {
+    	.then(function (updated) {
+            if (!updated.ok) {
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -268,8 +268,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
                 return User.findOne({_id: recipientId});
             }
         })
-		.then(function(err, recipient){
-			if (err || !recipient._id){
+		.then(function(recipient){
+			if (!recipient._id){
 				error.message = "Request not sent";
 				deferd.reject(error);
 			}
@@ -283,8 +283,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 				return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
 			}
 		})
-		.then(function (err, updated) {
-			if (err){
+		.then(function (updated) {
+			if (!updated.ok){
 				console.log("Request not sent" + err);
 				error.message = "Request not sent";
 				deferd.reject(error);
@@ -300,8 +300,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 function cancelRequest(senderId, recipientId, departure, returnDate){
     var deferd = Q.defer();
     User.findOne({_id: senderId})
-        .then(function (err, sender) {
-            if (err || !sender._id){
+        .then(function (sender) {
+            if (!sender._id){
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -315,8 +315,8 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                 return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
             }
         })
-        .then(function (err) {
-            if (err) {
+        .then(function (updated) {
+            if (!updated.ok) {
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -324,8 +324,8 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                 return User.findOne({_id: recipientId});
             }
         })
-        .then(function(err, recipient){
-            if (err || !recipient._id){
+        .then(function(recipient){
+            if (!recipient._id){
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -339,8 +339,8 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                 return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
             }
         })
-        .then(function (err, updated) {
-            if (err){
+        .then(function (updated) {
+            if (!updated.ok){
                 console.log("Request not sent" + err);
                 error.message = "Request not sent";
                 deferd.reject(error);
@@ -356,8 +356,8 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
 function markedMessageRead(senderId, recipientId){
     var deferd = Q.defer();
     User.findOne({_id: senderId})
-        .then(function (err, sender) {
-            if (err || !sender._id){
+        .then(function (sender) {
+            if (!sender._id){
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -367,12 +367,14 @@ function markedMessageRead(senderId, recipientId){
                     error.message = "no request found";
                     deferd.reject(error);
                 }
-                sender.messages[messageIndex].read = true
-                return User.update({_id: sender._id}, {$set: {messages: sender.messages}});
+                else{
+                    sender.messages[messageIndex].read = true;
+                    return User.update({_id: sender._id}, {$set: {messages: sender.messages}});
+                }
             }
         })
-        .then(function (err) {
-            if (err) {
+        .then(function (updated) {
+            if (!updated.ok) {
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -380,8 +382,8 @@ function markedMessageRead(senderId, recipientId){
                 return User.findOne({_id: recipientId});
             }
         })
-        .then(function(err, recipient){
-            if (err || !recipient._id){
+        .then(function(recipient){
+            if (!recipient._id){
                 error.message = "Request not sent";
                 deferd.reject(error);
             }
@@ -391,12 +393,14 @@ function markedMessageRead(senderId, recipientId){
                     error.message = "no request found";
                     deferd.reject(error);
                 }
-                recipient.messages[messageIndex].read = true;
-                return User.update({_id: recipient._id}, {$set: {messages: recipient.messages}});
+                else{
+                    recipient.messages[messageIndex].read = true;
+                    return User.update({_id: recipient._id}, {$set: {messages: recipient.messages}});
+                }
             }
         })
-        .then(function (err, updated) {
-            if (err){
+        .then(function (updated) {
+            if (!updated.ok){
                 console.log("Request not sent" + err);
                 error.message = "Request not sent";
                 deferd.reject(error);

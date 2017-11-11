@@ -1,16 +1,23 @@
 var acc = null;
 swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, AccountService, MessageService) {
     acc = $scope;
-    $scope.user = $rootScope.user;
     $scope.activeTab = $routeParams.tab;
-    $scope.edit = angular.copy($scope.user);
-    $scope.apptInfo = $scope.edit.apptInfo?$scope.edit.apptInfo:{};
     $scope.editing = false;
     $scope.send = {message : ''};
     $scope.swap = {};
 
-    if(!$scope.user._id){
-      $location.url('/');
+    if($rootScope.user && $rootScope.user._id) {
+        $scope.user = $rootScope.user;
+        $scope.edit = angular.copy($scope.user);
+        $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
+        init();
+    }
+    else{
+        $timeout(function(){
+            if(!($rootScope.user && $rootScope.user._id)){
+                $location.url('/');
+            }
+        },1000);
     }
 
     $('input[name="datefilter"]').daterangepicker({
@@ -18,15 +25,14 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
           opens: 'center'
       });
 
-
-    setPhotoGalery();
+    function init(){
+        setPhotoGalery();
+    }
 
     var autocomplete;
     var address = {
       types: ['address']
     };
-
-    var geocoder =  new google.maps.Geocoder();
 
     var elementsReady = $interval(function() {
       if($scope.activeTab != 'edit'){
@@ -130,30 +136,35 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       setPhotoGalery();
     }
 
-    $scope.openConversation = function(id){
-      $scope.currentConversation = id;
-      $scope.conversationIsOpen = true;
-      $scope.send.message = '';
-      var objDiv = document.getElementById(id);
-      $timeout(function(){
-        objDiv.scrollTop = objDiv.scrollHeight;
-      }, 700);
+    $scope.openConversation = function(chat, $index){
+        $scope.currentConversation = null;
+        $scope.currentConversation = chat;
+        $scope.currentConversationId = chat.id;
+        $scope.conversationIsOpen = true;
+        $scope.send.message = '';
+        $scope.messageIndex = $index;
+        $scope.currentConversationStatus = $scope.requestStatus($scope.currentConversationId);
+        if(!$scope.currentConversation.read){
+            MessageService.readMessage($scope.user, $scope.currentConversationId).then(function(data){
+                if(!data.error){
+                    $scope.currentConversation.read = true;
+                    scrollMessagesToTop();
+                }
+            });
+        }
+        scrollMessagesToTop();
     }
 
-    $scope.sendMessage = function(id){
-      var message = $scope.send.message;
-      $scope.send.message = '';
-     // var user = {_id:"590adf696da18fbca10e82be",image:"http://localhost:3000/images/static/profile3.jpg",firstName:"Wan Ung",lastName:"Kuen"};
-      MessageService.sendMessage($scope.user, id, message).then(function(data){
-        $rootScope.user = data.data;
-        $scope.user = $rootScope.user;
-        var objDiv = document.getElementById(id);
-        $timeout(function(){
-          objDiv.scrollTop = objDiv.scrollHeight;
-        }, 700);
-    });
-    //   $rootScope.user = $scope.message;
-
+    $scope.sendMessage = function(){
+        var message = $scope.send.message;
+        $scope.send.message = '';
+        // var user = {_id:"590adf696da18fbca10e82be",image:"http://localhost:3000/images/static/profile3.jpg",firstName:"Wan Ung",lastName:"Kuen"};
+        MessageService.sendMessage($scope.user, $scope.currentConversationId, message).then(function(data){
+            $rootScope.user = data.data;
+            $scope.user = $rootScope.user;
+            $scope.currentConversation.messages.push({message:message,id:$scope.user._id});
+            scrollMessagesToTop();
+        });
     }
 
     $scope.swap = function(message){
@@ -174,15 +185,19 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         console.log($scope.swap.dates);
         $scope.swap.dates = null;
         // var user = {_id:"58f7324594b427e59aec391b",image:"http://localhost:3000/images/static/profile5.jpg",firstName:"Marisha",lastName:"Natarajan"};
-        MessageService.sendRequest($scope.user, $scope.currentMessager.id, request, dates).then(function(data){
+        MessageService.sendRequest($scope.user, $scope.currentConversationId, request, dates).then(function(data){
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
-            var objDiv = document.getElementById($scope.currentMessager.id);
-            $timeout(function(){
-              objDiv.scrollTop = objDiv.scrollHeight;
-            }, 700);
+            scrollMessagesToTop();
         });
-    }
+    };
+
+    $scope.$on('auth-return', function(event, args) {
+        $scope.user = $rootScope.user;
+        $scope.edit = angular.copy($scope.user);
+        $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
+        init();
+    });
 
     function setPhotoGalery(){
       $scope.images = [];
@@ -191,30 +206,50 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       }
     }
 
-    $scope.confirmRequest = function(id){
-        MessageService.confirmRequest($scope.user, id).then(function(data){
+    $scope.confirmRequest = function(){
+        MessageService.confirmRequest($scope.user, $scope.currentConversationId).then(function(data){
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
         });
     }
 
-    $scope.requestIsPending = function(id){
+    $scope.requestIsPending = function(){
         for(i = 0; i < $scope.user.requests.length; i++){
-            if($scope.user.requests[i].id == id && $scope.user.requests[i].status == 'Pending'){
+            if($scope.user.requests[i].id == $scope.currentConversationId && $scope.user.requests[i].status == 0){
                 return true;
             }
         }
         return false;
     }
 
-    $scope.requestAwaitingConfirm = function(id){
+    $scope.requestAwaitingConfirm = function(){
         for(i = 0; i < $scope.user.requests.length; i++){
-            if($scope.user.requests[i].id == id && $scope.user.requests[i].status == 'Confirm'){
+            if($scope.user.requests[i].id == $scope.currentConversationId && $scope.user.requests[i].status == 1){
                 return true;
             }
         }
         return false;
-    }
+    };
 
+    $scope.requestStatus = function(id){
+        for(var i = 0; i < $scope.user.requests.length; i++){
+            var request = $scope.user.requests[i];
+            if(request.userId == id){
+                return request.status;
+            }
+        }
+        return -1;
+    };
+
+    function scrollMessagesToTop(){
+        $('.message-area').css({transform: "translate(0)"});
+        $timeout(function(){
+            var objDiv = $('.conversation-messages');
+            var scrollHeight = objDiv[0].scrollHeight;
+            objDiv.animate({
+                scrollTop: scrollHeight
+            }, 300, function() {});
+        }, 700);
+    }
 
 });
