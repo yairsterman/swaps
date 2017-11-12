@@ -24,6 +24,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     }
 
     function errorFunction(){
+        $rootScope.userCity = "Tel Aviv";
         alert("Geocoder failed");
     }
 
