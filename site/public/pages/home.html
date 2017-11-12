@@ -34,7 +34,8 @@
     </div>
     <div class="section" id="featuredHomes">
         <div class="title swappers">
-            <span scroll-on-click>Swappers looking for a place in {{userCity}}</span>
+            <span scroll-on-click ng-if="!geolocationComplete.failed">Swappers looking for a place in {{userCity}}</span>
+            <span scroll-on-click ng-if="geolocationComplete.failed">Meet our top rated Swappers</span>
             <div class="swappers-border"></div>
         </div>
         <div class="travelers-list">

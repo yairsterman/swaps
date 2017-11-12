@@ -24,7 +24,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     }
 
     function errorFunction(){
-        alert("Geocoder failed");
+        $rootScope.$broadcast('geolocation-complete', {failed: true});
     }
 
 	var geocoder =  new google.maps.Geocoder();
@@ -168,7 +168,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
                                 //this is the object you are looking for
                                 $rootScope.userCity = results[0].address_components[i].short_name;
 								$scope.$apply();
-								// $rootScope.$broadcast('geolocation-found', $rootScope.userCity);
+								$rootScope.$broadcast('geolocation-complete', $rootScope.userCity);
                                 flag = true;
                                 break;
                             }

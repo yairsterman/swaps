@@ -31,10 +31,19 @@ swapsApp.service('UsersService', function($http){
       return $http.get('user/get-user-by-travelingDest' + query).then(function(data){
            return data;
         },
-        function(){
-             console.log("error")
+        function(err){
+            return {error: true, msg: err};
         });
    };
+
+    this.getFeaturedUsers = function() {
+        return $http.get('user/get-featured-users').then(function(data){
+            return data;
+        },
+        function(err){
+            return {error: true, msg: err};
+        });
+    };
 
    this.fbLogin = function() {
       return $http.get('/auth/facebook/callback').then(function(data){

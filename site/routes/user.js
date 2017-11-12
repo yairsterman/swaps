@@ -32,6 +32,14 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
 		if(from.toLowerCase() != 'anywhere'){
 			params.city = {$regex: from, $options: 'i'};
 		}
+		if(req.user){
+		    if(req.user.facebookId){
+                params.facebookId = {"$ne": req.user.facebookId};
+            }
+            if(req.user.googleId){
+                params.googleId = {"$ne": req.user.googleId};
+            }
+        }
 		User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
 			if (err){
 				error.message = "error finding users";
@@ -66,10 +74,22 @@ router.get('/all-users', function(req, res, next) {
     });
 });
 
+router.get('/get-featured-users', function(req, res, next) {
+    var params = {rating: {$gt: 4}, traveling:true};
+    if(req.user){
+        params._id = {"$not": req.userId};
+    }
+    User.find(params, Data.getVisibleUserData().accessible).limit(5).sort({rating: -1})
+        .exec(function (err, users) {
+            if (err) return next(err);
+            res.json({users: users});
+        });
+});
+
 router.get('/get-user', function(req, res, next) {
     var id = req.query.id;
 
-    User.findOne({_id:id}, function (err, user) {
+    User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
         res.json(user);
     });
@@ -107,9 +127,12 @@ function getRandomUsers(users){
 
 // Filter all returned users by the given filter params
 function filterUsers(users, query){
+
 	var filterdUsers = [];
 	var destination = query.dest;
-
+    if(!users){
+        return filterdUsers;
+    }
 	for (var i = 0; i < users.length; i++) {
 		var user = users[i];
 		if(filterDestination(user, destination) &&
@@ -120,7 +143,7 @@ function filterUsers(users, query){
 			filterdUsers.push(users[i]);
 		}
 	}
-	return filterdUsers
+	return filterdUsers;
 }
 
 function filterGuests(user, guests){
