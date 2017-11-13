@@ -107,7 +107,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         }
     }
 
-    $scope.$on('geolocation-complete', function(event, args) {
+    $rootScope.$on('geolocation-complete', function(event, args) {
         if($rootScope.geolocationComplete){
             return;
         }

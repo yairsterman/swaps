@@ -168,12 +168,12 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
                                 //this is the object you are looking for
                                 $rootScope.userCity = results[0].address_components[i].short_name;
 								$scope.$apply();
-								$rootScope.$broadcast('geolocation-complete', $rootScope.userCity);
                                 flag = true;
                                 break;
                             }
                         }
                         if(flag){
+                            $rootScope.$broadcast('geolocation-complete', $rootScope.userCity);
                             break;
                         }
                     }
