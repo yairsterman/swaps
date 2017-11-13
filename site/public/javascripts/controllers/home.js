@@ -93,10 +93,36 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             types: ['(cities)']
         });
 
-        UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0).then(function(data) {
-            $scope.travelers = data.data.users;
-        });
+        if($rootScope.geolocationComplete || $rootScope.userCity){
+            if($rootScope.geolocationComplete && $rootScope.geolocationComplete.failed){
+                UsersService.getFeaturedUsers().then(function(data) {
+                    $scope.travelers = data.data.users;
+                });
+            }
+            else{
+                UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0).then(function(data) {
+                    $scope.travelers = data.data.users;
+                });
+            }
+        }
     }
+
+    $scope.$on('geolocation-complete', function(event, args) {
+        if($rootScope.geolocationComplete){
+            return;
+        }
+        $rootScope.geolocationComplete = {failed: args.failed};
+        if(args.failed){
+            UsersService.getFeaturedUsers().then(function(data) {
+                $scope.travelers = data.data.users;
+            });
+        }
+        else{
+            UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0).then(function(data) {
+                $scope.travelers = data.data.users;
+            });
+        }
+    });
 
     $.fn.scrollBottom = function() {
         return $document.height() - this.scrollTop() - this.height();

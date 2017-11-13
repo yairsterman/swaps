@@ -93,7 +93,16 @@ router.post('/confirmRequest', function(req, res, next) {
     var departure = req.body.departure;
     var returnDate = req.body.returnDate;
     confirmRequest(sender._id, recipientId, departure, returnDate).then(function(){
-    	res.json({status: 'success', message: 'confirmed'});
+		User.findOne({_id: sender._id}, function (err, updatedUser) {
+			if (err){
+				console.log("couldn't find user but Confirm was sent" + err);
+				error.message = "couldn't find user but Confirm was sent";
+				res.json(error);
+			}
+			else{
+				res.json(updatedUser);
+			}
+		});
 	},
 	function(err){
 		res.json(err);
@@ -201,7 +210,7 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, sentB
 						defferd.reject(error);
 					}
 					else{
-						if(user._id){
+						if(user){
 							var requests = user.requests;
 							var index = -1;
 
@@ -244,55 +253,61 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, sentB
 function confirmRequest(senderId, recipientId, departure, returnDate){
     var deferd = Q.defer();
     User.findOne({_id: senderId})
-		.then(function (err, sender) {
-			if (err || !sender._id){
-				error.message = "Request not sent";
-				deferd.reject(error);
+		.then(function (sender) {
+			if (!sender){
+				error.message = "confirmation not sent";
+                throw new Error(error);
 			}
 			else {
 				var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
                 if(requestIndex == -1){
                     error.message = "no request found";
-                    deferd.reject(error);
+                    throw new Error(error);
                 }
-				sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+                else{
+                    sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
+                    return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+                }
             }
 		})
     	.then(function (updated) {
             if (!updated.ok) {
-                error.message = "Request not sent";
-                deferd.reject(error);
+                error.message = "confirmation not sent";
+                throw new Error(error);
             }
             else {
                 return User.findOne({_id: recipientId});
             }
         })
 		.then(function(recipient){
-			if (!recipient._id){
-				error.message = "Request not sent";
-				deferd.reject(error);
+			if (!recipient){
+				error.message = "confirmation not sent";
+                throw new Error(error);
 			}
 			else{
 				var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
 				if(requestIndex == -1){
                     error.message = "no request found";
-                    deferd.reject(error);
+                    throw new Error(error);
 				}
-				recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-				return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
+				else{
+                    recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
+                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
+                }
 			}
 		})
 		.then(function (updated) {
 			if (!updated.ok){
-				console.log("Request not sent" + err);
-				error.message = "Request not sent";
+				console.log("confirmation not sent" + err);
+				error.message = "confirmation not sent";
 				deferd.reject(error);
 			}
 			else{
 				console.log("updated DB");
 				deferd.resolve();
 			}
+		},function(err){
+            deferd.reject(err);
 		});
 	return deferd.promise;
 }
@@ -426,7 +441,7 @@ function findMessage(messages, id){
 function findRequest(requests, id, departure, returnDate){
     for(var i = 0; i < requests.length; i++){
         var request = requests[i];
-        if(request.id == id && request.departure == departure && request.returnDate == returnDate){
+        if(request.userId == id && request.departure == departure && request.returnDate == returnDate){
             return i;
         }
     }
