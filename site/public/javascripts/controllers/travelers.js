@@ -449,21 +449,5 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.pageList = $scope.pageListToShow(pageNum, $scope.dumPageCount(travelersList));
         scrollToTop();
     };
-
-    //  Just generating new objects to test larger arrays
-    for (var i = 0; i < 100; ++i) {
-        for (var j = 0; j < Math.floor(Math.random() * 4); ++j) {
-            var newTrav = {};
-            for (var k in $scope.dum_trav[j]) {
-                newTrav[k] = $scope.dum_trav[j][k];
-            }
-            newTrav._id = Math.floor(Math.random() * 10000);
-            $scope.dum_trav.push(newTrav);
-        }
-    }
-
-    // console.log($scope.pageListToShow(1, $scope.dumPageCount($scope.dum_trav)));
-    // console.log($scope.dum_trav);
-    // $scope.pageListToShow(1, $scope.dumPageCount($scope.dum_trav));
-
+        
 }]);
