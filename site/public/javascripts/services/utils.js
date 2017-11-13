@@ -1,6 +1,6 @@
 swapsApp.service('Utils', function($http){
 
-    this.getAmenities = function(id) {
+    this.getAmenities = function() {
         return $http.get('utils/get-amenities').then(function(data){
                 return data.data;
             },
@@ -9,8 +9,26 @@ swapsApp.service('Utils', function($http){
             });
     };
 
-    this.getPropertyType = function(id) {
+    this.getPropertyType = function() {
         return $http.get('utils/get-property-type').then(function(data){
+                return data.data;
+            },
+            function(){
+                console.log("error")
+            });
+    };
+
+    this.getThingsToDo = function() {
+        return $http.get('utils/get-things-to-do').then(function(data){
+                return data.data;
+            },
+            function(){
+                console.log("error")
+            });
+    };
+
+    this.getGenders = function() {
+        return $http.get('utils/get-genders').then(function(data){
                 return data.data;
             },
             function(){

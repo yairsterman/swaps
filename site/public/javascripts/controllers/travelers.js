@@ -234,8 +234,6 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
                 $scope.map = new google.maps.Map(document.getElementById('travelerMap'), mapOptions);
                 deleteMarkers();
                 myoverlay.setMap($scope.map);
-                getAmenities();
-                getRoomTypes();
                 getTravelers(0);
                 $(window).scroll(function() {
                     $('#swappers').stop();
@@ -307,18 +305,6 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.yourCity = $rootScope.userCity;
         getTravelers(0);
 	});
-
-    function getAmenities(){
-        Utils.getAmenities().then(function(data){
-            $scope.amenities = data;
-        });
-    }
-
-    function getRoomTypes(){
-        Utils.getPropertyType().then(function(data){
-            $scope.roomTypes = data;
-        });
-    }
 
 
     /* ----------------------------------------------------- */

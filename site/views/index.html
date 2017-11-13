@@ -46,6 +46,7 @@
     <script src="/javascripts/directives/scrollers.js"></script>
     <script src="/directives/swapper.js"></script>
 
+    <script src="/javascripts/controllers/mainCtrl.js"></script>
     <script src="/javascripts/controllers/home.js"></script>
     <script src="/javascripts/controllers/header.js"></script>
     <script src="/javascripts/controllers/travelers.js"></script>
@@ -58,7 +59,7 @@
 
 <div ng-include="'/pages/components/header.html'" ng-controller="headerController"></div>
 
-<div ng-view></div>
+<div ng-view ng-controller="mainController"></div>
 
 </body>
 </html>

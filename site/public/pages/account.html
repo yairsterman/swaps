@@ -14,7 +14,7 @@
             <div class="col-sm-9">
               <div class="edit-profile" ng-if="activeTab == 'edit'">
                 <div class="row permanent-info">
-                  <div class="col-sm-6">
+                  <div class="col-sm-3">
                     <div class="pic" style="background-image:url('{{user.image}}')">
                     </div>
                   </div>
@@ -25,47 +25,61 @@
                   </div>
                 </div>
                <form class="form-horizontal edit-form" role="form">
+                   <div class="form-group">
+                       <label class="col-sm-3 control-label">Email:</label>
+                       <div class="col-sm-6">
+                           <input class="form-control" type="text" ng-model="edit.email" >
+                       </div>
+                   </div>
+                   <div class="form-group">
+                      <label class="col-sm-3 control-label">Address:</label>
+                      <div class="col-sm-6">
+                        <input class="form-control" id="address" type="text" ng-model="edit.address">
+                    </div>
+                  </div>
+                   <div class="form-group">
+                       <label class="col-sm-3 control-label">Age:</label>
+                       <div class="col-sm-2">
+                           <input class="form-control" id="age" type="number" ng-model="edit.age">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label class="col-sm-3 control-label">Gender:</label>
+                       <div class="col-sm-3">
+                           <select class="form-control" id="gender" ng-model="edit.gender">
+                               <option value="gender.value" ng-repeat="gender in data.genders" ng-selected="edit.gender == gender.value">{{gender.name}}</option>
+                           </select>
+                       </div>
+                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Address:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" id="address" type="text" ng-model="edit.address" ng-disabled="!editing" required>
+                    <label class="col-sm-3 control-label">About me:</label>
+                    <div class="col-sm-6">
+                    <textarea rows="6" cols="20" class="form-control" ng-model="edit.aboutMe"></textarea>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Country:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" id="country" type="text" ng-model="edit.country" ng-disabled="!editing">
+                    <label class="col-sm-3 control-label">Occupation:</label>
+                    <div class="col-sm-6">
+                      <input class="form-control" type="text" ng-model="edit.occupation" >
                     </div>
                   </div>
+                   <div class="form-group">
+                       <label class="col-sm-3 control-label">What are you looking for when you travel? <br> <br> <span style="font-weight: 400">(This will help us find the best place for you to Swap!)</span></label>
+                       <div class="col-sm-8 things-col">
+                           <div class="things-to-do" ng-repeat="thing in data.thingsToDo">
+                               <div class="things-checkbox" ng-click="addThing(thing.id, $event)">
+                                   <div class="check icon icon-check {{isCheckedThing(thing.id)?'checked':''}}"></div>
+                               </div>
+                               <div>
+                                   {{thing.displayName}}
+                               </div>
+                           </div>
+                       </div>
+                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">City:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" id="city" type="text" ng-model="edit.city" ng-disabled="!editing">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-lg-3 control-label">Email:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" type="text" ng-model="edit.email" ng-disabled="!editing">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-lg-3 control-label">About me:</label>
-                    <div class="col-lg-8">
-                    <textarea rows="6" cols="20" class="form-control" ng-model="edit.aboutMe" ng-disabled="!editing"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-lg-3 control-label">Ocupation:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" type="text" ng-model="edit.ocupation" ng-disabled="!editing">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-3 control-label"></label>
-                    <div class="buttons col-lg-8">
-                      <input type="button" class="btn btn-primary btn-edit" value="Edit" ng-click="editProfile()" ng-hide="editing">
-                      <input type="button" class="btn btn-primary btn-edit" value="Save Changes" ng-click="saveChanges()" ng-if="editing">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="buttons col-sm-6">
+                      <input type="button" class="btn btn-primary btn-edit" value="Save Changes" ng-click="saveChanges()" ng-disabled="saving">
                       <span class="space"></span>
                       <input type="reset" class="btn btn-primary btn-edit cancel" value="Cancel" ng-click="cancel()" ng-if="editing">
                     </div>
@@ -272,52 +286,54 @@
                   <div class="search-messages">
                       <input type="text" class="search" placeholder="Search Messages" ng-model="$parent.searchTerm">
                   </div>
-                <div class="messages-list" ng-repeat="message in user.messages | searchMessages:searchTerm" >
-                  <div class="single-message" ng-click="openConversation(message, $index)">
-                    <div class="">
-                      <div class="photo" style="background-image:url('{{message.image}}')" ng-click="go('profile/'+message.id )">
-                      </div>
-                    </div>
-                    <div class="names">
-                      <div class="message">
-                        <div class="top">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                  <div class="name">
-                                      {{message.name}}
-                                  </div>
-                                </div>
-                                <div class="col-sm-6">
-                                  <div class="date {{message.read?'not-read':''}}">
-                                      {{message.messages[message.messages.length -1].date | dateFilter}}
-                                  </div>
-                                </div>
-                            </div>
+                  <div class="messages-scroll">
+                    <div class="messages-list" ng-repeat="message in user.messages | searchMessages:searchTerm" >
+                      <div class="single-message" ng-click="openConversation(message, $index)">
+                        <div class="">
+                          <div class="photo" style="background-image:url('{{message.image}}')" ng-click="go('profile/'+message.id )">
+                          </div>
                         </div>
-                        <div class="bottom">
-                          <div class="row last-massage">
-                            <div class="col-sm-8">
-                              <div class="text {{message.read?'not-read':''}}">
-                                  {{message.messages[message.messages.length -1].message}}
-                              </div>
+                        <div class="names">
+                          <div class="message">
+                            <div class="top">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                      <div class="name">
+                                          {{message.name}}
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                      <div class="date {{message.read?'not-read':''}}">
+                                          {{message.messages[message.messages.length -1].date | dateFilter}}
+                                      </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
-                                <div class="request" ng-if="requestStatus(message.id) != -1">
-                                    <div class="request-status">{{requestStatus(message.id) == 0?'Request Pending':requestStatus(message.id) == 1?'Request Confirmed':''}}</div>
+                            <div class="bottom">
+                              <div class="row last-massage">
+                                <div class="col-sm-8">
+                                  <div class="text {{message.read?'not-read':''}}">
+                                      {{message.messages[message.messages.length -1].message}}
+                                  </div>
                                 </div>
-                                <div class="unread" ng-if="!message.read">
-                                    <div class="circle"></div>
+                                <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
+                                    <div class="request" ng-if="requestStatus(message.id) != -1">
+                                        <div class="request-status">{{requestStatus(message.id) == 0?'Request Pending':requestStatus(message.id) == 1?'Request Confirmed':''}}</div>
+                                    </div>
+                                    <div class="unread" ng-if="!message.read">
+                                        <div class="circle"></div>
+                                    </div>
                                 </div>
+                              </div>
                             </div>
                           </div>
                         </div>
+                          <div class="arrow {{message.read?'not-read':''}}">
+                              <div class="glyphicon glyphicon-chevron-right"></div>
+                          </div>
                       </div>
                     </div>
-                      <div class="arrow {{message.read?'not-read':''}}">
-                          <div class="glyphicon glyphicon-chevron-right"></div>
-                      </div>
                   </div>
-                </div>
               </div>
                 <div class="message-area">
                     <div class="conversation-profile">

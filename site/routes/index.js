@@ -3,6 +3,7 @@ var router = express.Router();
 var passport       = require("passport");
 var FacebookStrategy = require("passport-facebook").Strategy;
 var User = require('../models/User.js');
+var Data = require('../user_data/data.js');
 var app = express();
 
 app.use(passport.initialize());
@@ -43,11 +44,12 @@ passport.use(new FacebookStrategy({
         }
         else{
           var age = getAge(profile._json.birthday);
+          var gender = getGender(profile.gender);
           user = new User({
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
             displayName: profile.displayName,
-            gender: profile.gender,
+            gender: gender,
             age: age,
             email: profile._json.email,
             facebookId: profile.id,
@@ -103,6 +105,14 @@ function getAge(dateString){
         age--;
     }
     return age;
+}
+
+function getGender(gender){
+    if(gender.toLowerCase() == 'female')
+        return 1;
+    if(gender.toLowerCase() == 'male')
+        return 2;
+    return 3;
 }
 
 module.exports = router;

@@ -1,8 +1,8 @@
 .account-page{
-	background-color: #e1e1e1;
+	background-color: #ffffff;
 	padding: 40px 0;
 	.inner-page {
-		background-color: #f8f8f8;
+		background-color: #F9F6F1;
 		.display-flex{
 			display: flex;
 		}
@@ -11,27 +11,27 @@
 			text-align: center;
 		}
 		.sidebar{
-			padding-top: 20px;
-			border-right: solid 1px rgba(192,192,192,0.8);
+			background-color: #ffffff;
 			margin-bottom: 0;
 			padding-right: 0;
 	    }
 	    .single-link{
 		    list-style: none;
-		    padding: 15px;
+		    padding: 20px;
 		    font-size: 18px;
 		    width: 100%;
 		    a{
-		    	color: #484848;
+		    	color: #0d78ad;
 		    	&:hover{
-			    	color: rgba(192,192,192,0.8);
+			    	opacity: 0.8;
 			    }
 		    }
 		    &.active{
-		    	background-color: #edefed;
+		    	background-color: #F9F6F1;
 		    }
 	    }
 	    .edit-profile{
+			padding: 0 3vw;
 	    	.permanent-info{
 	    		padding: 30px 0;
 	    		display: flex;
@@ -41,29 +41,66 @@
 					background-repeat: no-repeat;
 					background-size: cover;
 					border-radius: 50%;
-					height: 15vw;
-					width: 15vw;
+					height: 10vw;
+					width: 10vw;
 					margin: auto;
 	    		}
 	    		.name{
-	    			font-size: 30px;
+	    			font-size: 24px;
 	    			font-weight: bold;
-	    			color: #484848;
+	    			color: #0d78ad;
 	    		}
 	    	}
 	    	.edit-form{
-	    		padding: 0 15vw;
+	    		padding: 0 15px;
 	    		.control-label{
 	    			text-align: left;
+					color: #0d78ad;
 	    		}
 	    		textarea.form-control {
+					background-color: #ffffff;
 				    font-size: 14px;
 				}
 	    	}
+			.things-col{
+				display: flex;
+				flex-wrap: wrap;
+			}
+			.things-to-do{
+				display: flex;
+				align-items: flex-start;
+				color: #0d78ad;
+				padding: 4px 0;
+				width: 50%;
+				.things-checkbox{
+					position: relative;
+					border: 1px solid rgba(13,120,173,0.4);
+					margin-right: 8px;
+					margin-top: 2px;
+					width: 15px;
+					height: 15px;
+					&:focus{
+						outline: none;
+					}
+				}
+				.check{
+					position: absolute;
+					top: -8px;
+					transform: scale(0);
+					transition: 0.3s ease;
+					&:focus{
+						outline: none;
+					}
+					&.checked{
+						transform: scale(1);
+					}
+				}
+			}
 	    	.buttons{
     			margin-top: 15px;
     			.btn-edit{
     				width: 48%;
+					font-size: 18px;
     				&.cancel{
     					background-color: #edefed;
     					color: #484848;
@@ -151,11 +188,15 @@
 			margin: 0 -15px;
 			display: flex;
 	    	.all-messages{
-				background-color: #f8f8f8;
+				background-color: #F9F6F1;
 				padding-top: 35px;
 				width: 50%;
 				position: relative;
 				z-index: 2;
+				.messages-scroll{
+					height: 450px;
+					overflow-y: scroll;
+				}
 				.search-messages{
 					width: 90%;
 					margin: auto;
@@ -171,7 +212,7 @@
 				}
 	    		.messages-list{
 	    			.single-message{
-						background-color: #f8f8f8;
+						background-color: #F9F6F1;
 						padding: 5px;
 						height: 70px;
 						transition: ease .4s;
@@ -296,14 +337,14 @@
 	    		}
 	    	}
 			.message-area{
-				background-color: #e1e1e1;
+				background-color: #ffffff;
 				width: 50%;
 				transition: 0.4s ease;
 				transform: translate(-100%);
 				z-index: 1;
 				position: relative;
 				.conversation-profile{
-					background-color: #f8f8f8;
+					background-color: #F9F6F1;
 					height: 70px;
 					display: flex;
 					align-items: center;
@@ -327,7 +368,7 @@
 				}
 				.conversation-messages{
 					overflow-y: scroll;
-					height: 400px;
+					height: 450px;
 					.con-message{
 						transition: ease 0.4s;
 						padding: 10px 12px;

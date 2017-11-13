@@ -2,6 +2,7 @@ var acc = null;
 swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, AccountService, MessageService) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
+    $scope.homepage = false;
     $scope.editing = false;
     $scope.send = {message : ''};
     $scope.swap = {};
@@ -68,28 +69,41 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
    	}
 
    	$scope.saveChanges = function(){
+        $scope.saving = true;
      	AccountService.editProfile($scope.edit).then(function(data){
      		if(data.data.error){
      			console.log("error");
+                $scope.saving = true;
      		}
      		else{
      			$scope.user = data.data;
                 $rootScope.user = $scope.user;
-                $scope.editing = false;
+                $scope.saving = false;
                 $scope.edit = angular.copy($scope.user);
      		}
      	});
    	}
-
-    $scope.editProfile = function(){
-      $scope.editing = true;
-    }
 
    	$scope.cancel = function(){
         $scope.editing = false;
      	$scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo?$scope.edit.apptInfo:{};
    	}
+
+    $scope.addThing = function(index, event){
+        event.preventDefault();
+        event.stopPropagation();
+        if($scope.isCheckedThing(index)){
+            $scope.edit.thingsToDo.splice($scope.edit.thingsToDo.indexOf(index),1);
+        }
+        else{
+            $scope.edit.thingsToDo.push(index);
+        }
+    }
+
+    $scope.isCheckedThing = function(index){
+        return $scope.edit.thingsToDo.includes(index);
+    }
 
     $scope.editlisting = function(){
       var edit = $scope.user;

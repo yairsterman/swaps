@@ -36,7 +36,10 @@ router.post('/edit-profile', function(req, res, next) {
 	var address = req.body.address;
 	var email = req.body.email;
     var aboutMe = req.body.aboutMe;
-    var ocupation = req.body.ocupation;
+    var occupation = req.body.occupation;
+    var age = req.body.age;
+    var gender = req.body.gender;
+    var thingsToDo = req.body.thingsToDo;
     var location = {};
 
     geocoder.geocode(address)
@@ -48,7 +51,7 @@ router.post('/edit-profile', function(req, res, next) {
         if(!city){
             city = geo[0].administrativeLevels.level1long;
         }
-        User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: ocupation, location: location}},
+        User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, age: age, thingsToDo: thingsToDo}},
             function (err, updated) {
                 if (err){
                     error.message = err;
