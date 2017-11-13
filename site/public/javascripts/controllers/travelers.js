@@ -187,6 +187,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         });
 
         google.maps.event.addListener(marker, 'mouseout', function(){
+            $('#swappers').stop();
             infoWindow.close($scope.map, marker);
         });
 
@@ -236,6 +237,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
                 getAmenities();
                 getRoomTypes();
                 getTravelers(0);
+                $(window).scroll(function() {
+                    $('#swappers').stop();
+                });
             }
         });
     }
@@ -295,9 +299,6 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
           $scope.travelers = travelers;
           countPages();
           $scope.loading = false;
-            $(window).scroll(function() {
-                $('#swappers').stop();
-            });
         });
     }
 
