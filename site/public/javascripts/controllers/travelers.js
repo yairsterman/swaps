@@ -449,5 +449,5 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.pageList = $scope.pageListToShow(pageNum, $scope.dumPageCount(travelersList));
         scrollToTop();
     };
-        
+
 }]);
