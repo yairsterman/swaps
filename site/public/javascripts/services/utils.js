@@ -36,5 +36,14 @@ swapsApp.service('Utils', function($http){
             });
     };
 
+    this.getSecurityDeposit = function() {
+        return $http.get('utils/get-deposits').then(function(data){
+                return data.data;
+            },
+            function(){
+                console.log("error")
+            });
+    };
+
 });
 

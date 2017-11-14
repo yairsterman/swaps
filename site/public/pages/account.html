@@ -151,8 +151,19 @@
                       You don't have enough photos of your listing, you must have at least 3 photo.
                     </div>
                     <div class="no-image">
-                      <img src="http://localhost:3000/images/static/no-image.png" class="no-image-icon">
+                      <img src="http://swapshome.com:3000/images/static/no-image.png" class="no-image-icon">
                     </div>
+                      <div class="upload-photos" ng-if="user.photos.length < 8">
+                          <form method="POST" enctype="multipart/form-data" action="/account/upload" >
+                              <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
+                              alert('You can only have 8 images');
+                              this.value='';
+                           }" multiple>
+                              <input type="hidden" name="id" value="{{edit._id}}">
+                              <div style="margin-top:15px;"></div>
+                              <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
+                          </form>
+                      </div>
                   </div>
                   <div class="display-photos" ng-if="user.photos.length > 0">
                     <div class="text" ng-if="user.photos.length < 3">
@@ -183,96 +194,16 @@
                     Amenities
                   </div>
                   <div class="row">
-                    <div class="col-sm-4">
-                      <ul class="list-unstyled">
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.essentials" ng-repeat="amenity in amenities">
-                              {{amenity.displayName}}
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-sm-4">
-                      <ul class="list-unstyled">
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.tv " ng-model="apptInfo.tv">
-                            TV
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.wheelchair " ng-model="apptInfo.wheelchair">
-                            Wheelchair accessable
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.transportation " ng-model="apptInfo.babies">
-                            Public transportation
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.kids " ng-model="apptInfo.kids">
-                            Kid friendly
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.parking " ng-model="apptInfo.parking">
-                            Parking
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.elevator " ng-model="apptInfo.elevator">
-                            Elevator
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-sm-4">
-                      <ul class="list-unstyled">
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.washing " ng-model="apptInfo.washing">
-                            Washing machine
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.dryer " ng-model="apptInfo.dryer">
-                            Dryer
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.smoking " ng-model="apptInfo.smoking">
-                            Smoking allowed
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.pool " ng-model="apptInfo.pool">
-                            Pool
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.pets " ng-model="apptInfo.pets">
-                            Pet allowed
-                          </label>
-                        </li>
-                        <li>
-                          <label class="amenity-label">
-                            <input type="checkbox" name="amenity" value="" ng-checked="apptInfo.bathroom " ng-model="apptInfo.bathroom">
-                            Private bathroom
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
+                      <div class="col-sm-8 things-col">
+                          <div class="things-to-do" ng-repeat="amenity in data.amenities">
+                              <div class="things-checkbox" ng-click="addAmenity(amenity.id, $event)">
+                                  <div class="check icon icon-check {{isCheckedAmenity(amenity.id)?'checked':''}}"></div>
+                              </div>
+                              <div>
+                                  {{amenity.displayName}}
+                              </div>
+                          </div>
+                      </div>
                   </div>
                 </div>
                 <div class="buttons col-sm-4">

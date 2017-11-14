@@ -62,40 +62,6 @@
 				    font-size: 14px;
 				}
 	    	}
-			.things-col{
-				display: flex;
-				flex-wrap: wrap;
-			}
-			.things-to-do{
-				display: flex;
-				align-items: flex-start;
-				color: #0d78ad;
-				padding: 4px 0;
-				width: 50%;
-				.things-checkbox{
-					position: relative;
-					border: 1px solid rgba(13,120,173,0.4);
-					margin-right: 8px;
-					margin-top: 2px;
-					width: 15px;
-					height: 15px;
-					&:focus{
-						outline: none;
-					}
-				}
-				.check{
-					position: absolute;
-					top: -8px;
-					transform: scale(0);
-					transition: 0.3s ease;
-					&:focus{
-						outline: none;
-					}
-					&.checked{
-						transform: scale(1);
-					}
-				}
-			}
 	    	.buttons{
     			margin-top: 15px;
     			.btn-edit{
@@ -439,6 +405,40 @@
 				}
 			}
 	    }
+		.things-col{
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.things-to-do{
+			display: flex;
+			align-items: flex-start;
+			color: #0d78ad;
+			padding: 4px 0;
+			width: 50%;
+			.things-checkbox{
+				position: relative;
+				border: 1px solid rgba(13,120,173,0.4);
+				margin-right: 8px;
+				margin-top: 2px;
+				width: 15px;
+				height: 15px;
+				&:focus{
+					outline: none;
+				}
+			}
+			.check{
+				position: absolute;
+				top: -8px;
+				transform: scale(0);
+				transition: 0.3s ease;
+				&:focus{
+					outline: none;
+				}
+				&.checked{
+					transform: scale(1);
+				}
+			}
+		}
 	}
 	.modal-content{
 		.dates{

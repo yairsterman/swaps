@@ -3,7 +3,7 @@
 const visibleUserData = {
     accessible: {
         firstName:true,
-        age:true,
+        birthday:true,
         gender:true,
         image:true,
         country:true,
@@ -20,12 +20,13 @@ const visibleUserData = {
         reviews:true,
         comments:true,
         apptInfo:true,
+        deposit:true,
         rating:true
     },
     member: {
         firstName:true,
         lastName:true,
-        age:true,
+        birthday:true,
         gender:true,
         image:true,
         country:true,
@@ -42,12 +43,13 @@ const visibleUserData = {
         reviews:true,
         comments:true,
         apptInfo:true,
+        deposit:true,
         rating:true
     },
     restricted: {
         firstName:true,
         lastName:true,
-        age:true,
+        birthday:true,
         gender:true,
         image:true,
         country:true,
@@ -63,6 +65,7 @@ const visibleUserData = {
         reviews:true,
         comments:true,
         apptInfo:true,
+        deposit:true,
         thingsToDo:true,
         rating:true,
         radius:true,
@@ -77,21 +80,21 @@ const amenities = [
     {id: 1, name: 'wifi', displayName:'Wi-Fi', icon:'icon-dryer'},
     {id: 2, name: 'washer', displayName:'Washer', icon:'icon-washer'},
     {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-dryer'},
-    {id: 3, name: 'shower', displayName:'Shower', icon:'icon-dryer'},
-    {id: 4, name: 'elevator', displayName:'Elevator', icon:'icon-elevator'},
-    {id: 5, name: 'garden', displayName:'Garden', icon:'icon-tree'},
-    {id: 6, name: 'bathroom', displayName:'Private Bathroom', icon:'icon-dryer'},
-    {id: 7, name: 'parking', displayName:'Parking', icon:'icon-parking'},
-    {id: 8, name: 'air', displayName:'Air Conditioning', icon:'icon-snowflake'},
-    {id: 9, name: 'heat', displayName:'Heating', icon:'icon-heat'},
-    {id: 10, name: 'laptop', displayName:'Laptop Friendly', icon:'icon-dryer'},
-    {id: 11, name: 'tv', displayName:'TV', icon:'icon-tv'},
-    {id: 12, name: 'entrance', displayName:'Private Entrance', icon:'icon-keys'},
-    {id: 13, name: 'gym', displayName:'Gym', icon:'icon-dryer'},
-    {id: 14, name: 'wheelchair', displayName:'Wheelchair Accessible', icon:'icon-dryer'},
-    {id: 15, name: 'doorman', displayName:'Doorman', icon:'icon-dryer'},
-    {id: 16, name: 'iron', displayName:'Iron', icon:'icon-dryer'},
-    {id: 17, name: 'pool', displayName:'Pool', icon:'icon-dryer'},
+    {id: 4, name: 'shower', displayName:'Shower', icon:'icon-dryer'},
+    {id: 5, name: 'elevator', displayName:'Elevator', icon:'icon-elevator'},
+    {id: 6, name: 'garden', displayName:'Garden', icon:'icon-tree'},
+    {id: 7, name: 'bathroom', displayName:'Private Bathroom', icon:'icon-dryer'},
+    {id: 8, name: 'parking', displayName:'Parking', icon:'icon-parking'},
+    {id: 9, name: 'air', displayName:'Air Conditioning', icon:'icon-snowflake'},
+    {id: 10, name: 'heat', displayName:'Heating', icon:'icon-heat'},
+    {id: 11, name: 'laptop', displayName:'Laptop Friendly', icon:'icon-dryer'},
+    {id: 12, name: 'tv', displayName:'TV', icon:'icon-tv'},
+    {id: 13, name: 'entrance', displayName:'Private Entrance', icon:'icon-keys'},
+    {id: 14, name: 'gym', displayName:'Gym', icon:'icon-dryer'},
+    {id: 15, name: 'wheelchair', displayName:'Wheelchair Accessible', icon:'icon-dryer'},
+    {id: 16, name: 'doorman', displayName:'Doorman', icon:'icon-dryer'},
+    {id: 17, name: 'iron', displayName:'Iron', icon:'icon-dryer'},
+    {id: 18, name: 'pool', displayName:'Pool', icon:'icon-dryer'},
 
 ];
 
@@ -138,6 +141,15 @@ const propertyType =[
     {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
 ];
 
+const securityDeposit =[
+    {id: 0, type: 'basic', displayName: 'Basic', value:100},
+    {id: 1, type: 'bronze', displayName: 'Bronze', value:150},
+    {id: 2, type: 'silver', displayName: 'Silver', value:200},
+    {id: 3, type: 'gold', displayName: 'Gold', value:300},
+    {id: 4, type: 'platinum', displayName: 'Platinum', value:400},
+    {id: 5, type: 'diamond', displayName: 'Diamond', value:400},
+];
+
 var data = {
 
 };
@@ -164,6 +176,10 @@ data.getThingsToDo = function(){
 
 data.getGenders = function(){
     return genders;
+};
+
+data.getSecurityDeposit = function(){
+    return securityDeposit;
 };
 
 module.exports = data;

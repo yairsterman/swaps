@@ -19,4 +19,8 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
         $scope.data.genders = data;
     });
 
+    Utils.getSecurityDeposit().then(function(data){
+        $scope.data.deposits = data;
+    });
+
 });

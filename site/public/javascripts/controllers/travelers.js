@@ -196,7 +196,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
             var a = document.createElement("a");
             a.id = "tempA"
             a.target = "_self";
-            a.href = "http://localhost:3000/#/" + marker.url; // change to actual url
+            a.href = "http://swapshome.com:3000/#/" + marker.url; // change to actual url
             a.click();
         });
 

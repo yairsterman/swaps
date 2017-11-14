@@ -97,9 +97,32 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         return $scope.edit.thingsToDo.includes(index);
     }
 
+    $scope.addAmenity = function(index, event){
+        event.preventDefault();
+        event.stopPropagation();
+        if(!$scope.user.apptInfo.amenities){
+            $scope.user.apptInfo.amenities = [];
+            $scope.user.apptInfo.amenities.push(index);
+            return;
+        }
+        if($scope.isCheckedAmenity(index)){
+            $scope.user.apptInfo.amenities.splice($scope.user.apptInfo.amenities.indexOf(index),1);
+        }
+        else{
+            $scope.user.apptInfo.amenities.push(index);
+        }
+    }
+
+    $scope.isCheckedAmenity = function(index){
+        if($scope.user && $scope.user.apptInfo && $scope.user.apptInfo.amenities){
+            return $scope.user.apptInfo.amenities.includes(index);
+        }
+        return false;
+    }
+
     $scope.editlisting = function(){
       var edit = $scope.user;
-      edit.apptInfo = $scope.apptInfo;
+      edit.apptInfo = $scope.user.apptInfo;
       AccountService.editListing(edit).then(function(data){
         if(data.error){
           console.log("error");
