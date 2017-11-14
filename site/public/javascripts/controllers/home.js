@@ -6,6 +6,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.slideIndex = 0;
     $scope.featured = [];
 
+
     $rootScope.homepage = true;
 
     var autocompleteSearch;

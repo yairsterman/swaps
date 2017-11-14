@@ -79,7 +79,7 @@ router.get('/get-featured-users', function(req, res, next) {
     if(req.user){
         params._id = {"$not": req.userId};
     }
-    User.find(params, Data.getVisibleUserData().accessible).limit(5).sort({rating: -1})
+    User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
         .exec(function (err, users) {
             if (err) return next(err);
             res.json({users: users});

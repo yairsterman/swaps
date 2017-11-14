@@ -45,20 +45,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         var found = false;
         autocomplete.addListener('place_changed', function() {
           $scope.edit.address = autocomplete.getPlace().formatted_address;
-          var components = autocomplete.getPlace().address_components;
-          for(var i = 0; i < components.length; i++){
-            if(!found && (components[i].types[0] == 'locality' || components[i].types[0] == "administrative_area_level_1")){
-              $scope.edit.city = components[i].long_name;
-              found = true;
-              continue;
-            }
-            if(components[i].types[0] == 'country'){
-              $scope.edit.country = components[i].long_name;
-              continue;
-            }
-          }
           $scope.$apply();
         });
+          $('.datepicker').datepicker({
+              format: 'mm/dd/yyyy',
+              startDate: $scope.edit.birthday
+          });
         $interval.cancel(elementsReady);
       }
     }, 100);

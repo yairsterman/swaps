@@ -3,12 +3,12 @@
         <div class="row display-flex">
             <div class="col-sm-3 sidebar">
                 <ul class="">
-                    <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href="" ng-click="go('account/edit')">Edit Account</a></li>
-                    <li class="single-link {{activeTab == 'listing'?'active':''}}"><a href="" ng-click="go('account/listing')">My Listing</a></li>
+                    <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href="" ng-click="go('account/edit')">Profile</a></li>
+                    <li class="single-link {{activeTab == 'listing'?'active':''}}"><a href="" ng-click="go('account/listing')">My Home</a></li>
                     <li class="single-link {{activeTab == 'messages'?'active':''}}"><a href="" ng-click="go('account/messages')">Messages</a></li>
-                    <li class="single-link {{activeTab == 'swap'?'active':''}}"><a href="" ng-click="go('account/swap')">Swap</a></li>
+                    <li class="single-link {{activeTab == 'swap'?'active':''}}"><a href="" ng-click="go('account/swap')">Swaps</a></li>
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href="" ng-click="go('account/reviews')">Reviews</a></li>
-                    <li class="single-link {{activeTab == 'settings'?'active':''}}"><a href="" ng-click="go('account/settings')">Settings</a></li>
+                    <li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>
                 </ul>
             </div>
             <div class="col-sm-9">
@@ -38,9 +38,9 @@
                     </div>
                   </div>
                    <div class="form-group">
-                       <label class="col-sm-3 control-label">Age:</label>
+                       <label class="col-sm-3 control-label">Birthday:</label>
                        <div class="col-sm-2">
-                           <input class="form-control" id="age" type="number" ng-model="edit.age">
+                           <input class="datepicker" ng-model="edit.birthday">
                        </div>
                    </div>
                    <div class="form-group">
@@ -79,7 +79,7 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label"></label>
                     <div class="buttons col-sm-6">
-                      <input type="button" class="btn btn-primary btn-edit" value="Save Changes" ng-click="saveChanges()" ng-disabled="saving">
+                      <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="saveChanges()" ng-disabled="saving">
                       <span class="space"></span>
                       <input type="reset" class="btn btn-primary btn-edit cancel" value="Cancel" ng-click="cancel()" ng-if="editing">
                     </div>

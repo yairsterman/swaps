@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://swapshome.com:3000/auth/facebook/callback",
+    callbackURL: "http://localhost:3000/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday']
   },
   function(accessToken, refreshToken, profile, done) {
@@ -43,14 +43,13 @@ passport.use(new FacebookStrategy({
           return done(null, user);
         }
         else{
-          var age = getAge(profile._json.birthday);
           var gender = getGender(profile.gender);
           user = new User({
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
             displayName: profile.displayName,
             gender: gender,
-            age: age,
+            birthday: profile._json.birthday,
             email: profile._json.email,
             facebookId: profile.id,
             image: profile._json.picture.data.url,
@@ -61,7 +60,6 @@ passport.use(new FacebookStrategy({
             address: '',
             swaps: 0,
             traveling: false,
-            travelingDest: '',
             travelingDates: {},
             apptInfo: {},
             paymentInfo: {}
@@ -95,17 +93,6 @@ router.post('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
-
-function getAge(dateString){
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-}
 
 function getGender(gender){
     if(gender.toLowerCase() == 'female')

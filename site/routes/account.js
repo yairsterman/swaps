@@ -37,21 +37,13 @@ router.post('/edit-profile', function(req, res, next) {
 	var email = req.body.email;
     var aboutMe = req.body.aboutMe;
     var occupation = req.body.occupation;
-    var age = req.body.age;
+    var birthday = req.body.birthday;
     var gender = req.body.gender;
     var thingsToDo = req.body.thingsToDo;
     var location = {};
 
-    geocoder.geocode(address)
-    .then(function(geo) {
-        location.lat = geo[0].latitude.toFixed(3);
-        location.long = geo[0].longitude.toFixed(3);
-        var country = geo[0].country;
-        var city = geo[0].city;
-        if(!city){
-            city = geo[0].administrativeLevels.level1long;
-        }
-        User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, age: age, thingsToDo: thingsToDo}},
+    if(!address){
+        User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
             function (err, updated) {
                 if (err){
                     error.message = err;
@@ -69,11 +61,41 @@ router.post('/edit-profile', function(req, res, next) {
                     });
                 }
             });
-    })
-    .catch(function(err) {
-        error.message = err;
-        res.json(error);
-    });
+    }
+    else{
+        geocoder.geocode(address)
+            .then(function(geo) {
+                location.lat = geo[0].latitude.toFixed(3);
+                location.long = geo[0].longitude.toFixed(3);
+                var country = geo[0].country;
+                var city = geo[0].city;
+                if(!city){
+                    city = geo[0].administrativeLevels.level1long;
+                }
+                User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
+                    function (err, updated) {
+                        if (err){
+                            error.message = err;
+                            res.json(error);
+                        }
+                        else{
+                            User.findOne({_id: id}, function (err, user) {
+                                if (err){
+                                    error.message = err;
+                                    res.json(error);
+                                }
+                                else{
+                                    res.json(user);
+                                }
+                            });
+                        }
+                    });
+            })
+            .catch(function(err) {
+                error.message = err;
+                res.json(error);
+            });
+    }
 });
 
 router.post('/edit-listing', function(req, res, next) {
