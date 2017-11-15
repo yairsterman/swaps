@@ -65,7 +65,7 @@ router.post('/edit-listing', function(req, res, next) {
     var address = req.body.address;
     var apptInfo = req.body.apptInfo;
     var deposit = JSON.parse(req.body.deposit);
-    let location = {};
+    var location = {};
 
     if(!address){
         User.update({_id: id}, { $set: {apptInfo: apptInfo, deposit: deposit}},
