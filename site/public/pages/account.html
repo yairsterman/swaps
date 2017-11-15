@@ -184,7 +184,7 @@
                           <label class="col-sm-3 control-label">Deposit Plan:</label>
                           <div class="col-sm-4">
                               <select class="form-control" id="deposit" ng-model="user.deposit">
-                                  <option value="{{plan}}" ng-repeat="plan in data.deposits" ng-selected="user.deposit.id == plan.id">{plan.displayName}} - ${{plan.value}} per week</option>
+                                  <option value="{{plan}}" ng-repeat="plan in data.deposits" ng-selected="user.deposit.id == plan.id">{{plan.displayName}} - ${{plan.value}} per week</option>
                               </select>
                           </div>
                       </div>
