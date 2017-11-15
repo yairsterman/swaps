@@ -7,7 +7,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
         $scope.data.amenities = data;
     });
 
-    Utils.getPropertyType().then(function(data){
+    Utils.getRoomType().then(function(data){
         $scope.data.roomTypes = data;
     });
 

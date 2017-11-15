@@ -51,17 +51,6 @@
 	    			color: #0d78ad;
 	    		}
 	    	}
-	    	.edit-form{
-	    		padding: 0 15px;
-	    		.control-label{
-	    			text-align: left;
-					color: #0d78ad;
-	    		}
-	    		textarea.form-control {
-					background-color: #ffffff;
-				    font-size: 14px;
-				}
-	    	}
 	    	.buttons{
     			margin-top: 15px;
     			.btn-edit{
@@ -77,14 +66,42 @@
     			}
     		}
 	    }
+		.edit-form{
+			padding: 0 15px;
+			.control-label{
+				text-align: left;
+				color: #0d78ad;
+			}
+			textarea.form-control {
+				background-color: #ffffff;
+				font-size: 14px;
+			}
+		}
 	    .my-listing{
+			padding-top: 15px;
+			.thumb{
+				width: 24.5% !important;
+				height: 0 !important;
+				padding: 10%;
+				margin: 0.25% !important;
+			}
+			.control-labe{
+				color: #0d78ad;
+			}
 	    	.info-section{
-	    	    padding: 35px 5vw 35px 0;
 	    	    border-bottom: 1px solid lightgray;
+				padding: 0 15px;
+				margin-bottom: 15px;
+				color: #0d78ad;
 		    	.title{
 		    		padding-bottom: 20px;
 		    	   	font-size: 22px;
 		    	}
+				&.my-photos{
+					background-color: #ffffff;
+					padding: 15px;
+					margin-bottom: 15px;
+				}
 		    	.input-section{
 		    		.appt-info{
 		    			font-size: 18px;
@@ -110,18 +127,29 @@
     	    }
 	    	.display-photos{
     	    	.text{
-    	    		padding: 10px 0;
-	    	    	font-size: 18px;
+    	    		padding: 15px;
+	    	    	font-size: 16px;
+					text-align: center;
     	    	}
 	    	    &.no-photos{
 	    	    	.no-image{
 	    	    		width: 200px;
 	    	    		height: 200px;
+						margin: auto;
 	    	    		.no-image-icon{
 	    	    			width: 100%;
 	    	    		}
 	    	    	}
 	    	    }
+				.upload-photos{
+					width: 25%;
+					margin: auto;
+					text-align: center;
+					input{
+						margin: auto;
+						font-family: MavenPro;
+					}
+				}
 		    	.photos-row{
 		    		padding-right: 30px;
 		    	}
@@ -136,10 +164,25 @@
 					padding: 40%;
 	    		}
 	    	}
+			.basics{
+				.name-with-icon{
+					display: flex;
+					align-items: flex-end;
+					margin-bottom: 4px;
+				}
+				.basics-name{
+					font-size: 14px;
+					text-align: left;
+					color: #0d78ad;
+					margin-left: 4px;
+					padding-top: 6px;
+				}
+			}
 	    	.buttons{
     			margin: 15px 0;
     			.btn-edit{
     				width: 48%;
+					font-size: 16px;
     				&.cancel{
     					background-color: #edefed;
     					color: #484848;

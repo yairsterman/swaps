@@ -5,10 +5,15 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.homepage = false;
     $scope.editing = false;
     $scope.send = {message : ''};
+    $scope.user = {
+        aptInfo:{roomType:1},
+        deposit: $scope.data.deposits[2]
+    }
     $scope.swap = {};
 
     if($rootScope.user && $rootScope.user._id) {
         $scope.user = $rootScope.user;
+        $scope.edit = angular.copy($scope.user);
         $scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         init();
@@ -44,7 +49,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('address'), address);
         var found = false;
         autocomplete.addListener('place_changed', function() {
-          $scope.edit.address = autocomplete.getPlace().formatted_address;
+          $scope.user.address = autocomplete.getPlace().formatted_address;
           $scope.$apply();
         });
           $('.datepicker').datepicker({
@@ -82,59 +87,19 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.apptInfo = $scope.edit.apptInfo?$scope.edit.apptInfo:{};
    	}
 
-    $scope.addThing = function(index, event){
-        event.preventDefault();
-        event.stopPropagation();
-        if($scope.isCheckedThing(index)){
-            $scope.edit.thingsToDo.splice($scope.edit.thingsToDo.indexOf(index),1);
-        }
-        else{
-            $scope.edit.thingsToDo.push(index);
-        }
-    }
-
-    $scope.isCheckedThing = function(index){
-        return $scope.edit.thingsToDo.includes(index);
-    }
-
-    $scope.addAmenity = function(index, event){
-        event.preventDefault();
-        event.stopPropagation();
-        if(!$scope.user.apptInfo.amenities){
-            $scope.user.apptInfo.amenities = [];
-            $scope.user.apptInfo.amenities.push(index);
-            return;
-        }
-        if($scope.isCheckedAmenity(index)){
-            $scope.user.apptInfo.amenities.splice($scope.user.apptInfo.amenities.indexOf(index),1);
-        }
-        else{
-            $scope.user.apptInfo.amenities.push(index);
-        }
-    }
-
-    $scope.isCheckedAmenity = function(index){
-        if($scope.user && $scope.user.apptInfo && $scope.user.apptInfo.amenities){
-            return $scope.user.apptInfo.amenities.includes(index);
-        }
-        return false;
-    }
-
     $scope.editlisting = function(){
-      var edit = $scope.user;
-      edit.apptInfo = $scope.user.apptInfo;
-      AccountService.editListing(edit).then(function(data){
-        if(data.error){
-          console.log("error");
-        }
-        else{
-          $scope.user = data.data;
-          $rootScope.user = $scope.user;
-          $scope.editing = false;
-          $scope.edit = angular.copy($scope.user);
-          $scope.apptInfo = $scope.edit.apptInfo?$scope.edit.apptInfo:{};
-        }
-      });
+        $scope.saving = true;
+        AccountService.editListing($scope.user).then(function(data){
+            if(!data || (data && data.error)){
+              console.log("error");
+            }
+            else{
+                $scope.user = data.data;
+                $rootScope.user = $scope.user;
+                $scope.saving = false;
+                $scope.edit = angular.copy($scope.user);
+            }
+        });
     }
 
     function uploadPhotos(){

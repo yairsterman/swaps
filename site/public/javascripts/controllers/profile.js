@@ -3,6 +3,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
+    $scope.showMore = {
+        aboutMe: {active:false},
+        aboutHome: {active:false},
+    }
 
     $anchorScroll();
 
@@ -135,17 +139,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
     }, 100);
 
-    $scope.more = true;
-    $scope.readMore = function() {
-        if ($scope.more) {
-            $('.grab-read-more').removeClass('read-more-activation');
-            $('.plain-text.read-more-button').html('Read less');
-            $scope.more = false;
-        } else {
-            $('.grab-read-more').addClass('read-more-activation');
-            $('.plain-text.read-more-button').html('Read more');
-            $scope.more = true;
-        }
+    $scope.readMore = function(showMore, about) {
+        showMore[about].active  = !showMore[about].active;
     };
 
     $scope.isCheckedAmenity = function(index){

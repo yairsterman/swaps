@@ -138,7 +138,7 @@ function filterUsers(users, query){
 		if(filterDestination(user, destination) &&
 			filterDates(user, query.date, destination) &&
             	filterGuests(user, query.guests) &&
-            		filterProperty(user, query.property) &&
+                    filterRooms(user, query.roomType) &&
             			filterAmenities(user, query.ameneties)) {
 			filterdUsers.push(users[i]);
 		}
@@ -153,8 +153,8 @@ function filterGuests(user, guests){
     return true;
 }
 
-function filterProperty(user, propertyType){
-    if(propertyType && user.apptInfo.property != propertyType){
+function filterRooms(user, roomType){
+    if(roomType && user.apptInfo.roomType != roomType){
         return false;
     }
     return true;

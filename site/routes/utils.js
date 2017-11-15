@@ -7,8 +7,8 @@ router.get('/get-amenities', function(req, res, next) {
     res.json(Data.getAmenities());
 });
 
-router.get('/get-property-type', function(req, res, next) {
-    res.json(Data.getPropertyType());
+router.get('/get-room-type', function(req, res, next) {
+    res.json(Data.getRoomType());
 });
 
 router.get('/get-things-to-do', function(req, res, next) {

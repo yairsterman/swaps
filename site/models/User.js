@@ -29,8 +29,22 @@ var UserSchema = new mongoose.Schema({
     thingsToDo: Array,
     radius: {},
     location: {},
-    apptInfo: {},
+    apptInfo: {
+        amenities: Array,
+        rules: Array,
+        roomType: Number,
+        propertyType: Number,
+        title: String,
+        about: String,
+        moreInfo: String,
+        beds: Number,
+        baths: Number,
+        guests: Number,
+        rooms: Number,
+        bedType: Number,
+    },
     paymentInfo: {},
+    deposit: {},
     updated_at: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model('User', UserSchema);

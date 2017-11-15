@@ -32,12 +32,6 @@
                        </div>
                    </div>
                    <div class="form-group">
-                      <label class="col-sm-3 control-label">Address:</label>
-                      <div class="col-sm-6">
-                        <input class="form-control" id="address" type="text" ng-model="edit.address">
-                    </div>
-                  </div>
-                   <div class="form-group">
                        <label class="col-sm-3 control-label">Birthday:</label>
                        <div class="col-sm-2">
                            <input class="datepicker" ng-model="edit.birthday">
@@ -65,15 +59,8 @@
                   </div>
                    <div class="form-group">
                        <label class="col-sm-3 control-label">What are you looking for when you travel? <br> <br> <span style="font-weight: 400">(This will help us find the best place for you to Swap!)</span></label>
-                       <div class="col-sm-8 things-col">
-                           <div class="things-to-do" ng-repeat="thing in data.thingsToDo">
-                               <div class="things-checkbox" ng-click="addThing(thing.id, $event)">
-                                   <div class="check icon icon-check {{isCheckedThing(thing.id)?'checked':''}}"></div>
-                               </div>
-                               <div>
-                                   {{thing.displayName}}
-                               </div>
-                           </div>
+                       <div class="col-sm-8 things">
+                           <checkbox items="data.thingsToDo" model="edit.thingsToDo"></checkbox>
                        </div>
                    </div>
                   <div class="form-group">
@@ -87,130 +74,157 @@
                 </form>
               </div>
               <div class="my-listing" ng-if="activeTab == 'listing'">
-                <div class="info-section">
-                  <div class="title">
-                      Description
-                  </div>
-                  <div class="input-section">
-                      <input class="form-control appt-info" type="text" name="description" value="Short description of the listing.." ng-model="apptInfo.description">
-                  </div>
-                </div>
-                <div class="info-section">
-                  <div class="title">
-                      About your place
-                  </div>
-                  <div class="input-section">
-                      <textarea rows="3" cols="20" class="form-control about-listing" ng-model="apptInfo.about"></textarea>
-                  </div>
-                </div>
-                <div class="info-section">
-                  <div class="title">
-                      Listing
-                  </div>
-                  <div class="input-section">
-                    <div class="row">
-                      <div class="col-sm-4">
-                        <label class="control-label">Listing Type</label>
-                        <select class="form-control appt-info" name="property" id="select-property" ng-model="apptInfo.property">
-                          <option disabled="" value="Select...">Select...</option>
-                          <option ng-value="Apartment">Apartment</option>
-                          <option ng-value="House">House</option>
-                        </select>
-                      </div>
-                      <div class="col-sm-4">
-                        <label class="control-label">Room</label>
-                        <select class="form-control appt-info" name="room" id="select-room" ng-model="apptInfo.room">
-                          <option disabled="" value="Select...">Select...</option>
-                          <option value="Private Room">Private Room</option>
-                          <option value="Entire Place">Entire Place</option>
-                        </select>
-                      </div>
-                      <div class="col-sm-4">
-                        <label class="control-label">Guests Allowed</label>
-                        <select class="form-control appt-info" name="guests" id="select-guests" ng-model="apptInfo.guests">
-                          <option disabled="" value="Select...">Select...</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8+</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="info-section">
-                  <div class="title">
-                      Photos
-                  </div>
-                  <div class="display-photos no-photos" ng-if="user.photos.length == 0">
-                    <div class="text">
-                      You don't have enough photos of your listing, you must have at least 3 photo.
-                    </div>
-                    <div class="no-image">
-                      <img src="http://swapshome.com:3000/images/static/no-image.png" class="no-image-icon">
-                    </div>
-                      <div class="upload-photos" ng-if="user.photos.length < 8">
-                          <form method="POST" enctype="multipart/form-data" action="/account/upload" >
-                              <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
+                  <div class="info-section my-photos">
+                      <div class="display-photos no-photos" ng-if="user.photos.length == 0">
+                          <div class="text">
+                              You don't have enough photos of your listing, you must have at least 3 photo.
+                          </div>
+                          <div class="no-image">
+                              <img src="http://swapshome.com:3000/images/static/no-image.png" class="no-image-icon">
+                          </div>
+                          <div class="upload-photos" ng-if="user.photos.length < 8">
+                              <form method="POST" enctype="multipart/form-data" action="/account/upload" >
+                                  <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
                               alert('You can only have 8 images');
                               this.value='';
                            }" multiple>
-                              <input type="hidden" name="id" value="{{edit._id}}">
-                              <div style="margin-top:15px;"></div>
-                              <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                          </form>
+                                  <input type="hidden" name="id" value="{{edit._id}}">
+                                  <div style="margin-top:15px;"></div>
+                                  <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
+                              </form>
+                          </div>
                       </div>
-                  </div>
-                  <div class="display-photos" ng-if="user.photos.length > 0">
-                    <div class="text" ng-if="user.photos.length < 3">
-                        You don't have enough photos of your listing, you must have at least 3 photo.
-                    </div>
-                    <ng-image-gallery
-                      images="images"
-                      thumb-size="180"
-                      img-anim="slide"
-                      on-delete="deletePhoto(img, cb)"
-                      on-close="galeryClosed()"
-                    ></ng-image-gallery>
-                    <div class="upload-photos" ng-if="user.photos.length < 8">
-                      <form method="POST" enctype="multipart/form-data" action="/account/upload" >
-                          <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
+                      <div class="display-photos" ng-if="user.photos.length > 0">
+                          <div class="text" ng-if="user.photos.length < 3">
+                              You don't have enough photos of your listing, you must have at least 3 photo.
+                          </div>
+                          <ng-image-gallery
+                                  images="images"
+                                  thumb-size="180"
+                                  img-anim="slide"
+                                  on-delete="deletePhoto(img, cb)"
+                                  on-close="galeryClosed()"
+                          ></ng-image-gallery>
+                          <div class="upload-photos" ng-if="user.photos.length < 8">
+                              <form method="POST" enctype="multipart/form-data" action="/account/upload" >
+                                  <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
                               alert('You can only have 8 images');
                               this.value='';
                            }" multiple>
-                          <input type="hidden" name="id" value="{{edit._id}}">
-                          <div style="margin-top:15px;"></div>
-                          <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                      </form>
-                    </div>
+                                  <input type="hidden" name="id" value="{{edit._id}}">
+                                  <div style="margin-top:15px;"></div>
+                                  <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
+                              </form>
+                          </div>
+                      </div>
                   </div>
-                </div>
-                <div class="info-section">
-                  <div class="title">
-                    Amenities
-                  </div>
-                  <div class="row">
-                      <div class="col-sm-8 things-col">
-                          <div class="things-to-do" ng-repeat="amenity in data.amenities">
-                              <div class="things-checkbox" ng-click="addAmenity(amenity.id, $event)">
-                                  <div class="check icon icon-check {{isCheckedAmenity(amenity.id)?'checked':''}}"></div>
+                  <form class="form-horizontal edit-form" role="form">
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">Title:</label>
+                          <div class="col-sm-8">
+                              <input class="form-control" type="text" ng-model="user.apptInfo.title" >
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">Address:</label>
+                          <div class="col-sm-8">
+                              <input class="form-control" id="address" type="text" ng-model="user.address">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">Basics:</label>
+                          <div class="col-sm-8">
+                              <div class="row">
+                                  <div class="col-sm-3 basics">
+                                      <div class="name-with-icon">
+                                          <div class="icon icon-duck-small"></div>
+                                          <div class="basics-name">Swappers</div>
+                                      </div>
+                                      <input class="form-control" id="swappers" type="number" min="1" max="8" ng-model="user.apptInfo.guests">
+                                  </div>
+                                  <div class="col-sm-3 basics">
+                                      <div class="name-with-icon">
+                                          <div class="icon icon-duck-small"></div>
+                                          <div class="basics-name">Rooms</div>
+                                      </div>
+                                      <input class="form-control" id="rooms" type="number" min="1" max="8" ng-model="user.apptInfo.rooms">
+                                  </div>
+                                  <div class="col-sm-3 basics">
+                                      <div class="name-with-icon">
+                                          <div class="icon icon-duck-small"></div>
+                                          <div class="basics-name">Beds</div>
+                                      </div>
+                                      <input class="form-control" id="beds" type="number" min="1" max="8" ng-model="user.apptInfo.beds">
+                                  </div>
+                                  <div class="col-sm-3 basics">
+                                      <div class="name-with-icon">
+                                          <div class="icon icon-duck-small"></div>
+                                          <div class="basics-name">Baths</div>
+                                      </div>
+                                      <input class="form-control" id="baths" type="number" min="1" max="8" ng-model="user.apptInfo.baths">
+                                  </div>
                               </div>
-                              <div>
-                                  {{amenity.displayName}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">About my home:</label>
+                          <div class="col-sm-6">
+                              <textarea rows="6" cols="20" class="form-control" ng-model="user.apptInfo.about"></textarea>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">Room Type:</label>
+                          <div class="col-sm-4">
+                              <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType">
+                                  <option value="{{room.id}}" ng-repeat="room in data.roomTypes" ng-selected="user.apptInfo.roomType == room.id">{{room.displayName}}</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">Deposit Plan:</label>
+                          <div class="col-sm-4">
+                              <select class="form-control" id="deposit" ng-model="user.deposit">
+                                  <option value="{{plan}}" ng-repeat="plan in data.deposits" ng-selected="user.deposit.id == plan.id">{plan.displayName}} - ${{plan.value}} per week</option>
+                              </select>
+                          </div>
+                      </div>
+                  </form>
+                <div class="info-section rules">
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Facilities:</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <checkbox items="data.amenities" model="user.apptInfo.amenities"></checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <div class="info-section rules">
+                      <div class="form-group row">
+                          <label class="col-sm-3 control-label">House Rules:</label>
+                          <div class="col-sm-8">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <checkbox items="data.amenities" model="user.apptInfo.rules"></checkbox>
+                                  </div>
                               </div>
                           </div>
                       </div>
                   </div>
-                </div>
-                <div class="buttons col-sm-4">
-                  <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="editlisting()">
-                  <span class="space"></span>
-                  <input type="reset" class="btn btn-primary btn-edit cancel" value="Cancel" ng-click="cancel()">
-                </div>
+                  <div class="row">
+                      <label class="col-sm-3 control-label">More Information:</label>
+                      <div class="col-sm-6">
+                          <textarea rows="6" cols="20" class="form-control" ng-model="user.apptInfo.moreInfo"></textarea>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-3"></div>
+                        <div class="buttons col-sm-4">
+                            <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="editlisting()">
+                        </div>
+                  </div>
             </div>
             <div class="messages" ng-if="activeTab == 'messages'">
               <div class="all-messages">

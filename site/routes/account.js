@@ -32,18 +32,43 @@ var error = {
 };
 
 router.post('/edit-profile', function(req, res, next) {
-	var id = req.body._id;
-	var address = req.body.address;
+	var id = req.user._id;
 	var email = req.body.email;
     var aboutMe = req.body.aboutMe;
     var occupation = req.body.occupation;
     var birthday = req.body.birthday;
     var gender = req.body.gender;
     var thingsToDo = req.body.thingsToDo;
-    var location = {};
+
+    User.update({_id: id}, { $set: {email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
+        function (err, updated) {
+            if (err){
+                error.message = err;
+                res.json(error);
+            }
+            else{
+                User.findOne({_id: id}, function (err, user) {
+                    if (err){
+                        error.message = err;
+                        res.json(error);
+                    }
+                    else{
+                        res.json(user);
+                    }
+                });
+            }
+        });
+});
+
+router.post('/edit-listing', function(req, res, next) {
+    var id = req.user._id;
+    var address = req.body.address;
+    var apptInfo = req.body.apptInfo;
+    var deposit = JSON.parse(req.body.deposit);
+    let location = {};
 
     if(!address){
-        User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
+        User.update({_id: id}, { $set: {apptInfo: apptInfo, deposit: deposit}},
             function (err, updated) {
                 if (err){
                     error.message = err;
@@ -72,7 +97,7 @@ router.post('/edit-profile', function(req, res, next) {
                 if(!city){
                     city = geo[0].administrativeLevels.level1long;
                 }
-                User.update({_id: id}, { $set: { country: country, city: city, address: address, email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
+                User.update({_id: id}, { $set: { location: location, country: country, city: city, address: address, apptInfo: apptInfo, deposit: deposit}},
                     function (err, updated) {
                         if (err){
                             error.message = err;
@@ -98,30 +123,8 @@ router.post('/edit-profile', function(req, res, next) {
     }
 });
 
-router.post('/edit-listing', function(req, res, next) {
-    var id = req.body._id;
-    var apptInfo = req.body.apptInfo;
-    User.update({_id: id}, { $set: { apptInfo: apptInfo}}, function (err, updated) {
-        if (err){
-            error.message = err;
-            res.json(error);
-        }
-        else{
-            User.findOne({_id:id}, function (err, user) {
-                if (err){
-                    error.message = err;
-                    res.json(error);
-                }
-                else{
-                    res.json(user);
-                }
-            });
-        }
-    });
-});
-
 router.post('/update-travel-info', function(req, res, next) {
-    var id = req.body.id;
+    var id = req.user.id;
     var info = req.body.info;
 	var where = info.where.split(',')[0];
 	var dates = info.date.split('-');
@@ -166,7 +169,7 @@ router.post('/update-travel-info', function(req, res, next) {
 });
 
 router.post('/delete-photo', function(req, res, next) {
-    var id = req.body.id;
+    var id = req.user.id;
     var url = req.body.url;
     User.findOne({_id:id}, function (err, user) {
         if (err) throw err;
@@ -210,7 +213,7 @@ router.post('/delete-photo', function(req, res, next) {
 });
 
 router.post('/upload', upload.array('photos', 8), function(req, res) {
-    var id = req.body.id;
+    var id = req.user.id;
     var photos = [];
     for(i = 0; i < req.files.length; i++){
         var tempPath = req.files[i].path;

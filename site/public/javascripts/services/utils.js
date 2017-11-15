@@ -9,8 +9,8 @@ swapsApp.service('Utils', function($http){
             });
     };
 
-    this.getPropertyType = function() {
-        return $http.get('utils/get-property-type').then(function(data){
+    this.getRoomType = function() {
+        return $http.get('utils/get-room-type').then(function(data){
                 return data.data;
             },
             function(){

@@ -83,19 +83,34 @@
 			.swap{
 				background-color: white;
 				padding: 15px;
-				.deposit{
-					font-size: 16px;
-					opacity: 0.6;
-				}
-				.swap-info{
+				.favorite{
 					display: flex;
-					.search-field{
-						width:48%;
+					.share-btn{
+						display: flex;
+						align-items: center;
+						font-size: 16px;
+						text-align: right;
+						width: 48%;
 						&:first-child{
 							margin-right: 1%;
 						}
 						&:nth-child(2){
 							margin-left: 1%;
+						}
+					}
+					.sharing{
+						margin-right: 10px;
+					}
+				}
+				.deposit{
+					font-size: 16px;
+					opacity: 0.6;
+				}
+				.swap-info{
+					.search-field{
+						width:100%;
+						&:nth-child(2){
+							margin-top: 15px;
 						}
 					}
 				}
@@ -322,7 +337,17 @@
 					font-size: 18px;
 				}
 			}
-
+			.read-more{
+				display: flex;
+				.read-more-button {
+					@media (max-width: @screen-xs-max) {
+						&.plain-text {
+							font-size: 14px;
+							width: 114px;
+						}
+					}
+				}
+			}
 			.read-more-activation {
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -330,18 +355,13 @@
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 			}
-			.read-more-button {
-				width: fit-content;
-				@media (max-width: @screen-xs-max) {
-					&.plain-text {
-						font-size: 14px;
-						width: 114px;
-					}
-				}
-			}
 			.amenities{
 				.amenity{
 					display: flex;
+					.icon{
+						transform: scale(0.4);
+						margin: -31px;
+					}
 				}
 				.amenity-name{
 					width:50%;
@@ -359,11 +379,9 @@
 				float: left;
 			}
 			.plain-text {
-				font-size: 120%;
+				font-size: 14px;
 				font-weight: bold;
 				color: #616161;
-				margin-left: 6%;
-				padding-top: 1%;
 			}
 			.check-container {
 				float: right;

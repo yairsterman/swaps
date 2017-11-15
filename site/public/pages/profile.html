@@ -39,6 +39,17 @@
 					<!--</div>-->
 				<!--</div>-->
 				<div class="swap">
+					<div class="favorite">
+						<div  class="btn btn-primary btn-swap share-btn"  ng-click="addToFavorites()">
+							<div class="icon icon-duck-small sharing"></div>
+							Save
+						</div>
+						<div class="btn btn-primary btn-swap share-btn" ng-click="share()">
+							<div class="icon icon-duck-small sharing"></div>
+							Share
+						</div>
+					</div>
+
 					<div class="deposit">Security Deposit Plan- {{profile.deposit.displayName}}</div>
 					<div class="separator"></div>
 					<div class="swap-info">
@@ -123,33 +134,29 @@
 					<div class="row">
 						<!--The following line is to fix the bootstrap grid on small screens-->
 						<div class="clearfix visible-xs"></div>
-						<div class="col-xs-2 left-side-description">General</div>
-						<div class="col-xs-6 right-side-elaboration grab-read-more read-more-activation">{{profile.apptInfo.about}}</div>
+						<div class="col-xs-2 left-side-description">About My Home</div>
+						<div class="col-xs-8 right-side-elaboration read-more-activation">{{profile.apptInfo.about}}</div>
+					</div>
+					<div class="read-more" ng-click="readMore(showMore, 'aboutHome')">
+						<div class="icon-plus read-more-button" ></div>
+						<div class="plain-text read-more-button">{{showMore.aboutHome.active?'Read Less':'Read More'}}</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-2 left-side-description">About me</div>
-						<div class="col-xs-6 right-side-elaboration grab-read-more read-more-activation">
+						<div class="col-xs-8 right-side-elaboration read-more-activation">
 							{{profile.aboutMe}}
 						</div>
 					</div>
-					<div class="">
-						<div class="icon-plus read-more-button" ng-click="readMore()"></div>
-						<div class="plain-text read-more-button" ng-click="readMore()">Read more</div>
+					<div class="read-more" ng-click="readMore(showMore, 'aboutMe')">
+						<div class="icon-plus read-more-button" ></div>
+						<div class="plain-text read-more-button" >{{showMore.aboutMe.active?'Read Less':'Read More'}}</div>
 					</div>
+
 					<div class="separator" style="margin: 4% 0;"></div>
 					<div class="row">
 						<div class="col-xs-2 left-side-description">Basic amenities</div>
-						<div class="col-xs-6 right-side-elaboration">
-							<div class="amenities">
-								<div class="amenity col-sm-6 col-xs-12 {{isCheckedAmenity(amenity.id)?'':'not-available'}}" ng-repeat="amenity in data.amenities">
-									<div class="icon {{amenity.icon}}">
-									</div>
-									<div class="amenity-name">
-										{{amenity.displayName}}
-									</div>
-									<div class="check icon icon-check" ng-if="isCheckedAmenity(amenity.id)"></div>
-								</div>
-							</div>
+						<div class="col-xs-8 right-side-elaboration">
+							<checkbox items="data.amenities" model="profile.apptInfo.amenities" readonly="true"></checkbox>
 						</div>
 					</div>
 					<div class="separator" style="margin: 4% 0;"></div>

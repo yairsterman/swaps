@@ -135,7 +135,7 @@ const genders =[
     {value:3, name:'Other'}
 ];
 
-const propertyType =[
+const roomType =[
     {id: 0, type: 'SingleRoom', displayName: 'Single Room'},
     {id: 1, type: 'EntireApartment', displayName: 'Entire Apartment'},
     {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
@@ -166,8 +166,8 @@ data.getRequestStatus = function(){
     return requestStatus;
 };
 
-data.getPropertyType = function(){
-    return propertyType;
+data.getRoomType = function(){
+    return roomType;
 };
 
 data.getThingsToDo = function(){
