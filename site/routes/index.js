@@ -62,7 +62,7 @@ passport.use(new FacebookStrategy({
             traveling: false,
             travelingDates: {},
             apptInfo: {},
-            deposit: Data.getSecurityDeposit()[1],
+            deposit: 1,
             paymentInfo: {}
           });
           user.save(function (err, user) {

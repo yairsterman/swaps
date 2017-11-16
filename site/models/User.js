@@ -44,7 +44,7 @@ var UserSchema = new mongoose.Schema({
         bedType: Number,
     },
     paymentInfo: {},
-    deposit: {},
+    deposit: Number,
     updated_at: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model('User', UserSchema);

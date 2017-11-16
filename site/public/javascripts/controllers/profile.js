@@ -8,6 +8,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         aboutHome: {active:false},
     }
 
+    $scope.swap = {
+        guests: 1
+    }
+
     $anchorScroll();
 
     UsersService.getProfile($routeParams.id).then(function(data){
@@ -53,40 +57,23 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
 
     function setDates(){
-        for (var i = 0; i < $scope.profile.travelingInfo.length; i++) {
-            var startDate = new Date($scope.profile.travelingInfo[i].departure).toLocaleDateString();
-            var endDate = new Date($scope.profile.travelingInfo[i].returnDate).toLocaleDateString();
-            $('#datepicker' + i).daterangepicker({
-                autoApply: true,
-                opens: 'center',
-                startDate: startDate,
-                endDate: endDate,
-                minDate: startDate,
-                maxDate: endDate,
-                singleDatePicker: true,
-                drops: "up"
-            });
-            $('#datepicker' + i).on('showCalendar.daterangepicker', function(ev, picker) {
-                $('.available').css({
-                    backgroundColor: '#008500',
-                    cursor: 'not-allowed',
-                    color: '#fff'
-                });
-                $('.next').css({
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                    color: 'rgba(0,0,0,0.87)'
-                });
-                $('.prev').css({
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                    color: 'rgba(0,0,0,0.87)'
-                });
-                $('.disabled').css({
-                    textDecoration: 'none'
-                });
-            });
+        if(!$scope.profile.travelingInfo || $scope.profile.travelingInfo.length == 0){
+            $scope.notSwapping = true;
+            return;
         }
+        var startDate = new Date($scope.profile.travelingInfo[0].departure).toLocaleDateString();
+        var endDate = new Date($scope.profile.travelingInfo[0].returnDate).toLocaleDateString();
+        $('input[name="swapDates"]').daterangepicker({
+            autoApply: true,
+            opens: 'left',
+            locale: {
+                format: 'MM/DD/YYYY'
+            },
+            startDate: startDate,
+            endDate: endDate,
+            minDate: startDate,
+            maxDate: endDate
+        });
     }
 
     var fixmeTop;     // get initial position of the element
@@ -112,7 +99,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         if (input && $scope.profile) {
             setDates();
             // fixmeTop = $('.fix-scroll').offset().top - 25;
-            fixmeTop = $('.fix-scroll').offset().top + 70;
+            fixmeTop = $('.fix-scroll').offset().top + 20;
             var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
             $(window).scroll(function() {                  // assign scroll event listener
                 var currentScroll = $(window).scrollBottom(); // get current position
@@ -128,13 +115,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                     });
                 }
             });
-            $('input[name="swapDates"]').daterangepicker({
-                autoApply: true,
-                opens: 'center',
-                locale: {
-                    format: 'MM/DD/YYYY'
-                },
-            });
+            setDates();
             $interval.cancel(elementsReady);
         }
     }, 100);

@@ -5,17 +5,17 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.homepage = false;
     $scope.editing = false;
     $scope.send = {message : ''};
-    $scope.user = {
-        aptInfo:{roomType:1},
-        deposit: $scope.data.deposits[2]
-    }
     $scope.swap = {};
+
+    $scope.select = {};
 
     if($rootScope.user && $rootScope.user._id) {
         $scope.user = $rootScope.user;
         $scope.edit = angular.copy($scope.user);
-        $scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
+        // $scope.select = {
+        //     gender: 1
+        // };
         init();
     }
     else{

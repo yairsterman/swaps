@@ -50,7 +50,7 @@
 						</div>
 					</div>
 
-					<div class="deposit">Security Deposit Plan- {{profile.deposit.displayName}}</div>
+					<div class="deposit">Security Deposit Plan - {{data.deposits[profile.deposit].displayName}}</div>
 					<div class="separator"></div>
 					<div class="swap-info">
 						<div class="search-field">
@@ -60,7 +60,7 @@
 						<div class="search-field">
 							<label for="guests">Swappers</label>
 							<div class="guests-search">
-								<input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="swap.guests" min="1" max="8">
+								<input type="number" class="form-control guests" id="guests"  ng-model="swap.guests" min="1" max="8">
 							</div>
 						</div>
 					</div>
@@ -90,10 +90,10 @@
 						</div>
 						<div class="col-xs-10">
 							<div class="under-title">
-								{{profile.apptInfo.room}} {{traveler.apptInfo.property != null ? "in " + traveler.apptInfo.property : ""}} • {{profile.city}}
+								{{data.roomTypes[profile.apptInfo.roomType].displayName}} • {{profile.city}}
 							</div>
 							<div class="description-title">
-								{{profile.apptInfo.description}}
+								{{profile.apptInfo.title}}
 							</div>
 							<div class="rating" ng-if="profile.comments.length > 0">
 								<span class="icon icon-fullstar-small" ></span>
@@ -113,7 +113,7 @@
 								</div>
 								<div class="home-info">
 									<div class="icon icon-door-small"></div>
-									<div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}} Rooms</div>
+									<div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}} {{profile.apptInfo.rooms > 1?'Rooms':'Room'}}</div>
 								</div>
 								<!--The following line is to fix the bootstrap grid on small screens-->
 								<div class="clearfix visible-xs"></div>

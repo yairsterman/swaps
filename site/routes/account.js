@@ -64,7 +64,7 @@ router.post('/edit-listing', function(req, res, next) {
     var id = req.user._id;
     var address = req.body.address;
     var apptInfo = req.body.apptInfo;
-    var deposit = JSON.parse(req.body.deposit);
+    var deposit = req.body.deposit;
     var location = {};
 
     if(!address){
@@ -217,12 +217,12 @@ router.post('/upload', upload.array('photos', 8), function(req, res) {
     var photos = [];
     for(i = 0; i < req.files.length; i++){
         var tempPath = req.files[i].path;
-        if (path.extname(req.files[i].originalname).toLowerCase() === '.jpg') {
-            var targetPath = path.resolve('public/images/' + tempPath + '.jpg');
+        if (path.extname(req.files[i].originalname).toLowerCase() === '.jpg' || path.extname(req.files[i].originalname).toLowerCase() === '.jpeg') {
+            var targetPath = path.resolve('public/images/' + tempPath + path.extname(req.files[i].originalname).toLowerCase());
             try{
                 fs.renameSync(tempPath, targetPath);
                 tempPath = tempPath.replace(/\\/g,"/");
-                photos.push(siteUrl + 'images/' + tempPath + '.jpg');
+                photos.push(siteUrl + 'images/' + tempPath + path.extname(req.files[i].originalname).toLowerCase());
             }
             catch(err){
                 error.message = 'Error uploading file';
