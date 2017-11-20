@@ -18,14 +18,23 @@ swapsApp.service('AccountService', function($http){
         });
    };
 
-   this.saveTravelInfo = function(id, info) {
-      return $http.post('account/update-travel-info', {id: id, info: info}).then(function(data){
+   this.addTravelInfo = function(info) {
+      return $http.post('account/add-travel-info', {info: info}).then(function(data){
            return data;
         },
         function(){
              console.log("error");
         });
    };
+
+    this.updateTravelInfo = function(info) {
+        return $http.post('account/update-travel-info', {info: info}).then(function(data){
+                return data;
+            },
+            function(err){
+                return err;
+            });
+    };
 
    this.deletePhoto = function(img) {
       return $http.post('account/delete-photo', img).then(function(data){

@@ -123,20 +123,23 @@ router.post('/edit-listing', function(req, res, next) {
     }
 });
 
-router.post('/update-travel-info', function(req, res, next) {
-    var id = req.user.id;
+router.post('/add-travel-info', function(req, res, next) {
+    var id = req.user._id;
     var info = req.body.info;
 	var where = info.where.split(',')[0];
-	var dates = info.date.split('-');
-	var departure = Date.parse(dates[0].trim());
-	var returnDate = Date.parse(dates[1].trim());
+	var guests = info.guests;
+	var dates = info.dates?info.dates.split('-'):undefined;
+	var departure = dates?Date.parse(dates[0].trim()):0;
+	var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
 	var newInfo = {
-		dest: where,
+        destination: where,
 		departure: departure,
-		returnDate: returnDate
+		returnDate: returnDate,
+        dates: info.date,
+        guests: guests
 	};
 	console.log(newInfo);
-	User.findOne({_id:id}, function (err, user) {
+	User.findOne({_id:req.user._id}, function (err, user) {
 		if (err){
 			error.message = err;
 			res.json(error);
@@ -166,6 +169,71 @@ router.post('/update-travel-info', function(req, res, next) {
 			});
 		}
 	});
+});
+
+router.post('/update-travel-info', function(req, res, next) {
+    var id = req.user.id;
+    var info = req.body.info;
+    var travelId = info._id;
+    var where = info.where.split(',')[0];
+    var guests = info.guests;
+    var dates = info.dates?info.dates.split('-'):undefined;
+    var departure = dates?Date.parse(dates[0].trim()):0;
+    var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
+    var newInfo = {
+        destination: where,
+        departure: departure,
+        returnDate: returnDate,
+        dates: info.date,
+        guests: guests,
+        _id: travelId
+    };
+    console.log(newInfo);
+    User.findOne({_id:id}, function (err, user) {
+        if (err){
+            error.message = err;
+            res.json(error);
+        }
+        else{
+            var travelingInfo = user.travelingInfo;
+            var travelingDest = user.travelingDest;
+            var dataToUpdate;
+            for(var i = 0; i < travelingInfo.length; i++){
+                if(travelingInfo[i]._id == travelId){
+                    dataToUpdate = travelingInfo[i];
+                    break;
+                }
+            }
+            if(!dataToUpdate){
+                error.message = 'No travel information found';
+                res.json(error);
+            }
+            else{
+                if(dataToUpdate.where != where){
+                    travelingDest.splice(travelingDest.indexOf(dataToUpdate.where),1);
+                    travelingDest.push(dataToUpdate.where);
+                }
+                dataToUpdate = info;
+                User.findOneAndUpdate({_id: id}, { $set: {travelingInfo: travelingInfo, travelingDest: travelingDest, traveling: true}}, function (err, updated) {
+                    if (err){
+                        error.message = err;
+                        res.json(error);
+                    }
+                    else{
+                        User.findOne({_id:id}, function (err, user) {
+                            if (err){
+                                error.message = err;
+                                res.json(error);
+                            }
+                            else{
+                                res.json(user);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
 });
 
 router.post('/delete-photo', function(req, res, next) {

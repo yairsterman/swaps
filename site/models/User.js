@@ -14,6 +14,7 @@ var UserSchema = new mongoose.Schema({
     city: String,
     address: String,
     swaps: Number,
+    allowViewHome: Boolean,
     traveling: Boolean,
     travelingDest: Array,
     travelingInfo: Array,

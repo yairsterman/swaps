@@ -45,7 +45,7 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
 				error.message = "error finding users";
 				res.json(error);
 			}
-			var filterdUsers = filterUsers(users, req.query);
+			var filterdUsers = filterUsers(req, users, req.query);
 			var length = filterdUsers.length;
 			// return the users according to the given page number
 			console.log((page + 1) * USERS_PER_PAGE);
@@ -126,7 +126,7 @@ function getRandomUsers(users){
 }
 
 // Filter all returned users by the given filter params
-function filterUsers(users, query){
+function filterUsers(req, users, query){
 
 	var filterdUsers = [];
 	var destination = query.dest;
@@ -137,7 +137,7 @@ function filterUsers(users, query){
 		var user = users[i];
 		if(filterDestination(user, destination) &&
 			filterDates(user, query.date, destination) &&
-            	filterGuests(user, query.guests) &&
+            	filterGuests(req, user, query.guests, destination) &&
                     filterRooms(user, query.roomType) &&
             			filterAmenities(user, query.ameneties)) {
 			filterdUsers.push(users[i]);
@@ -146,11 +146,24 @@ function filterUsers(users, query){
 	return filterdUsers;
 }
 
-function filterGuests(user, guests){
+function filterGuests(req, user, guests, destination){
     if(guests && user.apptInfo && (!user.apptInfo.guests || user.apptInfo.guests < guests) ){
         return false;
     }
-    return true;
+    if(!user.travelingInfo && !user.allowViewHome){
+        return false;
+    }
+    if(user.allowViewHome || !guests || !req.user){
+        return true;
+    }
+    for (var i = 0; i < user.travelingInfo.length; i++) {
+        if(compareDestinations(user.travelingInfo[i].destination, destination)){
+            if(req.user.apptInfo.guests >= user.travelingInfo[i].guests){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 function filterRooms(user, roomType){
@@ -175,6 +188,9 @@ function filterAmenities(user, amenities){
 }
 
 function filterDestination(user, destination){
+    if(user.allowViewHome){
+        return true;
+    }
     for (var i = 0; i < user.travelingDest.length; i++) {
 		if(compareDestinations(user.travelingDest[i], destination)){
 			return true;
@@ -183,7 +199,7 @@ function filterDestination(user, destination){
 }
 
 function filterDates(user, date, destination){
-	if(!date){
+	if(!date || user.allowViewHome){
 		return true;
 	}
 	var searchDates = {};
@@ -191,7 +207,7 @@ function filterDates(user, date, destination){
     searchDates.departure = Date.parse(dates[0].trim());
     searchDates.returnDate = Date.parse(dates[1].trim());
     for (var i = 0; i < user.travelingInfo.length; i++) {
-        if(compareDestinations(user.travelingInfo[i].dest, destination)){
+        if(compareDestinations(user.travelingInfo[i].destination, destination)){
         	if(compareDates(user.travelingInfo[i], searchDates)){
                 return true;
             }
@@ -201,6 +217,9 @@ function filterDates(user, date, destination){
 }
 
 function compareDates(userDates, searchDates){
+    if(!userDates.departure && !userDates.returnDate){
+        return true;
+    }
 	return (searchDates.departure >= userDates.departure && searchDates.departure <= userDates.returnDate)
 		|| (searchDates.returnDate >= userDates.departure && searchDates.returnDate <= userDates.returnDate);
 }

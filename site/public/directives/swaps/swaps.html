@@ -1,0 +1,42 @@
+<div class="swaps-wrapper">
+    <div class="edit-swaps">
+        <div class="single-swap" ng-repeat="swap in swaps">
+            <div class="row search-area">
+                <div class="search-field left col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-focus="autocompleteCities('searchCity'+$index, swap)" ng-model="swap.destination" ng-disabled="saving || editingField != $index">
+                </div>
+                <div class="search-field col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-focus="openDate('searchDate'+$index, swap)" ng-model="swap.dates" ng-disabled="saving || editingField != $index">
+                </div>
+                <div class="search-field right col-sm-4 col-xs-12 ">
+                    <div class="guests-search">
+                        <input type="number" class="form-control guests" placeholder="2" ng-model="swap.guests" min="1" max="8" ng-disabled="saving || editingField != $index">
+                    </div>
+                </div>
+            </div>
+            <div class="action">
+                <input type="button" class="btn btn-primary btn-send" value="EDIT" ng-click="edit($index)" ng-if="!saving && editingField != $index">
+                <input type="button" class="btn btn-primary btn-send" value="SAVE" ng-click="update(swap)" ng-disabled="saving" ng-if="editingField == $index">
+                <input type="button" class="btn btn-danger" value="CANCEL" ng-click="cancel()" ng-disabled="saving" ng-if="!saving && editingField == $index">
+            </div>
+        </div>
+    </div>
+    <div class="single-swap">
+        <div class="row search-area">
+            <div class="search-field left col-sm-4 col-xs-12">
+                <input type="text" class="form-control" placeholder="Anywhere" id="searchCityAdd" ng-focus="autocompleteCities('searchCityAdd', addSwap)" ng-model="addSwap.where" ng-disabled="editing">
+            </div>
+            <div class="search-field col-sm-4 col-xs-12">
+                <input type="text" class="form-control" placeholder="Anytime" id="searchDateAdd" name="searchDateAdd" ng-focus="openDate('searchDateAdd', addSwap)" ng-model="addSwap.dates" ng-disabled="editing">
+            </div>
+            <div class="search-field right col-sm-4 col-xs-12 ">
+                <div class="guests-search">
+                    <input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="addSwap.guests" min="1" max="8" ng-disabled="editing">
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <input type="button" class="btn btn-primary btn-send" value="ADD" ng-click="add()" ng-disabled="saving" ng-disabled="editing">
+        </div>
+    </div>
+</div>

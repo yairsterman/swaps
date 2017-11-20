@@ -303,6 +303,9 @@
                     </div>
                 </div>
             </div>
+            <div class="edit-profile" ng-if="activeTab == 'swap'">
+                <swaps swaps="user.travelingInfo"></swaps>
+            </div>
         </div>
      </div>
      <div id="requestModal" class="modal fade" role="dialog">
