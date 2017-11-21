@@ -7,6 +7,7 @@
                 </div>
                 <div class="search-field col-sm-4 col-xs-12">
                     <input type="text" class="form-control" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-focus="openDate('searchDate'+$index, swap)" ng-model="swap.dates" ng-disabled="saving || editingField != $index">
+                    <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(swap)" ng-if="!saving && editingField == $index && swap.dates"></div>
                 </div>
                 <div class="search-field right col-sm-4 col-xs-12 ">
                     <div class="guests-search">
@@ -24,10 +25,11 @@
     <div class="single-swap">
         <div class="row search-area">
             <div class="search-field left col-sm-4 col-xs-12">
-                <input type="text" class="form-control" placeholder="Anywhere" id="searchCityAdd" ng-focus="autocompleteCities('searchCityAdd', addSwap)" ng-model="addSwap.where" ng-disabled="editing">
+                <input type="text" class="form-control" placeholder="Anywhere" id="searchCityAdd" ng-focus="autocompleteCities('searchCityAdd', addSwap)" ng-model="addSwap.destination" ng-disabled="editing">
             </div>
             <div class="search-field col-sm-4 col-xs-12">
                 <input type="text" class="form-control" placeholder="Anytime" id="searchDateAdd" name="searchDateAdd" ng-focus="openDate('searchDateAdd', addSwap)" ng-model="addSwap.dates" ng-disabled="editing">
+                <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(addSwap)" ng-if="addSwap.dates"></div>
             </div>
             <div class="search-field right col-sm-4 col-xs-12 ">
                 <div class="guests-search">

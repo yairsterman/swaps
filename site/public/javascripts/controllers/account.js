@@ -43,6 +43,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     var elementsReady = $interval(function() {
       if($scope.activeTab != 'edit'){
         $interval.cancel(elementsReady);
+        return;
       }
       var input = $('input[name="birthday"]');
       if (input) {
@@ -178,7 +179,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.swap = function(message){
         $scope.currentMessager = message;
-        $('#requestModal').modal('show');
+        // $('#requestModal').modal('show');
+        $('#paymentModal').modal('show');
         $('input[name="datefilter"]').daterangepicker({
             autoApply: true,
             opens: 'center',

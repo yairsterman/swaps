@@ -126,16 +126,16 @@ router.post('/edit-listing', function(req, res, next) {
 router.post('/add-travel-info', function(req, res, next) {
     var id = req.user._id;
     var info = req.body.info;
-	var where = info.where?info.where.split(',')[0]:null;
+	var where = info.destination?info.destination.split(',')[0]:null;
 	var guests = info.guests;
-	var dates = info.dates?info.dates.split('-'):null;
+	var dates = info.when?info.when.split('-'):null;
 	var departure = dates?Date.parse(dates[0].trim()):0;
 	var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
 	var newInfo = {
         destination: where,
 		departure: departure,
 		returnDate: returnDate,
-        dates: info.date,
+        dates: info.dates,
         guests: guests
 	};
 	console.log(newInfo);
@@ -155,36 +155,40 @@ router.post('/add-travel-info', function(req, res, next) {
 					error.message = err;
 					res.json(error);
 				}
-				else{
-					User.findOne({_id:id}, function (err, user) {
-						if (err){
-							error.message = err;
-							res.json(error);
-						}
-						else{
-							res.json(user);
-						}
-					});
-				}
+                else{
+                    User.findOne({_id: id}, function (err, user) {
+                        if (err){
+                            error.message = err;
+                            res.json(error);
+                        }
+                        else{
+                            res.json(user);
+                        }
+                    });
+                }
 			});
 		}
 	});
 });
 
 router.post('/update-travel-info', function(req, res, next) {
+    if(!req.user.id || !req.body.info){
+        error.message = 'No travel information found';
+        res.json(error);
+    }
     var id = req.user.id;
     var info = req.body.info;
     var travelId = info._id;
-    var where = info.where.split(',')[0];
+    var where = info.destination?info.destination.split(',')[0]:null;
     var guests = info.guests;
-    var dates = info.dates?info.dates.split('-'):undefined;
+    var dates = info.when?info.when.split('-'):undefined;
     var departure = dates?Date.parse(dates[0].trim()):0;
     var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
     var newInfo = {
         destination: where,
         departure: departure,
         returnDate: returnDate,
-        dates: info.date,
+        dates: info.when?info.dates:undefined,
         guests: guests,
         _id: travelId
     };
@@ -197,30 +201,32 @@ router.post('/update-travel-info', function(req, res, next) {
         else{
             var travelingInfo = user.travelingInfo;
             var travelingDest = user.travelingDest;
-            var dataToUpdate;
+            var index;
             for(var i = 0; i < travelingInfo.length; i++){
                 if(travelingInfo[i]._id == travelId){
-                    dataToUpdate = travelingInfo[i];
+                    index = i;
                     break;
                 }
             }
-            if(!dataToUpdate){
+            if(index == -1){
                 error.message = 'No travel information found';
                 res.json(error);
             }
             else{
-                if(dataToUpdate.where != where){
-                    travelingDest.splice(travelingDest.indexOf(dataToUpdate.where),1);
-                    travelingDest.push(dataToUpdate.where);
+                if(travelingInfo[index].where != where){
+                    if(travelingDest.indexOf(travelingInfo[index]) != -1){
+                        travelingDest.splice(travelingDest.indexOf(travelingInfo[index].where),1);
+                        travelingDest.push(where);
+                    }
                 }
-                dataToUpdate = info;
-                User.findOneAndUpdate({_id: id}, { $set: {travelingInfo: travelingInfo, travelingDest: travelingDest, traveling: true}}, function (err, updated) {
+                travelingInfo[index] = newInfo;
+                User.update({_id: id}, { $set: {travelingInfo: travelingInfo, travelingDest: travelingDest, traveling: true}}, function (err, updated) {
                     if (err){
                         error.message = err;
                         res.json(error);
                     }
                     else{
-                        User.findOne({_id:id}, function (err, user) {
+                        User.findOne({_id: id}, function (err, user) {
                             if (err){
                                 error.message = err;
                                 res.json(error);

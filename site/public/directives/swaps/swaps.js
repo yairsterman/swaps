@@ -20,7 +20,7 @@ function swapsController($scope, $rootScope, $document, AccountService){
             types: ['(cities)']
         });
         autocompleteSearch.addListener('place_changed', function() {
-            swap.where = autocompleteSearch.getPlace().formatted_address;
+            swap.destination = autocompleteSearch.getPlace().formatted_address;
         });
     }
 
@@ -52,6 +52,8 @@ function swapsController($scope, $rootScope, $document, AccountService){
         AccountService.addTravelInfo($scope.addSwap).then(function(data){
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
+            $scope.swaps = $scope.user.travelingInfo;
+            $scope.addSwap = {};
             $scope.saving = false;
         });
     }
@@ -63,6 +65,12 @@ function swapsController($scope, $rootScope, $document, AccountService){
             $scope.user = $rootScope.user;
             $scope.editing = false;
             $scope.saving = false;
+            $scope.cancel();
         });
+    }
+
+    $scope.removeDates = function(swap){
+        swap.dates = undefined;
+        swap.when = undefined;
     }
 }

@@ -150,9 +150,47 @@ const securityDeposit =[
     {id: 5, type: 'diamond', displayName: 'Diamond', value:400},
 ];
 
+const creditCards = [
+    {id: 0, type: 'visa', displayName: 'Visa'},
+    {id: 1, type: 'mastercard', displayName: 'Mastercard'},
+    {id: 2, type: 'americanExpress', displayName: 'American Express'},
+]
+
+const months = [
+    {id: 1, name: 'January'},
+    {id: 2, name: 'February'},
+    {id: 3, name: 'March'},
+    {id: 4, name: 'April'},
+    {id: 5, name: 'May'},
+    {id: 6, name: 'June'},
+    {id: 7, name: 'July'},
+    {id: 8, name: 'August'},
+    {id: 9, name: 'September'},
+    {id: 10, name: 'October'},
+    {id: 11, name: 'November'},
+    {id: 12, name: 'December'},
+]
+
+const years = [
+    2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030
+]
+
+
 var data = {
 
 };
+
+var dataForSite = {
+    amenities: amenities,
+    thingsToDo: thingsToDo,
+    requestStatus: requestStatus,
+    genders: genders,
+    roomType: roomType,
+    securityDeposit: securityDeposit,
+    creditCards: creditCards,
+    months: months,
+    years: years
+}
 
 data.getAmenities = function(){
     return amenities;
@@ -180,6 +218,14 @@ data.getGenders = function(){
 
 data.getSecurityDeposit = function(){
     return securityDeposit;
+};
+
+data.getCreditCards = function(){
+    return creditCards;
+};
+
+data.getData = function(){
+    return dataForSite;
 };
 
 module.exports = data;

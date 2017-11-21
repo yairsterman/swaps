@@ -3,25 +3,10 @@ var router = express.Router();
 var Data = require('../user_data/data.js');
 var https = require('https');
 
-router.get('/get-amenities', function(req, res, next) {
-    res.json(Data.getAmenities());
+router.get('/get-data', function(req, res, next) {
+    res.json(Data.getData());
 });
 
-router.get('/get-room-type', function(req, res, next) {
-    res.json(Data.getRoomType());
-});
-
-router.get('/get-things-to-do', function(req, res, next) {
-    res.json(Data.getThingsToDo());
-});
-
-router.get('/get-genders', function(req, res, next) {
-    res.json(Data.getGenders());
-});
-
-router.get('/get-deposits', function(req, res, next) {
-    res.json(Data.getSecurityDeposit());
-});
 
 router.get('/google-map', function(req, res, next) {
     // request('https://maps.googleapis.com/maps/api/js?key=AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw&libraries=places&language=en', function (error, response, body) {

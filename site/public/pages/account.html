@@ -175,7 +175,7 @@
                       <div class="form-group">
                           <label class="col-sm-3 control-label">Room Type:</label>
                           <div class="col-sm-4">
-                              <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType" ng-options="room.id as room.displayName for room in data.roomTypes">
+                              <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType" ng-options="room.id as room.displayName for room in data.roomType">
                                   {{room.displayName}}
                               </select>
                           </div>
@@ -183,7 +183,7 @@
                       <div class="form-group">
                           <label class="col-sm-3 control-label">Deposit Plan:</label>
                           <div class="col-sm-4">
-                              <select class="form-control" id="deposit" ng-model="edit.deposit" ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per week' for plan in data.deposits">
+                              <select class="form-control" id="deposit" ng-model="edit.deposit" ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per week' for plan in data.securityDeposit">
                                   {{plan.displayName}} - ${{plan.value}} per week
                               </select>
                           </div>
@@ -328,4 +328,6 @@
              </div>
          </div>
      </div>
+    </div>
+    <payment></payment>
 </div>
