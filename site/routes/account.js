@@ -40,7 +40,7 @@ router.post('/edit-profile', function(req, res, next) {
     var gender = req.body.gender;
     var thingsToDo = req.body.thingsToDo;
 
-    User.update({_id: id}, { $set: {email: email, aboutMe: aboutMe, occupation: occupation, location: location, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
+    User.update({_id: id}, { $set: {email: email, aboutMe: aboutMe, occupation: occupation, gender: gender, birthday: birthday, thingsToDo: thingsToDo}},
         function (err, updated) {
             if (err){
                 error.message = err;
@@ -126,9 +126,9 @@ router.post('/edit-listing', function(req, res, next) {
 router.post('/add-travel-info', function(req, res, next) {
     var id = req.user._id;
     var info = req.body.info;
-	var where = info.where.split(',')[0];
+	var where = info.where?info.where.split(',')[0]:null;
 	var guests = info.guests;
-	var dates = info.dates?info.dates.split('-'):undefined;
+	var dates = info.dates?info.dates.split('-'):null;
 	var departure = dates?Date.parse(dates[0].trim()):0;
 	var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
 	var newInfo = {

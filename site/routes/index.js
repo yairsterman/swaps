@@ -59,6 +59,7 @@ passport.use(new FacebookStrategy({
             city: '',
             address: '',
             swaps: 0,
+            allowViewHome: false,
             traveling: false,
             travelingDates: {},
             apptInfo: {},

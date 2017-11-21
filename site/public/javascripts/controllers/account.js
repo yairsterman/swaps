@@ -44,17 +44,27 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       if($scope.activeTab != 'edit'){
         $interval.cancel(elementsReady);
       }
-      var input = $document[0].getElementById('address');
+      var input = $('input[name="birthday"]');
       if (input) {
         autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('address'), address);
         var found = false;
         autocomplete.addListener('place_changed', function() {
-          $scope.user.address = autocomplete.getPlace().formatted_address;
+          $scope.edit.address = autocomplete.getPlace().formatted_address;
           $scope.$apply();
         });
-          $('.datepicker').datepicker({
-              format: 'mm/dd/yyyy',
-              startDate: $scope.edit.birthday
+          $('input[name="birthday"]').daterangepicker({
+              autoApply: true,
+              opens: 'center',
+              locale: {
+                  format: 'MM/DD/YYYY'
+              },
+              singleDatePicker: true,
+              showDropdowns: true,
+              startDate: $scope.edit.birthday,
+
+          });
+          $('input[name="birthday"]').on('apply.daterangepicker', function(ev, picker) {
+              $scope.edit.birthday = picker.startDate.format('MM/DD/YYYY');
           });
         $interval.cancel(elementsReady);
       }
@@ -89,7 +99,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.editlisting = function(){
         $scope.saving = true;
-        AccountService.editListing($scope.user).then(function(data){
+        AccountService.editListing($scope.edit).then(function(data){
             if(!data || (data && data.error)){
               console.log("error");
             }
