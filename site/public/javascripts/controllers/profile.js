@@ -9,7 +9,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.swap = {
-        guests: 1
+        guests: 2
     }
 
     $anchorScroll();

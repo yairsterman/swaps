@@ -226,18 +226,8 @@
 </div>
 <div id="requestModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<!-- Modal content-->
 		<div class="modal-content">
-		  <div class="send-messege">
-			  <div class="title">
-				  Send {{profile.firstName}} a Message
-			  </div>
-			  <textarea rows="6" cols="20" class="form-control" ng-model="message.message"></textarea>
-			  <div class="modal-footer">
-				  <input type="button" class="btn btn-primary fll btn-send" value="Send" ng-click="sendMessage()" ng-disabled="message.message == '' ">
-				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			  </div>
+		<request swapper="$parent.profile" details="$parent.swap"></request>
 		</div>
 	</div>
-</div>
 </div>

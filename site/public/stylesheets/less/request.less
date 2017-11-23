@@ -1,0 +1,54 @@
+request{
+  .request{
+    .request-swap{
+      .title{
+
+      }
+      .send-message{
+        display: flex;
+        align-items: stretch;
+        .send-text{
+          font-size: 14px;
+        }
+        .btn-primary{
+          font-size: 16px;
+        }
+        .btn-send{
+          font-size: 16px;
+        }
+        .btn-swap{
+          background-color: #00BC00;
+          border-color: #027C00;
+          &.btn-pending{
+            opacity: 0.5;
+          }
+          &.btn-confirm{
+            background-color: white;
+            color: #333;
+            &::after{
+              content: "";
+              position: absolute;
+              top: -110%;
+              left: -210%;
+              width: 200%;
+              height: 200%;
+              opacity: 0;
+              transform: rotate(30deg);
+              &:hover{
+                opacity: 1;
+                top: -30%;
+                left: -30%;
+                transition-property: left, top, opacity;
+                transition-duration: 0.7s, 0.7s, 0.15s;
+                transition-timing-function: ease;
+              }
+            }
+          }
+          &.btn-confirmed{
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+}

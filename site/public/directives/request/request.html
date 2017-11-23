@@ -1,0 +1,15 @@
+<div class="request" >
+    <div class="request-swap">
+        <div class="title">
+            Tell {{swapper.firsName}} a little about your trip
+        </div>
+        <div class="about">
+            Tell {{swapper.firsName}} a little about your trip
+        </div>
+        <div class="send-message">
+            <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
+                          </textarea>
+        </div>
+        <input type="button" class="btn btn-primary btn-send" value="Request Swap" ng-click="sendMessage()" ng-disabled="send.message == '' ">
+    </div>
+</div>
