@@ -147,7 +147,7 @@ router.post('/add-travel-info', function(req, res, next) {
 		else{
 			var travelingInfo = user.travelingInfo;
 			var travelingDest = user.travelingDest;
-            newInfo._id = travelingInfo.length + 1;
+            newInfo._id = travelingInfo[travelingInfo.length-1]._id + 1;
 			travelingInfo.push(newInfo);
 			travelingDest.push(where);
 			User.update({_id: id}, { $set: {travelingInfo: travelingInfo, travelingDest: travelingDest, traveling: true}}, function (err, updated) {
@@ -181,14 +181,14 @@ router.post('/update-travel-info', function(req, res, next) {
     var travelId = info._id;
     var where = info.destination?info.destination.split(',')[0]:null;
     var guests = info.guests;
-    var dates = info.when?info.when.split('-'):undefined;
+    var dates = info.when?info.when.split('-'):info.dates?info.dates:undefined;
     var departure = dates?Date.parse(dates[0].trim()):0;
     var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
     var newInfo = {
         destination: where,
         departure: departure,
         returnDate: returnDate,
-        dates: info.when?info.dates:undefined,
+        dates: dates?info.dates:undefined,
         guests: guests,
         _id: travelId
     };
@@ -337,6 +337,22 @@ router.post('/upload', upload.array('photos', 8), function(req, res) {
             else{
                 // res.redirect('/#/account/listing');
             }
+        }
+    });
+});
+
+router.get('/get-requests', function(req, res, next) {
+    var id = req.user._id;
+    var requestIds = req.user.requests.map(function(request){
+        return request.userId;
+    });
+    User.find({_id:{ $in: requestIds}}, function (err, users) {
+        if (err){
+            error.message = err;
+            res.json(error);
+        }
+        else{
+            res.json(users);
         }
     });
 });

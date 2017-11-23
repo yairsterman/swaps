@@ -3,7 +3,8 @@ swapsApp.directive('swaps', function() {
         restrict: 'E',
         controller: swapsController,
         scope: {
-            swaps: '='
+            swaps: '=',
+            popup: '='
         },
         templateUrl: '../../directives/swaps/swaps.html'
     }
@@ -14,6 +15,10 @@ function swapsController($scope, $rootScope, $document, AccountService){
     $scope.addSwap = {
         guests:2
     };
+
+    $scope.popup?$scope.limit = 4:$scope.limit = $scope.swaps.length;
+
+    $scope.title = $scope.swaps.length != 0?'Edit and Add Swap Locations':'Tell us where you want to go, so other Swappers can see your home.';
 
     $scope.autocompleteCities = function(id, swap){
         autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById(id), {
@@ -37,12 +42,14 @@ function swapsController($scope, $rootScope, $document, AccountService){
         });
     }
 
-    $scope.edit = function(index){
+    $scope.edit = function(index, swap){
+        $scope.currentSwap = swap;
         $scope.editing = true;
         $scope.editingField = index;
     }
 
-    $scope.cancel = function(){
+    $scope.cancel = function(swap){
+        swap = $scope.currentSwap;
         $scope.editing = false;
         $scope.editingField = -1;
     }
@@ -55,6 +62,9 @@ function swapsController($scope, $rootScope, $document, AccountService){
             $scope.swaps = $scope.user.travelingInfo;
             $scope.addSwap = {};
             $scope.saving = false;
+            if($scope.swaps > 5){
+                $scope.toMany = true;
+            }
         });
     }
 

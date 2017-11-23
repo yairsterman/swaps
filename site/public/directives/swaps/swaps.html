@@ -1,6 +1,7 @@
 <div class="swaps-wrapper">
-    <div class="edit-swaps">
-        <div class="single-swap" ng-repeat="swap in swaps">
+    <div class="title">{{title}}</div>
+    <div class="edit-swaps {{popup || toMany?'':'overflow'}}">
+        <div class="single-swap" ng-repeat="swap in swaps | limitTo : limit | orderBy : 'departure'">
             <div class="row search-area">
                 <div class="search-field left col-sm-4 col-xs-12">
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-focus="autocompleteCities('searchCity'+$index, swap)" ng-model="swap.destination" ng-disabled="saving || editingField != $index">
@@ -16,13 +17,13 @@
                 </div>
             </div>
             <div class="action">
-                <input type="button" class="btn btn-primary btn-send" value="EDIT" ng-click="edit($index)" ng-if="!saving && editingField != $index">
+                <input type="button" class="btn btn-primary btn-send" value="EDIT" ng-click="edit($index, swap)" ng-if="!saving && editingField != $index">
                 <input type="button" class="btn btn-primary btn-send" value="SAVE" ng-click="update(swap)" ng-disabled="saving" ng-if="editingField == $index">
-                <input type="button" class="btn btn-danger" value="CANCEL" ng-click="cancel()" ng-disabled="saving" ng-if="!saving && editingField == $index">
+                <input type="button" class="btn btn-danger" value="CANCEL" ng-click="cancel(swap)" ng-disabled="saving" ng-if="!saving && editingField == $index">
             </div>
         </div>
     </div>
-    <div class="single-swap">
+    <div class="single-swap add-swap">
         <div class="row search-area">
             <div class="search-field left col-sm-4 col-xs-12">
                 <input type="text" class="form-control" placeholder="Anywhere" id="searchCityAdd" ng-focus="autocompleteCities('searchCityAdd', addSwap)" ng-model="addSwap.destination" ng-disabled="editing">

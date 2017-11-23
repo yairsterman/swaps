@@ -485,6 +485,34 @@
 				}
 			}
 		}
+		.swaps-and-requests{
+			.tabs{
+				display: flex;
+				margin-bottom: 15px;
+				margin: -0 -15px 15px -15px;
+				.tab{
+					padding: 15px;
+					font-size: 20px;
+					width: 50%;
+					text-align: center;
+					background-color: rgba(40,44,42,0.1);
+					border: 1px solid rgba(40,44,42,0.1);
+					&:focus{
+						outline: none;
+					}
+					&.active{
+						background-color: transparent;
+						border-bottom: none;
+						border-top: none;
+						box-shadow: inset 0 2px 0 #0d78ad;
+						color: #0d78ad;
+					}
+				}
+			}
+			.traveler-col{
+				padding: 5px;
+			}
+		}
 	}
 	.modal-content{
 		.dates{

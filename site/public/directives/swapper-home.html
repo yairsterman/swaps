@@ -30,10 +30,10 @@
     <!--CAROUSEL END-->
     <div class="user-info">
         <div class="apt-sub-title">
-            <span></span>{{traveler.city}}, {{traveler.apptInfo.room}} at {{traveler.firstName}}'s Home
+            <span></span>{{traveler.city}}, {{$parent.data.roomType[traveler.apptInfo.roomType].displayName}} at {{traveler.firstName}}'s Home
         </div>
         <div class="apt-title">
-            {{traveler.apptInfo.description}}
+            {{traveler.apptInfo.title}}
         </div>
         <div class="rating" ng-if="traveler.comments.length > 0">
             <span class="icon icon-fullstar-small" ></span>
@@ -41,7 +41,7 @@
             <span class="icon {{traveler.rating > 2?traveler.rating < 3?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
             <span class="icon {{traveler.rating > 3?traveler.rating < 4?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
             <span class="icon {{traveler.rating > 4?traveler.rating < 5?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
-            <span class="number-reviews">{{traveler.comments.length}}</span>
+            <!--<span class="number-reviews">{{traveler.comments.length}}</span>-->
         </div>
         <div class="rating" ng-if="traveler.comments.length == 0">
             <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>

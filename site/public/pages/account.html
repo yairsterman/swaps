@@ -303,8 +303,21 @@
                     </div>
                 </div>
             </div>
-            <div class="edit-profile" ng-if="activeTab == 'swap'">
-                <swaps swaps="user.travelingInfo"></swaps>
+            <div class="swaps-and-requests" ng-if="activeTab == 'swap'">
+                <div class="tabs">
+                    <div class="tab {{showSwapsTab == 'set'?'active':''}}" ng-click="showSwapsTab = 'set'">
+                        Set up Swap
+                    </div>
+                    <div class="tab {{showSwapsTab == 'upcoming'?'active':''}}" ng-click="showSwapsTab = 'upcoming'">
+                        Upcoming Swaps
+                    </div>
+                </div>
+                <swaps swaps="user.travelingInfo" ng-if="showSwapsTab == 'set'"></swaps>
+                <div class="mg-0 row" ng-if="showSwapsTab == 'upcoming'">
+                    <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="request in requests">
+                        <swapper-home traveler="request"></swapper-home>
+                    </div>
+                </div>
             </div>
         </div>
      </div>

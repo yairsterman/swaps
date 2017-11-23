@@ -31,6 +31,10 @@
                 How it Works
                 <div class="underlined"></div>
             </div>
+            <div class="login sign-up" data-toggle="modal" data-target="#swapModel" ng-if="user._id">
+                Set up Swap
+                <div class="underlined"></div>
+            </div>
             <div class="login sign-up" data-toggle="modal" data-target="#signUpModal" ng-hide="user._id">
                 Join
                 <div class="underlined"></div>
@@ -51,8 +55,9 @@
 				    <span class="caret"></span></div>
 					    <ul class="dropdown-menu">
 					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
-                          <li><a class="nav-link" href="" ng-click ="openFlyNow()">Plan Trip</a></li>
-					      <li><a href="" ng-click ="logout()">LOGOUT</a></li>
+                          <li><a class="nav-link" href="" ng-click ="go('account/swaps')">My Swaps</a></li>
+                          <li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>
+					      <li><a href="" ng-click ="logout()">Log out</a></li>
 				    </ul>
 			  </div>
 			 </div>
@@ -86,7 +91,6 @@
             switching houses and not worrying whether your house is on-fire or not
         </div>
         </div>
-
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -95,35 +99,10 @@
 </div>
 </div>
 
-<div id="signUpModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<div id="swapModel" class="modal fade" role="dialog" ng-if="user._id">
+    <div class="modal-dialog large-model">
         <div class="modal-content">
-            <div class="container">
-            <div class="row">
-            <label>User Name:</label>
-                <input type="text" class="form-control" placeholder="">
-                <span class="user-comments">At least 5 characters. Case insensitive.</span>
-
-            </div>
-            <br>
-            <div class="row">
-                <label>Password:</label>
-                    <input type="password" class="form-control" placeholder="">
-                    <span class="user-comments">At least 6 characters. Case sensitive. Must include<br> uppercase character,
-                        lowercase character and a number.</span>
-
-            </div>
-            <br>
-            <div class="row">
-                <label>Verify Password:</label>
-                    <input type="password" class="form-control" placeholder="">
-
-            </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-
+            <swaps swaps="user.travelingInfo" popup="true"></swaps>
         </div>
     </div>
 </div>

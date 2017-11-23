@@ -50,7 +50,7 @@
 						</div>
 					</div>
 
-					<div class="deposit">Security Deposit Plan - {{data.deposits[profile.deposit].displayName}}</div>
+					<div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
 					<div class="separator"></div>
 					<div class="swap-info">
 						<div class="search-field">
@@ -90,7 +90,7 @@
 						</div>
 						<div class="col-xs-10">
 							<div class="under-title">
-								{{data.roomTypes[profile.apptInfo.roomType].displayName}} • {{profile.city}}
+								{{data.roomType[profile.apptInfo.roomType].displayName}} • {{profile.city}}
 							</div>
 							<div class="description-title">
 								{{profile.apptInfo.title}}

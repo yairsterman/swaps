@@ -6,16 +6,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.editing = false;
     $scope.send = {message : ''};
     $scope.swap = {};
+    $scope.showSwapsTab = 'set';
+
 
     $scope.select = {};
 
     if($rootScope.user && $rootScope.user._id) {
-        $scope.user = $rootScope.user;
-        $scope.edit = angular.copy($scope.user);
-        $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
-        // $scope.select = {
-        //     gender: 1
-        // };
         init();
     }
     else{
@@ -32,6 +28,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       });
 
     function init(){
+        updateUser();
         setPhotoGalery();
     }
 
@@ -84,10 +81,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 $scope.saving = true;
      		}
      		else{
-     			$scope.user = data.data;
-                $rootScope.user = $scope.user;
-                $scope.saving = false;
-                $scope.edit = angular.copy($scope.user);
+                $scope.user = data.data;
+                updateUser();
      		}
      	});
    	}
@@ -106,9 +101,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             }
             else{
                 $scope.user = data.data;
-                $rootScope.user = $scope.user;
-                $scope.saving = false;
-                $scope.edit = angular.copy($scope.user);
+                updateUser();
             }
         });
     }
@@ -177,7 +170,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
     }
 
-    $scope.swap = function(message){
+    $scope.setSwap = function(message){
         $scope.currentMessager = message;
         // $('#requestModal').modal('show');
         $('#paymentModal').modal('show');
@@ -271,6 +264,17 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 scrollTop: scrollHeight
             }, 300, function() {});
         }, 700);
+    }
+
+    function updateUser(){
+        $rootScope.user = $scope.user;
+        $scope.saving = false;
+        $scope.edit = angular.copy($scope.user);
+        $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
+        AccountService.getRequests().then(function(requests){
+            $scope.requests = requests;
+        });
+
     }
 
 });

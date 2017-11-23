@@ -45,6 +45,15 @@ swapsApp.service('AccountService', function($http){
         });
    };
 
+    this.getRequests = function() {
+        return $http.get('account/get-requests').then(function(data){
+                return data.data;
+            },
+            function(){
+                console.log("error");
+            });
+    };
+
    this.logout = function(user) {
       return $http.post('/logout', user).then(function(data){
            return data;
