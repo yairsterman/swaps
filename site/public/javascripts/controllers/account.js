@@ -8,7 +8,6 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.swap = {};
     $scope.showSwapsTab = 'set';
 
-
     $scope.select = {};
 
     if($rootScope.user && $rootScope.user._id) {
@@ -43,13 +42,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         return;
       }
       var input = $('input[name="birthday"]');
-      if (input) {
-        autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('address'), address);
-        var found = false;
-        autocomplete.addListener('place_changed', function() {
-          $scope.edit.address = autocomplete.getPlace().formatted_address;
-          $scope.$apply();
-        });
+      if (input && $scope.edit) {
           $('input[name="birthday"]').daterangepicker({
               autoApply: true,
               opens: 'center',
@@ -68,6 +61,21 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       }
     }, 100);
 
+    $scope.$watch('activeTab', function(oldVal, newVal){
+        if($scope.activeTab == 'listing'){
+            var elementsReady = $interval(function() {
+                var input = $document[0].getElementById('address');
+                if (input && $scope.edit) {
+                    autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('address'), {types: ['address']});
+                    autocomplete.addListener('place_changed', function() {
+                        $scope.edit.address = autocomplete.getPlace().formatted_address;
+                        $scope.$apply();
+                    });
+                    $interval.cancel(elementsReady);
+                }
+            }, 100);
+        }
+    });
 
     $scope.go = function(path){
      	$location.url('/' + path);
@@ -101,6 +109,18 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             }
             else{
                 $scope.user = data.data;
+                updateUser();
+            }
+        });
+    }
+
+    $scope.cancelRequest = function(requestInfo){
+        $scope.saving = true;
+        MessageService.cancelRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
+            if(!data || (data && data.error)){
+                console.log("error");
+            }
+            else{
                 updateUser();
             }
         });
@@ -273,8 +293,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         AccountService.getRequests().then(function(requests){
             $scope.requests = requests;
+            $scope.requests.forEach(function(value){
+                value.requestInfo = $scope.getRequest(value._id);
+            });
         });
-
     }
 
 });

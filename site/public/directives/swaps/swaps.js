@@ -11,7 +11,7 @@ swapsApp.directive('swaps', function() {
 });
 
 function swapsController($scope, $rootScope, $document, AccountService){
-    var autocompleteSearch;
+    // var autocompleteSearch;
     $scope.addSwap = {
         guests:2
     };
@@ -21,7 +21,7 @@ function swapsController($scope, $rootScope, $document, AccountService){
     $scope.title = $scope.swaps.length != 0?'Edit and Add Swap Locations':'Tell us where you want to go, so other Swappers can see your home.';
 
     $scope.autocompleteCities = function(id, swap){
-        autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById(id), {
+        var autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById(id), {
             types: ['(cities)']
         });
         autocompleteSearch.addListener('place_changed', function() {

@@ -343,10 +343,16 @@ router.post('/upload', upload.array('photos', 8), function(req, res) {
 
 router.get('/get-requests', function(req, res, next) {
     var id = req.user._id;
-    var requestIds = req.user.requests.map(function(request){
+    var requestIds = req.user.requests.filter(function(request){
+        return request.status != Data.getRequestStatus().canceled;
+    });
+    requestIds = requestIds.map(function(request){
         return request.userId;
     });
-    User.find({_id:{ $in: requestIds}}, function (err, users) {
+    if(requestIds.length == 0){
+        res.json(requestIds);
+    }
+    User.find({_id:{ $in: requestIds}},  Data.getVisibleUserData().accessible, function (err, users) {
         if (err){
             error.message = err;
             res.json(error);

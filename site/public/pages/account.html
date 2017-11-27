@@ -316,6 +316,11 @@
                 <div class="mg-0 row" ng-if="showSwapsTab == 'upcoming'">
                     <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="request in requests">
                         <swapper-home traveler="request"></swapper-home>
+                        <div class="request-info">
+                            <div class="request-dates">{{request.requestInfo.departure | date :'MMMM dd, yyyy'}} - {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}</div>
+                            <div class="request-status">{{request.requestInfo.status == 0?'Pending':'Confirmed'}}</div>
+                        </div>
+                        <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
                     </div>
                 </div>
             </div>

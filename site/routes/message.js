@@ -329,8 +329,10 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                     error.message = "no request found";
                     deferd.reject(error);
                 }
-                sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
-                return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+                else{
+                    sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
+                    return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+                }
             }
         })
         .then(function (updated) {
@@ -353,8 +355,10 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                     error.message = "no request found";
                     deferd.reject(error);
                 }
-                recipient.requests[requestIndex].status = Data.getRequestStatus().canceled;
-                return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
+                else{
+                    recipient.requests[requestIndex].status = Data.getRequestStatus().canceled;
+                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
+                }
             }
         })
         .then(function (updated) {
@@ -444,7 +448,7 @@ function findMessage(messages, id){
 function findRequest(requests, id, departure, returnDate){
     for(var i = 0; i < requests.length; i++){
         var request = requests[i];
-        if(request.userId == id && request.departure == departure && request.returnDate == returnDate){
+        if(request.userId == id.toString() && request.departure == departure && request.returnDate == returnDate){
             return i;
         }
     }

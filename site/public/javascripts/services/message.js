@@ -31,14 +31,27 @@ swapsApp.service('MessageService', function($http){
             });
     };
 
-   this.confirmRequest = function(user, recipient, departure, returnDate) {
+   this.confirmRequest = function(recipient, departure, returnDate) {
         var data = {
-            user: user,
             recipientId: recipient,
             departure: departure,
             returnDate:returnDate
         };
         return $http.post('message/confirmRequest', data).then(function(data){
+                return data;
+            },
+            function(){
+                console.log("error")
+            });
+    };
+
+    this.cancelRequest = function(recipient, departure, returnDate) {
+        var data = {
+            recipientId: recipient,
+            departure: departure,
+            returnDate:returnDate
+        };
+        return $http.post('message/cancelRequest', data).then(function(data){
                 return data;
             },
             function(){

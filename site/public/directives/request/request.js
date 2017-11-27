@@ -1,4 +1,4 @@
-swapsApp.controller('requestController', function($scope, $rootScope, MessageService) {
+swapsApp.controller('requestController', function($scope, $rootScope, MessageService, $timeout) {
     $scope.send = {
         message: ''
     };
@@ -37,7 +37,12 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         }
         MessageService.sendRequest(data.user, data.recipientId, data.message, data.dates, data.guests)
         .then(function(response){
-                $scope.modelInstance.close(response);
+            $scope.requestComplete = true;
+            $rootScope.user = data.data;
+            $scope.user = $rootScope.user;
+            $timeout(function(){
+                $scope.modelInstance.close();
+            },5000);
         },
         function(err){
 

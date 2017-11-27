@@ -49,19 +49,19 @@
         <div class="basics">
             <div class="tiny-text">
                 <span class="icon icon-man-small"></span>
-                {{traveler.apptInfo.guests}} Guests
+                {{traveler.apptInfo.guests}} {{traveler.apptInfo.guests == 1?'Swapper':'Swappers'}}
             </div>
             <div class="tiny-text">
                 <span class="icon icon-door-small"></span>
-                1 room
+                {{traveler.apptInfo.rooms}} {{traveler.apptInfo.rooms == 1?'Room':'Rooms'}}
             </div>
             <div class="tiny-text">
                 <span class="icon icon-bed-small"></span>
-                6 beds
+                {{traveler.apptInfo.beds}} {{traveler.apptInfo.beds == 1?'Bed':'Beds'}}
             </div>
             <div class="tiny-text">
                 <span class="icon icon-duck-small"></span>
-                2 baths
+                {{traveler.apptInfo.baths}} {{traveler.apptInfo.baths == 1?'Bath':'Baths'}}
             </div>
         </div>
     </div>
