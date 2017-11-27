@@ -1,5 +1,5 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $window) {
+swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $filter) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
@@ -9,8 +9,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.swap = {
-        guests: 2
-    }
+        guests: 2,
+        when:{}
+    };
 
     $anchorScroll();
 
@@ -29,7 +30,14 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $('#loginModal').modal('show');
         }
         else{
-            $('#requestModal').modal('show');
+            $scope.modelInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '../../directives/request/request.html',
+                size: 'sm',
+                controller: 'requestController',
+                scope: $scope
+            });
+            // $('#requestModal').modal('show');
         }
     }
 
@@ -63,6 +71,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
         var startDate = new Date($scope.profile.travelingInfo[0].departure).toLocaleDateString();
         var endDate = new Date($scope.profile.travelingInfo[0].returnDate).toLocaleDateString();
+        $scope.swap.from = $filter('date')($scope.profile.travelingInfo[0].departure, 'MMMM dd, yyyy');
+        $scope.swap.to = $filter('date')($scope.profile.travelingInfo[0].returnDate, 'MMMM dd, yyyy');
         $('input[name="swapDates"]').daterangepicker({
             autoApply: true,
             opens: 'left',
@@ -73,6 +83,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             endDate: endDate,
             minDate: startDate,
             maxDate: endDate
+        });
+        $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
+            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
         });
     }
 

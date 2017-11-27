@@ -1,15 +1,44 @@
-<div class="request" >
-    <div class="request-swap">
+<div class="request-page">
+    <div class="top-corner glyphicon glyphicon-remove" ng-click="close()"></div>
+    <div class="request-swap {{receipt?'hide-request':''}}">
         <div class="title">
-            Tell {{swapper.firsName}} a little about your trip
+            Request to Swap!
         </div>
-        <div class="about">
-            Tell {{swapper.firsName}} a little about your trip
+        <div class="sub-title">
+            <strong>From:</strong> {{swap.from}}
+        </div>
+        <div class="sub-title">
+            <strong>to:</strong> {{swap.to}}
+        </div>
+        <div class="sub-title">
+            <strong>Swappers:</strong> {{swap.guests}}
         </div>
         <div class="send-message">
-            <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
+            <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message" placeholder="Tell {{profile.firstName}} a little about your trip">
                           </textarea>
         </div>
-        <input type="button" class="btn btn-primary btn-send" value="Request Swap" ng-click="sendMessage()" ng-disabled="send.message == '' ">
+        <input type="button" class="btn btn-primary btn-swap {{send.message == ''?'disabled':''}}" value="Request Swap" ng-click="showPayment()" ng-disabled="send.message == ''">
+    </div>
+    <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}">
+        <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
+        <div class="dates"></div>
+        <div class="amount">${{depositPlan}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
+        <div class="minus" ng-if="discount">=</div>
+        <div class="amount" ng-if="discount">${{totalWithoutDiscount}}</div>
+        <div class="minus" ng-if="discount">-</div>
+        <div class="amount" ng-if="discount">${{discount.amount}} {{discount.name}}</div>
+        <div class="total">Total Deposit: ${{total}}</div>
+        <div class="buttons">
+            <div class="back btn-primary" ng-click="goBack()">
+                Back
+            </div>
+            <div class="back btn-primary" ng-click="goToPayment()">
+                Set Deposit
+            </div>
+        </div>
+
+    </div>
+    <div class="payment-area {{payment?'show-payment':''}}">
+        <payment ng-if="payment" action="sendRequest()"></payment>
     </div>
 </div>

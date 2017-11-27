@@ -15,11 +15,13 @@ swapsApp.service('MessageService', function($http){
         });
    };
 
-    this.sendRequest = function(user, recipient, message, dates) {
+    this.sendRequest = function(user, recipient, message, dates, guests) {
         var data = {
             user: user,
             recipientId: recipient,
-            dates: dates
+            dates: dates,
+            message: message,
+            guests: guests
         };
         return $http.post('message/sendRequest', data).then(function(data){
                 return data;

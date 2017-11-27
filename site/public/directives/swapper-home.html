@@ -41,9 +41,9 @@
             <span class="icon {{traveler.rating > 2?traveler.rating < 3?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
             <span class="icon {{traveler.rating > 3?traveler.rating < 4?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
             <span class="icon {{traveler.rating > 4?traveler.rating < 5?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
-            <!--<span class="number-reviews">{{traveler.comments.length}}</span>-->
+            <!--<span class="number-reviews">{{traveler.reviews.length}}</span>-->
         </div>
-        <div class="rating" ng-if="traveler.comments.length == 0">
+        <div class="rating" ng-if="traveler.reviews.length == 0">
             <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
         </div>
         <div class="basics">

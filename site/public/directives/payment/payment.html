@@ -1,39 +1,43 @@
-<div class="payment-wrapper modal fade" id="paymentModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="form-group">
-                <label class="control-label">Card Type:</label>
-                <div class="">
-                    <select class="form-control width-50" id="type" ng-model="payment.type" ng-options="type.id as type.displayName for type in $parent.data.creditCards">
-                        {{type.displayName}}
-                    </select>
-                </div>
+<div class="payment-wrapper">
+    <div class="form-group">
+        <label class="control-label">Card Type:</label>
+        <div class="">
+            <select class="form-control width-50" id="type" ng-model="payment.type" ng-options="type.id as type.displayName for type in $parent.data.creditCards">
+                {{type.displayName}}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Number:</label>
+        <div class="">
+            <input class="form-control width-50" name="number" ng-model="payment.number">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class=" control-label">CVV:</label>
+        <div class="">
+            <input class="form-control width-19" name="cvv" ng-model="payment.cvv">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Expiration Date:</label>
+        <div class="row last-row">
+            <div class="col-sm-3">
+                <select class="form-control" id="month" ng-model="payment.month" ng-options="month.id as month.id for month in $parent.data.months">
+                    {{month.id}}
+                </select>
             </div>
-            <div class="form-group">
-                <label class="control-label">Number:</label>
-                <div class="row">
-                    <input class="form-control width-50" name="number" ng-model="payment.number">
-                </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="year" ng-model="payment.year" ng-options="year as year for year in $parent.data.years">
+                    {{year}}
+                </select>
             </div>
-            <div class="form-group">
-                <label class=" control-label">CVV:</label>
-                <div class="row">
-                    <input class="form-control width-30" name="cvv" ng-model="payment.cvv">
-                </div>
+            <div class="col-sm-1">
+
             </div>
-            <div class="form-group">
-                <label class="control-label">Expiration Date:</label>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <select class="form-control" id="month" ng-model="payment.month" ng-options="month.id as month.id for month in $parent.data.months">
-                            {{month.id}}
-                        </select>
-                    </div>
-                    <div class="col-sm-4">
-                        <select class="form-control" id="year" ng-model="payment.year" ng-options="year as year for year in $parent.data.years">
-                            {{year}}
-                        </select>
-                    </div>
+            <div class="col-sm-4">
+                <div class="pay btn-primary" ng-click="doAction()">
+                    Deposit
                 </div>
             </div>
         </div>

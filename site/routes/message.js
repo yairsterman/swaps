@@ -12,7 +12,7 @@ var error = {
 
 router.post('/sendMessage', function(req, res, next) {
 	var recipientId = req.body.recipientId;
-	var sender = req.body.user;
+	var sender = req.user;
 	var message = req.body.message;
 	var now = Date.now();
 	var newMessage = {
@@ -42,7 +42,8 @@ router.post('/sendMessage', function(req, res, next) {
 
 router.post('/sendRequest', function(req, res, next) {
 	var recipientId = req.body.recipientId;
-	var sender = req.body.user;
+	var sender = req.user;
+	var guests = req.body.guests;
 	var now = Date.now();
 	var departure;
 	var returnDate;
@@ -50,6 +51,7 @@ router.post('/sendRequest', function(req, res, next) {
 	console.log(req.body.dates);
 	if(req.body.dates){
 		message = 'Requested to swap on ' + req.body.dates;
+        req.body.message?message = 'Swap Request:' + req.body.message: message += '';
 		var dates = req.body.dates.split('-');
 		departure = Date.parse(dates[0].trim());
 		returnDate = Date.parse(dates[1].trim());
@@ -61,9 +63,9 @@ router.post('/sendRequest', function(req, res, next) {
 				message: message
 			}
 
-    saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, sender._id)
+    saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id)
 	.then(function(){
-		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, sender._id);
+		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
 	})
 	.then( function(){
 		return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
@@ -89,7 +91,7 @@ router.post('/sendRequest', function(req, res, next) {
 
 router.post('/confirmRequest', function(req, res, next) {
 	var recipientId = req.body.recipientId;
-	var sender = req.body.user;
+	var sender = req.user;
     var departure = req.body.departure;
     var returnDate = req.body.returnDate;
     confirmRequest(sender._id, recipientId, departure, returnDate).then(function(){
@@ -111,7 +113,7 @@ router.post('/confirmRequest', function(req, res, next) {
 
 router.post('/cancelRequest', function(req, res) {
     var recipientId = req.body.recipientId;
-    var sender = req.body.user;
+    var sender = req.user;
     var departure = req.body.departure;
     var returnDate = req.body.returnDate;
     cancelRequest(sender._id, recipientId, departure, returnDate).then(function(){
@@ -124,7 +126,7 @@ router.post('/cancelRequest', function(req, res) {
 
 router.post('/readMessage', function(req, res) {
     var recipientId = req.body.recipientId;
-    var senderId = req.body.user._id;
+    var senderId = req.user._id;
     markedMessageRead(senderId, recipientId).then(function(){
             res.json({status: 'success', message: 'read'});
         },
@@ -195,7 +197,7 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 	return defferd.promise;
 }
 
-function saveRequest(senderId, recipientId, departure, returnDate, status, sentBy){
+function saveRequest(senderId, recipientId, departure, returnDate, status, guests, sentBy){
 	var defferd = Q.defer();
 	User.findOne({_id: senderId}, function (err, sender) {
 		if (err){
@@ -223,6 +225,7 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, sentB
 								departure: departure,
 								returnDate : returnDate,
                                 sentBy: sentBy,
+                                guests: guests,
 								status: status
 							});
 

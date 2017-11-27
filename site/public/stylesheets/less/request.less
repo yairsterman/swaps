@@ -1,54 +1,109 @@
-request{
-  .request{
-    .request-swap{
-      .title{
-
+.request-page{
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  height: 290px;
+  transition: 0.4s ease;
+  &.receipt{
+    background-color: #f9f6f1;
+  }
+  .top-corner{
+    right: 0;
+    position: absolute;
+    z-index: 10;
+    &:focus{
+      outline: none;
+    }
+  }
+  .request-swap{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    transition: 0.5s ease;
+    &.hide-request{
+      left: -100%;
+    }
+    .title{
+      color: #0d78ad;
+      padding-bottom: 10px;
+      font-size: 22px;
+      text-align: center;
+    }
+    .sub-title{
+      color: #616161;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    .send-message{
+      margin: 15px 0;
+      display: flex;
+      align-items: stretch;
+    }
+    .btn-swap{
+      margin: 15px 0;
+      width: 100%;
+      font-size: 18px;
+      &:focus{
+        outline: none;
       }
-      .send-message{
-        display: flex;
-        align-items: stretch;
-        .send-text{
-          font-size: 14px;
-        }
-        .btn-primary{
-          font-size: 16px;
-        }
-        .btn-send{
-          font-size: 16px;
-        }
-        .btn-swap{
-          background-color: #00BC00;
-          border-color: #027C00;
-          &.btn-pending{
-            opacity: 0.5;
-          }
-          &.btn-confirm{
-            background-color: white;
-            color: #333;
-            &::after{
-              content: "";
-              position: absolute;
-              top: -110%;
-              left: -210%;
-              width: 200%;
-              height: 200%;
-              opacity: 0;
-              transform: rotate(30deg);
-              &:hover{
-                opacity: 1;
-                top: -30%;
-                left: -30%;
-                transition-property: left, top, opacity;
-                transition-duration: 0.7s, 0.7s, 0.15s;
-                transition-timing-function: ease;
-              }
-            }
-          }
-          &.btn-confirmed{
-            opacity: 0.5;
-          }
+      &.disabled{
+        cursor: not-allowed;
+      }
+    }
+  }
+  .payment-receipt{
+    transition: 0.5s ease;
+    position: absolute;
+    left: 100%;
+    width: 100%;
+    text-align: center;
+    &.show-receipt{
+      left:0;
+    }
+    &.hide-receipt{
+      left: -100%;
+    }
+    .deposit-plan{
+      padding: 10px;
+      border-bottom: 1px solid #bababa;
+      font-size: 18px;
+      opacity: .6;
+      text-align: center;
+    }
+    .amount{
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    .minus{
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .total{
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-top: 1px solid #bababa;
+    }
+    .buttons{
+      display: flex;
+      justify-content: space-between;
+      .back{
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 18px;
+        &:focus{
+          outline: none;
         }
       }
+    }
+  }
+  .payment-area{
+    transition: 0.5s ease;
+    position: absolute;
+    left: 100%;
+    width: 100%;
+    &.show-payment{
+      left:0;
     }
   }
 }
