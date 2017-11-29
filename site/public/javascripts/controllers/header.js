@@ -14,7 +14,6 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
             guests: 2
         };
 	}
-    $scope.options = ['cities'];
 
     var autocompleteSearch;
 
@@ -33,17 +32,6 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	var address = {
       types: ['address']
     };
-
-    var elementsReady = $interval(function() {
-        var input = $('#searchCityHeader');
-        if (input.length > 0) {
-            autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCityHeader'), {
-                types: ['(cities)']
-            });
-            $interval.cancel(elementsReady);
-        }
-    }, 100);
-
 
     $scope.loginCallBack = function(userId){
 		UsersService.getUser(userId).then(function(data){
@@ -80,6 +68,9 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	}
 
 	$scope.autocompleteCities = function(){
+        autocompleteSearch = new google.maps.places.Autocomplete(angular.element('#searchCityHeader')[0], {
+            types: ['(cities)']
+        });
         autocompleteSearch.addListener('place_changed', function() {
             $rootScope.search.where = autocompleteSearch.getPlace().name;
 		});
@@ -103,46 +94,6 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	   $location.url('/' + path);
 	}
 
-	$scope.openFlyNow = function(){
-		if(!$scope.user._id){
-			$('#loginModal').modal('show');
-		}
-		else{
-			$('#flyNowModal').modal('show');
-			$('input[name="datefilter"]').daterangepicker({
-				autoApply: true,
-				opens: 'center',
-				locale: {
-		            format: 'MMM DD'
-		        }
-			});
-			$('input[name="datefilter"]').val('');
-			$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-		      $scope.fly.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
-		  	});
-			$scope.fly.date = null;
-			var autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('where'), {
-		      types: ['(cities)']
-		    });
-			autocomplete.addListener('place_changed', function() {
-				$scope.fly.where = autocomplete.getPlace().name;
-			});
-		}
-	}
-
-	$scope.saveTravelInfo = function(){
-		if(!$scope.fly.where){
-			$scope.fly.where = 'Anywhere'
-		}
-		if(!$scope.fly.date){
-			$scope.fly.date = 'Anytime'
-		}
-	   AccountService.saveTravelInfo($scope.user._id, $scope.fly).then(function(data){
-		   $rootScope.user = data.data;
-		   $scope.user = $rootScope.user;
-	   });
-	}
-
 	$scope.logout = function(){
 	   AccountService.logout().then(function(data){
 		   	$scope.user = null;
@@ -150,6 +101,10 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 		   	$location.url('/');
 	   });
 	}
+
+    $scope.$on('gmPlacesAutocomplete::placeChanged', function(){
+        console.log('Place has changed');
+    });
 
 	$scope.FBLogin = function(){
 		window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');

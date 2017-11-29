@@ -16,7 +16,7 @@ router.get('/google-map', function(req, res, next) {
     //         res.json(decoder.write(body));
     //     }
     // })
-    res.redirect('https://maps.googleapis.com/maps/api/js?key=AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw&libraries=places&language=en');
+    res.redirect('https://maps.googleapis.com/maps/api/js?key=AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw&libraries=places&sensor=false&language=en');
 
 });
 

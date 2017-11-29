@@ -66,7 +66,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             var elementsReady = $interval(function() {
                 var input = $document[0].getElementById('address');
                 if (input && $scope.edit) {
-                    autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('address'), {types: ['address']});
+                    autocomplete = new google.maps.places.Autocomplete(angular.element('#address')[0], {types: ['address']});
                     autocomplete.addListener('place_changed', function() {
                         $scope.edit.address = autocomplete.getPlace().formatted_address;
                         $scope.$apply();

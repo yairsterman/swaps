@@ -23,11 +23,11 @@ function swapsController($scope, $rootScope, $document, AccountService){
     $scope.title = $scope.swaps.length != 0?'Edit and Add Swap Locations':'Tell us where you want to go, so other Swappers can see your home.';
 
     $scope.autocompleteCities = function(id, swap){
-        var autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById(id), {
+        var autocompleteSearch = new google.maps.places.Autocomplete(angular.element('#'+id)[0], {
             types: ['(cities)']
         });
         autocompleteSearch.addListener('place_changed', function() {
-            swap.destination = autocompleteSearch.getPlace().formatted_address;
+            swap.destination = autocompleteSearch.getPlace().name;
         });
     }
 

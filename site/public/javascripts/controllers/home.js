@@ -68,8 +68,11 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     };
 
     $scope.autocompleteCities = function(){
+        autocompleteSearch = new google.maps.places.Autocomplete(angular.element('#searchCity')[0], {
+            types: ['(cities)']
+        });
         autocompleteSearch.addListener('place_changed', function() {
-            $rootScope.search.where = autocompleteSearch.getPlace().formatted_address;
+            $rootScope.search.where = autocompleteSearch.getPlace().name;
         });
     }
 
@@ -90,9 +93,6 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         angular.forEach($scope.cities, function(value, key) {
             $scope.featured[key] = value.faded;
             $scope.featured[key] = value.normal;
-        });
-        autocompleteSearch = new google.maps.places.Autocomplete($document[0].getElementById('searchCity'), {
-            types: ['(cities)']
         });
 
         if($rootScope.geolocationComplete || $rootScope.userCity){
