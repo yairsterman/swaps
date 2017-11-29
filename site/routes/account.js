@@ -147,7 +147,12 @@ router.post('/add-travel-info', function(req, res, next) {
 		else{
 			var travelingInfo = user.travelingInfo;
 			var travelingDest = user.travelingDest;
-            newInfo._id = travelingInfo[travelingInfo.length-1]._id + 1;
+			if(travelingInfo.length == 0){
+                newInfo._id = 1;
+            }
+            else{
+                newInfo._id = travelingInfo[travelingInfo.length-1]._id + 1;
+            }
 			travelingInfo.push(newInfo);
 			travelingDest.push(where);
 			User.update({_id: id}, { $set: {travelingInfo: travelingInfo, travelingDest: travelingDest, traveling: true}}, function (err, updated) {
