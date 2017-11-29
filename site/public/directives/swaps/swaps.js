@@ -16,6 +16,8 @@ function swapsController($scope, $rootScope, $document, AccountService){
         guests:2
     };
 
+    $scope.options = ['cities'];
+
     $scope.popup?$scope.limit = 4:$scope.limit = $scope.swaps.length;
 
     $scope.title = $scope.swaps.length != 0?'Edit and Add Swap Locations':'Tell us where you want to go, so other Swappers can see your home.';

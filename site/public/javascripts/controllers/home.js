@@ -5,6 +5,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.map = null;
     $scope.slideIndex = 0;
     $scope.featured = [];
+    $scope.options = ['cities'];
 
 
     $rootScope.homepage = true;
