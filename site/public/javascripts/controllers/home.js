@@ -97,12 +97,33 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         if($rootScope.geolocationComplete || $rootScope.userCity){
             if($rootScope.geolocationComplete && $rootScope.geolocationComplete.failed){
                 UsersService.getFeaturedUsers().then(function(data) {
+                    if(data.data.error){
+                        console.log("error");
+                        return;
+                    }
                     $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'featured';
+                    if($scope.travelers.length < 3){
+                        UsersService.getNewUsers().then(function(data) {
+                            if(data.data.error){
+                                console.log("error");
+                            }
+                            else{
+                                $scope.travelers = data.data.users;
+                                $scope.swapperTitle = 'new';
+                            }
+                        });
+                    }
                 });
             }
             else{
-                UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0).then(function(data) {
+                UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
+                    if(data.data.error){
+                        console.log("error");
+                        return;
+                    }
                     $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'city';
                 });
             }
         }
@@ -115,12 +136,32 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         $rootScope.geolocationComplete = {failed: args.failed};
         if(args.failed){
             UsersService.getFeaturedUsers().then(function(data) {
+                if(data.data.error){
+                    console.log("error");
+                    return;
+                }
                 $scope.travelers = data.data.users;
+                if($scope.travelers.length < 3){
+                    $scope.swapperTitle = 'featured';
+                    UsersService.getNewUsers().then(function(data) {
+                        if(data.data.error){
+                            console.log("error");
+                            return;
+                        }
+                        $scope.travelers = data.data.users;
+                        $scope.swapperTitle = 'new';
+                    });
+                }
             });
         }
         else{
-            UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0).then(function(data) {
+            UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
+                if(data.data.error){
+                    console.log("error");
+                    return;
+                }
                 $scope.travelers = data.data.users;
+                $scope.swapperTitle = 'city';
             });
         }
     });

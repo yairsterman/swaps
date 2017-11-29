@@ -105,7 +105,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.saving = true;
         AccountService.editListing($scope.edit).then(function(data){
             if(!data || (data && data.error)){
-              console.log("error");
+                console.log("error");
+                $scope.saving = false;
             }
             else{
                 $scope.user = data.data;
@@ -185,7 +186,6 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 $scope.user = $rootScope.user;
                 $scope.currentConversation.messages.push({message:message,id:$scope.user._id});
                 scrollMessagesToTop();
-                scrollMessagesToTop();
             }
         });
     }
@@ -230,10 +230,23 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       }
     }
 
-    $scope.confirmRequest = function(){
-        MessageService.confirmRequest($scope.user, $scope.currentConversationId, $scope.currentConversationRequest.departure, $scope.currentConversationRequest.returnDate).then(function(data){
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
+    $scope.confirmRequest = function(requestInfo){
+        if($scope.saving){
+            return;
+        }
+        $scope.saving = true;
+        MessageService.confirmRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
+            if(data.data.error){
+                console.log("error");
+                $scope.saving = true;
+            }
+            else{
+                $scope.user = data.data;
+                updateUser();
+            }
+        }
+        ,function(err){
+            $scope.saving = false;
         });
     }
 

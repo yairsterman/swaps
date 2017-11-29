@@ -129,8 +129,8 @@ router.post('/add-travel-info', function(req, res, next) {
 	var where = info.destination?info.destination.split(',')[0]:null;
 	var guests = info.guests;
 	var dates = info.when?info.when.split('-'):null;
-	var departure = dates?Date.parse(dates[0].trim()):0;
-	var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
+	var departure = dates?Date.parse(dates[0].trim()):undefined;
+	var returnDate = dates?Date.parse(dates[1].trim()):undefined;
 	var newInfo = {
         destination: where,
 		departure: departure,
@@ -182,8 +182,8 @@ router.post('/update-travel-info', function(req, res, next) {
     var where = info.destination?info.destination.split(',')[0]:null;
     var guests = info.guests;
     var dates = info.when?info.when.split('-'):info.dates?info.dates:undefined;
-    var departure = dates?Date.parse(dates[0].trim()):0;
-    var returnDate = dates?Date.parse(dates[1].trim()):9999999999999;
+    var departure = dates?Date.parse(dates[0].trim()):undefined;
+    var returnDate = dates?Date.parse(dates[1].trim()):undefined;
     var newInfo = {
         destination: where,
         departure: departure,
@@ -351,6 +351,7 @@ router.get('/get-requests', function(req, res, next) {
     });
     if(requestIds.length == 0){
         res.json(requestIds);
+        return;
     }
     User.find({_id:{ $in: requestIds}},  Data.getVisibleUserData().accessible, function (err, users) {
         if (err){

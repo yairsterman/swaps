@@ -3,7 +3,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     'UsersService', 'Utils', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService, Utils) {
     tr = $scope;
     $rootScope.homepage = false;
+    $rootScope.searchPage = true;
     $scope.city = $routeParams.city;
+    $scope.guests = $routeParams.guests;
     $scope.user = $rootScope.user;
     $scope.yourCity = $rootScope.userCity;
     $scope.search = {};
@@ -273,6 +275,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     function getTravelers(page){
         $scope.loading = true;
         deleteMarkers();
+        $scope.filter.amenities = $scope.checkedAmenities;
+        $scope.filter.room = $scope.checkedRoomTypes;
         UsersService.getUserByTravelingDest($rootScope.userCity, $scope.city, page, $scope.filter).then(function(data){
             var travelers = data.data.users;
             $scope.totalUsers = data.data.total;

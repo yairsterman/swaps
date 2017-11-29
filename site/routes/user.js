@@ -23,9 +23,14 @@ router.get('/', function(req, res, next) {
 router.get('/get-user-by-travelingDest', function(req, res, next) {
 	var destination = req.query.dest.split('-')[0];
 	var from = req.query.from;
+	var guests = req.query.guests?parseInt(req.query.guests):null;
 	var page = parseInt(req.query.page);
     if(from){
 		var params = {};
+        setRequiredParams(params);
+        if(req.query.guests){
+            params['apptInfo.guests'] = {'$lt':(guests+1)}; //guests less then
+        }
 		if(req.query.dest && req.query.dest != 'undefined'){
 			params.travelingDest = {$regex: destination, $options: 'i'};
 		}
@@ -40,18 +45,21 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
                 params.googleId = {"$ne": req.user.googleId};
             }
         }
+
 		User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
 			if (err){
 				error.message = "error finding users";
 				res.json(error);
 			}
-			var filterdUsers = filterUsers(req, users, req.query);
-			var length = filterdUsers.length;
-			// return the users according to the given page number
-			console.log((page + 1) * USERS_PER_PAGE);
-			filterdUsers.splice((page + 1) * USERS_PER_PAGE);
-			filterdUsers.splice(0, page * USERS_PER_PAGE);
-			res.json({users: filterdUsers, total: length, page: page});
+			else{
+                var filterdUsers = filterUsers(req, users, req.query);
+                var length = filterdUsers.length;
+                // return the users according to the given page number
+                console.log((page + 1) * USERS_PER_PAGE);
+                filterdUsers.splice((page + 1) * USERS_PER_PAGE);
+                filterdUsers.splice(0, page * USERS_PER_PAGE);
+                res.json({users: filterdUsers, total: length, page: page});
+            }
 		});
     }
     else{
@@ -75,9 +83,25 @@ router.get('/all-users', function(req, res, next) {
 });
 
 router.get('/get-featured-users', function(req, res, next) {
-    var params = {rating: {$gt: 4}, traveling:true};
+    var params = {};
+    setRequiredParams(params);
+    params = {rating: {$gt: 4}, traveling:true};
     if(req.user){
         params._id = {"$not": req.userId};
+    }
+    User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
+        .exec(function (err, users) {
+            if (err) return next(err);
+            res.json({users: users});
+        });
+});
+
+router.get('/get-new-users', function(req, res, next) {
+    var params = {};
+    setRequiredParams(params);
+    params = {rating: {$gt: 4}, traveling:true};
+    if(req.user){
+        params['reviews.0'] = {$exists: false};
     }
     User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
         .exec(function (err, users) {
@@ -136,26 +160,26 @@ function filterUsers(req, users, query){
 	for (var i = 0; i < users.length; i++) {
 		var user = users[i];
 		if(filterDestination(user, destination) &&
-			filterDates(user, query.date, destination) &&
-            	filterGuests(req, user, query.guests, destination) &&
-                    filterRooms(user, query.roomType) &&
-            			filterAmenities(user, query.ameneties)) {
+			filterDates(user, query.dates, destination) &&
+            	filterGuests(req, user, destination) &&
+                    filterRooms(user, query.room) &&
+            			filterAmenities(user, query.amenities)) {
 			filterdUsers.push(users[i]);
 		}
 	}
 	return filterdUsers;
 }
 
-function filterGuests(req, user, guests, destination){
-    if(guests && user.apptInfo && (!user.apptInfo.guests || user.apptInfo.guests < guests) ){
-        return false;
-    }
-    if(!user.travelingInfo && !user.allowViewHome){
-        return false;
-    }
-    if(user.allowViewHome || !guests || !req.user){
+function filterGuests(req, user, destination){
+    if(!req.user || user.allowViewHome){
         return true;
     }
+    // if(!user.travelingInfo && !user.allowViewHome){
+    //     return false;
+    // }
+    // if(user.allowViewHome || !guests || !req.user){
+    //     return true;
+    // }
     for (var i = 0; i < user.travelingInfo.length; i++) {
         if(compareDestinations(user.travelingInfo[i].destination, destination)){
             if(req.user.apptInfo.guests >= user.travelingInfo[i].guests){
@@ -166,17 +190,25 @@ function filterGuests(req, user, guests, destination){
     return false;
 }
 
-function filterRooms(user, roomType){
-    if(roomType && user.apptInfo.roomType != roomType){
-        return false;
+function filterRooms(user, _roomTypes){
+    if(!_roomTypes || _roomTypes == ''){
+        return true;
     }
-    return true;
+    var roomTypes = _roomTypes.split(',');
+    if(roomTypes.length == 0 || roomTypes.includes(user.apptInfo.roomType.toString())){
+        return true;
+    }
+    return false;
 }
 
-function filterAmenities(user, amenities){
-    if(amenities && user.apptInfo.amenities){
+function filterAmenities(user, _amenities){
+    if(!_amenities || _amenities == ''){
+        return true;
+    }
+    var amenities = _amenities.split(',');
+    if(amenities.length > 0 && user.apptInfo.amenities.length > 0){
         for(var i = 0; i < amenities.length; i++){
-            if(!user.apptInfo.amenities.includes(amenities[i])){
+            if(!user.apptInfo.amenities.includes(parseInt(amenities[i]))){
                 return false;
             }
         }
@@ -231,6 +263,17 @@ function compareDestinations(userDestination, destination){
 	userDestination = userDestination.split('-')[0].toLowerCase();
 	destination = destination.split('-')[0].toLowerCase();
 	return userDestination == destination;
+}
+
+function setRequiredParams(params){
+    //required for all users to appear in search
+    params.address = {$ne: ''}; // address is set
+    params['photos.2'] = {$exists: true};// at least 3 photos
+    params['apptInfo.rooms'] = {$exists: true}; // number of rooms set
+    params['apptInfo.beds'] = {$exists: true};// number of beds set
+    params['apptInfo.baths'] = {$exists: true};// number of baths set
+    params['apptInfo.title'] = {$ne: ''}; // home title set
+    params['$or'] = [{'travelingInfo.0':{$exists:true}},{allowViewHome:true}];// either traveling or allowed to view home
 }
 
 module.exports = router;

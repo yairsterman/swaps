@@ -41,11 +41,11 @@
 				<div class="swap">
 					<div class="favorite">
 						<div  class="btn btn-primary btn-swap share-btn"  ng-click="addToFavorites()">
-							<div class="icon icon-duck-small sharing"></div>
+							<div class="icon icon-like sharing"></div>
 							Save
 						</div>
 						<div class="btn btn-primary btn-swap share-btn" ng-click="share()">
-							<div class="icon icon-duck-small sharing"></div>
+							<div class="icon icon-mail sharing"></div>
 							Share
 						</div>
 					</div>
@@ -66,8 +66,8 @@
 					</div>
 					<div class="separator"></div>
 					<div class="req-swap">
-						<input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="openRequest()" ng-hide="messageSent">
-						<div class="req-sent" ng-show="messageSent">
+						<input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="openRequest()" ng-hide="requestSent" ng-disabled="!swap.from || !swap.to">
+						<div class="req-sent" ng-show="requestSent">
 							Request Sent
 						</div>
 					</div>
@@ -96,34 +96,34 @@
 								{{profile.apptInfo.title}}
 							</div>
 							<div class="rating" ng-if="profile.comments.length > 0">
-								<span class="icon icon-fullstar-small" ></span>
-								<span class="icon {{profile.rating > 1?profile.rating < 2?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
-								<span class="icon {{profile.rating > 2?profile.rating < 3?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
-								<span class="icon {{profile.rating > 3?profile.rating < 4?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
-								<span class="icon {{profile.rating > 4?profile.rating < 5?'icon-halfstar-small':'icon-fullstar-small':'icon-emptystar-small'}}"></span>
-								<span class="number-reviews">{{profile.comments.length}}</span>
+								<span class="icon icon-star-large" ></span>
+								<span class="icon {{profile.rating > 1?profile.rating < 2?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+								<span class="icon {{profile.rating > 2?profile.rating < 3?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+								<span class="icon {{profile.rating > 3?profile.rating < 4?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+								<span class="icon {{profile.rating > 4?profile.rating < 5?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+								<!--<span class="number-reviews">{{profile.comments.length}}</span>-->
 							</div>
 							<div class="rating" ng-if="profile.comments.length == 0">
 								<span class="new-appt" ng-if="profile.reviews.length == 0">New!</span>
 							</div>
 							<div class="simple-apt-info">
 								<div class="home-info">
-									<div class="icon icon-man-small"></div>
+									<div class="icon icon-swaper"></div>
 									<div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}} Swappers</div>
 								</div>
 								<div class="home-info">
-									<div class="icon icon-door-small"></div>
+									<div class="icon icon-door"></div>
 									<div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}} {{profile.apptInfo.rooms > 1?'Rooms':'Room'}}</div>
 								</div>
 								<!--The following line is to fix the bootstrap grid on small screens-->
 								<div class="clearfix visible-xs"></div>
 								<div class="home-info">
-									<div class="icon icon-bed-small"></div>
-									<div class="bath-count simple-apt-info-content">{{profile.apptInfo.beds}} Beds</div>
+									<div class="icon icon-bed"></div>
+									<div class="bath-count simple-apt-info-content">{{profile.apptInfo.beds}} {{profile.apptInfo.beds > 1?'Beds':'Bed'}}</div>
 								</div>
 								<div class="home-info">
-									<div class="icon icon-duck-small"></div>
-									<div class="room-count simple-apt-info-content">{{profile.apptInfo.baths}} Baths</div>
+									<div class="icon icon-bath"></div>
+									<div class="room-count simple-apt-info-content">{{profile.apptInfo.baths}} {{profile.apptInfo.baths > 1?'Baths':'Bath'}}</div>
 								</div>
 							</div>
 						</div>
@@ -137,20 +137,20 @@
 						<div class="col-xs-2 left-side-description">About My Home</div>
 						<div class="col-xs-8 right-side-elaboration read-more-activation">{{profile.apptInfo.about}}</div>
 					</div>
-					<div class="read-more" ng-click="readMore(showMore, 'aboutHome')">
-						<div class="icon-plus read-more-button" ></div>
-						<div class="plain-text read-more-button">{{showMore.aboutHome.active?'Read Less':'Read More'}}</div>
-					</div>
+					<!--<div class="read-more" ng-click="readMore(showMore, 'aboutHome')">-->
+						<!--<div class="icon-plus read-more-button" ></div>-->
+						<!--<div class="plain-text read-more-button">{{showMore.aboutHome.active?'Read Less':'Read More'}}</div>-->
+					<!--</div>-->
 					<div class="row">
 						<div class="col-xs-2 left-side-description">About me</div>
 						<div class="col-xs-8 right-side-elaboration read-more-activation">
 							{{profile.aboutMe}}
 						</div>
 					</div>
-					<div class="read-more" ng-click="readMore(showMore, 'aboutMe')">
-						<div class="icon-plus read-more-button" ></div>
-						<div class="plain-text read-more-button" >{{showMore.aboutMe.active?'Read Less':'Read More'}}</div>
-					</div>
+					<!--<div class="read-more" ng-click="readMore(showMore, 'aboutMe')">-->
+						<!--<div class="icon-plus read-more-button" ></div>-->
+						<!--<div class="plain-text read-more-button" >{{showMore.aboutMe.active?'Read Less':'Read More'}}</div>-->
+					<!--</div>-->
 
 					<div class="separator" style="margin: 4% 0;"></div>
 					<div class="row">
@@ -159,50 +159,50 @@
 							<checkbox items="data.amenities" model="profile.apptInfo.amenities" readonly="true"></checkbox>
 						</div>
 					</div>
-					<div class="separator" style="margin: 4% 0;"></div>
-                    <div class="container-fluid comments-container">
-                        <div class="row">
-                            <div class="col-md-2 col-xs-12 left-side-description">Comments</div>
-                            <div class="col-md-10 col-xs-12 right-side-elaboration">
-                                <div class="comments-header">{{profile.reviews.length}} Comments!</div>
-                                <br>
-                                <div class="comments-smaller-header">Total ranking</div>
-                                <div class="no-rating stars" ng-if="profile.rating < 0">No rating yet</div>
-                                <div class="stars" ng-if="profile.rating >= 0"
-                                     ng-repeat="star in generateStars(profile.rating) track by $index">
-                                    <div class="star icon-star-full" ng-if="star">fullstar</div>
-                                    <div class="star icon-star-empty" ng-if="!star"></div>
-                                </div>
-                                <br><br>
-                                <div class="left-floaters-likes">
-                                    <div class="icon icon-like"></div>
-                                    <div class="like-count">COUNT Likes</div>
-                                    <div class="icon icon-dislike"></div>
-                                    <div class="like-count">COUNT Dislikes</div>
-                                    <div class="icon icon-flag"></div>
-                                    <div class="like-count">COUNT Reports</div>
-                                </div>
-                            </div>
-                        </div>
-						<div class="separator before-comments"></div>
-						<div class="row comments-show">
-							<div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
-								<div class="col-md-2 dead-space"></div>
-								<div class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
-								</div>
-								<div class="col-md-8 commenter-comment-section">
-									<div class="commenter-name">{{commenter.name}}</div>
-									<div class="commenter-country-and-age">
-										{{commenter.country}}
-									</div>
-									<div class="commenter-comment">
-										{{commenter.review}}
-									</div>
-								</div>
-								<div class="separator"></div>
-							</div>
-						</div>
-					</div>
+					<!--<div class="separator" style="margin: 4% 0;"></div>-->
+                    <!--<div class="container-fluid comments-container">-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-2 col-xs-12 left-side-description">Comments</div>-->
+                            <!--<div class="col-md-10 col-xs-12 right-side-elaboration">-->
+                                <!--<div class="comments-header">{{profile.reviews.length}} Comments!</div>-->
+                                <!--<br>-->
+                                <!--<div class="comments-smaller-header">Total ranking</div>-->
+                                <!--<div class="no-rating stars" ng-if="profile.rating < 0">No rating yet</div>-->
+                                <!--<div class="stars" ng-if="profile.rating >= 0"-->
+                                     <!--ng-repeat="star in generateStars(profile.rating) track by $index">-->
+                                    <!--<div class="star icon-star-full" ng-if="star">fullstar</div>-->
+                                    <!--<div class="star icon-star-empty" ng-if="!star"></div>-->
+                                <!--</div>-->
+                                <!--<br><br>-->
+                                <!--<div class="left-floaters-likes">-->
+                                    <!--<div class="icon icon-like"></div>-->
+                                    <!--<div class="like-count">COUNT Likes</div>-->
+                                    <!--<div class="icon icon-dislike"></div>-->
+                                    <!--<div class="like-count">COUNT Dislikes</div>-->
+                                    <!--<div class="icon icon-flag"></div>-->
+                                    <!--<div class="like-count">COUNT Reports</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+						<!--<div class="separator before-comments"></div>-->
+						<!--<div class="row comments-show">-->
+							<!--<div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">-->
+								<!--<div class="col-md-2 dead-space"></div>-->
+								<!--<div class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">-->
+								<!--</div>-->
+								<!--<div class="col-md-8 commenter-comment-section">-->
+									<!--<div class="commenter-name">{{commenter.name}}</div>-->
+									<!--<div class="commenter-country-and-age">-->
+										<!--{{commenter.country}}-->
+									<!--</div>-->
+									<!--<div class="commenter-comment">-->
+										<!--{{commenter.review}}-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="separator"></div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
 					<div class="row map-section">
 						<div class="col-xs-2 left-side-description">Location</div>
 						<div class="col-xs-4">

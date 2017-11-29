@@ -19,14 +19,25 @@ swapsApp.service('UsersService', function($http){
    };
 
    this.getUserByTravelingDest = function(dest, from, page, filters) {
-      var fromCity = '';
-      var requestFilters = '';
-      if(from){
+        var fromCity = '';
+        var requestFilters = '';
+        if(from){
           fromCity = '&from=' + from;
-      }
-      angular.forEach(filters, function(value, key) {
-          requestFilters += '&' + key + '=' +  value;
-      });
+        }
+        if(filters.amenities){
+          requestFilters += '&amenities=' + filters.amenities;
+        }
+       if(filters.room){
+           requestFilters += '&room=' + filters.room;
+       }
+       if(filters.guests){
+           requestFilters += '&guests=' + filters.guests;
+       }
+       if(filters.dates){
+           requestFilters += '&dates=' + filters.dates;
+       }
+
+
       var query ='?dest=' + dest + fromCity + requestFilters + '&page=' + page;
       return $http.get('user/get-user-by-travelingDest' + query).then(function(data){
            return data;
@@ -38,6 +49,15 @@ swapsApp.service('UsersService', function($http){
 
     this.getFeaturedUsers = function() {
         return $http.get('user/get-featured-users').then(function(data){
+            return data;
+        },
+        function(err){
+            return {error: true, msg: err};
+        });
+    };
+
+    this.getNewUsers = function() {
+        return $http.get('user/get-new-users').then(function(data){
             return data;
         },
         function(err){

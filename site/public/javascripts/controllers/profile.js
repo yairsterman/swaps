@@ -19,6 +19,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     	$scope.profile = data.data;
         $scope.age = getAge($scope.profile.birthday);
     	setPhotoGalery();
+    	if($scope.user._id){
+            var requests = $scope.user.requests.map(function(request){
+                return request.userId;
+            });
+            $scope.requestSent = requests.includes($scope.profile._id);
+        }
     });
 
     $scope.go = function(path){
@@ -37,7 +43,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 controller: 'requestController',
                 scope: $scope
             });
-            // $('#requestModal').modal('show');
         }
     }
 
@@ -67,6 +72,18 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     function setDates(){
         if(!$scope.profile.travelingInfo || $scope.profile.travelingInfo.length == 0){
             $scope.notSwapping = true;
+            $('input[name="swapDates"]').daterangepicker({
+                autoApply: true,
+                opens: 'left',
+                locale: {
+                    format: 'MM/DD/YYYY'
+                },
+                minDate: new Date().toLocaleDateString(),
+            });
+            $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
+                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+            });
             return;
         }
         var startDate = new Date($scope.profile.travelingInfo[0].departure).toLocaleDateString();

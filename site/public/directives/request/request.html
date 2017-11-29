@@ -1,6 +1,6 @@
 <div class="request-page">
     <div class="top-corner glyphicon glyphicon-remove" ng-click="close()"></div>
-    <div class="request-swap {{receipt?'hide-request':''}}">
+    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete">
         <div class="title">
             Request to Swap!
         </div>
@@ -19,15 +19,15 @@
         </div>
         <input type="button" class="btn btn-primary btn-swap {{send.message == ''?'disabled':''}}" value="Request Swap" ng-click="showPayment()" ng-disabled="send.message == ''">
     </div>
-    <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}">
+    <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
         <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
         <div class="dates"></div>
-        <div class="amount">${{depositPlan}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
+        <div class="amount">${{depositPlan}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}} X {{percentage.name}}</div>
         <div class="minus" ng-if="discount">=</div>
         <div class="amount" ng-if="discount">${{totalWithoutDiscount}}</div>
         <div class="minus" ng-if="discount">-</div>
         <div class="amount" ng-if="discount">${{discount.amount}} {{discount.name}}</div>
-        <div class="total">Total Deposit: ${{total}}</div>
+        <div class="total">Total Payment: ${{total}}</div>
         <div class="buttons">
             <div class="back btn-primary" ng-click="goBack()">
                 Back
@@ -37,11 +37,16 @@
             </div>
         </div>
     </div>
-    <div class="payment-area {{payment?'show-payment':''}}">
+    <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
         <payment ng-if="payment" action="sendRequest()"></payment>
+        <div class="loader-wrapper" ng-if="processing">
+            <div class="loader">
+
+            </div>
+        </div>
     </div>
     <div class="request-complete" ng-if="requestComplete">
         <div class="title"> Your request has been sent</div>
-        <div class="btn-primary" ng-click="close()">OK</div>
+        <div class="btn-primary ok-btn" ng-click="close()">OK</div>
     </div>
 </div>

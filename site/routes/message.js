@@ -259,13 +259,13 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 		.then(function (sender) {
 			if (!sender){
 				error.message = "confirmation not sent";
-                throw new Error(error);
+                throw new Error(error.message);
 			}
 			else {
 				var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
                 if(requestIndex == -1){
                     error.message = "no request found";
-                    throw new Error(error);
+                    throw new Error(error.message);
                 }
                 else{
                     sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
@@ -276,7 +276,7 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
     	.then(function (updated) {
             if (!updated.ok) {
                 error.message = "confirmation not sent";
-                throw new Error(error);
+                throw new Error(error.message);
             }
             else {
                 return User.findOne({_id: recipientId});
@@ -285,13 +285,13 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 		.then(function(recipient){
 			if (!recipient){
 				error.message = "confirmation not sent";
-                throw new Error(error);
+                throw new Error(error.message);
 			}
 			else{
 				var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
 				if(requestIndex == -1){
                     error.message = "no request found";
-                    throw new Error(error);
+                    throw new Error(error.message);
 				}
 				else{
                     recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;

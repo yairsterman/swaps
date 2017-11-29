@@ -6,9 +6,9 @@
                     <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href="" ng-click="go('account/edit')">Profile</a></li>
                     <li class="single-link {{activeTab == 'listing'?'active':''}}"><a href="" ng-click="go('account/listing')">My Home</a></li>
                     <li class="single-link {{activeTab == 'messages'?'active':''}}"><a href="" ng-click="go('account/messages')">Messages</a></li>
-                    <li class="single-link {{activeTab == 'swap'?'active':''}}"><a href="" ng-click="go('account/swap')">Swaps</a></li>
-                    <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href="" ng-click="go('account/reviews')">Reviews</a></li>
-                    <li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>
+                    <li class="single-link {{activeTab == 'swaps'?'active':''}}"><a href="" ng-click="go('account/swaps')">Swaps</a></li>
+                    <!--<li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href="" ng-click="go('account/reviews')">Reviews</a></li>-->
+                    <!--<li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>-->
                 </ul>
             </div>
             <div class="col-sm-9">
@@ -207,7 +207,7 @@
                           <div class="col-sm-8">
                               <div class="row">
                                   <div class="col-sm-12">
-                                      <checkbox items="data.amenities" model="edit.apptInfo.rules"></checkbox>
+                                      <checkbox items="data.houseRules" model="edit.apptInfo.rules"></checkbox>
                                   </div>
                               </div>
                           </div>
@@ -226,84 +226,89 @@
                         </div>
                   </div>
             </div>
-            <div class="messages" ng-if="activeTab == 'messages'">
-              <div class="all-messages">
-                  <div class="search-messages">
-                      <input type="text" class="search" placeholder="Search Messages" ng-model="$parent.searchTerm">
-                  </div>
-                  <div class="messages-scroll">
-                    <div class="messages-list" ng-repeat="message in user.messages | searchMessages:searchTerm" >
-                      <div class="single-message" ng-click="openConversation(message, $index)">
-                        <div class="">
-                          <div class="photo" style="background-image:url('{{message.image}}')" ng-click="go('profile/'+message.id )">
-                          </div>
+            <div class="" ng-if="activeTab == 'messages'">
+                <div ng-if="user.messages.length == 0">
+                    <div class="no-messages">You Have no messages</div>
+                </div>
+                <div class = "messages" ng-if="user.messages.length > 0">
+                    <div class="all-messages">
+                        <div class="search-messages">
+                            <input type="text" class="search" placeholder="Search Messages" ng-model="$parent.searchTerm">
                         </div>
-                        <div class="names">
-                          <div class="message">
-                            <div class="top">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                      <div class="name">
-                                          {{message.name}}
-                                      </div>
+                        <div class="messages-scroll">
+                            <div class="messages-list" ng-repeat="message in user.messages | searchMessages:searchTerm" >
+                                <div class="single-message" ng-click="openConversation(message, $index)">
+                                    <div class="">
+                                        <div class="photo" style="background-image:url('{{message.image}}')" ng-click="go('profile/'+message.id )">
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                      <div class="date {{message.read?'not-read':''}}">
-                                          {{message.messages[message.messages.length -1].date | dateFilter}}
-                                      </div>
+                                    <div class="names">
+                                        <div class="message">
+                                            <div class="top">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="name">
+                                                            {{message.name}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="date {{message.read?'not-read':''}}">
+                                                            {{message.messages[message.messages.length -1].date | dateFilter}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="row last-massage">
+                                                    <div class="col-sm-8">
+                                                        <div class="text {{message.read?'not-read':''}}">
+                                                            {{message.messages[message.messages.length -1].message}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
+                                                        <div class="request" ng-if="requestStatus(message.id) != -1">
+                                                            <div class="request-status">{{requestStatus(message.id) == 0?'Request Pending':requestStatus(message.id) == 1?'Request Confirmed':''}}</div>
+                                                        </div>
+                                                        <div class="unread" ng-if="!message.read">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="arrow {{message.read?'not-read':''}}">
+                                        <div class="glyphicon glyphicon-chevron-right"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="bottom">
-                              <div class="row last-massage">
-                                <div class="col-sm-8">
-                                  <div class="text {{message.read?'not-read':''}}">
-                                      {{message.messages[message.messages.length -1].message}}
-                                  </div>
-                                </div>
-                                <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
-                                    <div class="request" ng-if="requestStatus(message.id) != -1">
-                                        <div class="request-status">{{requestStatus(message.id) == 0?'Request Pending':requestStatus(message.id) == 1?'Request Confirmed':''}}</div>
-                                    </div>
-                                    <div class="unread" ng-if="!message.read">
-                                        <div class="circle"></div>
-                                    </div>
-                                </div>
-                              </div>
+                        </div>
+                    </div>
+                    <div class="message-area">
+                        <div class="conversation-profile">
+                            <div class="photo" style="background-image:url('{{currentConversation.image}}')" ng-click="go('profile/'+message.id )">
                             </div>
-                          </div>
-                        </div>
-                          <div class="arrow {{message.read?'not-read':''}}">
-                              <div class="glyphicon glyphicon-chevron-right"></div>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-                <div class="message-area">
-                    <div class="conversation-profile">
-                        <div class="photo" style="background-image:url('{{currentConversation.image}}')" ng-click="go('profile/'+message.id )">
-                        </div>
-                        <div class="name">
-                            {{currentConversation.name}}
-                        </div>
-                    </div>
-                    <div class="conversation-messages" id="{{currentConversationId}}">
-                        <div class="con-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}" ng-repeat="conversation in currentConversation.messages">
-                            <div class="text">
-                                {{conversation.message}}
+                            <div class="name">
+                                {{currentConversation.name}}
                             </div>
                         </div>
-                    </div>
-                    <div class="send-message" ng-if="conversationIsOpen">
-                        <input type="button" class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}" value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':currentConversationStatus == -1?'Swap':''}}" ng-disabled ="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1" ng-click="currentConversationStatus == 0?confirmRequest():swap()">
-                        <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
+                        <div class="conversation-messages" id="{{currentConversationId}}">
+                            <div class="con-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}" ng-repeat="conversation in currentConversation.messages">
+                                <div class="text">
+                                    {{conversation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="send-message" ng-if="conversationIsOpen">
+                            <input type="button" class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}" value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}" ng-disabled ="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1" ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):swap()">
+                            <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
-                        <input type="button" class="btn btn-primary btn-send" value="Send" ng-click="sendMessage()" ng-disabled="send.message == '' ">
+                            <input type="button" class="btn btn-primary btn-send" value="Send" ng-click="sendMessage()" ng-disabled="send.message == '' ">
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="swaps-and-requests" ng-if="activeTab == 'swap'">
+            <div class="swaps-and-requests" ng-if="activeTab == 'swaps'">
                 <div class="tabs">
                     <div class="tab {{showSwapsTab == 'set'?'active':''}}" ng-click="showSwapsTab = 'set'">
                         Set up Swap
@@ -318,9 +323,11 @@
                         <swapper-home traveler="request"></swapper-home>
                         <div class="request-info">
                             <div class="request-dates">{{request.requestInfo.departure | date :'MMMM dd, yyyy'}} - {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}</div>
-                            <div class="request-status">{{request.requestInfo.status == 0?'Pending':'Confirmed'}}</div>
+                            <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
                         </div>
-                        <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
+                        <div class="request-status" ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">Pending</div>
+                        <div class="request-status" ng-if="request.requestInfo.status == 1">Confirmed</div>
+                        <div class="request-status btn-primary confirm {{saving?'disabled':''}}" ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id" ng-click="confirmRequest(request.requestInfo)">Confirm</div>
                     </div>
                 </div>
             </div>

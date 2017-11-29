@@ -20,6 +20,7 @@ const visibleUserData = {
         reviews:true,
         comments:true,
         apptInfo:true,
+        allowViewHome:true,
         deposit:true,
         rating:true
     },
@@ -43,6 +44,7 @@ const visibleUserData = {
         reviews:true,
         comments:true,
         apptInfo:true,
+        allowViewHome:true,
         deposit:true,
         rating:true
     },
@@ -67,6 +69,7 @@ const visibleUserData = {
         apptInfo:true,
         deposit:true,
         thingsToDo:true,
+        allowViewHome:true,
         rating:true,
         radius:true,
         location:true,
@@ -77,50 +80,55 @@ const visibleUserData = {
 
 const amenities = [
     {id: 0, name: 'kitchen', displayName:'Kitchen', icon:'icon-kitchen'},
-    {id: 1, name: 'wifi', displayName:'Wi-Fi', icon:'icon-dryer'},
+    {id: 1, name: 'wifi', displayName:'Wi-Fi', icon:'icon-wifi'},
     {id: 2, name: 'washer', displayName:'Washer', icon:'icon-washer'},
-    {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-dryer'},
-    {id: 4, name: 'shower', displayName:'Shower', icon:'icon-dryer'},
+    {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-hairdry'},
+    {id: 4, name: 'shower', displayName:'Shower', icon:'icon-shower'},
     {id: 5, name: 'elevator', displayName:'Elevator', icon:'icon-elevator'},
-    {id: 6, name: 'garden', displayName:'Garden', icon:'icon-tree'},
-    {id: 7, name: 'bathroom', displayName:'Private Bathroom', icon:'icon-dryer'},
+    {id: 6, name: 'garden', displayName:'Garden', icon:'icon-vegen'},
+    {id: 7, name: 'bathroom', displayName:'Private Bathroom', icon:'icon-privateB'},
     {id: 8, name: 'parking', displayName:'Parking', icon:'icon-parking'},
     {id: 9, name: 'air', displayName:'Air Conditioning', icon:'icon-snowflake'},
-    {id: 10, name: 'heat', displayName:'Heating', icon:'icon-heat'},
-    {id: 11, name: 'laptop', displayName:'Laptop Friendly', icon:'icon-dryer'},
-    {id: 12, name: 'tv', displayName:'TV', icon:'icon-tv'},
-    {id: 13, name: 'entrance', displayName:'Private Entrance', icon:'icon-keys'},
-    {id: 14, name: 'gym', displayName:'Gym', icon:'icon-dryer'},
-    {id: 15, name: 'wheelchair', displayName:'Wheelchair Accessible', icon:'icon-dryer'},
-    {id: 16, name: 'doorman', displayName:'Doorman', icon:'icon-dryer'},
-    {id: 17, name: 'iron', displayName:'Iron', icon:'icon-dryer'},
-    {id: 18, name: 'pool', displayName:'Pool', icon:'icon-dryer'},
+    {id: 10, name: 'heat', displayName:'Heating', icon:'icon-heating'},
+    {id: 11, name: 'laptop', displayName:'Laptop Friendly', icon:'icon-laptop'},
+    {id: 12, name: 'tv', displayName:'TV', icon:'icon-TV'},
+    {id: 13, name: 'entrance', displayName:'Private Entrance', icon:'icon-privateE'},
+    {id: 14, name: 'gym', displayName:'Gym', icon:'icon-gym'},
+    {id: 15, name: 'wheelchair', displayName:'Wheelchair Accessible', icon:'icon-wheelchair'},
+    {id: 16, name: 'doorman', displayName:'Doorman', icon:'icon-doorman'},
+    {id: 17, name: 'iron', displayName:'Iron', icon:'icon-iron'},
+    {id: 18, name: 'pool', displayName:'Pool', icon:'icon-pool'},
+    {id: 19, name: 'hottub', displayName:'Hot Tub', icon:'icon-hotub'},
 
 ];
 
 const thingsToDo = [
-    {id: 0, name: 'clubbing', displayName:'Clubbing', icon:'icon-kitchen'},
-    {id: 1, name: 'bars', displayName:'Cocktail Bars', icon:'icon-dryer'},
-    {id: 2, name: 'gym', displayName:'Gym', icon:'icon-washer'},
-    {id: 3, name: 'theater', displayName:'Theater', icon:'icon-dryer'},
-    {id: 4, name: 'museums', displayName:'Museums', icon:'icon-elevator'},
-    {id: 5, name: 'galleries', displayName:'Art galleries', icon:'icon-tree'},
-    {id: 6, name: 'sports', displayName:'Extreme sports', icon:'icon-dryer'},
-    {id: 7, name: 'vegan', displayName:'Vegan restaurants', icon:'icon-parking'},
-    {id: 8, name: 'bicycle', displayName:'Bicycle riding', icon:'icon-snowflake'},
-    {id: 9, name: 'concerts', displayName:'Classical music concerts', icon:'icon-heat'},
-    {id: 10, name: 'music', displayName:'Live music', icon:'icon-dryer'},
-    {id: 11, name: 'walking', displayName:'Walking tours', icon:'icon-tv'},
-    {id: 12, name: 'bus', displayName:'Bus tours', icon:'icon-tv'},
-    {id: 13, name: 'cafes', displayName:'Local Cafes', icon:'icon-keys'},
-    {id: 14, name: 'food', displayName:'Local food', icon:'icon-dryer'},
-    {id: 15, name: 'workspaces', displayName:'Workspaces', icon:'icon-dryer'},
-    {id: 16, name: 'market', displayName:'Market', icon:'icon-dryer'},
-    {id: 17, name: 'zoo', displayName:'Zoo', icon:'icon-dryer'},
-    {id: 18, name: 'park', displayName:'Park', icon:'icon-dryer'},
-    {id: 19, name: 'gay', displayName:'Gay friendly', icon:'icon-dryer'},
-    {id: 20, name: 'beach', displayName:'Beach', icon:'icon-dryer'},
-    {id: 21, name: 'dance', displayName:'Dance performances', icon:'icon-dryer'},
+    {id: 0, name: 'clubbing', displayName:'Clubbing', icon:'icon-club'},
+    {id: 1, name: 'bars', displayName:'Cocktail Bars', icon:'icon-bar'},
+    {id: 2, name: 'gym', displayName:'Gym', icon:'icon-gym'},
+    {id: 3, name: 'theater', displayName:'Theater', icon:'icon-cinema'},
+    {id: 4, name: 'museums', displayName:'Museums', icon:'icon-museum'},
+    {id: 5, name: 'galleries', displayName:'Art galleries', icon:'icon-gallery'},
+    {id: 6, name: 'sports', displayName:'Extreme sports', icon:'icon-extreme'},
+    {id: 7, name: 'vegan', displayName:'Vegan restaurants', icon:'icon-vegen'},
+    {id: 8, name: 'concerts', displayName:'Music Concerts', icon:'icon-music'},
+    {id: 9, name: 'walking', displayName:'Walking tours', icon:'icon-walking'},
+    {id: 10, name: 'bus', displayName:'Bus tours', icon:'icon-bus'},
+    {id: 11, name: 'cafes', displayName:'Local Cafes', icon:'icon-coffee'},
+    {id: 12, name: 'food', displayName:'Local food', icon:'icon-restaurant'},
+    {id: 13, name: 'workspaces', displayName:'Workspaces', icon:'icon-laptop'},
+    {id: 14, name: 'market', displayName:'Market', icon:'icon-shopping'},
+    {id: 15, name: 'zoo', displayName:'Zoo', icon:'icon-zoo'},
+    {id: 16, name: 'park', displayName:'Park', icon:'icon-park'},
+    {id: 17, name: 'beach', displayName:'Beach', icon:'icon-beach'},
+    // {id: 18, name: 'gay', displayName:'Gay friendly', icon:'icon-dryer'},
+];
+
+const houseRules = [
+    {id: 0, name: 'pets', displayName:'Pets Allowed', icon:'icon-pets'},
+    {id: 1, name: 'smoking', displayName:'No Smoking', icon:'icon-nosmoking'},
+    {id: 2, name: 'events', displayName:'Suitable For Events', icon:'icon-cocktail'},
+    {id: 3, name: 'children', displayName:'Suitable For Children', icon:'icon-kids'}
 ];
 
 const requestStatus ={
@@ -184,6 +192,7 @@ var dataForSite = {
     amenities: amenities,
     thingsToDo: thingsToDo,
     requestStatus: requestStatus,
+    houseRules: houseRules,
     genders: genders,
     roomType: roomType,
     securityDeposit: securityDeposit,
@@ -222,6 +231,10 @@ data.getSecurityDeposit = function(){
 
 data.getCreditCards = function(){
     return creditCards;
+};
+
+data.getHouseRules = function(){
+    return houseRules;
 };
 
 data.getData = function(){

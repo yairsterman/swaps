@@ -10,9 +10,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.payment = false;
     $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit].value;
     $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-    $scope.totalWithoutDiscount = $scope.depositPlan * $scope.numberOfWeeks;
-    $scope.discount.amount = $scope.depositPlan * $scope.numberOfWeeks;
-    $scope.total = $scope.depositPlan * $scope.numberOfWeeks - $scope.discount.amount;
+    $scope.percentage = {name:'4%', amount:0.04};
+    $scope.totalWithoutDiscount = $scope.depositPlan * $scope.numberOfWeeks * $scope.percentage.amount;
+    $scope.discount.amount = $scope.totalWithoutDiscount;
+    $scope.total = $scope.totalWithoutDiscount - $scope.discount.amount;
 
 
     $scope.showPayment = function(){
@@ -28,6 +29,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     $scope.sendRequest = function(){
+        $scope.processing = true;
         var data = {
             user: $scope.user,
             recipientId: $scope.profile._id,
@@ -37,15 +39,17 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         }
         MessageService.sendRequest(data.user, data.recipientId, data.message, data.dates, data.guests)
         .then(function(response){
+            $scope.processing = false;
             $scope.requestComplete = true;
-            $rootScope.user = data.data;
+            $rootScope.user = response.data;
             $scope.user = $rootScope.user;
+            $scope.requestSent = true;
             $timeout(function(){
                 $scope.modelInstance.close();
             },5000);
         },
         function(err){
-
+            $scope.processing = false;
         });
     }
 

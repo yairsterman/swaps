@@ -1,11 +1,11 @@
 <div class="travelers-page">
     <div class="filters">
-        <div class="dropdown">
-            <button class="filter-button dropdown-toggle"  id="filterDates" ng-click="openDate()">
-                <div class="caret"></div>
-                Dates
-            </button>
-        </div>
+        <!--<div class="dropdown">-->
+            <!--<button class="filter-button dropdown-toggle"  id="filterDates" ng-click="openDate()">-->
+                <!--<div class="caret"></div>-->
+                <!--Dates-->
+            <!--</button>-->
+        <!--</div>-->
         <div class="dropdown">
             <button class="filter-button dropdown-toggle" type="button" id="filterRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="caret"></div>
@@ -13,9 +13,9 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
                 <div class="room-type">
-                    <div class="filter" ng-repeat="room in data.roomTypes">
-                        <div class="filter-checkbox" ng-click="checkRoomType($index, $event)">
-                            <div class="check icon icon-check {{isCheckedRoomType($index)?'checked':''}}"></div>
+                    <div class="filter" ng-repeat="room in data.roomType">
+                        <div class="filter-checkbox" ng-click="checkRoomType(room.id, $event)">
+                            <div class="check icon icon-check {{isCheckedRoomType(room.id)?'checked':''}}"></div>
                         </div>
                         <div>
                             {{room.displayName}}
@@ -32,8 +32,8 @@
             <div class="dropdown-menu" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
                 <div class="row mg-0 amenities">
                     <div class="filter col-sm-6 col-xs-12" ng-repeat="amenity in data.amenities">
-                        <div class="filter-checkbox" ng-click="checkAmenity($index, $event)">
-                            <div class="check icon icon-check {{isCheckedAmenity($index)?'checked':''}}"></div>
+                        <div class="filter-checkbox" ng-click="checkAmenity(amenity.id, $event)">
+                            <div class="check icon icon-check {{isCheckedAmenity(amenity.id)?'checked':''}}"></div>
                         </div>
                         <div>
                             {{amenity.displayName}}
@@ -41,6 +41,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="apply">
+            <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="getPage(1)">
         </div>
     </div>
     <div class="people-and-map">
