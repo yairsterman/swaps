@@ -312,4 +312,13 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
     }
 
+
+    $scope.favorites = [];
+    $scope.getFavorites = function() {
+        $scope.favorites = AccountService.getFavorites();
+    };
+
+    $scope.getFavorites();
+
+
 });

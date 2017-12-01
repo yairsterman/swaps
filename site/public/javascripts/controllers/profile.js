@@ -1,5 +1,5 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $filter) {
+swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $filter, AccountService) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
@@ -180,4 +180,31 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
         return ret;
     };
+
+    $scope.isFavoriteFlag = false;
+    $scope.isFavorite = function() {
+        if (!$scope.isFavoriteFlag) {
+            $scope.innerIsFavorite();
+            $scope.isFavoriteFlag = true;
+        }
+    };
+
+    $scope.innerIsFavorite = function() {
+        var ans = AccountService.isFavorite($scope.profile._id);
+        console.log("Got ans = " + JSON.stringify(ans));
+        return ans;
+    };
+
+    $scope.addToFavorites = function() {
+        var favorite = {
+            _id: $scope.profile._id,
+            displayName: $scope.profile.displayName,
+            email: $scope.profile.email,
+            image: $scope.profile.image,
+            country: $scope.profile.country,
+            city: $scope.profile.city
+        };
+        AccountService.addFavorite(favorite);
+    };
+
 });

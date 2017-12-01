@@ -18,7 +18,7 @@
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
                                                                                       ng-click="go('account/reviews')">Reviews</a>
                     </li>
-                    <!--<li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>-->
+                    <li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>
                 </ul>
             </div>
             <div class="col-sm-9">
@@ -401,6 +401,31 @@
 
                     </div>
                 </div>
+
+
+
+
+                <div class="reviews-tab" ng-if="activeTab == 'favorites'">
+                    <div ng-if="user.reviews.length == 0">
+                        <div class="no-reviews">You Have no reviews</div>
+                    </div>
+                    <div class="reviews-cont" ng-if="user.reviews.length > 0">
+
+                        <div class="reviews-scroll">
+                            <div class="row comments-show"
+                                 ng-repeat="commenter in user.reviews">
+
+                                <review-elm commenter="commenter"></review-elm>
+
+                                <hr style="clear: both;">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
 
             </div>
         </div>

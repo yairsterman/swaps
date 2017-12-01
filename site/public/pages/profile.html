@@ -40,7 +40,7 @@
                 <!--</div>-->
                 <div class="swap">
                     <div class="favorite">
-                        <div class="btn btn-primary btn-swap share-btn" ng-click="addToFavorites()">
+                        <div class="btn btn-primary btn-swap share-btn" ng-if="user && !isFavorite()" ng-click="addToFavorites()">
                             <div class="icon icon-like sharing"></div>
                             Save
                         </div>
