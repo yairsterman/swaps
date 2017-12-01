@@ -202,7 +202,7 @@
                     <div class="row comments-show">
                         <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
 
-                            <review-elm commenter="commenter"></review-elm>
+                            <review-elm is-profile="true" commenter="commenter"></review-elm>
 
                             <hr style="clear: both;">
                         </div>

@@ -1,7 +1,7 @@
-<div class="col-md-2 dead-space"></div>
-<div class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
+<div ng-if="isProfile" class="col-md-2 dead-space"></div>
+<div ng-if="isProfile" class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
 </div>
-<div class="col-md-8 commenter-comment-section">
+<div ng-if="isProfile" class="col-md-8 commenter-comment-section">
     <div class="commenter-name">{{commenter.name}}</div>
     <div class="commenter-country-and-age">
         {{commenter.country}}
@@ -12,3 +12,16 @@
 </div>
 <!--<div class="separator"></div>-->
 
+
+
+<div ng-if="!isProfile" class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
+</div>
+<div ng-if="!isProfile" class="col-md-10 commenter-comment-section">
+    <div class="commenter-name">{{commenter.name}}</div>
+    <div class="commenter-country-and-age">
+        {{commenter.country}}
+    </div>
+    <div class="commenter-comment">
+        {{commenter.review}}
+    </div>
+</div>
