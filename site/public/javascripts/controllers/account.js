@@ -313,12 +313,21 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
 
-    $scope.favorites = [];
+    $scope.likedHomes = [];
     $scope.getFavorites = function() {
-        $scope.favorites = AccountService.getFavorites();
+        AccountService.getFavorites().then(function(data) {
+            $scope.likedHomes = data.favorites;
+            console.log("DATA.FAVS === " + data.favorites);
+            return $scope.likedHomes;
+        });
+        // console.log("LikedHomes = " + JSON.stringify($scope.likedHomes));
     };
 
-    $scope.getFavorites();
+    // $scope.getFavorites();
 
+    $scope.homeILikeClick = function() {
+        $scope.getFavorites();
+        $scope.go('account/homes-i-like');
+    }
 
 });

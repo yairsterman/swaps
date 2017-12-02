@@ -452,18 +452,99 @@ router.get('/is-favorite', function(req, res, next) {
     });
 });
 
+var ObjectID     = require('mongodb').ObjectID;
+
 router.get('/get-favorites', function (req, res, next) {
-    var id = req.user._id;
+    // var id = req.user._id;
+    // console.log("GOT GET_FAVORITES REQUEST!!!*****************************************");
+    var favs = req.user.favorites;
+
+    // var ids = [];
+
+    var ids = favs.map(function(fave) {
+        return ObjectID(String(fave._id));
+    });
+
+    // for (var i = 0; i < favs.length; ++i) {
+    //     ids.push(ObjectID(favs[i]._id));
+    //     console.log("Pushing " + favs[i] +" as " + ObjectId(favs[i]._id));
+    // }
+
+    // console.log("\n\nIDs: " + ids + "\n\n" + "favs = " + favs + "\n\n");
+
     var favorites = [];
 
-    User.findOne({_id: id}, function (err, user) {
-        if (err) {
+    function addToFavs(users) {
+        favorites = users;
+        // console.log("SENDING FAVORITES!\n\n The favorites: " + JSON.stringify(favorites) + "\n\n");
+        res.json({favorites: favorites});
+    }
+
+    User.find({ '_id': { $in: ids } }, function(err, users) {
+        if(err) {
+            console.log("ERROR IN ARR error = " + err);
             error.message = err;
-            res.json(error);
         } else {
-            res.json(user.favorites);
+            addToFavs(users);
         }
     });
+
+    // User.findOne({_id: id}, function (err, user) {
+    //     if (err) {
+    //         error.message = err;
+    //         res.json(error);
+    //     } else {
+    //         console.log("GETTING FAVORITES! " + JSON.stringify(user.favorites));
+    //         // res.json(user.favorites);
+    //         // var done = false;
+    //
+    //         for (var i = 0; i < user.favorites.length; ++i) {
+    //             User.findOne({_id: user.favorites[i]._id}, function(arrErr, fav) {
+    //                 if(arrErr) {
+    //                     console.log("ERROR IN ARR error = " + arrErr);
+    //                     error.message = arrErr;
+    //                 } else {
+    //                     console.log("FOUND A USER MATCH");//: " + JSON.stringify(fav));
+    //                     favorites.push({i: fav});
+    //                     console.log("CURRENT FAVORITES: " + favorites);
+    //                 }
+    //             });
+    //             if (i == user.favorites.length - 1) {
+    //                 done = true;
+    //             } else {
+    //                 console.log("i = " + i + ", and length = " + user.favorites.length);
+    //             }
+    //         }
+    //
+    //
+    //         // while (!done) {}
+    //         // console.log("SENDING FAVORITES!\n\n The favorites: " + favorites + "\n\n");
+    //         // res.json({favorites: favorites});
+    //
+    //     }
+    // });
+
+    // for (var i = 0; i < favs.length; ++i) {
+    //     User.findOne({_id: favs[i]._id}, function(arrErr, fav) {
+    //         if(arrErr) {
+    //             console.log("ERROR IN ARR error = " + arrErr);
+    //             error.message = arrErr;
+    //         } else {
+    //             console.log("FOUND A USER MATCH");//: " + JSON.stringify(fav));
+    //             favorites.push(fav);
+    //             // console.log("CURRENT FAVORITES: " + favorites);
+    //         }
+    //     });
+    //     // if (i == user.favorites.length - 1) {
+    //     //     done = true;
+    //     // } else {
+    //     //     console.log("i = " + i + ", and length = " + user.favorites.length);
+    //     // }
+    // }
+
+    // while (!done) {}
+    // console.log("SENDING FAVORITES!\n\n The favorites: " + JSON.stringify(favorites) + "\n\n");
+    // res.json({favorites: favorites});
 });
 
 

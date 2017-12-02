@@ -18,7 +18,9 @@
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
                                                                                       ng-click="go('account/reviews')">Reviews</a>
                     </li>
-                    <li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>
+                    <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
+                                                                                           ng-click="homeILikeClick()">Homes
+                        I Like</a></li>
                 </ul>
             </div>
             <div class="col-sm-9">
@@ -405,17 +407,19 @@
 
 
 
-                <div class="reviews-tab" ng-if="activeTab == 'favorites'">
+                <div class="fav-tab" ng-if="activeTab == 'homes-i-like'">
+
                     <div ng-if="user.reviews.length == 0">
-                        <div class="no-reviews">You Have no reviews</div>
+                        <div class="no-reviews">You have no favorites</div>
                     </div>
-                    <div class="reviews-cont" ng-if="user.reviews.length > 0">
+                    <div class="reviews-cont" ng-if="user.favorites.length > 0">
 
-                        <div class="reviews-scroll">
-                            <div class="row comments-show"
-                                 ng-repeat="commenter in user.reviews">
+                        <div class="fav-scroll">
+                            <div class="row favorites-show"
+                                 ng-repeat="favorite in likedHomes">
 
-                                <review-elm commenter="commenter"></review-elm>
+                                <!--{{favorite}}-->
+                                {{favorite}}
 
                                 <hr style="clear: both;">
                             </div>
@@ -423,7 +427,9 @@
 
 
                     </div>
+
                 </div>
+
 
 
 

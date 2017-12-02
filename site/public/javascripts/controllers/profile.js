@@ -198,11 +198,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     $scope.addToFavorites = function() {
         var favorite = {
             _id: $scope.profile._id,
-            displayName: $scope.profile.displayName,
-            email: $scope.profile.email,
-            image: $scope.profile.image,
-            country: $scope.profile.country,
-            city: $scope.profile.city
+            // displayName: $scope.profile.displayName,
+            // email: $scope.profile.email,
+            // image: $scope.profile.image,
+            // country: $scope.profile.country,
+            // city: $scope.profile.city
         };
         AccountService.addFavorite(favorite);
     };
