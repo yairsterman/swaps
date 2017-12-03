@@ -15,8 +15,6 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         };
 	}
 
-    var autocompleteSearch;
-
 	function successFunction(position) {
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
@@ -65,15 +63,6 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 		$('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
             $rootScope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
 	  	});
-	}
-
-	$scope.autocompleteCities = function(){
-        autocompleteSearch = new google.maps.places.Autocomplete(angular.element('#searchCityHeader')[0], {
-            types: ['(cities)']
-        });
-        autocompleteSearch.addListener('place_changed', function() {
-            $rootScope.search.where = autocompleteSearch.getPlace().name;
-		});
 	}
 
     $scope.$on('auth-return', function(event, args) {
@@ -137,14 +126,4 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
             }
         });
     }
-
-
-	// var elementsReady = $interval(function() {
-    //   var input = $document[0].getElementById('address');
-    //   if (input) {
-    //     autocomplete = new google.maps.places.Autocomplete($document[0].getElementById('address'), address);
-    //     $interval.cancel(elementsReady);
-    //   }
-    // }, 100);
-
 });

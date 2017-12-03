@@ -7,10 +7,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.featured = [];
     $scope.options = ['cities'];
 
-
     $rootScope.homepage = true;
-
-    var autocompleteSearch;
 
     $scope.cities = [
         {
@@ -66,15 +63,6 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.changeImageBack = function(index){
         $scope.featured[index] = $scope.cities[index].normal;
     };
-
-    $scope.autocompleteCities = function(){
-        autocompleteSearch = new google.maps.places.Autocomplete(angular.element('#searchCity')[0], {
-            types: ['(cities)']
-        });
-        autocompleteSearch.addListener('place_changed', function() {
-            $rootScope.search.where = autocompleteSearch.getPlace().name;
-        });
-    }
 
     $scope.openDate = function(){
         $('input[name="searchDate"]').daterangepicker({
