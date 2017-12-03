@@ -3,355 +3,449 @@
         <div class="row display-flex">
             <div class="col-sm-3 sidebar">
                 <ul class="">
-                    <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href="" ng-click="go('account/edit')">Profile</a></li>
-                    <li class="single-link {{activeTab == 'listing'?'active':''}}"><a href="" ng-click="go('account/listing')">My Home</a></li>
-                    <li class="single-link {{activeTab == 'messages'?'active':''}}"><a href="" ng-click="go('account/messages')">Messages</a></li>
-                    <li class="single-link {{activeTab == 'swaps'?'active':''}}"><a href="" ng-click="go('account/swaps')">Swaps</a></li>
-                    <!--<li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href="" ng-click="go('account/reviews')">Reviews</a></li>-->
-                    <!--<li class="single-link {{activeTab == 'favorites'?'active':''}}"><a href="" ng-click="go('account/settings')">Homes I Like</a></li>-->
+                    <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href=""
+                                                                                   ng-click="go('account/edit')">Profile</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'listing'?'active':''}}"><a href=""
+                                                                                      ng-click="go('account/listing')">My
+                        Home</a></li>
+                    <li class="single-link {{activeTab == 'messages'?'active':''}}"><a href=""
+                                                                                       ng-click="go('account/messages')">Messages</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'swaps'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/swaps')">Swaps</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
+                                                                                      ng-click="go('account/reviews')">Reviews</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
+                                                                                           ng-click="go('account/homes-i-like')">Homes
+                        I Like</a></li>
                 </ul>
             </div>
             <div class="col-sm-9">
-              <div class="edit-profile" ng-if="activeTab == 'edit'">
-                <div class="row permanent-info">
-                  <div class="col-sm-3">
-                    <div class="pic" style="background-image:url('{{user.image}}')">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="name">
-                      {{user.firstName}} {{user.lastName}}
-                    </div>
-                  </div>
-                </div>
-               <form class="form-horizontal edit-form" role="form">
-                   <div class="form-group">
-                       <label class="col-sm-3 control-label">Email:</label>
-                       <div class="col-sm-6">
-                           <input class="form-control" type="text" ng-model="edit.email" >
-                       </div>
-                   </div>
-                   <div class="form-group">
-                       <label class="col-sm-3 control-label">Birthday:</label>
-                       <div class="col-sm-2">
-                           <input class="datepicker form-control" name="birthday" ng-model="edit.birthday">
-                       </div>
-                   </div>
-                   <div class="form-group">
-                       <label class="col-sm-3 control-label">Gender:</label>
-                       <div class="col-sm-3">
-                           <select class="form-control" id="gender" ng-model="edit.gender" ng-options="gender.value as gender.name for gender in data.genders">
-                               {{gender.name}}
-                           </select>
-                       </div>
-                   </div>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">About me:</label>
-                    <div class="col-sm-6">
-                    <textarea rows="6" cols="20" class="form-control" ng-model="edit.aboutMe"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Occupation:</label>
-                    <div class="col-sm-6">
-                      <input class="form-control" type="text" ng-model="edit.occupation" >
-                    </div>
-                  </div>
-                   <div class="form-group">
-                       <label class="col-sm-3 control-label">What are you looking for when you travel? <br> <br> <span style="font-weight: 400">(This will help us find the best place for you to Swap!)</span></label>
-                       <div class="col-sm-8 things">
-                           <checkbox items="data.thingsToDo" model="edit.thingsToDo"></checkbox>
-                       </div>
-                   </div>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label"></label>
-                    <div class="buttons col-sm-6">
-                      <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="saveChanges()" ng-disabled="saving">
-                      <span class="space"></span>
-                      <input type="reset" class="btn btn-primary btn-edit cancel" value="Cancel" ng-click="cancel()" ng-if="editing">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="my-listing" ng-if="activeTab == 'listing'">
-                  <div class="info-section my-photos">
-                      <div class="display-photos no-photos" ng-if="user.photos.length == 0">
-                          <div class="text">
-                              You don't have enough photos of your listing, you must have at least 3 photo.
-                          </div>
-                          <div class="no-image">
-                              <img src="http://swapshome.com:3000/images/static/no-image.png" class="no-image-icon">
-                          </div>
-                          <div class="upload-photos" ng-if="user.photos.length < 8">
-                              <form method="POST" enctype="multipart/form-data" action="/account/upload" >
-                                  <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
-                              alert('You can only have 8 images');
-                              this.value='';
-                           }" multiple>
-                                  <input type="hidden" name="id" value="{{edit._id}}">
-                                  <div style="margin-top:15px;"></div>
-                                  <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                              </form>
-                          </div>
-                      </div>
-                      <div class="display-photos" ng-if="user.photos.length > 0">
-                          <div class="text" ng-if="user.photos.length < 3">
-                              You don't have enough photos of your listing, you must have at least 3 photo.
-                          </div>
-                          <ng-image-gallery
-                                  images="images"
-                                  thumb-size="180"
-                                  img-anim="slide"
-                                  on-delete="deletePhoto(img, cb)"
-                                  on-close="galeryClosed()"
-                          ></ng-image-gallery>
-                          <div class="upload-photos" ng-if="user.photos.length < 8">
-                              <form method="POST" enctype="multipart/form-data" action="/account/upload" >
-                                  <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg" onchange="if(this.files.length > 8 - acc.user.photos.length) {
-                              alert('You can only have 8 images');
-                              this.value='';
-                           }" multiple>
-                                  <input type="hidden" name="id" value="{{edit._id}}">
-                                  <div style="margin-top:15px;"></div>
-                                  <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                              </form>
-                          </div>
-                      </div>
-                  </div>
-                  <form class="form-horizontal edit-form" role="form">
-                      <div class="form-group">
-                          <label class="col-sm-3 control-label">Title:</label>
-                          <div class="col-sm-8">
-                              <input class="form-control" type="text" ng-model="edit.apptInfo.title" >
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-3 control-label">Address:</label>
-                          <div class="col-sm-8">
-                              <input class="form-control" id="address" type="text" ng-model="edit.address" autocomplete="">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-3 control-label">Basics:</label>
-                          <div class="col-sm-8">
-                              <div class="row">
-                                  <div class="col-sm-3 basics">
-                                      <div class="name-with-icon">
-                                          <div class="icon icon-duck-small"></div>
-                                          <div class="basics-name">Swappers</div>
-                                      </div>
-                                      <input class="form-control" id="swappers" type="number" min="1" max="8" ng-model="edit.apptInfo.guests">
-                                  </div>
-                                  <div class="col-sm-3 basics">
-                                      <div class="name-with-icon">
-                                          <div class="icon icon-duck-small"></div>
-                                          <div class="basics-name">Rooms</div>
-                                      </div>
-                                      <input class="form-control" id="rooms" type="number" min="1" max="8" ng-model="edit.apptInfo.rooms">
-                                  </div>
-                                  <div class="col-sm-3 basics">
-                                      <div class="name-with-icon">
-                                          <div class="icon icon-duck-small"></div>
-                                          <div class="basics-name">Beds</div>
-                                      </div>
-                                      <input class="form-control" id="beds" type="number" min="1" max="8" ng-model="edit.apptInfo.beds">
-                                  </div>
-                                  <div class="col-sm-3 basics">
-                                      <div class="name-with-icon">
-                                          <div class="icon icon-duck-small"></div>
-                                          <div class="basics-name">Baths</div>
-                                      </div>
-                                      <input class="form-control" id="baths" type="number" min="1" max="8" ng-model="edit.apptInfo.baths">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-3 control-label">About my home:</label>
-                          <div class="col-sm-6">
-                              <textarea rows="6" cols="20" class="form-control" ng-model="edit.apptInfo.about"></textarea>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-3 control-label">Room Type:</label>
-                          <div class="col-sm-4">
-                              <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType" ng-options="room.id as room.displayName for room in data.roomType">
-                                  {{room.displayName}}
-                              </select>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-3 control-label">Deposit Plan:</label>
-                          <div class="col-sm-4">
-                              <select class="form-control" id="deposit" ng-model="edit.deposit" ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per week' for plan in data.securityDeposit">
-                                  {{plan.displayName}} - ${{plan.value}} per week
-                              </select>
-                          </div>
-                      </div>
-                  </form>
-                <div class="info-section rules">
-                    <div class="form-group row">
-                        <label class="col-sm-3 control-label">Facilities:</label>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <checkbox items="data.amenities" model="edit.apptInfo.amenities"></checkbox>
-                                </div>
+                <div class="edit-profile" ng-if="activeTab == 'edit'">
+                    <div class="row permanent-info">
+                        <div class="col-sm-3">
+                            <div class="pic" style="background-image:url('{{user.image}}')">
                             </div>
                         </div>
-                    </div>
-                </div>
-                  <div class="info-section rules">
-                      <div class="form-group row">
-                          <label class="col-sm-3 control-label">House Rules:</label>
-                          <div class="col-sm-8">
-                              <div class="row">
-                                  <div class="col-sm-12">
-                                      <checkbox items="data.houseRules" model="edit.apptInfo.rules"></checkbox>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <label class="col-sm-3 control-label">More Information:</label>
-                      <div class="col-sm-6">
-                          <textarea rows="6" cols="20" class="form-control" ng-model="edit.apptInfo.moreInfo"></textarea>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-sm-3"></div>
-                        <div class="buttons col-sm-4">
-                            <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="editlisting()" ng-disabled="saving">
-                        </div>
-                  </div>
-            </div>
-            <div class="" ng-if="activeTab == 'messages'">
-                <div ng-if="user.messages.length == 0">
-                    <div class="no-messages">You Have no messages</div>
-                </div>
-                <div class = "messages" ng-if="user.messages.length > 0">
-                    <div class="all-messages">
-                        <div class="search-messages">
-                            <input type="text" class="search" placeholder="Search Messages" ng-model="$parent.searchTerm">
-                        </div>
-                        <div class="messages-scroll">
-                            <div class="messages-list" ng-repeat="message in user.messages | searchMessages:searchTerm" >
-                                <div class="single-message" ng-click="openConversation(message, $index)">
-                                    <div class="">
-                                        <div class="photo" style="background-image:url('{{message.image}}')" ng-click="go('profile/'+message.id )">
-                                        </div>
-                                    </div>
-                                    <div class="names">
-                                        <div class="message">
-                                            <div class="top">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="name">
-                                                            {{message.name}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="date {{message.read?'not-read':''}}">
-                                                            {{message.messages[message.messages.length -1].date | dateFilter}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="bottom">
-                                                <div class="row last-massage">
-                                                    <div class="col-sm-8">
-                                                        <div class="text {{message.read?'not-read':''}}">
-                                                            {{message.messages[message.messages.length -1].message}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
-                                                        <div class="request" ng-if="requestStatus(message.id) != -1">
-                                                            <div class="request-status">{{requestStatus(message.id) == 0?'Request Pending':requestStatus(message.id) == 1?'Request Confirmed':''}}</div>
-                                                        </div>
-                                                        <div class="unread" ng-if="!message.read">
-                                                            <div class="circle"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="arrow {{message.read?'not-read':''}}">
-                                        <div class="glyphicon glyphicon-chevron-right"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-area">
-                        <div class="conversation-profile">
-                            <div class="photo" style="background-image:url('{{currentConversation.image}}')" ng-click="go('profile/'+message.id )">
-                            </div>
+                        <div class="col-sm-6">
                             <div class="name">
-                                {{currentConversation.name}}
+                                {{user.firstName}} {{user.lastName}}
                             </div>
                         </div>
-                        <div class="conversation-messages" id="{{currentConversationId}}">
-                            <div class="con-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}" ng-repeat="conversation in currentConversation.messages">
-                                <div class="text">
-                                    {{conversation.message}}
+                    </div>
+                    <form class="form-horizontal edit-form" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="text" ng-model="edit.email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Birthday:</label>
+                            <div class="col-sm-2">
+                                <input class="datepicker form-control" name="birthday" ng-model="edit.birthday">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Gender:</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="gender" ng-model="edit.gender"
+                                        ng-options="gender.value as gender.name for gender in data.genders">
+                                    {{gender.name}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">About me:</label>
+                            <div class="col-sm-6">
+                                <textarea rows="6" cols="20" class="form-control" ng-model="edit.aboutMe"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Occupation:</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="text" ng-model="edit.occupation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">What are you looking for when you travel? <br> <br>
+                                <span style="font-weight: 400">(This will help us find the best place for you to Swap!)</span></label>
+                            <div class="col-sm-8 things">
+                                <checkbox items="data.thingsToDo" model="edit.thingsToDo"></checkbox>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="buttons col-sm-6">
+                                <input type="button" class="btn btn-primary btn-edit" value="Save"
+                                       ng-click="saveChanges()" ng-disabled="saving">
+                                <span class="space"></span>
+                                <input type="reset" class="btn btn-primary btn-edit cancel" value="Cancel"
+                                       ng-click="cancel()" ng-if="editing">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="my-listing" ng-if="activeTab == 'listing'">
+                    <div class="info-section my-photos">
+                        <div class="display-photos no-photos" ng-if="user.photos.length == 0">
+                            <div class="text">
+                                You don't have enough photos of your listing, you must have at least 3 photo.
+                            </div>
+                            <div class="no-image">
+                                <img src="http://swapshome.com:3000/images/static/no-image.png" class="no-image-icon">
+                            </div>
+                            <div class="upload-photos" ng-if="user.photos.length < 8">
+                                <form method="POST" enctype="multipart/form-data" action="/account/upload">
+                                    <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg"
+                                           onchange="if(this.files.length > 8 - acc.user.photos.length) {
+                              alert('You can only have 8 images');
+                              this.value='';
+                           }" multiple>
+                                    <input type="hidden" name="id" value="{{edit._id}}">
+                                    <div style="margin-top:15px;"></div>
+                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="display-photos" ng-if="user.photos.length > 0">
+                            <div class="text" ng-if="user.photos.length < 3">
+                                You don't have enough photos of your listing, you must have at least 3 photo.
+                            </div>
+                            <ng-image-gallery
+                                    images="images"
+                                    thumb-size="180"
+                                    img-anim="slide"
+                                    on-delete="deletePhoto(img, cb)"
+                                    on-close="galeryClosed()"
+                            ></ng-image-gallery>
+                            <div class="upload-photos" ng-if="user.photos.length < 8">
+                                <form method="POST" enctype="multipart/form-data" action="/account/upload">
+                                    <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg"
+                                           onchange="if(this.files.length > 8 - acc.user.photos.length) {
+                              alert('You can only have 8 images');
+                              this.value='';
+                           }" multiple>
+                                    <input type="hidden" name="id" value="{{edit._id}}">
+                                    <div style="margin-top:15px;"></div>
+                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="form-horizontal edit-form" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Title:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" ng-model="edit.apptInfo.title">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Address:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="address" type="text" ng-model="edit.address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Basics:</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-3 basics">
+                                        <div class="name-with-icon">
+                                            <div class="icon icon-duck-small"></div>
+                                            <div class="basics-name">Swappers</div>
+                                        </div>
+                                        <input class="form-control" id="swappers" type="number" min="1" max="8"
+                                               ng-model="edit.apptInfo.guests">
+                                    </div>
+                                    <div class="col-sm-3 basics">
+                                        <div class="name-with-icon">
+                                            <div class="icon icon-duck-small"></div>
+                                            <div class="basics-name">Rooms</div>
+                                        </div>
+                                        <input class="form-control" id="rooms" type="number" min="1" max="8"
+                                               ng-model="edit.apptInfo.rooms">
+                                    </div>
+                                    <div class="col-sm-3 basics">
+                                        <div class="name-with-icon">
+                                            <div class="icon icon-duck-small"></div>
+                                            <div class="basics-name">Beds</div>
+                                        </div>
+                                        <input class="form-control" id="beds" type="number" min="1" max="8"
+                                               ng-model="edit.apptInfo.beds">
+                                    </div>
+                                    <div class="col-sm-3 basics">
+                                        <div class="name-with-icon">
+                                            <div class="icon icon-duck-small"></div>
+                                            <div class="basics-name">Baths</div>
+                                        </div>
+                                        <input class="form-control" id="baths" type="number" min="1" max="8"
+                                               ng-model="edit.apptInfo.baths">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="send-message" ng-if="conversationIsOpen">
-                            <input type="button" class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}" value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}" ng-disabled ="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1" ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):swap()">
-                            <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">About my home:</label>
+                            <div class="col-sm-6">
+                                <textarea rows="6" cols="20" class="form-control"
+                                          ng-model="edit.apptInfo.about"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Room Type:</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType"
+                                        ng-options="room.id as room.displayName for room in data.roomType">
+                                    {{room.displayName}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Deposit Plan:</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="deposit" ng-model="edit.deposit"
+                                        ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per week' for plan in data.securityDeposit">
+                                    {{plan.displayName}} - ${{plan.value}} per week
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="info-section rules">
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">Facilities:</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <checkbox items="data.amenities" model="edit.apptInfo.amenities"></checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-section rules">
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">House Rules:</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <checkbox items="data.houseRules" model="edit.apptInfo.rules"></checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">More Information:</label>
+                        <div class="col-sm-6">
+                            <textarea rows="6" cols="20" class="form-control"
+                                      ng-model="edit.apptInfo.moreInfo"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="buttons col-sm-4">
+                            <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="editlisting()"
+                                   ng-disabled="saving">
+                        </div>
+                    </div>
+                </div>
+                <div class="" ng-if="activeTab == 'messages'">
+                    <div ng-if="user.messages.length == 0">
+                        <div class="no-messages">You Have no messages</div>
+                    </div>
+                    <div class="messages" ng-if="user.messages.length > 0">
+                        <div class="all-messages">
+                            <div class="search-messages">
+                                <input type="text" class="search" placeholder="Search Messages"
+                                       ng-model="$parent.searchTerm">
+                            </div>
+                            <div class="messages-scroll">
+                                <div class="messages-list"
+                                     ng-repeat="message in user.messages | searchMessages:searchTerm">
+                                    <div class="single-message" ng-click="openConversation(message, $index)">
+                                        <div class="">
+                                            <div class="photo" style="background-image:url('{{message.image}}')"
+                                                 ng-click="go('profile/'+message.id )">
+                                            </div>
+                                        </div>
+                                        <div class="names">
+                                            <div class="message">
+                                                <div class="top">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="name">
+                                                                {{message.name}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="date {{message.read?'not-read':''}}">
+                                                                {{message.messages[message.messages.length -1].date |
+                                                                dateFilter}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="row last-massage">
+                                                        <div class="col-sm-8">
+                                                            <div class="text {{message.read?'not-read':''}}">
+                                                                {{message.messages[message.messages.length -1].message}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
+                                                            <div class="request"
+                                                                 ng-if="requestStatus(message.id) != -1">
+                                                                <div class="request-status">{{requestStatus(message.id)
+                                                                    == 0?'Request Pending':requestStatus(message.id) ==
+                                                                    1?'Request Confirmed':''}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="unread" ng-if="!message.read">
+                                                                <div class="circle"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrow {{message.read?'not-read':''}}">
+                                            <div class="glyphicon glyphicon-chevron-right"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-area">
+                            <div class="conversation-profile">
+                                <div class="photo" style="background-image:url('{{currentConversation.image}}')"
+                                     ng-click="go('profile/'+message.id )">
+                                </div>
+                                <div class="name">
+                                    {{currentConversation.name}}
+                                </div>
+                            </div>
+                            <div class="conversation-messages" id="{{currentConversationId}}">
+                                <div class="con-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}"
+                                     ng-repeat="conversation in currentConversation.messages">
+                                    <div class="text">
+                                        {{conversation.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="send-message" ng-if="conversationIsOpen">
+                                <input type="button"
+                                       class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
+                                       value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
+                                       ng-disabled="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1"
+                                       ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):swap()">
+                                <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
-                            <input type="button" class="btn btn-primary btn-send" value="Send" ng-click="sendMessage()" ng-disabled="send.message == '' ">
+                                <input type="button" class="btn btn-primary btn-send" value="Send"
+                                       ng-click="sendMessage()" ng-disabled="send.message == '' ">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="swaps-and-requests" ng-if="activeTab == 'swaps'">
-                <div class="tabs">
-                    <div class="tab {{showSwapsTab == 'set'?'active':''}}" ng-click="showSwapsTab = 'set'">
-                        Set up Swap
+                <div class="swaps-and-requests" ng-if="activeTab == 'swaps'">
+                    <div class="tabs">
+                        <div class="tab {{showSwapsTab == 'set'?'active':''}}" ng-click="showSwapsTab = 'set'">
+                            Set up Swap
+                        </div>
+                        <div class="tab {{showSwapsTab == 'upcoming'?'active':''}}"
+                             ng-click="showSwapsTab = 'upcoming'">
+                            Upcoming Swaps
+                        </div>
                     </div>
-                    <div class="tab {{showSwapsTab == 'upcoming'?'active':''}}" ng-click="showSwapsTab = 'upcoming'">
-                        Upcoming Swaps
+                    <swaps swaps="user.travelingInfo" ng-if="showSwapsTab == 'set'"></swaps>
+                    <div class="mg-0 row" ng-if="showSwapsTab == 'upcoming'">
+                        <div class="traveler-col col-sm-6 col-xs-12" ng-repeat="request in requests">
+                            <swapper-home traveler="request"></swapper-home>
+                            <div class="request-info">
+                                <div class="request-dates">{{request.requestInfo.departure | date :'MMMM dd, yyyy'}} -
+                                    {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}
+                                </div>
+                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
+                            </div>
+                            <div class="request-status"
+                                 ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">
+                                Pending
+                            </div>
+                            <div class="request-status" ng-if="request.requestInfo.status == 1">Confirmed</div>
+                            <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
+                                 ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id"
+                                 ng-click="confirmRequest(request.requestInfo)">Confirm
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <swaps swaps="user.travelingInfo" ng-if="showSwapsTab == 'set'"></swaps>
-                <div class="mg-0 row" ng-if="showSwapsTab == 'upcoming'">
-                    <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="request in requests">
-                        <swapper-home traveler="request"></swapper-home>
-                        <div class="request-info">
-                            <div class="request-dates">{{request.requestInfo.departure | date :'MMMM dd, yyyy'}} - {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}</div>
-                            <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
+                <div class="reviews-tab" ng-if="activeTab == 'reviews'">
+                    <div ng-if="user.reviews.length == 0">
+                        <div class="no-reviews">You Have no reviews</div>
+                    </div>
+                    <div class="reviews-cont" ng-if="user.reviews.length > 0">
+
+                        <div class="review-count-and-stars">
+                            <div class="stars">
+                                You are a {{user.rating}} stars user
+                            </div>
+                            <div class="review-count">
+                                You have {{user.reviews.length}} reviews:
+                            </div>
                         </div>
-                        <div class="request-status" ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">Pending</div>
-                        <div class="request-status" ng-if="request.requestInfo.status == 1">Confirmed</div>
-                        <div class="request-status btn-primary confirm {{saving?'disabled':''}}" ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id" ng-click="confirmRequest(request.requestInfo)">Confirm</div>
+                        <div class="reviews-scroll">
+                            <div class="row comments-show"
+                                 ng-repeat="commenter in user.reviews">
+                                <review-elm commenter="commenter"></review-elm>
+                                <hr style="clear: both;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fav-tab" ng-if="activeTab == 'homes-i-like'">
+
+                    <div ng-if="user.favorites.length == 0">
+                        <div class="no-reviews">You have no saved homes</div>
+                    </div>
+                    <div class="favorite-cont" ng-if="user.favorites.length > 0">
+
+                        <div class="fav-scroll">
+                            <div class="favorites-show"
+                                 ng-repeat="favorite in likedHomes">
+
+                                <swapper-home class="col-xs-6" traveler="favorite"></swapper-home>
+                                <div class="clearfix visible-xs"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-     </div>
-     <div id="requestModal" class="modal fade" role="dialog">
-         <div class="modal-dialog">
-             <div class="modal-content">
-                 <div class="send-request">
-                     <div class="title">
-                         Request to swap with {{currentMessager.name}}
-                     </div>
-                     <label class="control-label">When</label>
-                     <div class="dates">
-                         <input class="form-control" type="text" name="datefilter" placeholder="When" ng-model="swap.dates"/>
-                         <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                     </div>
-                     <div class="modal-footer">
-                         <input type="button" class="btn btn-primary fll btn-swap" data-dismiss="modal" value="Swap" ng-click="sendRequest()">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
+        <div id="requestModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="send-request">
+                        <div class="title">
+                            Request to swap with {{currentMessager.name}}
+                        </div>
+                        <label class="control-label">When</label>
+                        <div class="dates">
+                            <input class="form-control" type="text" name="datefilter" placeholder="When"
+                                   ng-model="swap.dates"/>
+                            <span class="date-calendar"><i
+                                    class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-primary fll btn-swap" data-dismiss="modal" value="Swap"
+                                   ng-click="sendRequest()">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

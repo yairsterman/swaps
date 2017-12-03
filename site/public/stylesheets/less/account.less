@@ -456,6 +456,85 @@
 				}
 			}
 	    }
+
+      .favorite-cont {
+        height: 500px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        .fav-scroll {
+          .favorites-show {
+            margin-top: 1%;
+          }
+        }
+      }
+		.reviews-cont {
+
+            .review-count-and-stars {
+
+              .stars {
+                text-align: center;
+                font-size: 32px;
+
+                @media (max-width: @screen-xs-max) {
+                  font-size: 18px;
+                }
+              }
+              .review-count {
+                font-size: 20px;
+                color: #b08e6c;
+              }
+
+            }
+
+			.comments-show {
+				margin: 2%;
+				
+					.commenter-photo {
+						height: 70px;
+						width: 70px;
+						border-radius: 50%;
+						background-position: center;
+						background-repeat: no-repeat;
+						background-size: cover;
+
+						@media (max-width: @screen-xs-max) {
+							height: 50px;
+							width: 50px;
+							float: left;
+							margin-right: 7%;
+						}
+					}
+                    .review-stars {
+                      float: right;
+                      display: inline-flex;
+                    }
+					.commenter-name {
+						font-size: 120%;
+						font-weight: bold;
+						color: #0E5D7C;
+						margin-bottom: 2%;
+					}
+					.commenter-country-and-age {
+						color: #616161;
+						font-size: 120%;
+						margin-bottom: 2%;
+					}
+					.commenter-comment {
+						color: #616161;
+						letter-spacing: 0.2px;
+						margin-bottom: 2%;
+					}
+
+					.separator {
+						padding-bottom: 12%;
+						margin: 2% 0;
+					}
+
+			}
+
+		}
+
 		.things-col{
 			display: flex;
 			flex-wrap: wrap;

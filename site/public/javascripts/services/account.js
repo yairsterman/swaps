@@ -63,4 +63,47 @@ swapsApp.service('AccountService', function($http){
         });
    };
 
+
+
+
+    this.addFavorite = function(favorite) {
+        return $http.put('/account/add-favorite', {favorite: favorite}).then(function(data){
+                return data.data;
+            },
+            function(){
+                console.log("error");
+            });
+    };
+
+
+    this.removeFavorite = function(id) {
+        return $http.put('/account/unset-favorite', {id: id}).then(function(data){
+                return data.data;
+            },
+            function(){
+                console.log("error");
+            });
+    };
+
+
+    this.isFavorite = function(id) {
+        var query = "?id=" + id;
+        return $http.get('/account/is-favorite' + query)
+            .then(function(data) {
+                return data.data;
+            }, function(){
+                console.log("Is-favorite error");
+            })
+    };
+
+
+    this.getFavorites = function() {
+        return $http.get('/account/get-favorites')
+            .then(function(data) {
+                return data.data;
+            }, function (){
+                console.log("Get-favorites error");
+            })
+    }
+
 });

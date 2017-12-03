@@ -75,6 +75,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 }
             }, 100);
         }
+        if($scope.activeTab == 'homes-i-like'){
+            AccountService.getFavorites().then(function(data) {
+                $scope.likedHomes = data;
+            });
+        }
     });
 
     $scope.go = function(path){
