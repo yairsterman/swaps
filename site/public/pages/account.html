@@ -390,6 +390,15 @@
                     </div>
                     <div class="reviews-cont" ng-if="user.reviews.length > 0">
 
+                        <div class="review-count-and-stars">
+                            <div class="stars">
+                                You are a {{user.rating}} stars user
+                            </div>
+                            <div class="review-count">
+                                You have {{user.reviews.length}} reviews:
+                            </div>
+                        </div>
+
                         <div class="reviews-scroll">
                             <div class="row comments-show"
                                  ng-repeat="commenter in user.reviews">
@@ -415,14 +424,11 @@
                     <div class="favorite-cont" ng-if="user.favorites.length > 0">
 
                         <div class="fav-scroll">
-                            <!--likedHomes = {{likedHomes}}-->
-                            <div class="row favorites-show"
+                            <div class="favorites-show"
                                  ng-repeat="favorite in likedHomes">
 
-                                <!--{{favorite}}-->
-                                <swapper-home traveler="favorite" style="margin: 2%;"></swapper-home>
-
-                                <hr style="clear: both;">
+                                <swapper-home class="col-xs-6" traveler="favorite"></swapper-home>
+                                <div class="clearfix visible-xs"></div>
                             </div>
                         </div>
 

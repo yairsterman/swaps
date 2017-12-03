@@ -407,8 +407,6 @@ router.put('/add-favorite', function (req, res, next) {
     var id = req.user.id;
     var newFavorite = req.body.favorite;
 
-    console.log("Got a PUT request on /account/add-favorite");
-
 
     User.update({_id: id}, {
 
@@ -421,8 +419,6 @@ router.put('/add-favorite', function (req, res, next) {
                 error.message = err;
                 res.json(error);
             } else {
-                console.log("\t\t\t\tNEW FAV: " + JSON.stringify(newFavorite));
-
                 res.json(user);
             }
         });
@@ -456,6 +452,7 @@ router.get('/is-favorite', function(req, res, next) {
 //  This one is causing some warnings, but we need it.
 var ObjectID     = require('mongodb').ObjectID;
 
+
 router.get('/get-favorites', function (req, res, next) {
 
     var favs = req.user.favorites;
@@ -473,7 +470,7 @@ router.get('/get-favorites', function (req, res, next) {
 
     User.find({ '_id': { $in: ids } }, function(err, users) {
         if(err) {
-            console.log("ERROR IN ARR error = " + err);
+            console.log("ERROR IN GET FAVORITES. error = " + err);
             error.message = err;
         } else {
             addToFavs(users);
@@ -484,11 +481,9 @@ router.get('/get-favorites', function (req, res, next) {
 
 
 router.put('/unset-favorite', function (req, res, next) {
-    console.log("INSIDE UNSER FAVS");
+
     var user = req.user;
     var toDelete = req.body.id;
-
-    console.log("Line 490");
 
     User.update(
         { _id: user._id },

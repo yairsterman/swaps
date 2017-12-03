@@ -181,19 +181,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         return ret;
     };
 
-    // $scope.isFavoriteFlag = false;
-    // $scope.isFavorite = function() {
-    //     if (!$scope.isFavoriteFlag) {
-    //         $scope.innerIsFavorite();
-    //         $scope.isFavoriteFlag = true;
-    //     }
-    // };
-    //
-    // $scope.innerIsFavorite = function() {
-    //     var ans = AccountService.isFavorite($scope.profile._id);
-    //     console.log("Got ans = " + JSON.stringify(ans));
-    //     return ans;
-    // };
+
     $scope.isFavorite = function() {
         if($rootScope.user) {
             for (var i = 0; i < $rootScope.user.favorites.length; ++i) {
@@ -206,14 +194,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     };
 
     $scope.addToFavorites = function() {
-        var favorite = {
-            _id: $scope.profile._id
-            // displayName: $scope.profile.displayName,
-            // email: $scope.profile.email,
-            // image: $scope.profile.image,
-            // country: $scope.profile.country,
-            // city: $scope.profile.city
-        };
+        var favorite = {_id: $scope.profile._id};
+
         AccountService.addFavorite(favorite);
     };
 

@@ -460,14 +460,32 @@
       .favorite-cont {
         height: 500px;
         overflow-y: scroll;
+        overflow-x: hidden;
 
         .fav-scroll {
           .favorites-show {
-            margin: 2%;
+            margin-top: 1%;
           }
         }
       }
 		.reviews-cont {
+
+            .review-count-and-stars {
+
+              .stars {
+                text-align: center;
+                font-size: 32px;
+
+                @media (max-width: @screen-xs-max) {
+                  font-size: 18px;
+                }
+              }
+              .review-count {
+                font-size: 20px;
+                color: #b08e6c;
+              }
+
+            }
 
 			.comments-show {
 				margin: 2%;
@@ -487,6 +505,10 @@
 							margin-right: 7%;
 						}
 					}
+                    .review-stars {
+                      float: right;
+                      display: inline-flex;
+                    }
 					.commenter-name {
 						font-size: 120%;
 						font-weight: bold;
