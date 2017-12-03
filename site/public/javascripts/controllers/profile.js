@@ -181,18 +181,28 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         return ret;
     };
 
-    $scope.isFavoriteFlag = false;
+    // $scope.isFavoriteFlag = false;
+    // $scope.isFavorite = function() {
+    //     if (!$scope.isFavoriteFlag) {
+    //         $scope.innerIsFavorite();
+    //         $scope.isFavoriteFlag = true;
+    //     }
+    // };
+    //
+    // $scope.innerIsFavorite = function() {
+    //     var ans = AccountService.isFavorite($scope.profile._id);
+    //     console.log("Got ans = " + JSON.stringify(ans));
+    //     return ans;
+    // };
     $scope.isFavorite = function() {
-        if (!$scope.isFavoriteFlag) {
-            $scope.innerIsFavorite();
-            $scope.isFavoriteFlag = true;
+        if($rootScope.user) {
+            for (var i = 0; i < $rootScope.user.favorites.length; ++i) {
+                if ($rootScope.user.favorites[i]._id == $scope.profile._id) {
+                    return true;
+                }
+            }
         }
-    };
-
-    $scope.innerIsFavorite = function() {
-        var ans = AccountService.isFavorite($scope.profile._id);
-        console.log("Got ans = " + JSON.stringify(ans));
-        return ans;
+        return false;
     };
 
     $scope.addToFavorites = function() {

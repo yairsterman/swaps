@@ -42,13 +42,13 @@
                     <div class="favorite">
 
                         <!--NEED TO ADD:  ng-if="user && !isFavorite()"   -->
-                        <div class="btn btn-primary btn-swap share-btn" ng-click="addToFavorites()">
+                        <div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">
                             <div class="icon icon-like sharing"></div>
                             Save
                         </div>
 
                         <!--NEED TO ADD:  ng-if="user && isFavorite()"   -->
-                        <div class="btn btn-primary btn-swap share-btn"  ng-click="removeFromFavorites()">
+                        <div class="btn btn-primary btn-swap share-btn" ng-if="isFavorite()" ng-click="removeFromFavorites()">
                             <div class="icon icon-like sharing"></div>
                             Unsave
                         </div>
