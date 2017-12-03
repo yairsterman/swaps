@@ -87,11 +87,15 @@
 		overflow-y: scroll;
 		height: 46vw;
 		padding: 0;
+		transition: 0.4s ease;
 		@media (max-width: @screen-sm-max) {
 			height: 36vw;
 		}
 		@media (max-width: @screen-xs-max) {
 			height: 80vw;
+		}
+		&.loading{
+			background-color: rgba(0,0,0,0.2);
 		}
 		.traveler-col{
 			padding: 5px;
