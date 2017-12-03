@@ -1,16 +1,15 @@
 <!--The directive for profile page:-->
 
-<div ng-if="isProfile" class="col-md-2 dead-space"></div>
 <div ng-if="isProfile" class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
 </div>
-<div ng-if="isProfile" class="col-md-8 commenter-comment-section">
+<div ng-if="isProfile" class="col-md-10 commenter-comment-section">
 
     <div class="review-stars">
-        <span class="icon icon-star-large"></span>
-        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
-        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
-        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
-        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+        <span class="icon icon-star"></span>
+        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
     </div>
 
     <div class="commenter-name">{{commenter.name}}</div>
@@ -32,11 +31,11 @@
 <div ng-if="!isProfile" class="col-md-10 commenter-comment-section">
 
     <div class="review-stars">
-        <span class="icon icon-star-large"></span>
-        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
-        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
-        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
-        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+        <span class="icon icon-star"></span>
+        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
     </div>
 
     <div class="commenter-name">{{commenter.name}}</div>

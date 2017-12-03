@@ -99,6 +99,11 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 		window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
 	};
 
+    $scope.removeDates = function(){
+        $rootScope.search.when = undefined;
+        $rootScope.search.date = undefined;
+    }
+
 	function codeLatLng(lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({'latLng': latlng}, function(results, status) {

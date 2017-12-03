@@ -160,6 +160,11 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     };
 
 
+    $scope.removeDates = function(){
+        $rootScope.search.when = undefined;
+        $rootScope.search.date = undefined;
+    }
+
     var fixmeTop;     // get initial position of the element
 
     var elementsReady = $interval(function() {

@@ -19,6 +19,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     	$scope.profile = data.data;
         $scope.age = getAge($scope.profile.birthday);
     	setPhotoGalery();
+    	setMapRadius()
     	if($scope.user._id){
             var requests = $scope.user.requests.map(function(request){
                 return request.userId;
@@ -183,7 +184,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
 
     $scope.isFavorite = function() {
-        if($rootScope.user) {
+        if($rootScope.user._id && $scope.profile && $scope.profile._id) {
             return $rootScope.user.favorites.includes($scope.profile._id);
         }
         return false;
@@ -213,5 +214,28 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.user = $rootScope.user;
         });
     };
+
+    function setMapRadius(){
+        var mapOptions = {
+            zoom: 14,
+            center: {lat:parseFloat($scope.profile.location.lat), lng:parseFloat($scope.profile.location.long)},
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false,
+            scrollwheel: false
+        };
+
+        $scope.map = new google.maps.Map(document.getElementById('cityMap'), mapOptions);
+
+        $scope.cityCircle = new google.maps.Circle({
+            strokeColor: '#0E5D7C',
+            strokeOpacity: 0.8,
+            strokeWeight: 0.5,
+            fillColor: '#0E5D7C',
+            fillOpacity: 0.35,
+            map: $scope.map,
+            center: {lat:parseFloat($scope.profile.location.lat), lng:parseFloat($scope.profile.location.long)},
+            radius: 500
+        });
+    }
 
 });
