@@ -19,7 +19,7 @@
                                                                                       ng-click="go('account/reviews')">Reviews</a>
                     </li>
                     <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
-                                                                                           ng-click="homeILikeClick()">Homes
+                                                                                           ng-click="homesILikeClick()">Homes
                         I Like</a></li>
                 </ul>
             </div>
@@ -412,14 +412,15 @@
                     <div ng-if="user.reviews.length == 0">
                         <div class="no-reviews">You have no favorites</div>
                     </div>
-                    <div class="reviews-cont" ng-if="user.favorites.length > 0">
+                    <div class="favorite-cont" ng-if="user.favorites.length > 0">
 
                         <div class="fav-scroll">
+                            <!--likedHomes = {{likedHomes}}-->
                             <div class="row favorites-show"
                                  ng-repeat="favorite in likedHomes">
 
                                 <!--{{favorite}}-->
-                                {{favorite}}
+                                <swapper-home traveler="favorite" style="margin: 2%;"></swapper-home>
 
                                 <hr style="clear: both;">
                             </div>

@@ -452,31 +452,22 @@ router.get('/is-favorite', function(req, res, next) {
     });
 });
 
+
+//  This one is causing some warnings, but we need it.
 var ObjectID     = require('mongodb').ObjectID;
 
 router.get('/get-favorites', function (req, res, next) {
-    // var id = req.user._id;
-    // console.log("GOT GET_FAVORITES REQUEST!!!*****************************************");
-    var favs = req.user.favorites;
 
-    // var ids = [];
+    var favs = req.user.favorites;
 
     var ids = favs.map(function(fave) {
         return ObjectID(String(fave._id));
     });
 
-    // for (var i = 0; i < favs.length; ++i) {
-    //     ids.push(ObjectID(favs[i]._id));
-    //     console.log("Pushing " + favs[i] +" as " + ObjectId(favs[i]._id));
-    // }
-
-    // console.log("\n\nIDs: " + ids + "\n\n" + "favs = " + favs + "\n\n");
-
     var favorites = [];
 
     function addToFavs(users) {
         favorites = users;
-        // console.log("SENDING FAVORITES!\n\n The favorites: " + JSON.stringify(favorites) + "\n\n");
         res.json({favorites: favorites});
     }
 
@@ -489,63 +480,31 @@ router.get('/get-favorites', function (req, res, next) {
         }
     });
 
-    // User.findOne({_id: id}, function (err, user) {
-    //     if (err) {
-    //         error.message = err;
-    //         res.json(error);
-    //     } else {
-    //         console.log("GETTING FAVORITES! " + JSON.stringify(user.favorites));
-    //         // res.json(user.favorites);
-    //         // var done = false;
-    //
-    //         for (var i = 0; i < user.favorites.length; ++i) {
-    //             User.findOne({_id: user.favorites[i]._id}, function(arrErr, fav) {
-    //                 if(arrErr) {
-    //                     console.log("ERROR IN ARR error = " + arrErr);
-    //                     error.message = arrErr;
-    //                 } else {
-    //                     console.log("FOUND A USER MATCH");//: " + JSON.stringify(fav));
-    //                     favorites.push({i: fav});
-    //                     console.log("CURRENT FAVORITES: " + favorites);
-    //                 }
-    //             });
-    //             if (i == user.favorites.length - 1) {
-    //                 done = true;
-    //             } else {
-    //                 console.log("i = " + i + ", and length = " + user.favorites.length);
-    //             }
-    //         }
-    //
-    //
-    //         // while (!done) {}
-    //         // console.log("SENDING FAVORITES!\n\n The favorites: " + favorites + "\n\n");
-    //         // res.json({favorites: favorites});
-    //
-    //     }
-    // });
-
-    // for (var i = 0; i < favs.length; ++i) {
-    //     User.findOne({_id: favs[i]._id}, function(arrErr, fav) {
-    //         if(arrErr) {
-    //             console.log("ERROR IN ARR error = " + arrErr);
-    //             error.message = arrErr;
-    //         } else {
-    //             console.log("FOUND A USER MATCH");//: " + JSON.stringify(fav));
-    //             favorites.push(fav);
-    //             // console.log("CURRENT FAVORITES: " + favorites);
-    //         }
-    //     });
-    //     // if (i == user.favorites.length - 1) {
-    //     //     done = true;
-    //     // } else {
-    //     //     console.log("i = " + i + ", and length = " + user.favorites.length);
-    //     // }
-    // }
-
-    // while (!done) {}
-    // console.log("SENDING FAVORITES!\n\n The favorites: " + JSON.stringify(favorites) + "\n\n");
-    // res.json({favorites: favorites});
 });
 
+
+router.put('/unset-favorite', function (req, res, next) {
+    console.log("INSIDE UNSER FAVS");
+    var user = req.user;
+    var toDelete = req.body.id;
+
+    console.log("Line 490");
+
+    User.update(
+        { _id: user._id },
+        { $pull: { 'favorites': { _id: toDelete } } }, function(err, ans) {
+            if (err) {
+                console.log("ERROR IN DELETING FAV");
+                res.json({error: err});
+            } else {
+                console.log("FOUND!");
+                res.json(user);
+            }
+
+
+        }
+    );
+
+});
 
 module.exports = router;

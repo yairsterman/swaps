@@ -312,21 +312,30 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
     }
 
+    $scope.likedHomes = null;
 
-    $scope.likedHomes = [];
     $scope.getFavorites = function() {
-        AccountService.getFavorites().then(function(data) {
-            $scope.likedHomes = data.favorites;
-            console.log("DATA.FAVS === " + data.favorites);
+        if ($scope.likedHomes != null)
             return $scope.likedHomes;
+
+        AccountService.getFavorites().then(function(data) {
+            // $scope.likedHomes = data.favorites;
+            // console.log("DATA.FAVS === " + data.favorites);
+            // return $scope.likedHomes;
+            // console.log(JSON.stringify(data.favorites));
+            $scope.likedHomes = data.favorites;
+            return data.favorites;
         });
         // console.log("LikedHomes = " + JSON.stringify($scope.likedHomes));
     };
 
+
     // $scope.getFavorites();
 
-    $scope.homeILikeClick = function() {
-        $scope.getFavorites();
+    $scope.homesILikeClick = function() {
+        $scope.likedHomes = $scope.getFavorites();
+        console.log($scope.likedHomes);
+        // $scope.getFavorites();
         $scope.go('account/homes-i-like');
     }
 

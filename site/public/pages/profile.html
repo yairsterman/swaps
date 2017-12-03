@@ -40,10 +40,20 @@
                 <!--</div>-->
                 <div class="swap">
                     <div class="favorite">
-                        <div class="btn btn-primary btn-swap share-btn" ng-if="user && !isFavorite()" ng-click="addToFavorites()">
+
+                        <!--NEED TO ADD:  ng-if="user && !isFavorite()"   -->
+                        <div class="btn btn-primary btn-swap share-btn" ng-click="addToFavorites()">
                             <div class="icon icon-like sharing"></div>
                             Save
                         </div>
+
+                        <!--NEED TO ADD:  ng-if="user && isFavorite()"   -->
+                        <div class="btn btn-primary btn-swap share-btn"  ng-click="removeFromFavorites()">
+                            <div class="icon icon-like sharing"></div>
+                            Unsave
+                        </div>
+
+
                         <div class="btn btn-primary btn-swap share-btn" ng-click="share()">
                             <div class="icon icon-mail sharing"></div>
                             Share
