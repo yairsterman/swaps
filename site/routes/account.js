@@ -148,8 +148,8 @@ router.post('/add-travel-info', function (req, res, next) {
     var where = info.destination ? info.destination.split(',')[0] : null;
     var guests = info.guests;
     var dates = info.when ? info.when.split('-') : null;
-    var departure = dates ? Date.parse(dates[0].trim()) : undefined;
-    var returnDate = dates ? Date.parse(dates[1].trim()) : undefined;
+    var departure = dates ? Date.parse(dates[0].trim()) : null;
+    var returnDate = dates ? Date.parse(dates[1].trim()) : null;
     var newInfo = {
         destination: where,
         departure: departure,

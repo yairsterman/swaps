@@ -1,5 +1,5 @@
 var acc = null;
-swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, AccountService, MessageService) {
+swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, AccountService, MessageService, UsersService) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
     $scope.homepage = false;
@@ -196,21 +196,22 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.setSwap = function(message){
-        $scope.currentMessager = message;
-        // $('#requestModal').modal('show');
-        $('#paymentModal').modal('show');
-        $('input[name="datefilter"]').daterangepicker({
-            autoApply: true,
-            opens: 'center',
-            minDate: "05/08/2017",
-            maxDate: "05/14/2017",
-            startDate: "05/08/2017",
-            endDate: "05/14/2017"
+        UsersService.getProfile(message.id).then(function(data){
+            $scope.profile = data.data;
+            $scope.chooseDates = true
+            $scope.modelInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '../../directives/request/request.html',
+                size: 'sm',
+                controller: 'requestController',
+                scope: $scope
+            });
         });
     }
+
     $scope.sendRequest = function(){
         var request = '##!REQUEST!##';
-        var dates = $scope.swap.dates
+        var dates = $scope.swap.dates;
         console.log($scope.swap.dates);
         $scope.swap.dates = null;
         // var user = {_id:"58f7324594b427e59aec391b",image:"http://localhost:3000/images/static/profile5.jpg",firstName:"Marisha",lastName:"Natarajan"};
@@ -240,6 +241,13 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             return;
         }
         $scope.saving = true;
+        if(!requestInfo.userId){ //this means the confirm was sent from message
+            requestInfo = $scope.getRequest(requestInfo.id);
+            if(!requestInfo){
+                $scope.saving = false;
+                return;
+            }
+        }
         MessageService.confirmRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
             if(data.data.error){
                 console.log("error");

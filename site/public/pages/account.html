@@ -341,7 +341,7 @@
                                        class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
                                        value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
                                        ng-disabled="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1"
-                                       ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):swap()">
+                                       ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):setSwap(currentConversation)">
                                 <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
                                 <input type="button" class="btn btn-primary btn-send" value="Send"
@@ -419,29 +419,6 @@
                                 <swapper-home class="col-xs-6" traveler="favorite"></swapper-home>
                                 <div class="clearfix visible-xs"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="requestModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="send-request">
-                        <div class="title">
-                            Request to swap with {{currentMessager.name}}
-                        </div>
-                        <label class="control-label">When</label>
-                        <div class="dates">
-                            <input class="form-control" type="text" name="datefilter" placeholder="When"
-                                   ng-model="swap.dates"/>
-                            <span class="date-calendar"><i
-                                    class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-primary fll btn-swap" data-dismiss="modal" value="Swap"
-                                   ng-click="sendRequest()">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

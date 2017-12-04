@@ -8,15 +8,14 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     $scope.payment = false;
-    $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit].value;
-    $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-    $scope.percentage = {name:'4%', amount:0.04};
-    $scope.totalWithoutDiscount = $scope.depositPlan * $scope.numberOfWeeks * $scope.percentage.amount;
-    $scope.discount.amount = $scope.totalWithoutDiscount;
-    $scope.total = $scope.totalWithoutDiscount - $scope.discount.amount;
-
 
     $scope.showPayment = function(){
+        $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit].value;
+        $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
+        $scope.percentage = {name:'4%', amount:0.04};
+        $scope.totalWithoutDiscount = $scope.depositPlan * $scope.numberOfWeeks * $scope.percentage.amount;
+        $scope.discount.amount = $scope.totalWithoutDiscount;
+        $scope.total = $scope.totalWithoutDiscount - $scope.discount.amount;
         $scope.receipt = true;
     }
 
@@ -51,6 +50,28 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         function(err){
             $scope.processing = false;
         });
+    }
+
+    $scope.openDate = function(){
+        $('input[name="dates"]').daterangepicker({
+            autoApply: true,
+            opens: 'left',
+            locale: {
+                format: 'MM/DD/YYYY'
+            },
+            minDate: new Date().toLocaleDateString(),
+        });
+        $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+            $scope.$apply();
+        });
+    }
+
+    $scope.removeDates = function(swap){
+        $scope.swap.dates = undefined;
+        $scope.swap.from = undefined;
+        $scope.swap.to = undefined;
     }
 
     $scope.goBack = function(){

@@ -321,13 +321,13 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
         .then(function (sender) {
             if (!sender._id){
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else {
                 var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
                 if(requestIndex == -1){
                     error.message = "no request found";
-                    deferd.reject(error);
+                    throw new Error(error.message);
                 }
                 else{
                     sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
@@ -338,7 +338,7 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
         .then(function (updated) {
             if (!updated.ok) {
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else {
                 return User.findOne({_id: recipientId});
@@ -347,13 +347,13 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
         .then(function(recipient){
             if (!recipient._id){
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else{
                 var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
                 if(requestIndex == -1){
                     error.message = "no request found";
-                    deferd.reject(error);
+                    throw new Error(error.message);
                 }
                 else{
                     recipient.requests[requestIndex].status = Data.getRequestStatus().canceled;
@@ -365,13 +365,15 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
             if (!updated.ok){
                 console.log("Request not sent" + err);
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else{
                 console.log("updated DB");
                 deferd.resolve();
             }
-        });
+        },function(err){
+            deferd.reject(err);
+		});
     return deferd.promise;
 }
 
@@ -381,13 +383,13 @@ function markedMessageRead(senderId, recipientId){
         .then(function (sender) {
             if (!sender._id){
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else {
                 var messageIndex = findMessage(sender.messages, recipientId);
                 if(messageIndex == -1){
                     error.message = "no request found";
-                    deferd.reject(error);
+                    throw new Error(error.message);
                 }
                 else{
                     sender.messages[messageIndex].read = true;
@@ -398,7 +400,7 @@ function markedMessageRead(senderId, recipientId){
         .then(function (updated) {
             if (!updated.ok) {
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else {
                 return User.findOne({_id: recipientId});
@@ -407,13 +409,13 @@ function markedMessageRead(senderId, recipientId){
         .then(function(recipient){
             if (!recipient._id){
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else{
                 var messageIndex = findMessage(recipient.messages, senderId);
                 if(messageIndex == -1){
                     error.message = "no request found";
-                    deferd.reject(error);
+                    throw new Error(error.message);
                 }
                 else{
                     recipient.messages[messageIndex].read = true;
@@ -425,13 +427,15 @@ function markedMessageRead(senderId, recipientId){
             if (!updated.ok){
                 console.log("Request not sent" + err);
                 error.message = "Request not sent";
-                deferd.reject(error);
+                throw new Error(error.message);
             }
             else{
                 console.log("updated DB");
                 deferd.resolve();
             }
-        });
+        },function(err){
+            deferd.reject(err);
+		});
     return deferd.promise;
 }
 

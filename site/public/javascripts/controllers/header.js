@@ -96,6 +96,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     });
 
 	$scope.FBLogin = function(){
+		// window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
 		window.popup = window.open('http://swapshome.com:3000/auth/facebook', 'newwindow', 'width=640, height=400');
 	};
 
