@@ -28,7 +28,7 @@
 		    <!-- <form class="form-inline my-2 my-lg-0">
 		      <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
 		    </form> -->
-            <div class="login sign-up" data-toggle="modal" data-target="#aboutModal">
+            <div class="login sign-up" ng-click="go('how-it-works')">
                 How it Works
                 <div class="underlined"></div>
             </div>
@@ -36,11 +36,11 @@
                 Set up Swap
                 <div class="underlined"></div>
             </div>
-            <div class="login sign-up" data-toggle="modal" data-target="#signUpModal" ng-hide="user._id">
+            <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
                 Join
                 <div class="underlined"></div>
             </div>
-		    <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
+		    <div class="login" ng-click="openLogin()" ng-hide="user._id">
 		    	Log In
                 <div class="underlined"></div>
             </div>
@@ -82,62 +82,10 @@
   </div>
 </div>
 
-<div id="aboutModal" class="modal fade" role="dialog">
-<div class="modal-dialog">
-    <div class="modal-content">
-
-        <div class="container about-text">
-
-            <div class="about-inner-text"><span class="swaps-text h1 bg-primary">Swaps</span> is an awesome modern way to travel around the globe,
-            switching houses and not worrying whether your house is on-fire or not
-        </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-
-    </div>
-</div>
-</div>
-
 <div id="swapModel" class="modal fade" role="dialog" ng-if="user._id">
     <div class="modal-dialog large-model">
         <div class="modal-content">
             <swaps swaps="user.travelingInfo" popup="true"></swaps>
-        </div>
-    </div>
-</div>
-
-<div id="flyNowModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="fly-now-model">
-                <div class="title">
-                    Enter your travel information
-                </div>
-                <div class="travel-info">
-                    <label class="control-label">Where</label>
-                    <div class="where input-field">
-                        <input class="form-control" type="text" id="where" placeholder="Anywhere" ng-model="fly.where">
-                    </div>
-                    <label class="control-label">When</label>
-                    <div class="dates input-field">
-                        <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="fly.date"/>
-                        <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                    </div>
-                    <label class="control-label">Guests</label>
-                    <div class="guests input-field">
-                        <input class="form-control" type="number" placeholder="1" min="1" max="8" ng-model="fly.guests">
-                    </div>
-                    <div class="advanced" ng-click="go('account/swap')">
-                        Advanced
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-fly" data-dismiss="modal" ng-click="saveTravelInfo()">Go!</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@ swapsApp.directive('swapperHome', function() {
         scope: {
           traveler: '='
         },
-        templateUrl: '../directives/swapper-home.html'
+        templateUrl: '../directives/swappers/swapper-home.html'
     }
 });
 

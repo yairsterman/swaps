@@ -6,7 +6,7 @@ swapsApp.directive('reviewElm', function() {
             commenter: '=',
             isProfile: '='
         },
-        templateUrl: '../directives/reviews.html'
+        templateUrl: './reviews.html'
     }
 });
 

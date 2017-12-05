@@ -111,7 +111,7 @@ router.get('/get-new-users', function(req, res, next) {
 });
 
 router.get('/get-user', function(req, res, next) {
-    var id = req.query.id;
+    var id = req.user._id;
 
     User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);

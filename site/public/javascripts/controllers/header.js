@@ -1,5 +1,5 @@
 var he = null;
-swapsApp.controller('headerController', function($scope, $rootScope, $location, $document, UsersService, AccountService, $interval) {
+swapsApp.controller('headerController', function($scope, $rootScope, $location, $document, UsersService, AccountService, $uibModal) {
 	he = $scope;
 	$scope.user = $rootScope.user;
 	$scope.homepage = $rootScope.homepage;
@@ -25,11 +25,25 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         $rootScope.$broadcast('geolocation-complete', {failed: true});
     }
 
-	var geocoder =  new google.maps.Geocoder();
+	// var geocoder =  new google.maps.Geocoder();
 
 	var address = {
       types: ['address']
     };
+
+    $scope.openLogin = function(signin){
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/login/login.html',
+            size: 'sm',
+            controller: 'loginController',
+            resolve: {
+                signin: function () {
+                    return signin;
+                }
+            },
+        });
+    }
 
     $scope.loginCallBack = function(userId){
 		UsersService.getUser(userId).then(function(data){
