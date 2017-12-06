@@ -25,7 +25,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         $rootScope.$broadcast('geolocation-complete', {failed: true});
     }
 
-	// var geocoder =  new google.maps.Geocoder();
+	var geocoder =  new google.maps.Geocoder();
 
 	var address = {
       types: ['address']
@@ -42,18 +42,9 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
                     return signin;
                 }
             },
+            scope:$scope
         });
     }
-
-    $scope.loginCallBack = function(userId){
-		UsersService.getUser(userId).then(function(data){
-			$rootScope.user = data.data;
-			$scope.user = $rootScope.user;
-			$rootScope.userCity = $scope.user.city;
-			$('#loginModal').modal('hide');
-			$rootScope.$broadcast('login-success');
-	    });
-    };
 
     $scope.searchSwap = function(){
         var where = $rootScope.search.where;
@@ -93,7 +84,6 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 
 	$scope.go = function(path){
         $(window).unbind('scroll');
-		$('#flyNowModal').modal('hide');
 	   $location.url('/' + path);
 	}
 
@@ -109,15 +99,16 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         console.log('Place has changed');
     });
 
-	$scope.FBLogin = function(){
-		// window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-		window.popup = window.open('http://swapshome.com:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-	};
 
     $scope.removeDates = function(){
         $rootScope.search.when = undefined;
         $rootScope.search.date = undefined;
     }
+
+    $scope.$on('login-success', function(event, args) {
+        $scope.user = $rootScope.user;
+        $rootScope.userCity = $scope.user.city;
+    });
 
 	function codeLatLng(lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);

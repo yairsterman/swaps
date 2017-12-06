@@ -11,6 +11,8 @@ var twitchStrategy = require("passport-facebook").Strategy;
 var less = require('less');
 var fs = require('fs');
 
+var emailService = require('./services/email');
+
 var index = require('./routes/index');
 var users = require('./routes/user');
 var account = require('./routes/account');
@@ -34,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ 
     secret: '1234567890',
-    cookie: { maxAge: 600000 },
+    cookie: { maxAge: 3600000 },
     resave: true,
     saveUninitialized: false}));
 app.use(passport.initialize());
@@ -74,6 +76,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error.html');
 });
+
+emailService.init();
 
 app.listen(3000);
 

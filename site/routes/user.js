@@ -73,13 +73,14 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
     }
 });
 
-router.get('/all-users', function(req, res, next) {
-    User.find({}, {username:true}, function (err, users) {
-        if (err) return next(err);
-
-        console.log(users);
-        res.json(users);
-    });
+router.get('/get-all-users', function(req, res, next) {
+    var params = {};
+    setRequiredParams(params);
+    User.find(params, Data.getVisibleUserData().accessible).limit(10)
+        .exec(function (err, users) {
+            if (err) return next(err);
+            res.json({users: users});
+        });
 });
 
 router.get('/get-featured-users', function(req, res, next) {
@@ -99,11 +100,10 @@ router.get('/get-featured-users', function(req, res, next) {
 router.get('/get-new-users', function(req, res, next) {
     var params = {};
     setRequiredParams(params);
-    params = {rating: {$gt: 4}, traveling:true};
     if(req.user){
         params['reviews.0'] = {$exists: false};
     }
-    User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
+    User.find(params, Data.getVisibleUserData().accessible).limit(3)
         .exec(function (err, users) {
             if (err) return next(err);
             res.json({users: users});

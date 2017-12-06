@@ -1,5 +1,5 @@
 var ho = null;
-swapsApp.controller('homeController', function($scope, $rootScope, $location, $window, $document,$timeout, $interval, UsersService) {
+swapsApp.controller('homeController', function($scope, $rootScope, $location, $window, $document,$timeout, $interval, $uibModal, UsersService) {
     ho = $scope;
     $scope.user = $rootScope.user;
     $scope.map = null;
@@ -107,14 +107,25 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             }
             else{
                 UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
-                    if(data.data.error){
+                    if(data.error){
                         console.log("error");
                         return;
                     }
-                    $scope.travelers = data.data.users;
+                    $scope.travelers = data.users;
                     $scope.swapperTitle = 'city';
                 });
             }
+        }
+        else{
+            UsersService.getNewUsers().then(function(data) {
+                if(data.data.error){
+                    console.log("error");
+                }
+                else{
+                    $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'new';
+                }
+            });
         }
     }
 
@@ -145,11 +156,11 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         }
         else{
             UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
-                if(data.data.error){
+                if(data.error){
                     console.log("error");
                     return;
                 }
-                $scope.travelers = data.data.users;
+                $scope.travelers = data.users;
                 $scope.swapperTitle = 'city';
             });
         }
@@ -163,6 +174,21 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.removeDates = function(){
         $rootScope.search.when = undefined;
         $rootScope.search.date = undefined;
+    }
+
+    $scope.openLogin = function(signin){
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/login/login.html',
+            size: 'sm',
+            controller: 'loginController',
+            resolve: {
+                signin: function () {
+                    return signin;
+                }
+            },
+            scope:$scope
+        });
     }
 
     var fixmeTop;     // get initial position of the element

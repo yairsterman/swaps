@@ -1,4 +1,4 @@
-// var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer');
 
 var transporter;
 

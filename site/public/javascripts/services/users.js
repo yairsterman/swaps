@@ -1,4 +1,4 @@
-swapsApp.service('UsersService', function($http){
+swapsApp.service('UsersService', function($http, $q){
 
    this.getUser = function(id) {
       return $http.get('user/get-user?id=' + id).then(function(data){
@@ -33,18 +33,24 @@ swapsApp.service('UsersService', function($http){
        if(filters.guests){
            requestFilters += '&guests=' + filters.guests;
        }
-       if(filters.dates){
-           requestFilters += '&dates=' + filters.dates;
+       if(filters.date){
+           requestFilters += '&dates=' + filters.date;
        }
 
-
+       var dfr = $q.defer();
       var query ='?dest=' + dest + fromCity + requestFilters + '&page=' + page;
-      return $http.get('user/get-user-by-travelingDest' + query).then(function(data){
-           return data;
+      $http.get('user/get-user-by-travelingDest' + query).then(function(data){
+          if(data.data && data.data.err){
+              dfr.reject({error: true, msg: data.data.err});
+          }
+          else{
+              dfr.resolve(data.data);
+          }
         },
         function(err){
-            return {error: true, msg: err};
+            dfr.reject({error: true, msg: err});
         });
+      return dfr.promise;
    };
 
     this.getFeaturedUsers = function() {
@@ -65,13 +71,14 @@ swapsApp.service('UsersService', function($http){
         });
     };
 
-   this.fbLogin = function() {
-      return $http.get('/auth/facebook/callback').then(function(data){
-           return data.data;
-        },
-        function(){
-             console.log("error")
-        });
-   };
+    this.getAllUsers = function() {
+        return $http.get('user/get-all-users').then(function(data){
+                return data;
+            },
+            function(err){
+                return {error: true, msg: err};
+            });
+    };
+
 
 });

@@ -19,12 +19,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     	$scope.profile = data.data;
         $scope.age = getAge($scope.profile.birthday);
     	setPhotoGalery();
-    	setMapRadius()
+    	setMapRadius();
     	if($scope.user._id){
-            var requests = $scope.user.requests.map(function(request){
-                return request.userId;
-            });
-            $scope.requestSent = requests.includes($scope.profile._id);
+            setUpMarkers();
+        }
+    	if($scope.user._id){
+            checkRequestSent();
+            findTravelInfo();
         }
     });
 
@@ -34,7 +35,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.openRequest = function(){
         if(!$rootScope.user._id){
-            $('#loginModal').modal('show');
+            $scope.openLogin();
         }
         else{
             $scope.modelInstance = $uibModal.open({
@@ -45,6 +46,21 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 scope: $scope
             });
         }
+    }
+
+    $scope.openLogin = function(signin){
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/login/login.html',
+            size: 'sm',
+            controller: 'loginController',
+            resolve: {
+                signin: function () {
+                    return signin;
+                }
+            },
+            scope:$scope
+        });
     }
 
     $scope.sendMessage = function(){
@@ -68,45 +84,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     $scope.openGallery = function(){
       $scope.methods.open();
     };
-
-
-    function setDates(){
-        if(!$scope.profile.travelingInfo || $scope.profile.travelingInfo.length == 0){
-            $scope.notSwapping = true;
-            $('input[name="swapDates"]').daterangepicker({
-                autoApply: true,
-                opens: 'left',
-                locale: {
-                    format: 'MM/DD/YYYY'
-                },
-                minDate: new Date().toLocaleDateString(),
-            });
-            $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-            });
-            return;
-        }
-        var startDate = new Date($scope.profile.travelingInfo[0].departure).toLocaleDateString();
-        var endDate = new Date($scope.profile.travelingInfo[0].returnDate).toLocaleDateString();
-        $scope.swap.from = $filter('date')($scope.profile.travelingInfo[0].departure, 'MMMM dd, yyyy');
-        $scope.swap.to = $filter('date')($scope.profile.travelingInfo[0].returnDate, 'MMMM dd, yyyy');
-        $('input[name="swapDates"]').daterangepicker({
-            autoApply: true,
-            opens: 'left',
-            locale: {
-                format: 'MM/DD/YYYY'
-            },
-            startDate: startDate,
-            endDate: endDate,
-            minDate: startDate,
-            maxDate: endDate
-        });
-        $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-        });
-    }
 
     var fixmeTop;     // get initial position of the element
 
@@ -165,23 +142,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
     }
 
-    //  Generates a boolean array of length 5 according to the rating:
-    //  5 stars will generate [true, true, true, true, true]
-    //  3 stars will generate [true, true, true, false, false] etc.
-    $scope.generateStars = function(rating) {
-        var ret = [];
-        var i = 1;
-        while (i <= rating) {
-            ret.push(true);
-            ++i;
-        }
-        while (i <= 5) {
-            ret.push(false);
-            ++i;
-        }
-        return ret;
-    };
-
+    $scope.$on('login-success', function(event, args) {
+        $scope.user = $rootScope.user;
+        checkRequestSent();
+        findTravelInfo();
+        setUpMarkers();
+    });
 
     $scope.isFavorite = function() {
         if($rootScope.user._id && $scope.profile && $scope.profile._id) {
@@ -192,7 +158,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.addToFavorites = function() {
         if(!$rootScope.user._id){
-            $('#loginModal').modal('show');
+            $scope.openLogin();
             return;
         }
         var favorite = $scope.profile._id;
@@ -214,6 +180,68 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.user = $rootScope.user;
         });
     };
+    
+    function checkRequestSent() {
+        var requests = $scope.user.requests.filter(function (request) {
+            return request.status != $scope.data.requestStatus.canceled;
+        });
+        requests = requests.map(function(request){
+            return request.userId;
+        });
+        $scope.requestSent = requests.includes($scope.profile._id);
+    }
+
+    function findTravelInfo(){
+        if($rootScope.userCity && $scope.profile.travelingInfo && $scope.profile.travelingInfo.length > 0){
+            for(var i = 0; i < $scope.profile.travelingInfo.length; i++){
+                if($scope.profile.travelingInfo[i].destination == $rootScope.userCity){
+                    setDates($scope.profile.travelingInfo[i].departure, $scope.profile.travelingInfo[i].returnDate)
+                    return;
+                }
+            }
+        }
+        else{
+            setDates();
+        }
+    }
+
+    function setDates(departure, returnDate){
+        if(!$rootScope.userCity || !$scope.profile.travelingInfo || $scope.profile.travelingInfo.length == 0){
+            $scope.notSwapping = true;
+            $('input[name="swapDates"]').daterangepicker({
+                autoApply: true,
+                opens: 'left',
+                locale: {
+                    format: 'MM/DD/YYYY'
+                },
+                minDate: new Date().toLocaleDateString(),
+            });
+            $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
+                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+            });
+            return;
+        }
+        var startDate = departure?new Date(departure).toLocaleDateString():false;
+        var endDate = returnDate?new Date(returnDate).toLocaleDateString():false;
+        $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
+        $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
+        $('input[name="swapDates"]').daterangepicker({
+            autoApply: true,
+            opens: 'left',
+            locale: {
+                format: 'MM/DD/YYYY'
+            },
+            startDate: startDate,
+            endDate: endDate,
+            minDate: startDate,
+            maxDate: endDate
+        });
+        $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
+            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+        });
+    }
 
     function setMapRadius(){
         var mapOptions = {
@@ -236,6 +264,58 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             center: {lat:parseFloat($scope.profile.location.lat), lng:parseFloat($scope.profile.location.long)},
             radius: 500
         });
+
+    }
+
+    function setUpMarkers(){
+        var service = new google.maps.places.PlacesService($scope.map);
+        $scope.user.thingsToDo.forEach(function(value){
+            var location = new google.maps.LatLng($scope.profile.location.lat, $scope.profile.location.long);
+            var name = $scope.data.thingsToDo[value].name;
+            var img = $scope.data.thingsToDo[value].img;
+            var request = {
+                location: location,
+                radius: '1500',
+                query: name,
+                rankBy: google.maps.places.RankBy.DISTANCE
+            };
+            service.textSearch(request, function (results, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    for (var i = 0; i < 4; i++) {
+                        createMarker(results[i], img);
+                    }
+                }
+            });
+        });
+
+    }
+
+    var infoWindow = new google.maps.InfoWindow();
+
+    var createMarker = function (info, img){
+
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: info.geometry.location,
+            animation: google.maps.Animation.DROP,
+            icon: {url:img, size:new google.maps.Size(50,50)},
+            title: info.address,
+            optimized: false
+        });
+
+        marker.id = info.id;
+
+        // marker.content = '<img src=' + info.photos[0].getUrl() + '></img>' + '<div>' + info.name + '</div>';
+
+        google.maps.event.addListener(marker, 'mouseover', function(event){
+            infoWindow.setContent(info.name);
+            infoWindow.open($scope.map, this);
+        });
+
+        google.maps.event.addListener(marker, 'mouseout', function(){
+            infoWindow.close($scope.map, marker);
+        });
+
     }
 
 });

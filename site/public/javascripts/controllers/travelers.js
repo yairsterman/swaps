@@ -278,9 +278,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.filter.amenities = $scope.checkedAmenities;
         $scope.filter.room = $scope.checkedRoomTypes;
         UsersService.getUserByTravelingDest($rootScope.userCity, $scope.city, page, $scope.filter).then(function(data){
-            var travelers = data.data.users;
-            $scope.totalUsers = data.data.total;
-            $scope.page = parseInt(data.data.page);
+            var travelers = data.users;
+            $scope.totalUsers = data.total;
+            $scope.page = parseInt(data.page);
             angular.forEach(travelers, function(value, key) {
                 var location = value.location;
                 var image = value.image;
@@ -301,6 +301,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
           $scope.travelers = travelers;
           countPages();
           $scope.loading = false;
+        },function(){
+            //error message
         });
     }
 

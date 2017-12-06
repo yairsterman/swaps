@@ -62,19 +62,19 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }, 100);
 
     $scope.$watch('activeTab', function(oldVal, newVal){
-        if($scope.activeTab == 'listing'){
-            var elementsReady = $interval(function() {
-                var input = $document[0].getElementById('address');
-                if (input && $scope.edit) {
-                    autocomplete = new google.maps.places.Autocomplete(angular.element('#address')[0], {types: ['address']});
-                    autocomplete.addListener('place_changed', function() {
-                        $scope.edit.address = autocomplete.getPlace().formatted_address;
-                        $scope.$apply();
-                    });
-                    $interval.cancel(elementsReady);
-                }
-            }, 100);
-        }
+        // if($scope.activeTab == 'listing'){
+        //     var elementsReady = $interval(function() {
+        //         var input = $document[0].getElementById('address');
+        //         if (input && $scope.edit) {
+        //             autocomplete = new google.maps.places.Autocomplete(angular.element('#address')[0], {types: ['address']});
+        //             autocomplete.addListener('place_changed', function() {
+        //                 $scope.edit.address = autocomplete.getPlace().formatted_address;
+        //                 $scope.$apply();
+        //             });
+        //             $interval.cancel(elementsReady);
+        //         }
+        //     }, 100);
+        // }
         if($scope.activeTab == 'homes-i-like'){
             AccountService.getFavorites().then(function(data) {
                 $scope.likedHomes = data;
@@ -205,8 +205,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 size: 'sm',
                 controller: 'requestController',
                 scope: $scope
+                });
+            })
+            .closed.then(function(){
+                updateUser();
             });
-        });
     }
 
     $scope.sendRequest = function(){
