@@ -57,11 +57,7 @@ app.use('/account', account);
 app.use('/message', message);
 app.use('/utils', utils);
 
-var activation = require('./activation');
-//SSL Activation
-app.use('/.well-known/pki-validation/activation.txt', function(req, res, next) {
-    res.render('activation.txt');
-});
+app.use(express.static('public/.well-known'));
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -80,7 +76,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error.html');
+  res.render('activation.txt');
 });
 
 emailService.init();
