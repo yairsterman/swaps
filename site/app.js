@@ -59,7 +59,9 @@ app.use('/utils', utils);
 
 var activation = require('./activation');
 //SSL Activation
-app.use('/.well-known/pki-validation/', activation);
+app.use('/.well-known/pki-validation/activation.txt', function(req, res, next) {
+    res.render('activation.txt');
+});
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
