@@ -24,7 +24,7 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 
-const siteUrl = "http://swapshome.com:3000/";
+const siteUrl = "https://swapshome.com/";
 // const siteUrl = "http://localhost:3000/";
 
 var error = {
