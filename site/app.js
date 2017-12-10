@@ -57,6 +57,10 @@ app.use('/account', account);
 app.use('/message', message);
 app.use('/utils', utils);
 
+var activation = require('./activation');
+//SSL Activation
+app.use('/.well-known/pki-validation/', activation);
+
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
 // catch 404 and forward to error handler
