@@ -243,9 +243,9 @@ router.post('/update-travel-info', function (req, res, next) {
                 res.json(error);
             }
             else {
-                if (travelingInfo[index].where != where) {
-                    if (travelingDest.indexOf(travelingInfo[index]) != -1) {
-                        travelingDest.splice(travelingDest.indexOf(travelingInfo[index].where), 1);
+                if (travelingInfo[index].destination != where) {
+                    if (travelingDest.indexOf(travelingInfo[index].destination) != -1) {
+                        travelingDest.splice(travelingDest.indexOf(travelingInfo[index].destination), 1);
                         travelingDest.push(where);
                     }
                 }
@@ -255,6 +255,67 @@ router.post('/update-travel-info', function (req, res, next) {
                         travelingInfo: travelingInfo,
                         travelingDest: travelingDest,
                         traveling: true
+                    }
+                }, function (err, updated) {
+                    if (err) {
+                        error.message = err;
+                        res.json(error);
+                    }
+                    else {
+                        User.findOne({_id: id}, function (err, user) {
+                            if (err) {
+                                error.message = err;
+                                res.json(error);
+                            }
+                            else {
+                                res.json(user);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+router.post('/remove-travel-info', function (req, res, next) {
+    if (!req.user.id || !req.body.info) {
+        error.message = 'No travel information found';
+        res.json(error);
+        res.end();
+    }
+    var id = req.user.id;
+    var info = req.body.info;
+    var travelId = info._id;
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            error.message = err;
+            res.json(error);
+        }
+        else {
+            var travelingInfo = user.travelingInfo;
+            var travelingDest = user.travelingDest;
+            var index;
+            for (var i = 0; i < travelingInfo.length; i++) {
+                if (travelingInfo[i]._id == travelId) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1) {
+                error.message = 'No travel information found';
+                res.json(error);
+            }
+            else {
+                if (travelingDest.indexOf(travelingInfo[index].destination) != -1) {
+                    travelingDest.splice(travelingDest.indexOf(travelingInfo[index].destination), 1);
+                }
+                travelingInfo.splice(index,1);
+                User.update({_id: id}, {
+                    $set: {
+                        travelingInfo: travelingInfo,
+                        travelingDest: travelingDest,
+                        traveling: (travelingInfo.length > 0)
                     }
                 }, function (err, updated) {
                     if (err) {

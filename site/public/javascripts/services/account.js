@@ -60,6 +60,21 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     };
 
+    this.removeTravelInfo = function(info) {
+        var defer = $q.defer();
+        $http.post('account/remove-travel-info', {info: info}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
+    };
+
    this.deletePhoto = function(img) {
        var defer = $q.defer();
        $http.post('account/delete-photo', img).then(function(data){

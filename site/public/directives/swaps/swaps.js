@@ -34,7 +34,7 @@ function swapsController($scope, $rootScope, AccountService){
     }
 
     $scope.edit = function(index, swap){
-        $scope.currentSwap = swap;
+        $scope.currentSwap = angular.copy(swap);
         $scope.editing = true;
         $scope.editingField = index;
     }
@@ -48,11 +48,9 @@ function swapsController($scope, $rootScope, AccountService){
     $scope.add = function(){
         $scope.saving = true;
         AccountService.addTravelInfo($scope.addSwap).then(function(data){
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
-            $scope.swaps = $scope.user.travelingInfo;
+            $rootScope.user = data;
             $scope.addSwap = {};
-            $scope.saving = false;
+            updateUser();
             $scope.addSwap = {
                 guests:2
             };
@@ -65,17 +63,33 @@ function swapsController($scope, $rootScope, AccountService){
     $scope.update = function(swap){
         $scope.saving = true;
         AccountService.updateTravelInfo(swap).then(function(data){
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
-            $scope.editing = false;
-            $scope.saving = false;
-            $scope.cancel();
+            $rootScope.user = data;
+            updateUser();
+        });
+    }
+
+    $scope.removeTravelInfo = function(swap){
+        $scope.saving = true;
+        AccountService.removeTravelInfo(swap).then(function(data){
+            $rootScope.user = data;
+            updateUser();
+            // showAlert(SUCCESS, false);
+        },function(err){
+            // showAlert('Error deleting photos', true);
         });
     }
 
     $scope.removeDates = function(swap){
         swap.dates = undefined;
         swap.when = undefined;
+    }
+
+    function updateUser(){
+        $scope.user = $rootScope.user;
+        $scope.swaps = $scope.user.travelingInfo;
+        $scope.editing = false;
+        $scope.saving = false;
+        $scope.editingField = -1;
     }
 
 }
