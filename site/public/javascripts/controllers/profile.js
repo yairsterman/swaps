@@ -68,7 +68,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.message.message = '';
         MessageService.sendMessage($rootScope.user, $scope.profile._id, message).then(function(data){
             $scope.messageSent = true;
-            $('#requestModal').modal('hide');
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
         });

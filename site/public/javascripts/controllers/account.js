@@ -10,6 +10,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.select = {};
 
+    const SUCCESS = 'Changes saved successfully';
+
     if($rootScope.user && $rootScope.user._id) {
         init();
     }
@@ -78,6 +80,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         if($scope.activeTab == 'homes-i-like'){
             AccountService.getFavorites().then(function(data) {
                 $scope.likedHomes = data;
+            },function(err){
+                showAlert(err, true);
             });
         }
     });
@@ -89,15 +93,15 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
    	$scope.saveChanges = function(){
         $scope.saving = true;
      	AccountService.editProfile($scope.edit).then(function(data){
-     		if(data.data.error){
-     			console.log("error");
-                $scope.saving = true;
-     		}
-     		else{
-                $scope.user = data.data;
-                updateUser();
-     		}
-     	});
+            $scope.user = data;
+            updateUser();
+            showAlert(SUCCESS, false);
+     	},function(err){
+            showAlert('Error saving changes', true);
+        })
+        .finally(function(){
+            $scope.saving = false;
+        });
    	}
 
    	$scope.cancel = function(){
@@ -109,15 +113,15 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.editlisting = function(){
         $scope.saving = true;
         AccountService.editListing($scope.edit).then(function(data){
-            if(!data || (data && data.error)){
-                console.log("error");
-                $scope.saving = false;
-            }
-            else{
-                $scope.user = data.data;
-                updateUser();
-            }
-        });
+            $scope.user = data;
+            updateUser();
+            showAlert(SUCCESS, false);
+        },function(err){
+            showAlert('Error saving changes', true);
+        })
+        .finally(function(){
+            $scope.saving = false;
+        });;
     }
 
     $scope.cancelRequest = function(requestInfo){
@@ -144,13 +148,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.deletePhoto = function(img, cb){
       var obj = {url: img.url, id: $scope.user._id};
       AccountService.deletePhoto(obj).then(function(data){
-        if(data.error){
-          console.log("error");
-        }
-        else{
-          $scope.edit = data.data;
+          $scope.edit = data;
+          showAlert(SUCCESS, false);
           cb();
-        }
+      },function(err){
+          showAlert('Error deleting photos', true);
       });
     }
 
@@ -325,7 +327,18 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             $scope.requests.forEach(function(value){
                 value.requestInfo = $scope.getRequest(value._id);
             });
+        },function(err){
+            showAlert('Error getting requests', true);
         });
+    }
+
+    function showAlert(msg, error){
+        $scope.alertMessage = {};
+        $scope.alertMessage.error = error;
+        $scope.alertMessage.msg = msg;
+        $timeout(function(){
+            $scope.alertMessage = false;
+        },5000)
     }
 
 });

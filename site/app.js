@@ -1,5 +1,4 @@
 var express = require('express');
-// var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport       = require("passport");
-var twitchStrategy = require("passport-facebook").Strategy;
 var less = require('less');
 var fs = require('fs');
 
@@ -46,8 +44,8 @@ var mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 // connect to MongoDB
-// mongoose.connect('mongodb://18.221.167.219/test')
-mongoose.connect('mongodb://127.0.0.1/test')
+mongoose.connect('mongodb://18.221.167.219/test')
+// mongoose.connect('mongodb://127.0.0.1/test')
     .then(() =>  console.log('connection succesful'))
 .catch((err) => console.error(err));
 
@@ -56,8 +54,6 @@ app.use('/user', users);
 app.use('/account', account);
 app.use('/message', message);
 app.use('/utils', utils);
-
-app.use(express.static('public/.well-known'));
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -76,7 +72,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('activation.txt');
+  res.render('error.html');
 });
 
 emailService.init();

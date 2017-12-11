@@ -52,9 +52,11 @@
 	    		}
 	    	}
 	    	.buttons{
-    			margin-top: 15px;
+				position: fixed;
+				bottom: 2%;
+				right: 1%;
     			.btn-edit{
-    				width: 48%;
+    				width: 130px;
 					font-size: 18px;
     				&.cancel{
     					background-color: #edefed;
@@ -185,10 +187,12 @@
 				}
 			}
 	    	.buttons{
-    			margin: 15px 0;
+    			position: fixed;
+				bottom: 2%;
+				right: 1%;
     			.btn-edit{
-    				width: 48%;
-					font-size: 16px;
+    				width: 130px;
+					font-size: 18px;
     				&.cancel{
     					background-color: #edefed;
     					color: #484848;
@@ -680,5 +684,30 @@
 	}
 	::-webkit-scrollbar-corner       { display: none;}
 	::-webkit-resizer                {display: none; }
+}
+.alert{
+	color: #ffffff;
+	font-size: 16px;
+	right: -50%;
+	opacity: 0;
+	padding: 10px 20px;
+	position: fixed;
+	bottom: 34px;
+	width: auto;
+	height: auto;
+	transition: 1s cubic-bezier(0.57, 0.99, 0.61, 1.13);;
+	&.slide-in{
+		right: 1%;
+		opacity: 1;
+	}
+	&.error{
+		background-color: #d9534f;
+	}
+	&.success{
+		background-color: #5cb85c;
+	}
+	.text{
+
+	}
 }
 

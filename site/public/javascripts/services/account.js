@@ -1,57 +1,93 @@
-swapsApp.service('AccountService', function($http){
+swapsApp.service('AccountService', function($http, $q){
 
-   this.editProfile = function(user) {
-      return $http.post('account/edit-profile', user).then(function(data){
-           return data;
-        },
-        function(){
-             console.log("error")
-        });
-   };
+    this.editProfile = function(user) {
+        var defer = $q.defer();
+        $http.post('account/edit-profile', user).then(function(data){
+            if(data.data.error){
+              defer.reject(data.data.error);
+            }
+            else{
+              defer.resolve(data.data);
+            }
+            }, function(err){
+                defer.reject(err);
+            });
+        return defer.promise;
+    };
 
    this.editListing = function(user) {
-      return $http.post('account/edit-listing', user).then(function(data){
-           return data;
-        },
-        function(){
-             console.log("error")
-        });
+       var defer = $q.defer();
+       $http.post('account/edit-listing', user).then(function(data){
+           if(data.data.error){
+               defer.reject(data.data.error);
+           }
+           else{
+               defer.resolve(data.data);
+           }
+       }, function(err){
+           defer.reject(err);
+       });
+       return defer.promise;
    };
 
    this.addTravelInfo = function(info) {
-      return $http.post('account/add-travel-info', {info: info}).then(function(data){
-           return data;
-        },
-        function(){
-             console.log("error");
-        });
+       var defer = $q.defer();
+       $http.post('account/add-travel-info', {info: info}).then(function(data){
+           if(data.data.error){
+               defer.reject(data.data.error);
+           }
+           else{
+               defer.resolve(data.data);
+           }
+       }, function(err){
+           defer.reject(err);
+       });
+       return defer.promise;
    };
 
     this.updateTravelInfo = function(info) {
-        return $http.post('account/update-travel-info', {info: info}).then(function(data){
-                return data;
-            },
-            function(err){
-                return err;
-            });
+        var defer = $q.defer();
+        $http.post('account/update-travel-info', {info: info}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
     };
 
    this.deletePhoto = function(img) {
-      return $http.post('account/delete-photo', img).then(function(data){
-           return data;
-        },
-        function(){
-             console.log("error");
-        });
+       var defer = $q.defer();
+       $http.post('account/delete-photo', img).then(function(data){
+           if(data.data.error){
+               defer.reject(data.data.error);
+           }
+           else{
+               defer.resolve(data.data);
+           }
+       }, function(err){
+           defer.reject(err);
+       });
+       return defer.promise;
    };
 
     this.getRequests = function() {
-        return $http.get('account/get-requests').then(function(data){
-                return data.data;
-            },
-            function(){
-                console.log("error");
-            });
+        var defer = $q.defer();
+        $http.get('account/get-requests').then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
     };
 
    this.logout = function(user) {
@@ -63,47 +99,65 @@ swapsApp.service('AccountService', function($http){
         });
    };
 
-
-
-
     this.addFavorite = function(favorite) {
-        return $http.put('/account/add-favorite', {favorite: favorite}).then(function(data){
-                return data.data;
-            },
-            function(){
-                console.log("error");
-            });
+        var defer = $q.defer();
+        $http.put('/account/add-favorite', {favorite: favorite}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
     };
-
 
     this.removeFavorite = function(id) {
-        return $http.put('/account/unset-favorite', {id: id}).then(function(data){
-                return data.data;
-            },
-            function(){
-                console.log("error");
-            });
+        var defer = $q.defer();
+        $http.put('/account/unset-favorite', {id: id}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
     };
-
 
     this.isFavorite = function(id) {
         var query = "?id=" + id;
-        return $http.get('/account/is-favorite' + query)
-            .then(function(data) {
-                return data.data;
-            }, function(){
-                console.log("Is-favorite error");
-            })
+        var defer = $q.defer();
+        $http.get('/account/is-favorite' + query).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
     };
 
-
     this.getFavorites = function() {
-        return $http.get('/account/get-favorites')
-            .then(function(data) {
-                return data.data;
-            }, function (){
-                console.log("Get-favorites error");
-            })
+        var defer = $q.defer();
+        $http.get('/account/get-favorites').then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
     }
 
 });

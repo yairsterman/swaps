@@ -80,10 +80,14 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 				navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
 			}
 		}
+        getUnreadMessages();
 	});
 
 	$scope.go = function(path){
         $(window).unbind('scroll');
+        if(path == 'account/messages'){
+            $scope.unread = 0;
+        }
 	   $location.url('/' + path);
 	}
 
@@ -108,7 +112,18 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;
         $rootScope.userCity = $scope.user.city;
+        getUnreadMessages();
     });
+
+    function getUnreadMessages(){
+        if(!$scope.user._id){
+            $scope.unread = 0;
+            return;
+        }
+        $scope.unread = $scope.user.messages.filter(function(message){
+            return !message.read;
+        }).length;
+    }
 
 	function codeLatLng(lat, lng) {
         var latlng = new google.maps.LatLng(lat, lng);
