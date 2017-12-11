@@ -170,7 +170,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.removeFromFavorites = function() {
         if(!$rootScope.user._id){
-            $('#loginModal').modal('show');
+            $scope.openLogin();
             return;
         }
         var id = $scope.profile._id;
@@ -218,6 +218,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
                 $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
                 $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+                $scope.$apply();
             });
             return;
         }
@@ -239,6 +240,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
             $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
             $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+            $scope.$apply();
         });
     }
 

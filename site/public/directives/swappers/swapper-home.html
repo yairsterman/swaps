@@ -27,6 +27,8 @@
     <div class="profile-img" style="background-image: url('{{traveler.image}}')">
 
     </div>
+    <div class="favorite icon {{isFavorite()?'icon-heart':'icon-heart-empty'}}" ng-click="setFavorite($event)">
+    </div>
     <!--CAROUSEL END-->
     <div class="user-info">
         <div class="apt-sub-title">
