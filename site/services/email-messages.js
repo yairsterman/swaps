@@ -1,5 +1,5 @@
 
-const ACCOUNT = 'https://swapshome.com/#/account/edit';
+const ACCOUNT = 'https://swapshome.com/account/edit';
 const SIGNITURE = '<div style="width:65%;margin:50px auto;"><a style="text-decoration: none;cursor: pointer" href="https://swapshome.com">Swapshome.com</a></div>' +
     '<div>Tel Aviv, Israel</div>';
 
