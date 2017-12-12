@@ -71,11 +71,12 @@ function swapperHomeController($scope, $rootScope, $location, $uibModal, Account
 
     function addToFavorites() {
         var favorite = $scope.traveler._id;
-
+        $scope.addedFavorite = false;
         AccountService.addFavorite(favorite).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
             $scope.adding = false;
+            $scope.addedFavorite = true;
         },function(){
             $scope.adding = false;
         });

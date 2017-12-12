@@ -4,6 +4,8 @@ var passport       = require("passport");
 var FacebookStrategy = require("passport-facebook").Strategy;
 var User = require('../models/User.js');
 var Data = require('../user_data/data.js');
+var email = require('../services/email.js');
+var emailMessages = require('../services/email-messages.js');
 var app = express();
 
 app.use(passport.initialize());
@@ -31,8 +33,8 @@ router.get('/', function(req, res, next) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "https://swapshome.com/auth/facebook/callback",
-    // callbackURL: "http://localhost:3000/auth/facebook/callback",
+    // callbackURL: "https://swapshome.com/auth/facebook/callback",
+    callbackURL: "http://localhost:3000/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday']
   },
   function(accessToken, refreshToken, profile, done) {
@@ -70,6 +72,7 @@ passport.use(new FacebookStrategy({
           user.save(function (err, user) {
               if (err) return next(err);
               console.log("new user saved");
+              email.sendMail([user.email],'Registration to Swaps', emailMessages.registration(user));
               return done(null, user);
           });
         }
