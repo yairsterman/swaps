@@ -8,8 +8,8 @@ var emailService = {
         transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'yair.sterman@gmail.com',
-                pass: 'yair1989'
+                user: 'info@swapshome.com',
+                pass: 'ANightAtTheOpera1975'
             }
         });
     },
