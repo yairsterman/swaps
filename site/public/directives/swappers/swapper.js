@@ -44,7 +44,7 @@ function swapperHomeController($scope, $rootScope, $location, $uibModal, Account
         }
 
     $scope.isFavorite = function() {
-        if($rootScope.user._id && $scope.traveler._id) {
+        if($rootScope.user && $rootScope.user._id && $scope.traveler && $scope.traveler._id) {
             return $rootScope.user.favorites.includes($scope.traveler._id);
         }
         return false;

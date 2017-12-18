@@ -81,7 +81,7 @@
                             <label class="col-sm-3 control-label"></label>
                             <div class="buttons">
                                 <input type="button" class="btn btn-primary btn-edit" value="Save"
-                                       ng-click="saveChanges()" ng-disabled="saving">
+                                       ng-click="saveChanges()" ng-disabled="saving" disabled="{{saving}}">
                             </div>
                         </div>
                     </form>
@@ -248,7 +248,7 @@
                         <div class="col-sm-3"></div>
                         <div class="buttons">
                             <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="editlisting()"
-                                   ng-disabled="saving">
+                                   ng-disabled="saving" disabled="{{saving}}">
                         </div>
                     </div>
                 </div>
@@ -339,12 +339,12 @@
                                 <input type="button"
                                        class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
                                        value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
-                                       ng-disabled="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1"
+                                       ng-disabled="(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1) || saving}}"
                                        ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):setSwap(currentConversation)">
                                 <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
                                 <input type="button" class="btn btn-primary btn-send" value="Send"
-                                       ng-click="sendMessage()" ng-disabled="send.message == '' ">
+                                       ng-click="sendMessage()" ng-disabled="send.message == '' " disabled="{{send.message == ''}}">
                             </div>
                         </div>
                     </div>

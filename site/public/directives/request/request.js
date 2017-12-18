@@ -59,7 +59,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
             locale: {
                 format: 'MM/DD/YYYY'
             },
-            minDate: new Date().toLocaleDateString(),
+            minDate: (new Date()).toLocaleDateString(),
         });
         $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
             $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');

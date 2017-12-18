@@ -198,9 +198,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.setSwap = function(message){
+        $scope.saving = true;
         UsersService.getProfile(message.id).then(function(data){
             $scope.profile = data.data;
-            $scope.chooseDates = true
+            $scope.chooseDates = true;
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
@@ -210,22 +211,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 });
             })
             .closed.then(function(){
+                $scope.user = $rootScope.user;
                 updateUser();
+            },function(){
+                $scope.saving = false;
             });
     }
-
-    $scope.sendRequest = function(){
-        var request = '##!REQUEST!##';
-        var dates = $scope.swap.dates;
-        console.log($scope.swap.dates);
-        $scope.swap.dates = null;
-        // var user = {_id:"58f7324594b427e59aec391b",image:"http://localhost:3000/images/static/profile5.jpg",firstName:"Marisha",lastName:"Natarajan"};
-        MessageService.sendRequest($scope.user, $scope.currentConversationId, request, dates).then(function(data){
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
-            scrollMessagesToTop();
-        });
-    };
 
     $scope.$on('auth-return', function(event, args) {
         $scope.user = $rootScope.user;
@@ -322,6 +313,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.saving = false;
         $scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
+        if($scope.currentConversationId){
+            $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
+            $scope.requestSentByMe = $scope.currentConversationRequest?$scope.currentConversationRequest.sentBy == $scope.user._id:false;
+            $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
+        }
         AccountService.getRequests().then(function(requests){
             $scope.requests = requests;
             $scope.requests.forEach(function(value){

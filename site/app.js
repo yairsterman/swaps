@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ 
     secret: '1234567890',
-    cookie: { maxAge: 3600000 },
+    cookie: { maxAge: 3600000*24*365 },
     resave: true,
     saveUninitialized: false}));
 app.use(passport.initialize());

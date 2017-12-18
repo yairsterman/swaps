@@ -213,7 +213,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 locale: {
                     format: 'MM/DD/YYYY'
                 },
-                minDate: new Date().toLocaleDateString(),
+                minDate: (new Date()).toLocaleDateString(),
             });
             $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
                 $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
