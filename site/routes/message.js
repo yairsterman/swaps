@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var Q = require('q');
+var email = require('../services/email.js');
+var emailMessages = require('../services/email-messages.js');
 var Data = require('../user_data/data.js');
 
 var error = {
@@ -94,7 +96,19 @@ router.post('/confirmRequest', function(req, res, next) {
 	var sender = req.user;
     var departure = req.body.departure;
     var returnDate = req.body.returnDate;
+    var now = Date.now();
+    var newMessage = {
+        date: now,
+        isRequest: false,
+        message: 'Request Confirmed'
+    }
     confirmRequest(sender._id, recipientId, departure, returnDate).then(function(){
+        return saveMessage(sender._id, recipientId, sender._id, newMessage, false)
+    })
+	.then(function(){
+		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
+	})
+	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
 			if (err){
 				console.log("couldn't find user but Confirm was sent" + err);
@@ -105,8 +119,7 @@ router.post('/confirmRequest', function(req, res, next) {
 				res.json(updatedUser);
 			}
 		});
-	},
-	function(err){
+	},function(err){
 		res.json(err);
 	});
 });
@@ -255,13 +268,21 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, guest
 
 function confirmRequest(senderId, recipientId, departure, returnDate){
     var deferd = Q.defer();
+    let sender = {};
+    let recipient = {};
+    let dates = {
+        departure: departure,
+        returnDate: returnDate
+	};
     User.findOne({_id: senderId})
-		.then(function (sender) {
+		.then(function (_sender) {
+            sender = _sender;
 			if (!sender){
 				error.message = "confirmation not sent";
                 throw new Error(error.message);
 			}
 			else {
+
 				var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
                 if(requestIndex == -1){
                     error.message = "no request found";
@@ -282,7 +303,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
                 return User.findOne({_id: recipientId});
             }
         })
-		.then(function(recipient){
+		.then(function(_recipient){
+            recipient = _recipient;
 			if (!recipient){
 				error.message = "confirmation not sent";
                 throw new Error(error.message);
@@ -307,7 +329,9 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 			}
 			else{
 				console.log("updated DB");
-				deferd.resolve();
+                email.sendMail([sender.email],'Swap Confirmation', emailMessages.confirmation(sender, recipient, dates));
+                email.sendMail([recipient.email],'Swap Confirmation', emailMessages.confirmation(recipient, sender, dates));
+                deferd.resolve();
 			}
 		},function(err){
             deferd.reject(err);

@@ -33,8 +33,8 @@ router.get('/', function(req, res, next) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    // callbackURL: "https://swapshome.com/auth/facebook/callback",
-    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    callbackURL: "https://swapshome.com/auth/facebook/callback",
+    // callbackURL: "http://localhost:3000/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday']
   },
   function(accessToken, refreshToken, profile, done) {
@@ -43,7 +43,7 @@ passport.use(new FacebookStrategy({
         if (err) return done(err);
         if(users.length > 0){
           var user = users[0];
-          return done(null, user);
+            return done(null, user);
         }
         else{
           var gender = getGender(profile.gender);
@@ -98,6 +98,10 @@ router.get('/reauth', function(req, res) {
 router.post('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
+});
+
+router.get('/*', function(req, res, next) {
+    res.render('index.html', { title: 'Express' });
 });
 
 function getGender(gender){

@@ -9,7 +9,7 @@ var emailService = {
             service: 'gmail',
             auth: {
                 user: 'info@swapshome.com',
-                pass: 'ANightAtTheOpera1975'
+                pass: 'NewsOfTheWorld1977'
             }
         });
     },
