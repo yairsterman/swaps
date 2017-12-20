@@ -15,20 +15,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $anchorScroll();
 
-    UsersService.getProfile($routeParams.id).then(function(data){
-    	$scope.profile = data.data;
-        $scope.age = getAge($scope.profile.birthday);
-    	setPhotoGalery();
-    	setMapRadius();
-    	if($scope.user._id){
-            setUpMarkers();
-        }
-    	if($scope.user._id){
-            checkRequestSent();
-            findTravelInfo();
-        }
-    });
-
     $scope.go = function(path){
       $location.url('/' + path);
     }
@@ -148,6 +134,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         setUpMarkers();
     });
 
+    $scope.$on('auth-return', function(event, args) {
+        $scope.user = $rootScope.user;
+        checkRequestSent();
+        findTravelInfo();
+        setUpMarkers();
+    });
+
     $scope.isFavorite = function() {
         if($rootScope.user._id && $scope.profile && $scope.profile._id) {
             return $rootScope.user.favorites.includes($scope.profile._id);
@@ -222,8 +215,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
             return;
         }
-        var startDate = departure?new Date(departure).toLocaleDateString():false;
-        var endDate = returnDate?new Date(returnDate).toLocaleDateString():false;
+        var startDate = departure?(new Date(departure)).toLocaleDateString():false;
+        var endDate = returnDate?(new Date(returnDate)).toLocaleDateString():false;
         $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
         $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
         $('input[name="swapDates"]').daterangepicker({
@@ -318,5 +311,21 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
 
     }
+
+    function init(){
+        UsersService.getProfile($routeParams.id).then(function(data){
+            $scope.profile = data.data;
+            $scope.age = getAge($scope.profile.birthday);
+            setPhotoGalery();
+            setMapRadius();
+            if($scope.user && $scope.user._id){
+                setUpMarkers();
+                checkRequestSent();
+                findTravelInfo();
+            }
+        });
+    }
+
+    init();
 
 });

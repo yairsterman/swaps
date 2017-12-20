@@ -253,7 +253,8 @@ function compareDates(userDates, searchDates){
         return true;
     }
 	return (searchDates.departure >= userDates.departure && searchDates.departure <= userDates.returnDate)
-		|| (searchDates.returnDate >= userDates.departure && searchDates.returnDate <= userDates.returnDate);
+		|| (searchDates.returnDate >= userDates.departure && searchDates.returnDate <= userDates.returnDate)
+        || (userDates.returnDate >= searchDates.departure && userDates.returnDate <= searchDates.returnDate);
 }
 
 function compareDestinations(userDestination, destination){

@@ -12,6 +12,9 @@ var error = {
 	message: ''
 };
 
+const USER_UNAVAILABLE = {code:409, msg:'You have already booked these dates'};
+const REQUEST_UNAVAILABLE = {code:411, msg:'The dates you requested have already been booked by the user'};
+
 router.post('/sendMessage', function(req, res, next) {
 	var recipientId = req.body.recipientId;
 	var sender = req.user;
@@ -64,9 +67,9 @@ router.post('/sendRequest', function(req, res, next) {
 				isRequest: true,
 				message: message
 			}
-
-    saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id)
-	.then(function(){
+    checkAvailability(sender._id, recipientId, departure, returnDate).then(function() {
+        return saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
+    }).then(function(){
 		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
 	})
 	.then( function(){
@@ -102,8 +105,10 @@ router.post('/confirmRequest', function(req, res, next) {
         isRequest: false,
         message: 'Request Confirmed'
     }
-    confirmRequest(sender._id, recipientId, departure, returnDate).then(function(){
-        return saveMessage(sender._id, recipientId, sender._id, newMessage, false)
+    checkAvailability(sender._id, recipientId, departure, returnDate).then(function(){
+    	return confirmRequest(sender._id, recipientId, departure, returnDate);
+	}).then(function(){
+        return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
     })
 	.then(function(){
 		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
@@ -290,7 +295,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
                 }
                 else{
                     sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                    return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
+                    var updatedInfo = updateDates(sender.travelingInfo, sender.travelingDest, departure, returnDate);
+                    return User.update({_id: sender._id}, {$set: {requests: sender.requests, travelingInfo: updatedInfo.travelingInfo, travelingDest: updatedInfo.travelingDest}});
                 }
             }
 		})
@@ -317,8 +323,8 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 				}
 				else{
                     recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
-                }
+                    var updatedInfo = updateDates(recipient.travelingInfo, recipient.travelingDest, departure, returnDate);
+                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests, travelingInfo: updatedInfo.travelingInfo, travelingDest: updatedInfo.travelingDest}});                }
 			}
 		})
 		.then(function (updated) {
@@ -482,5 +488,71 @@ function findRequest(requests, id, departure, returnDate){
     }
     return -1;
 }
+
+function checkAvailability(senderId, recipientId, departure, returnDate){
+	var dfr = Q.defer();
+    User.findOne({_id: senderId})
+	.then(function (sender){
+		if(checkConfirmationDates(sender.requests, departure, returnDate)){
+			return User.findOne({_id: recipientId})
+		}
+		else{
+            throw USER_UNAVAILABLE;
+		}
+	})
+	.then(function(recipient){
+        if(checkConfirmationDates(recipient.requests, departure, returnDate)){
+            dfr.resolve();
+        }
+        else{
+            throw REQUEST_UNAVAILABLE;
+        }
+	},function(err){
+        dfr.reject(err);
+	});
+	return dfr.promise;
+}
+
+function checkConfirmationDates(requests, departure, returnDate){
+	var confirmations = requests.filter(function(request){
+		return request.status == Data.getRequestStatus().confirmed;
+	});
+	var available = true;
+    confirmations.every(function(confirmation){
+    	if((confirmation.departure >= departure && confirmation.departure <= returnDate)
+            || (confirmation.returnDate >= departure && confirmation.returnDate <= returnDate)
+		       || (returnDate >= confirmation.departure && returnDate <= confirmation.returnDate)){
+            available = false;
+    		return false;
+		}
+		else{
+    		return true;
+		}
+	});
+    return available;
+}
+
+function updateDates(travelingInfo, travelingDest, departure, returnDate){
+	var _travelingInfo = travelingInfo;
+    _travelingInfo.forEach(function(info, index){
+    	if(departure <= info.departure && info.returnDate <= returnDate){
+            travelingInfo.splice(index, 1);
+            if (travelingDest.indexOf(info.destination) != -1) {
+                travelingDest.splice(travelingDest.indexOf(info.destination), 1);
+            }
+            return;
+		}
+		if(departure <= info.departure && returnDate <= info.returnDate){
+            travelingInfo[index].departure = returnDate + 1000*60*60*24; // set the new departure date to a day
+			return;                                                      // after the end of the confirmed dates
+		}
+		if(departure >= info.departure && departure <= info.returnDate){
+            travelingInfo[index].returnDate = departure - 1000*60*60*24; // set the new return date to a day
+            return;                                                      // before the first confirmed date
+        }
+	});
+    return {_travelingInfo, travelingDest};
+}
+
 
 module.exports = router;
