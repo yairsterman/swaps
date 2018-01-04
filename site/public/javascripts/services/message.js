@@ -1,4 +1,4 @@
-swapsApp.service('MessageService', function($http){
+swapsApp.service('MessageService', function($http, $q){
 
    this.sendMessage = function(user, recipient, message, dates) {
    	  var data = {
@@ -23,12 +23,19 @@ swapsApp.service('MessageService', function($http){
             message: message,
             guests: guests
         };
-        return $http.post('message/sendRequest', data).then(function(data){
-                return data;
+        var dfr = $q.defer();
+        $http.post('message/sendRequest', data).then(function(res){
+                if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
+                    dfr.reject(res.data.msg);
+                }
+                else{
+                    dfr.resolve(res.data);
+                }
             },
-            function(){
-                console.log("error")
+            function(err){
+               dfr.reject('Error processing request, Please try again later');
             });
+        return dfr.promise;
     };
 
    this.confirmRequest = function(recipient, departure, returnDate) {
@@ -37,12 +44,19 @@ swapsApp.service('MessageService', function($http){
             departure: departure,
             returnDate:returnDate
         };
-        return $http.post('message/confirmRequest', data).then(function(data){
-                return data;
-            },
-            function(){
-                console.log("error")
-            });
+       var dfr = $q.defer();
+       $http.post('message/confirmRequest', data).then(function(data){
+               if(data.code && (data.code === 409 || data.code === 411)){
+                   dfr.reject(data.msg);
+               }
+               else{
+                   dfr.resolve(data);
+               }
+           },
+           function(err){
+               dfr.reject('Error processing request, Please try again later');
+           });
+       return dfr.promise;
     };
 
     this.cancelRequest = function(recipient, departure, returnDate) {

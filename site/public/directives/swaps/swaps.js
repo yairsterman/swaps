@@ -40,7 +40,12 @@ function swapsController($scope, $rootScope, AccountService){
     }
 
     $scope.cancel = function(swap){
-        swap = $scope.currentSwap;
+        swap.destination = $scope.currentSwap.destination;
+        swap.dates = $scope.currentSwap.dates;
+        swap.departure = $scope.currentSwap.departure;
+        swap.returnDate = $scope.currentSwap.returnDate;
+        swap.guests = $scope.currentSwap.guests;
+        swap._id = $scope.currentSwap._id;
         $scope.editing = false;
         $scope.editingField = -1;
     }

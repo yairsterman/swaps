@@ -13,6 +13,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         when:{}
     };
 
+    var confirmedDates = [];
+    var today = (new Date()).toLocaleDateString();
+
     $anchorScroll();
 
     $scope.go = function(path){
@@ -129,16 +132,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;
-        checkRequestSent();
-        findTravelInfo();
-        setUpMarkers();
+        setUserData();
     });
 
     $scope.$on('auth-return', function(event, args) {
         $scope.user = $rootScope.user;
-        checkRequestSent();
-        findTravelInfo();
-        setUpMarkers();
+        setUserData();
     });
 
     $scope.isFavorite = function() {
@@ -207,6 +206,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                     format: 'MM/DD/YYYY'
                 },
                 minDate: (new Date()).toLocaleDateString(),
+                isInvalidDate: function(arg){
+                    return isInvalidDate(arg);
+                }
             });
             $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
                 $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
@@ -228,7 +230,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             startDate: startDate,
             endDate: endDate,
             minDate: startDate,
-            maxDate: endDate
+            maxDate: endDate,
+            isInvalidDate: function(arg){
+                return isInvalidDate(arg);
+            }
         });
         $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
             $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
@@ -319,11 +324,47 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             setPhotoGalery();
             setMapRadius();
             if($scope.user && $scope.user._id){
-                setUpMarkers();
-                checkRequestSent();
-                findTravelInfo();
+                setUserData();
             }
         });
+    }
+
+    function setUserData(){
+        setUpMarkers();
+        checkRequestSent();
+        findTravelInfo();
+        $scope.user.requests.forEach(function(request){
+            if(request.status === $scope.data.requestStatus.confirmed){
+                confirmedDates = confirmedDates.concat(getConfirmedDates(request.departure, request.returnDate));
+            }
+        });
+    }
+
+    function getConfirmedDates(startDate, stopDate) {
+        var dateArray = [];
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            var date = new Date (currentDate);
+            dateArray.push(date.toLocaleDateString());
+            currentDate = addDays(date, 1).getTime();
+        }
+        return dateArray;
+    }
+
+    function addDays(date, days) {
+        date.setDate(date.getDate() + days);
+        return date;
+    }
+
+    function isInvalidDate(date){
+        var thisMonth = date._d.getMonth()+1;   // Months are 0 based
+        var thisDate = date._d.getDate();
+        var thisYear = date._d.getYear()+1900;   // Years are 1900 based
+
+        var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
+        if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
+            return true;
+        }
     }
 
     init();

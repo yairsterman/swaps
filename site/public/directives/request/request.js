@@ -6,6 +6,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.discount = {
         name: 'Beginners Discount'
     }
+    $scope.completeText = 'Your request has been sent';
 
     $scope.payment = false;
 
@@ -40,7 +41,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         .then(function(response){
             $scope.processing = false;
             $scope.requestComplete = true;
-            $rootScope.user = response.data;
+            $rootScope.user = response;
             $scope.user = $rootScope.user;
             $scope.requestSent = true;
             $timeout(function(){
@@ -48,6 +49,9 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
             },5000);
         },
         function(err){
+            $scope.requestComplete = true;
+            $scope.completeText = err;
+            $scope.error = true;
             $scope.processing = false;
         });
     }
