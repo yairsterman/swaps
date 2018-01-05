@@ -205,15 +205,17 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 locale: {
                     format: 'MM/DD/YYYY'
                 },
-                minDate: (new Date()).toLocaleDateString(),
                 isInvalidDate: function(arg){
                     return isInvalidDate(arg);
-                }
+                },
+                minDate: (new Date()).toLocaleDateString()
             });
             $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-                $scope.$apply();
+                if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
+                    $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+                    $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+                    $scope.$apply();
+                }
             });
             return;
         }
@@ -227,18 +229,20 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             locale: {
                 format: 'MM/DD/YYYY'
             },
-            startDate: startDate,
-            endDate: endDate,
-            minDate: startDate,
-            maxDate: endDate,
+            // startDate: startDate,
+            // endDate: endDate,
             isInvalidDate: function(arg){
                 return isInvalidDate(arg);
-            }
+            },
+            minDate: startDate,
+            maxDate: endDate
         });
         $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-            $scope.$apply();
+            if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
+                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
+                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+                $scope.$apply();
+            }
         });
     }
 
@@ -365,6 +369,34 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
             return true;
         }
+    }
+
+    function checkClearInput(startDate, endDate){
+        // Compare the dates again.
+        var clearInput = false;
+        startDate = new Date(startDate).getTime();
+        endDate = new Date(endDate).getTime();
+        for(var i = 0; i < confirmedDates.length; i++){
+            var confirmedDate = new Date(confirmedDates[i]).getTime()
+            if(startDate < confirmedDate && endDate > confirmedDate){
+                clearInput = true;
+                break;
+            }
+        }
+
+        // If a disabled date is in between the bounds, clear the range.
+        if(clearInput){
+
+            // To clear selected range (on the calendar).
+            var currentDate = new Date(startDate);
+            $('input[name="swapDates"]').data('daterangepicker').setStartDate(currentDate);
+            $('input[name="swapDates"]').data('daterangepicker').setEndDate(currentDate);
+
+            // To clear input field and keep calendar opened.
+            $('input[name="swapDates"]').focus();
+
+        }
+        return clearInput;
     }
 
     init();
