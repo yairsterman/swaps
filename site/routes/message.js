@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var Q = require('q');
+var dateFormat = require('dateformat');
 var email = require('../services/email.js');
 var emailMessages = require('../services/email-messages.js');
 var Data = require('../user_data/data.js');
@@ -296,7 +297,7 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
                 else{
                     sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
                     var updatedInfo = updateDates(sender.travelingInfo, sender.travelingDest, departure, returnDate);
-                    return User.update({_id: sender._id}, {$set: {requests: sender.requests, travelingInfo: updatedInfo.travelingInfo, travelingDest: updatedInfo.travelingDest}});
+                    return User.update({_id: sender._id}, {$set: {requests: sender.requests, travelingInfo: updatedInfo._travelingInfo, travelingDest: updatedInfo.travelingDest}});
                 }
             }
 		})
@@ -324,7 +325,7 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 				else{
                     recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
                     var updatedInfo = updateDates(recipient.travelingInfo, recipient.travelingDest, departure, returnDate);
-                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests, travelingInfo: updatedInfo.travelingInfo, travelingDest: updatedInfo.travelingDest}});                }
+                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests, travelingInfo: updatedInfo._travelingInfo, travelingDest: updatedInfo.travelingDest}});                }
 			}
 		})
 		.then(function (updated) {
@@ -543,12 +544,14 @@ function updateDates(travelingInfo, travelingDest, departure, returnDate){
             return;
 		}
 		if(departure <= info.departure && returnDate <= info.returnDate){
-            travelingInfo[index].departure = returnDate + 1000*60*60*24; // set the new departure date to a day
-			return;                                                      // after the end of the confirmed dates
+            travelingInfo[index].departure = returnDate + 1000*60*60*24; // set the new departure date to a day after the end of the confirmed dates
+            travelingInfo[index].dates = dateFormat(travelingInfo[index].departure, 'mmm dd') + ' - ' + dateFormat(travelingInfo[index].returnDate, 'mmm dd');
+            return;
 		}
 		if(departure >= info.departure && departure <= info.returnDate){
-            travelingInfo[index].returnDate = departure - 1000*60*60*24; // set the new return date to a day
-            return;                                                      // before the first confirmed date
+            travelingInfo[index].returnDate = departure - 1000*60*60*24; // set the new return date to a day before the first confirmed date
+            travelingInfo[index].dates = dateFormat(travelingInfo[index].departure, 'mmm dd') + ' - ' + dateFormat(travelingInfo[index].returnDate, 'mmm dd');
+            return;
         }
 	});
     return {_travelingInfo, travelingDest};

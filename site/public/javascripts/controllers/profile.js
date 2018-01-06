@@ -94,7 +94,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         // $('.circle-profile-pic').hide();
         var input = $('.fix-scroll');
         if (input && $scope.profile) {
-            setDates();
             // fixmeTop = $('.fix-scroll').offset().top - 25;
             fixmeTop = $('.fix-scroll').offset().top + 20;
             var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
@@ -112,7 +111,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                     });
                 }
             });
-            setDates();
             $interval.cancel(elementsReady);
         }
     }, 100);
@@ -219,7 +217,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
             return;
         }
-        var startDate = departure?(new Date(departure)).toLocaleDateString():false;
+        var startDate = departure?new Date(departure).getTime() > new Date().getTime()?(new Date(departure)).toLocaleDateString():(new Date()).toLocaleDateString():false;
         var endDate = returnDate?(new Date(returnDate)).toLocaleDateString():false;
         $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
         $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
@@ -229,13 +227,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             locale: {
                 format: 'MM/DD/YYYY'
             },
-            // startDate: startDate,
-            // endDate: endDate,
+            startDate: startDate,
+            minDate: startDate,
+            maxDate: endDate,
             isInvalidDate: function(arg){
                 return isInvalidDate(arg);
-            },
-            minDate: startDate,
-            maxDate: endDate
+            }
         });
         $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
             if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
@@ -329,6 +326,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             setMapRadius();
             if($scope.user && $scope.user._id){
                 setUserData();
+            }
+            else{
+                findTravelInfo();
             }
         });
     }

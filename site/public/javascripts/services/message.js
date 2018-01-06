@@ -45,12 +45,12 @@ swapsApp.service('MessageService', function($http, $q){
             returnDate:returnDate
         };
        var dfr = $q.defer();
-       $http.post('message/confirmRequest', data).then(function(data){
-               if(data.code && (data.code === 409 || data.code === 411)){
-                   dfr.reject(data.msg);
+       $http.post('message/confirmRequest', data).then(function(res){
+               if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
+                   dfr.reject(res.data.msg);
                }
                else{
-                   dfr.resolve(data);
+                   dfr.resolve(res.data);
                }
            },
            function(err){

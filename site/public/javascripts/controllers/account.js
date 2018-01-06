@@ -245,16 +245,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             }
         }
         MessageService.confirmRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-            if(data.data.error){
-                console.log("error");
-                $scope.saving = true;
-            }
-            else{
-                $scope.user = data.data;
-                updateUser();
-            }
+            $scope.user = data;
+            updateUser();
         }
         ,function(err){
+            showAlert(err, true);
             $scope.saving = false;
         });
     }

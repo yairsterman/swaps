@@ -82,7 +82,7 @@ const amenities = [
     {id: 0, name: 'kitchen', displayName:'Kitchen', icon:'icon-kitchen'},
     {id: 1, name: 'wifi', displayName:'Wi-Fi', icon:'icon-wifi'},
     {id: 2, name: 'washer', displayName:'Washer', icon:'icon-washer'},
-    {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-hairdry'},
+    {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-Dryer'},
     {id: 4, name: 'shower', displayName:'Shower', icon:'icon-shower'},
     {id: 5, name: 'elevator', displayName:'Elevator', icon:'icon-elevator'},
     {id: 6, name: 'garden', displayName:'Garden', icon:'icon-vegen'},
@@ -99,6 +99,8 @@ const amenities = [
     {id: 17, name: 'iron', displayName:'Iron', icon:'icon-iron'},
     {id: 18, name: 'pool', displayName:'Pool', icon:'icon-pool'},
     {id: 19, name: 'hottub', displayName:'Hot Tub', icon:'icon-hotub'},
+    {id: 20, name: 'firplace', displayName:'Fire Place', icon:'icon-fire'},
+    {id: 21, name: 'hairdryer', displayName:'Hair Dryer', icon:'icon-hairdry'},
 
 ];
 
