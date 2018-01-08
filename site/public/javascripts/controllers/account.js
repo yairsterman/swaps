@@ -3,6 +3,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
     $scope.homepage = false;
+    $rootScope.searchPage = false;
     $scope.editing = false;
     $scope.send = {message : ''};
     $scope.swap = {};
