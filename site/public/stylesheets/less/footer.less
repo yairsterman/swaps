@@ -1,0 +1,70 @@
+.footer{
+  position: relative;
+  z-index: 10;
+  padding: 20px 15%;
+  background-color: #fff;
+  box-shadow: -12px -4px 12px -8px rgba(0,0,0,0.5);
+  .links{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .link{
+    color: #0E5D7C;
+    font-size: 15px;
+    padding-right: 24px;
+    border-right: 1px solid #0E5D7C;
+    &:focus{
+      outline: none;
+    }
+  }
+  .social-link{
+    color: #0E5D7C;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    .social{
+      color: #ffffff;
+      padding: 4px 6px;
+      border-radius: 10px;
+      margin:0 6px;
+      .fa{
+        font-size: 20px;
+      }
+      &.facebook{
+        padding: 5px 10px;
+        background-color: #3b5998;
+        .fa{
+          font-size: 18px;
+        }
+      }
+      &.instagram{
+        background:
+                // left bottom
+                radial-gradient(circle farthest-corner at 35% 90%, #fec564, transparent 50%),
+                radial-gradient(circle farthest-corner at 0 140%, #fec564, transparent 50%),
+                  // left top
+                radial-gradient(ellipse farthest-corner at 0 -25%, #5258cf, transparent 50%),
+                radial-gradient(ellipse farthest-corner at 20% -50%, #5258cf, transparent 50%),
+                  //  right top
+                radial-gradient(ellipse farthest-corner at 100% 0, #893dc2, transparent 50%),
+                radial-gradient(ellipse farthest-corner at 60% -20%, #893dc2, transparent 50%),
+                  // right bottom
+                radial-gradient(ellipse farthest-corner at 100% 100%, #d9317a, transparent),
+
+                  /////// create a base coat to smooth
+                  /////// corner gradients
+                linear-gradient(#6559ca, #bc318f 30%, #e33f5f 50%, #f77638 70%, #fec66d 100%);
+      }
+      &.twitter{
+        background-color: #0084b4
+      }
+    }
+  }
+  .copyright{
+    text-align: center;
+    color: #0E5D7C;
+    font-size: 15px;
+    margin-top: 20px;
+  }
+}

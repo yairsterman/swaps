@@ -151,12 +151,9 @@ const roomType =[
 ];
 
 const securityDeposit =[
-    {id: 0, type: 'basic', displayName: 'Basic', value:100},
-    {id: 1, type: 'bronze', displayName: 'Bronze', value:150},
-    {id: 2, type: 'silver', displayName: 'Silver', value:200},
-    {id: 3, type: 'gold', displayName: 'Gold', value:300},
-    {id: 4, type: 'platinum', displayName: 'Platinum', value:400},
-    {id: 5, type: 'diamond', displayName: 'Diamond', value:400},
+    {id: 0, type: 'nomad', displayName: 'Nomad', value:1 , night:1, week:70},
+    {id: 1, type: 'globetrotter', displayName: 'Globetrotter', value:5, night:5, week:350},
+    {id: 2, type: 'cosmopolite', displayName: 'Cosmopolite', value:12, night:12, week:800},
 ];
 
 const creditCards = [

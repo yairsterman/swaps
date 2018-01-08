@@ -205,8 +205,8 @@
                             <label class="col-sm-3 control-label">Deposit Plan:</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="deposit" ng-model="edit.deposit"
-                                        ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per week' for plan in data.securityDeposit">
-                                    {{plan.displayName}} - ${{plan.value}} per week
+                                        ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
+                                    {{plan.displayName}} - ${{plan.value}} per night
                                 </select>
                             </div>
                         </div>

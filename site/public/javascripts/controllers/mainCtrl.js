@@ -1,5 +1,6 @@
 swapsApp.controller('mainController', function($scope, $rootScope, $location, Utils, $uibModal, UsersService, AccountService, $interval) {
 
+    $rootScope.homepage = false;
     $scope.data = {};
 
     Utils.getData().then(function(data){
@@ -19,6 +20,11 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
             },
             scope:$scope
         });
+    }
+
+    $scope.go = function(path){
+        $(window).unbind('scroll');
+        $location.url('/' + path);
     }
 
 });
