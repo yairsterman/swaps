@@ -187,7 +187,7 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 								messages.unshift({
 									id: sender._id,
 									image: sender.image,
-									name: sender.firstName + ' ' + sender.lastName,
+									name: sender.firstName,
 									read: markedRead,
 									messages: [message]
 								});
@@ -239,7 +239,7 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, guest
 								_id: requests.length + 1,
 								userId: sender._id,
 								image: sender.image,
-								name: sender.firstName + ' ' + sender.lastName,
+								name: sender.firstName,
 								city: sender.city,
 								departure: departure,
 								returnDate : returnDate,

@@ -19,6 +19,10 @@ $routeProvider
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
     })
+    .when('/privacy-policy', {
+        templateUrl : '/pages/privacy.html',
+        controller  : 'travelersController'
+    })
     .when('/travelers/:city', {
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
