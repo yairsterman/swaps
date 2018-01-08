@@ -52,6 +52,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     $scope.go = function(path){
         $(window).unbind('scroll');
+        $('.navbar').removeClass('sticky');
         $rootScope.homepage = false;
         $location.url(path);
     }
