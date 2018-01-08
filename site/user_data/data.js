@@ -26,7 +26,6 @@ const visibleUserData = {
     },
     member: {
         firstName:true,
-        lastName:true,
         birthday:true,
         gender:true,
         image:true,

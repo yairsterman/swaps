@@ -14,7 +14,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     };
 
     var confirmedDates = [];
-    var today = (new Date()).toLocaleDateString();
+    var today = (new Date()).toLocaleDateString('en-US');
 
     $anchorScroll();
 
@@ -206,7 +206,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 isInvalidDate: function(arg){
                     return isInvalidDate(arg);
                 },
-                minDate: (new Date()).toLocaleDateString()
+                minDate: (new Date()).toLocaleDateString('en-US')
             });
             $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
                 if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
@@ -217,8 +217,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
             return;
         }
-        var startDate = departure?new Date(departure).getTime() > new Date().getTime()?(new Date(departure)).toLocaleDateString():(new Date()).toLocaleDateString():false;
-        var endDate = returnDate?(new Date(returnDate)).toLocaleDateString():false;
+        var startDate = departure?new Date(departure).getTime() > new Date().getTime()?(new Date(departure)).toLocaleDateString('en-US'):(new Date()).toLocaleDateString('en-US'):false;
+        var endDate = returnDate?(new Date(returnDate)).toLocaleDateString('en-US'):false;
         $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
         $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
         $('input[name="swapDates"]').daterangepicker({
@@ -349,7 +349,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         var currentDate = startDate;
         while (currentDate <= stopDate) {
             var date = new Date (currentDate);
-            dateArray.push(date.toLocaleDateString());
+            dateArray.push(date.toLocaleDateString('en-US'));
             currentDate = addDays(date, 1).getTime();
         }
         return dateArray;
