@@ -1,6 +1,7 @@
 swapsApp.controller('mainController', function($scope, $rootScope, $location, Utils, $uibModal, UsersService, AccountService, $interval) {
 
     $rootScope.homepage = false;
+    $rootScope.searchPage = false;
     $scope.data = {};
 
     Utils.getData().then(function(data){

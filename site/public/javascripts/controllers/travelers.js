@@ -46,6 +46,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $scope.go = function(path){
         deleteMarkers();
         $scope.map = null;
+        $rootScope.searchPage = false;
         $location.url('/' + path);
     }
 
