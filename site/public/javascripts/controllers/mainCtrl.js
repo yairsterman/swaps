@@ -6,6 +6,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
 
     Utils.getData().then(function(data){
         $scope.data = data;
+        $rootScope.data = data;
     });
 
     $scope.openLogin = function(signin){

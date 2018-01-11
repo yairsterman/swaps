@@ -60,7 +60,7 @@
 				    <span class="caret"></span></div>
 					    <ul class="dropdown-menu">
 					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
-                          <li><a class="nav-link" href="" ng-click ="go('account/swaps')">My Swaps</a></li>
+                          <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
                           <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
 					      <li><a href="" ng-click ="logout()">Log out</a></li>
 				    </ul>
@@ -89,6 +89,7 @@
 <div id="swapModel" class="modal fade" role="dialog" ng-if="user._id">
     <div class="modal-dialog large-model">
         <div class="modal-content">
+            <div class="icon icon-delete top-corner" data-dismiss="modal"></div>
             <swaps swaps="user.travelingInfo" popup="true"></swaps>
         </div>
     </div>

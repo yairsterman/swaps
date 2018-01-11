@@ -1,5 +1,5 @@
 var acc = null;
-swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, AccountService, MessageService, UsersService) {
+swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
     $scope.homepage = false;
@@ -325,12 +325,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     function showAlert(msg, error){
-        $scope.alertMessage = {};
-        $scope.alertMessage.error = error;
-        $scope.alertMessage.msg = msg;
-        $timeout(function(){
-            $scope.alertMessage = false;
-        },5000)
+        if(!error){
+            alertify.success(msg);
+        }
+        else{
+            alertify.error(msg);
+        }
     }
 
 });

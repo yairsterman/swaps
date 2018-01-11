@@ -14,7 +14,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     };
 
     var confirmedDates = [];
-    var today = (new Date()).toLocaleDateString('en-US');
+    var travelingDates = [];
+    var today = (new Date()).getTime();
+    var minDate = today;
+    var maxDate = today;
 
     $anchorScroll();
 
@@ -184,14 +187,20 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         if($rootScope.userCity && $scope.profile.travelingInfo && $scope.profile.travelingInfo.length > 0){
             for(var i = 0; i < $scope.profile.travelingInfo.length; i++){
                 if($scope.profile.travelingInfo[i].destination == $rootScope.userCity){
-                    setDates($scope.profile.travelingInfo[i].departure, $scope.profile.travelingInfo[i].returnDate)
-                    return;
+                    if(minDate > $scope.profile.travelingInfo[i].departure){
+                        minDate = $scope.profile.travelingInfo[i].departure;
+                        if(minDate < today){
+                            minDate = today;
+                        }
+                    }
+                    if(maxDate < $scope.profile.travelingInfo[i].returnDate){
+                        maxDate = $scope.profile.travelingInfo[i].returnDate
+                    }
+                    travelingDates = travelingDates.concat(getConfirmedDates($scope.profile.travelingInfo[i].departure, $scope.profile.travelingInfo[i].returnDate));
                 }
             }
         }
-        else{
-            setDates();
-        }
+        setDates();
     }
 
     function setDates(departure, returnDate){
@@ -212,6 +221,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
                     $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
                     $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+                    $scope.canSendRequest = true;
                     $scope.$apply();
                 }
             });
@@ -238,6 +248,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
                 $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
                 $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
+                $scope.canSendRequest = true;
                 $scope.$apply();
             }
         });
@@ -334,14 +345,26 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     function setUserData(){
+        $scope.canSendRequest = false;
         setUpMarkers();
         checkRequestSent();
-        findTravelInfo();
         $scope.user.requests.forEach(function(request){
             if(request.status === $scope.data.requestStatus.confirmed){
                 confirmedDates = confirmedDates.concat(getConfirmedDates(request.departure, request.returnDate));
             }
         });
+        findTravelInfo();
+    }
+
+    function getMinDate(date){
+        date._d = date;
+        if(isInvalidDate(date)){
+            return getMinDate(addDays(date, 1));
+        }
+        else{
+            minDate = date.toLocaleDateString('en-US');
+            return minDate;
+        }
     }
 
     function getConfirmedDates(startDate, stopDate) {

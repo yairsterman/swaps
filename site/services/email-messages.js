@@ -1,6 +1,6 @@
 
 const ACCOUNT = 'https://swapshome.com/account/edit';
-const MY_SWAPS = 'https://swapshome.com/account/swaps';
+const MY_SWAPS = 'https://swapshome.com/account/upcoming-swaps';
 const SIGNITURE = '<div style="width:65%;margin:50px auto;line-height: 1.4"><div><a style="text-decoration: none;cursor: pointer" href="https://swapshome.com">Swapshome.com</a></div>' +
     '<div>Tel Aviv, Israel</div></div>';
 

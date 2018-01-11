@@ -1,6 +1,13 @@
 .account-page{
 	background-color: #ffffff;
 	padding: 40px 0;
+	min-height: 75vh;
+	.content{
+		&.scroll{
+			overflow-y: scroll;
+			max-height: ~'calc(54vw + 40px)';
+		}
+	}
 	.inner-page {
 		background-color: #F9F6F1;
 		.display-flex{
@@ -602,17 +609,23 @@
 				}
 			}
 			.request-info{
-				margin-top: 5px;
-				display: flex;
-				justify-content: space-between;
+				padding-top: 10px;
 				font-size: 16px;
-				.request-dates{
+				position: relative;
+				.form-group{
 					color: #0E5D7C;
+				}
+				.statuses{
+					display: flex;
+					align-items: baseline;
 				}
 				.cancel{
 					color: #c7a768;
 					margin-bottom: 5px;
 					font-size: 14px;
+					position: absolute;
+					bottom: 15px;
+					right: 15px;
 					&:hover{
 						text-decoration: underline;
 					}
@@ -623,6 +636,9 @@
 			}
 			.request-status{
 				color: #484848;
+				&.confirmed{
+					color: #0E5D7C;
+				}
 				&.confirm{
 					width: 25%;
 					border-radius: 4px;
@@ -640,7 +656,7 @@
 				}
 			}
 			.traveler-col{
-				padding: 5px;
+				padding: 10px 5px;
 			}
 		}
 	}
@@ -685,31 +701,5 @@
 	}
 	::-webkit-scrollbar-corner       { display: none;}
 	::-webkit-resizer                {display: none; }
-}
-.alert{
-	color: #ffffff;
-	font-size: 16px;
-	right: -50%;
-	opacity: 0;
-	padding: 10px 20px;
-	position: fixed;
-	z-index: 20;
-	bottom: 8%;
-	width: auto;
-	height: auto;
-	transition: 1s cubic-bezier(0.57, 0.99, 0.61, 1.13);
-	&.slide-in{
-		right: 1%;
-		opacity: 1;
-	}
-	&.error{
-		background-color: #d9534f;
-	}
-	&.success{
-		background-color: #5cb85c;
-	}
-	.text{
-
-	}
 }
 

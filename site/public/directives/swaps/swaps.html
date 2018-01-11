@@ -1,7 +1,10 @@
 <div class="swaps-wrapper">
-    <div class="title">{{title}}</div>
+    <!--<div class="icon icon-delete top-corner" ng-click="close()"></div>-->
+    <div class="title">{{title}}
+        <div class="underline"></div>
+    </div>
     <div class="edit-swaps {{popup || toMany?'':'overflow'}}">
-        <div class="single-swap" ng-repeat="swap in swaps track by swap._id | limitTo : limit | orderBy : 'departure'">
+        <div class="single-swap" ng-repeat="swap in swaps track by swap._id | orderBy : 'departure' | limitTo : limit">
             <div class="row search-area">
                 <div class="search-field left col-sm-4 col-xs-12">
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-model="swap.destination" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" autocomplete city="true">

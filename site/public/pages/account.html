@@ -12,8 +12,11 @@
                     <li class="single-link {{activeTab == 'messages'?'active':''}}"><a href=""
                                                                                        ng-click="go('account/messages')">Messages</a>
                     </li>
-                    <li class="single-link {{activeTab == 'swaps'?'active':''}}"><a href=""
-                                                                                    ng-click="go('account/swaps')">Swaps</a>
+                    <li class="single-link {{activeTab == 'set-up-swaps'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/set-up-swaps')">Set up Swap</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'upcoming-swaps'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/upcoming-swaps')">Upcoming Swaps</a>
                     </li>
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
                                                                                       ng-click="go('account/reviews')">Reviews</a>
@@ -23,7 +26,7 @@
                         I Like</a></li>
                 </ul>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9 content {{activeTab == 'upcoming-swaps'?'scroll':''}}">
                 <div class="edit-profile" ng-if="activeTab == 'edit'">
                     <div class="row permanent-info">
                         <div class="col-sm-3">
@@ -349,34 +352,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="swaps-and-requests" ng-if="activeTab == 'swaps'">
-                    <div class="tabs">
-                        <div class="tab {{showSwapsTab == 'set'?'active':''}}" ng-click="showSwapsTab = 'set'">
-                            Set up Swap
-                        </div>
-                        <div class="tab {{showSwapsTab == 'upcoming'?'active':''}}"
-                             ng-click="showSwapsTab = 'upcoming'">
-                            Upcoming Swaps
-                        </div>
-                    </div>
-                    <swaps swaps="user.travelingInfo" ng-if="showSwapsTab == 'set'"></swaps>
-                    <div class="mg-0 row" ng-if="showSwapsTab == 'upcoming'">
-                        <div class="traveler-col col-sm-6 col-xs-12" ng-repeat="request in requests">
-                            <swapper-home traveler="request"></swapper-home>
-                            <div class="request-info">
-                                <div class="request-dates">{{request.requestInfo.departure | date :'MMMM dd, yyyy'}} -
+                <div class="swaps-and-requests" ng-if="activeTab == 'set-up-swaps'">
+                    <div class="swap-title"></div>
+                    <swaps swaps="user.travelingInfo"></swaps>
+                </div>
+                <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
+                    <div class="swap-title"></div>
+                    <div class="mg-0 row flex" ng-repeat="request in requests">
+                        <swapper-home class="traveler-col col-sm-6 col-xs-12" traveler="request"></swapper-home>
+                        <div class="request-info col-sm-6 col-xs-12">
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">Check in:</label>
+                                <div class="col-sm-6">
+                                    {{request.requestInfo.departure | date :'MMMM dd, yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">Check out:</label>
+                                <div class="col-sm-6">
                                     {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}
                                 </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">Request Status:</label>
+                                <div class="statuses col-sm-6">
+                                    <div class="request-status"
+                                         ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">
+                                        Pending
+                                    </div>
+                                    <div class="request-status confirmed" ng-if="request.requestInfo.status == 1">Confirmed</div>
+                                    <div class="icon icon-check" ng-if="request.requestInfo.status == 1"></div>
+                                    <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
+                                         ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id"
+                                         ng-click="confirmRequest(request.requestInfo)">Confirm
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
                                 <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
-                            </div>
-                            <div class="request-status"
-                                 ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">
-                                Pending
-                            </div>
-                            <div class="request-status" ng-if="request.requestInfo.status == 1">Confirmed</div>
-                            <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
-                                 ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id"
-                                 ng-click="confirmRequest(request.requestInfo)">Confirm
                             </div>
                         </div>
                     </div>
@@ -414,7 +427,6 @@
                         <div class="fav-scroll">
                             <div class="favorites-show"
                                  ng-repeat="favorite in likedHomes">
-
                                 <swapper-home class="col-xs-6" traveler="favorite"></swapper-home>
                                 <div class="clearfix visible-xs"></div>
                             </div>
@@ -423,10 +435,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="alert {{alertMessage?'slide-in':''}} {{alertMessage.error?'error':'success'}}">
-    <div class="text">
-        {{alertMessage.msg}}
     </div>
 </div>

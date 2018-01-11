@@ -1,4 +1,4 @@
-var swapsApp = angular.module('swapsApp', ['filters','ngRoute', 'ui.bootstrap', 'ngMaterial', 'ngMessages', 'thatisuday.ng-image-gallery']);
+var swapsApp = angular.module('swapsApp', ['filters','ngRoute', 'ui.bootstrap', 'ngMaterial', 'ngAlertify', 'ngMessages', 'thatisuday.ng-image-gallery']);
 
 // configure our routes
 swapsApp.config(function($routeProvider, $locationProvider) {
