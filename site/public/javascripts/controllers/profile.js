@@ -18,6 +18,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     var today = (new Date()).getTime();
     var minDate = today;
     var maxDate = today;
+    var openAllDates = false;
 
     $anchorScroll();
 
@@ -142,7 +143,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     });
 
     $scope.isFavorite = function() {
-        if($rootScope.user._id && $scope.profile && $scope.profile._id) {
+        if($rootScope.user && $rootScope.user._id && $scope.profile && $scope.profile._id) {
             return $rootScope.user.favorites.includes($scope.profile._id);
         }
         return false;
@@ -186,7 +187,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     function findTravelInfo(){
         if($rootScope.userCity && $scope.profile.travelingInfo && $scope.profile.travelingInfo.length > 0){
             for(var i = 0; i < $scope.profile.travelingInfo.length; i++){
-                if($scope.profile.travelingInfo[i].destination == $rootScope.userCity){
+                if(!$scope.profile.travelingInfo[i].destination || $scope.profile.travelingInfo[i].destination == $rootScope.userCity){ // if cities match or user chose Anywhere as destination
+                    if(!$scope.profile.travelingInfo[i].departure){ // if user has chosen anytime then open all dates
+                        openAllDates = true;
+                        break;
+                    }
                     if(minDate > $scope.profile.travelingInfo[i].departure){
                         minDate = $scope.profile.travelingInfo[i].departure;
                         if(minDate < today){
@@ -199,6 +204,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                     travelingDates = travelingDates.concat(getConfirmedDates($scope.profile.travelingInfo[i].departure, $scope.profile.travelingInfo[i].returnDate));
                 }
             }
+        }
+        minDate = getMinDate(new Date(minDate));
+        if(openAllDates){
+            maxDate = false;
+        }
+        else{
+            maxDate = (new Date(maxDate)).toLocaleDateString('en-US');
         }
         setDates();
     }
@@ -215,7 +227,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 isInvalidDate: function(arg){
                     return isInvalidDate(arg);
                 },
-                minDate: (new Date()).toLocaleDateString('en-US')
+                minDate: minDate
             });
             $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
                 if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
@@ -227,22 +239,23 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
             return;
         }
-        var startDate = departure?new Date(departure).getTime() > new Date().getTime()?(new Date(departure)).toLocaleDateString('en-US'):(new Date()).toLocaleDateString('en-US'):false;
-        var endDate = returnDate?(new Date(returnDate)).toLocaleDateString('en-US'):false;
-        $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
-        $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
+        // var startDate = departure?new Date(departure).getTime() > new Date().getTime()?(new Date(departure)).toLocaleDateString('en-US'):(new Date()).toLocaleDateString('en-US'):false;
+        // var endDate = returnDate?(new Date(returnDate)).toLocaleDateString('en-US'):false;
+        // $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
+        // $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
         $('input[name="swapDates"]').daterangepicker({
             autoApply: true,
             opens: 'left',
             locale: {
                 format: 'MM/DD/YYYY'
             },
-            startDate: startDate,
-            minDate: startDate,
-            maxDate: endDate,
             isInvalidDate: function(arg){
                 return isInvalidDate(arg);
-            }
+            },
+            startDate: minDate,
+            endDate: minDate,
+            minDate: minDate,
+            maxDate: maxDate
         });
         $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
             if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
@@ -359,11 +372,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     function getMinDate(date){
         date._d = date;
         if(isInvalidDate(date)){
+            if(maxDate && date.getTime() > maxDate){
+                return (new Date(maxDate)).toLocaleDateString('en-US');
+            }
             return getMinDate(addDays(date, 1));
         }
         else{
-            minDate = date.toLocaleDateString('en-US');
-            return minDate;
+            return date.toLocaleDateString('en-US');
         }
     }
 
@@ -390,6 +405,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
         var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
         if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
+            return true;
+        }
+        if(!openAllDates && !travelingDates.includes(thisCompare)){
             return true;
         }
     }
