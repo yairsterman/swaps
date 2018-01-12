@@ -417,9 +417,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         var clearInput = false;
         startDate = new Date(startDate).getTime();
         endDate = new Date(endDate).getTime();
-        for(var i = 0; i < confirmedDates.length; i++){
-            var confirmedDate = new Date(confirmedDates[i]).getTime()
-            if(startDate < confirmedDate && endDate > confirmedDate){
+        var chosenDates = getConfirmedDates(startDate, endDate);
+        for(var i = 0; i < chosenDates.length; i++){
+            var date = new Date(chosenDates[i]);
+            date._d = date; // for isInvalidDate
+            if(isInvalidDate(date)){
                 clearInput = true;
                 break;
             }
