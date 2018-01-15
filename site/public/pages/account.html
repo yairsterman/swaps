@@ -357,8 +357,9 @@
                     <swaps swaps="user.travelingInfo"></swaps>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
-                    <div class="swap-title"></div>
-                    <div class="mg-0 row flex" ng-repeat="request in requests">
+                    <div class="loader" ng-if="saving"></div>
+                    <div class="swap-title" ng-hide="saving"></div>
+                    <div class="mg-0 row flex" ng-repeat="request in requests" ng-hide="saving">
                         <swapper-home class="traveler-col col-sm-6 col-xs-12" traveler="request"></swapper-home>
                         <div class="request-info col-sm-6 col-xs-12">
                             <div class="form-group row">
@@ -389,7 +390,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
+                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)" ng-hide="saving">Cancel Request</div>
                             </div>
                         </div>
                     </div>

@@ -273,6 +273,7 @@ function setRequiredParams(params){
     params['apptInfo.rooms'] = {$exists: true}; // number of rooms set
     params['apptInfo.beds'] = {$exists: true};// number of beds set
     params['apptInfo.baths'] = {$exists: true};// number of baths set
+    params['apptInfo.roomType'] = {$exists: true};// room type set
     params['apptInfo.title'] = {$ne: ''}; // home title set
     params['$or'] = [{'travelingInfo.0':{$exists:true}},{allowViewHome:true}];// either traveling or allowed to view home
 }

@@ -49,7 +49,7 @@
     <div class="people-and-map">
         <div class="">
             <div class="row mg-0">
-                <div class="travelers-list col-md-8 col-sm-12 {{loading?'loading':''}}" id="swappers">
+                <div class="travelers-list col-md-8 col-sm-12" id="swappers">
                     <div class="loader" ng-if="loading"></div>
                     <div class="mg-0 row" ng-if="!loading">
                         <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">

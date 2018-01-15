@@ -65,12 +65,19 @@ swapsApp.service('MessageService', function($http, $q){
             departure: departure,
             returnDate:returnDate
         };
-        return $http.post('message/cancelRequest', data).then(function(data){
-                return data;
+        var dfr = $q.defer();
+        $http.post('message/cancelRequest', data).then(function(res){
+                if(res.data.error){
+                    dfr.reject(res.data.msg);
+                }
+                else{
+                    dfr.resolve(res.data);
+                }
             },
             function(){
-                console.log("error")
+                dfr.reject("Error");
             });
+        return dfr.promise;
     };
 
     this.readMessage = function(user, recipient) {

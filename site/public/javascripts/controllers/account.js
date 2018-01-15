@@ -126,13 +126,17 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.cancelRequest = function(requestInfo){
-        $scope.saving = true;
-        MessageService.cancelRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-            if(!data || (data && data.error)){
-                console.log("error");
+        alertify.okBtn('Yes').cancelBtn('No').confirm('Are you sure you want to cancel this swap request?').then(function(res){
+            if(res.buttonClicked === 'ok'){
+                $scope.saving = true;
+                MessageService.cancelRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
+                    updateUser();
+                },function(){
+                    $scope.saving = false;
+                });
             }
             else{
-                updateUser();
+
             }
         });
     }
