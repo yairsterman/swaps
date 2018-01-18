@@ -8,6 +8,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.options = ['cities'];
 
     $rootScope.homepage = true;
+    $scope.localeFormat = 'MMM DD';
+    $scope.modelFormat = 'MM/DD/YYYY';
 
     $scope.cities = [
         {

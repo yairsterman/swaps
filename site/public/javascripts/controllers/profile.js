@@ -3,6 +3,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
+    $scope.userCity = $rootScope.userCity;
+    $rootScope.homepage = false;
     $scope.showMore = {
         aboutMe: {active:false},
         aboutHome: {active:false},
@@ -12,13 +14,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         guests: 2,
         when:{}
     };
-
-    var confirmedDates = [];
-    var travelingDates = [];
-    var today = (new Date()).getTime();
-    var minDate = today;
-    var maxDate = today;
-    var openAllDates = false;
+    $scope.canSendRequest = {};
+    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.modelFormat = 'MMMM DD, YYYY';
 
     $anchorScroll();
 
@@ -184,89 +182,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.requestSent = requests.includes($scope.profile._id);
     }
 
-    function findTravelInfo(){
-        if($rootScope.userCity && $scope.profile.travelingInfo && $scope.profile.travelingInfo.length > 0){
-            for(var i = 0; i < $scope.profile.travelingInfo.length; i++){
-                if(!$scope.profile.travelingInfo[i].destination || $scope.profile.travelingInfo[i].destination == $rootScope.userCity){ // if cities match or user chose Anywhere as destination
-                    if(!$scope.profile.travelingInfo[i].departure){ // if user has chosen anytime then open all dates
-                        openAllDates = true;
-                        break;
-                    }
-                    if(minDate > $scope.profile.travelingInfo[i].departure){
-                        minDate = $scope.profile.travelingInfo[i].departure;
-                        if(minDate < today){
-                            minDate = today;
-                        }
-                    }
-                    if(maxDate < $scope.profile.travelingInfo[i].returnDate){
-                        maxDate = $scope.profile.travelingInfo[i].returnDate
-                    }
-                    travelingDates = travelingDates.concat(getConfirmedDates($scope.profile.travelingInfo[i].departure, $scope.profile.travelingInfo[i].returnDate));
-                }
-            }
-        }
-        minDate = getMinDate(new Date(minDate));
-        if(openAllDates){
-            maxDate = false;
-        }
-        else{
-            maxDate = (new Date(maxDate)).toLocaleDateString('en-US');
-        }
-        setDates();
-    }
-
-    function setDates(departure, returnDate){
-        if(!$rootScope.userCity || !$scope.profile.travelingInfo || $scope.profile.travelingInfo.length == 0){
-            $scope.notSwapping = true;
-            $('input[name="swapDates"]').daterangepicker({
-                autoApply: true,
-                opens: 'left',
-                locale: {
-                    format: 'MM/DD/YYYY'
-                },
-                isInvalidDate: function(arg){
-                    return isInvalidDate(arg);
-                },
-                minDate: minDate
-            });
-            $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-                if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
-                    $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-                    $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-                    $scope.canSendRequest = true;
-                    $scope.$apply();
-                }
-            });
-            return;
-        }
-        // var startDate = departure?new Date(departure).getTime() > new Date().getTime()?(new Date(departure)).toLocaleDateString('en-US'):(new Date()).toLocaleDateString('en-US'):false;
-        // var endDate = returnDate?(new Date(returnDate)).toLocaleDateString('en-US'):false;
-        // $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
-        // $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
-        $('input[name="swapDates"]').daterangepicker({
-            autoApply: true,
-            opens: 'left',
-            locale: {
-                format: 'MM/DD/YYYY'
-            },
-            isInvalidDate: function(arg){
-                return isInvalidDate(arg);
-            },
-            startDate: minDate,
-            endDate: minDate,
-            minDate: minDate,
-            maxDate: maxDate
-        });
-        $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-            if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
-                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-                $scope.canSendRequest = true;
-                $scope.$apply();
-            }
-        });
-    }
-
     function setMapRadius(){
         var mapOptions = {
             zoom: 14,
@@ -343,6 +258,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     function init(){
+        $scope.ready = false;
         UsersService.getProfile($routeParams.id).then(function(data){
             $scope.profile = data.data;
             $scope.age = getAge($scope.profile.birthday);
@@ -352,94 +268,17 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 setUserData();
             }
             else{
-                findTravelInfo();
+                $scope.ready = true;
             }
         });
     }
 
     function setUserData(){
-        $scope.canSendRequest = false;
+        $scope.ready = false;
+        $scope.canSendRequest.status = false;
         setUpMarkers();
         checkRequestSent();
-        $scope.user.requests.forEach(function(request){
-            if(request.status === $scope.data.requestStatus.confirmed){
-                confirmedDates = confirmedDates.concat(getConfirmedDates(request.departure, request.returnDate));
-            }
-        });
-        findTravelInfo();
-    }
-
-    function getMinDate(date){
-        date._d = date;
-        if(isInvalidDate(date)){
-            if(maxDate && date.getTime() > maxDate){
-                return (new Date(maxDate)).toLocaleDateString('en-US');
-            }
-            return getMinDate(addDays(date, 1));
-        }
-        else{
-            return date.toLocaleDateString('en-US');
-        }
-    }
-
-    function getConfirmedDates(startDate, stopDate) {
-        var dateArray = [];
-        var currentDate = startDate;
-        while (currentDate <= stopDate) {
-            var date = new Date (currentDate);
-            dateArray.push(date.toLocaleDateString('en-US'));
-            currentDate = addDays(date, 1).getTime();
-        }
-        return dateArray;
-    }
-
-    function addDays(date, days) {
-        date.setDate(date.getDate() + days);
-        return date;
-    }
-
-    function isInvalidDate(date){
-        var thisMonth = date._d.getMonth()+1;   // Months are 0 based
-        var thisDate = date._d.getDate();
-        var thisYear = date._d.getYear()+1900;   // Years are 1900 based
-
-        var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
-        if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
-            return true;
-        }
-        if(!openAllDates && !travelingDates.includes(thisCompare)){
-            return true;
-        }
-    }
-
-    function checkClearInput(startDate, endDate){
-        // Compare the dates again.
-        var clearInput = false;
-        startDate = new Date(startDate).getTime();
-        endDate = new Date(endDate).getTime();
-        var chosenDates = getConfirmedDates(startDate, endDate);
-        for(var i = 0; i < chosenDates.length; i++){
-            var date = new Date(chosenDates[i]);
-            date._d = date; // for isInvalidDate
-            if(isInvalidDate(date)){
-                clearInput = true;
-                break;
-            }
-        }
-
-        // If a disabled date is in between the bounds, clear the range.
-        if(clearInput){
-
-            // To clear selected range (on the calendar).
-            var currentDate = new Date(startDate);
-            $('input[name="swapDates"]').data('daterangepicker').setStartDate(currentDate);
-            $('input[name="swapDates"]').data('daterangepicker').setEndDate(currentDate);
-
-            // To clear input field and keep calendar opened.
-            $('input[name="swapDates"]').focus();
-
-        }
-        return clearInput;
+        $scope.ready = true;
     }
 
     init();

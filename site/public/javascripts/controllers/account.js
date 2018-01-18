@@ -213,14 +213,14 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 size: 'sm',
                 controller: 'requestController',
                 scope: $scope
-                });
-            })
-            .closed.then(function(){
+            });
+            $scope.modelInstance.closed.then(function(){
                 $scope.user = $rootScope.user;
                 updateUser();
             },function(){
                 $scope.saving = false;
             });
+        })
     }
 
     $scope.$on('auth-return', function(event, args) {

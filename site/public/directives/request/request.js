@@ -10,13 +10,15 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
 
     $scope.payment = false;
 
+    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.modelFormat = 'MMMM DD, YYYY';
+
     $scope.showPayment = function(){
-        $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit].value;
+        $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-        $scope.percentage = {name:'4%', amount:0.04};
-        $scope.totalWithoutDiscount = $scope.depositPlan * $scope.numberOfWeeks * $scope.percentage.amount;
-        $scope.discount.amount = $scope.totalWithoutDiscount;
-        $scope.total = $scope.totalWithoutDiscount - $scope.discount.amount;
+        $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
+        $scope.totalPayment = $scope.depositPlan.night * $scope.numberOfNights;
+        $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.receipt = true;
     }
 
@@ -99,6 +101,14 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         var difference_ms = Math.abs(date1_ms - date2_ms);
         // Convert back to weeks and return hole weeks
         return Math.ceil(difference_ms / ONE_WEEK);
+    }
+
+    function calculateNightsBetween(date1, date2) {
+        var DAYS = 1000 * 60 * 60 * 24;
+        var date1_ms = date1.getTime();
+        var date2_ms = date2.getTime();
+        var difference_ms = Math.abs(date1_ms - date2_ms);
+        return Math.ceil(difference_ms / DAYS);
     }
     // return {
     //     restrict: 'E',
