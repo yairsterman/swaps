@@ -11,10 +11,14 @@ swapsApp.directive('swaps', function() {
 });
 
 function swapsController($scope, $rootScope, $filter, AccountService){
-    // var autocompleteSearch;
     $scope.addSwap = {
         guests:2
     };
+    $scope.user = $rootScope.user;
+    $scope.data = $rootScope.data;
+
+    $scope.localeFormat = 'MMM DD';
+    $scope.modelFormat = 'MM/DD/YYYY';
 
     var confirmedDates = [];
     var today = (new Date()).toLocaleDateString('en-US');

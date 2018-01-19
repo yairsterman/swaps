@@ -220,7 +220,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             };
             service.textSearch(request, function (results, status) {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
-                    for (var i = 0; i < 4; i++) {
+                    for (var i = 0; i < 3; i++) {
                         createMarker(results[i], img);
                     }
                 }
@@ -256,6 +256,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
 
     }
+
+    var myoverlay = new google.maps.OverlayView();
+    myoverlay.draw = function () {
+        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
+        this.getPanes().markerLayer.id='iconsLayer';
+    };
 
     function init(){
         $scope.ready = false;

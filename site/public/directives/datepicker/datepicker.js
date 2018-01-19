@@ -12,6 +12,7 @@ swapsApp.directive('datepicker', function() {
             profile: '=?',
             findTravel: '=?',
             notSwapping: '=?',
+            setUpSwap: '=?',
         },
         link: function(scope, element, attrs, model) {
 
@@ -20,9 +21,9 @@ swapsApp.directive('datepicker', function() {
             var today = (new Date()).getTime();
             var minDate = today;
             var maxDate = today;
-            var openAllDates = false;
+            var openAllDates = scope.setUpSwap || false;
 
-            if(scope.findTravel){ //from profile page
+            if(scope.findTravel){ //from profile or set up swap page
                 findTravelInfo();
             }
             else{ //from home page
@@ -46,6 +47,11 @@ swapsApp.directive('datepicker', function() {
             }
 
             function setDates(){
+                if(scope.setUpSwap){
+                    // setting daterangepicker causes date to default to today,
+                    // so save the dates that are set and override the defaults
+                    scope.currentDates = scope.swapDates.dates;
+                }
                 if(!scope.userCity || !scope.profile.travelingInfo || scope.profile.travelingInfo.length === 0){
                     scope.notSwapping = true;
                     element.daterangepicker({
@@ -57,7 +63,9 @@ swapsApp.directive('datepicker', function() {
                         isInvalidDate: function(arg){
                             return isInvalidDate(arg);
                         },
-                        minDate: minDate
+                        minDate: minDate,
+                        startDate: minDate,
+                        endDate: minDate
                     });
                 }
                 else{
@@ -78,14 +86,24 @@ swapsApp.directive('datepicker', function() {
                 }
                 element.on('apply.daterangepicker', function(ev, picker) {
                     if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
-                        scope.swapDates.from = picker.startDate.format(scope.modelFormat);
-                        scope.swapDates.to = picker.endDate.format(scope.modelFormat);
-                        if(scope.canSendRequest){
-                            scope.canSendRequest.status = true;
+                        if(scope.setUpSwap){
+                            scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
                         }
-                        scope.$apply();
+                        else{
+                            scope.swapDates.from = picker.startDate.format(scope.modelFormat);
+                            scope.swapDates.to = picker.endDate.format(scope.modelFormat);
+                            if(scope.canSendRequest){
+                                scope.canSendRequest.status = true;
+                            }
+                            scope.$apply();
+                        }
                     }
                 });
+                if(scope.setUpSwap){
+                    // setting daterangepicker causes date to default to today,
+                    // so save the dates that are set and override the defaults
+                    scope.swapDates.dates = scope.currentDates;
+                }
             }
 
             function findTravelInfo(){
@@ -143,7 +161,12 @@ swapsApp.directive('datepicker', function() {
                     return getMinDate(addDays(date, 1));
                 }
                 else{
-                    return date.toLocaleDateString('en-US');
+                    if(scope.setUpSwap){ // return the right date format
+                        return date.toLocaleString('en-us', {month: 'short', day: 'numeric',});
+                    }
+                    else{
+                        return date.toLocaleDateString('en-US');
+                    }
                 }
             }
 

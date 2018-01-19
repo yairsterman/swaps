@@ -5,7 +5,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	$scope.homepage = $rootScope.homepage;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
-    
+
 	if($rootScope.user && $rootScope.user.city){
 		$rootScope.userCity = $rootScope.user.city;
     }

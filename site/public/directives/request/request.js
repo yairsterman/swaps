@@ -58,22 +58,6 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         });
     }
 
-    $scope.openDate = function(){
-        $('input[name="dates"]').daterangepicker({
-            autoApply: true,
-            opens: 'left',
-            locale: {
-                format: 'MM/DD/YYYY'
-            },
-            minDate: (new Date()).toLocaleDateString('en-US'),
-        });
-        $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-            $scope.$apply();
-        });
-    }
-
     $scope.removeDates = function(swap){
         $scope.swap.dates = undefined;
         $scope.swap.from = undefined;

@@ -215,7 +215,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
       };
 
     function init(){
-        var zoom = 12;
+        var zoom = 13;
         var center = $scope.city;
         if($scope.city == 'Anywhere'){
             zoom = 2;

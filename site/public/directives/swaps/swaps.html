@@ -10,7 +10,9 @@
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-model="swap.destination" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" autocomplete city="true">
                 </div>
                 <div class="search-field col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-focus="openDate('searchDate'+$index, swap)" ng-model="swap.dates" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}">
+                    <input type="text" class="form-control" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-model="swap.dates" swap-dates="swap" user="user" profile="false"
+                           user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
+                           data="data" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}">
                     <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(swap)" ng-if="!saving && editingField == $index && swap.dates"></div>
                 </div>
                 <div class="search-field right col-sm-4 col-xs-12 ">
@@ -37,7 +39,9 @@
                 <input type="text" class="form-control" placeholder="Anywhere" id="addCity1" ng-model="addSwap.destination" ng-disabled="editing" disabled="{{editing}}" autocomplete city="true">
             </div>
             <div class="search-field col-sm-4 col-xs-12">
-                <input type="text" class="form-control" placeholder="Anytime" id="searchDateAdd" name="searchDateAdd" ng-focus="openDate('searchDateAdd', addSwap)" ng-model="addSwap.dates" ng-disabled="editing" disabled="{{editing}}">
+                <input type="text" class="form-control" placeholder="Anytime" id="searchDateAdd" name="searchDateAdd" ng-model="addSwap.dates" swap-dates="addSwap" user="user" profile="false"
+                       user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
+                       data="data"  ng-disabled="editing" disabled="{{editing}}">
                 <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(addSwap)" ng-if="addSwap.dates"></div>
             </div>
             <div class="search-field right col-sm-4 col-xs-12 ">
