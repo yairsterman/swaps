@@ -3,6 +3,7 @@
 	padding: 40px 0;
 	min-height: 75vh;
 	.content{
+		min-height: 75vh;
 		&.scroll{
 			overflow-y: scroll;
 			max-height: ~'calc(56vw + 40px)';
@@ -196,6 +197,7 @@
 			}
 	    	.buttons{
     			position: fixed;
+				z-index: 20;
 				bottom: 2%;
 				right: 1%;
     			.btn-edit{
@@ -640,7 +642,6 @@
 					color: #0E5D7C;
 				}
 				&.confirm{
-					width: 25%;
 					border-radius: 4px;
 					padding: 10px;
 					font-size: 18px;

@@ -1,5 +1,5 @@
 var acc = null;
-swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService) {
+swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
     $scope.homepage = false;
@@ -126,18 +126,27 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.cancelRequest = function(requestInfo){
-        alertify.okBtn('Yes').cancelBtn('No').confirm('Are you sure you want to cancel this swap request?').then(function(res){
-            if(res.buttonClicked === 'ok'){
-                $scope.saving = true;
-                MessageService.cancelRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-                    updateUser();
-                },function(){
-                    $scope.saving = false;
-                });
-            }
-            else{
-
-            }
+        var decline = requestInfo.status == 0 && requestInfo.sentBy != $scope.user._id
+        $scope.saving = true;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/cancelSwap/cancel.html',
+            size: 'sm',
+            controller: 'cancelController',
+            resolve: {
+                decline: function () {
+                    return decline;
+                },
+                requestInfo: function () {
+                    return requestInfo;
+                }
+            },
+            scope:$scope
+        })
+        $scope.modelInstance.closed.then(function(){
+            updateUser();
+        },function(){
+            $scope.saving = false;
         });
     }
 
@@ -296,6 +305,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         return null;
     };
+
+    $scope.trustAsHtml = function(html) {
+        return $sce.trustAsHtml(html);
+    }
 
     function scrollMessagesToTop(){
         $('.message-area').css({transform: "translate(0)"});

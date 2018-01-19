@@ -59,11 +59,12 @@ swapsApp.service('MessageService', function($http, $q){
        return dfr.promise;
     };
 
-    this.cancelRequest = function(recipient, departure, returnDate) {
+    this.cancelRequest = function(recipient, departure, returnDate, message) {
         var data = {
             recipientId: recipient,
             departure: departure,
-            returnDate:returnDate
+            returnDate:returnDate,
+            message: message,
         };
         var dfr = $q.defer();
         $http.post('message/cancelRequest', data).then(function(res){

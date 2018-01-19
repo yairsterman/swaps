@@ -57,7 +57,7 @@ router.post('/edit-profile', function (req, res, next) {
                 res.json(error);
             }
             else {
-                User.findOne({_id: id}, function (err, user) {
+                User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                     if (err) {
                         error.message = err;
                         res.json(error);
@@ -85,7 +85,7 @@ router.post('/edit-listing', function (req, res, next) {
                     res.json(error);
                 }
                 else {
-                    User.findOne({_id: id}, function (err, user) {
+                    User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                         if (err) {
                             error.message = err;
                             res.json(error);
@@ -123,7 +123,7 @@ router.post('/edit-listing', function (req, res, next) {
                             res.json(error);
                         }
                         else {
-                            User.findOne({_id: id}, function (err, user) {
+                            User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                                 if (err) {
                                     error.message = err;
                                     res.json(error);
@@ -186,7 +186,7 @@ router.post('/add-travel-info', function (req, res, next) {
                     res.json(error);
                 }
                 else {
-                    User.findOne({_id: id}, function (err, user) {
+                    User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                         if (err) {
                             error.message = err;
                             res.json(error);
@@ -262,7 +262,7 @@ router.post('/update-travel-info', function (req, res, next) {
                         res.json(error);
                     }
                     else {
-                        User.findOne({_id: id}, function (err, user) {
+                        User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                             if (err) {
                                 error.message = err;
                                 res.json(error);
@@ -323,7 +323,7 @@ router.post('/remove-travel-info', function (req, res, next) {
                         res.json(error);
                     }
                     else {
-                        User.findOne({_id: id}, function (err, user) {
+                        User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                             if (err) {
                                 error.message = err;
                                 res.json(error);
@@ -473,7 +473,7 @@ router.put('/add-favorite', function (req, res, next) {
                 error.message = err;
                 res.json(error);
             } else {
-                User.findOne({_id: id}, function (err, user) {
+                User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                     if (err) {
                         error.message = err;
                         res.json(error);
@@ -537,7 +537,7 @@ router.put('/unset-favorite', function (req, res, next) {
                 error.message = err;
                 res.json(error);
             } else {
-                User.findOne({_id: id}, function (err, user) {
+                User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
                     if (err) {
                         error.message = err;
                         res.json(error);

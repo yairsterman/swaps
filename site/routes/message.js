@@ -13,6 +13,8 @@ var error = {
 	message: ''
 };
 
+const DAY = 1000*60*60*24;
+
 const USER_UNAVAILABLE = {code:409, msg:'You have already booked these dates'};
 const REQUEST_UNAVAILABLE = {code:411, msg:'The dates you requested have already been booked by the user'};
 
@@ -27,8 +29,9 @@ router.post('/sendMessage', function(req, res, next) {
 				message: message
 			}
 
-	saveMessage(sender._id, recipientId, sender._id, newMessage, false).then(function(){
-		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
+	saveMessage(sender._id, recipientId, sender._id, newMessage, false).then(function(recipient){
+        email.sendMail([recipient.email],'New Message', emailMessages.message(sender, recipient));
+        return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
 	})
 	.then(function(){
 		User.findOne({_id: sender._id}, function (err, updatedUser) {
@@ -47,33 +50,48 @@ router.post('/sendMessage', function(req, res, next) {
 });
 
 router.post('/sendRequest', function(req, res, next) {
-	var recipientId = req.body.recipientId;
-	var sender = req.user;
-	var guests = req.body.guests;
-	var now = Date.now();
-	var departure;
-	var returnDate;
-	var message;
+	let recipientId = req.body.recipientId;
+	let sender = req.user;
+	let recipient ={};
+	let guests = req.body.guests;
+	let now = Date.now();
+	let departure;
+	let returnDate;
+	let message;
+	let newMessage;
+	let dates;
+    let nights;
 	console.log(req.body.dates);
 	if(req.body.dates){
-		message = 'Requested to swap on ' + req.body.dates;
-        req.body.message?message = 'Swap Request:' + req.body.message: message += '';
-		var dates = req.body.dates.split('-');
+		dates = req.body.dates.split('-');
 		departure = Date.parse(dates[0].trim());
 		returnDate = Date.parse(dates[1].trim());
+		nights = calculateNightsBetween(departure, returnDate);
 	}
-	var newMessage = {
-				id: sender._id,
-				date: now,
-				isRequest: true,
-				message: message
-			}
+	else{
+        error.message = "No dates specified";
+        res.json(error);
+        return;
+	}
     checkAvailability(sender._id, recipientId, departure, returnDate).then(function() {
         return saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
-    }).then(function(){
-		return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
+    }).then(function(_recipient){
+    	recipient = _recipient;
+        email.sendMail([recipient.email],'New Swap Request!', emailMessages.request(recipient, sender, {departure:departure,returnDate:returnDate}, nights, req.body.message));
+        return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
 	})
-	.then( function(){
+	.then( function(user){
+        email.sendMail([sender.email],'Swap Request Sent', emailMessages.requestSent(sender, recipient));
+        message = 'SWAP REQUEST:<br>' + sender.firstName+ ' Requested to swap for ' + nights + (nights >1?' Nights':' Night') + '<br>' +
+		'Check in: ' + dates[0] +'<br>' +
+		'Check out: ' + dates[1] +'<br>' +
+			(req.body.message?sender.firstName + ' Says: ' + req.body.message:'') + '<br>';
+        newMessage = {
+            id: sender._id,
+            date: now,
+            isRequest: true,
+            message: message
+        }
 		return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
 	})
 	.then( function(){
@@ -135,7 +153,8 @@ router.post('/cancelRequest', function(req, res) {
     var sender = req.user;
     var departure = req.body.departure;
     var returnDate = req.body.returnDate;
-    cancelRequest(sender._id, recipientId, departure, returnDate).then(function(){
+    var message = req.body.message;
+    cancelRequest(sender._id, recipientId, departure, returnDate, message).then(function(){
             res.json({status: 'success', message: 'canceled'});
         },
         function(err){
@@ -200,7 +219,7 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 								}
 								else{
 									console.log("updated DB");
-									defferd.resolve();
+									defferd.resolve(user);
 								}
 							});
 						}
@@ -242,7 +261,7 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, guest
 								name: sender.firstName,
 								city: sender.city,
 								departure: departure,
-								returnDate : returnDate,
+								returnDate : returnDate - DAY, // book only the nights, without checkout date
                                 sentBy: sentBy,
                                 guests: guests,
 								status: status
@@ -256,7 +275,7 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, guest
 								}
 								else{
 									console.log("updated DB");
-									defferd.resolve();
+									defferd.resolve(user);
 								}
 							});
 						}
@@ -346,10 +365,14 @@ function confirmRequest(senderId, recipientId, departure, returnDate){
 	return deferd.promise;
 }
 
-function cancelRequest(senderId, recipientId, departure, returnDate){
+function cancelRequest(senderId, recipientId, departure, returnDate, message){
     var deferd = Q.defer();
+    let declined = false;
+    let sender = {};
+    let recipient = {};
     User.findOne({_id: senderId})
-        .then(function (sender) {
+        .then(function (_sender) {
+            sender = _sender;
             if (!sender._id){
                 error.message = "Request not sent";
                 throw new Error(error.message);
@@ -361,6 +384,9 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                     throw new Error(error.message);
                 }
                 else{
+                	if(sender.requests[requestIndex].status === Data.getRequestStatus().pending){
+						declined = true;
+					}
                     sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
                     return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
                 }
@@ -375,7 +401,8 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
                 return User.findOne({_id: recipientId});
             }
         })
-        .then(function(recipient){
+        .then(function(_recipient){
+            recipient = _recipient;
             if (!recipient._id){
                 error.message = "Request not sent";
                 throw new Error(error.message);
@@ -400,6 +427,13 @@ function cancelRequest(senderId, recipientId, departure, returnDate){
             }
             else{
                 console.log("updated DB");
+                if(declined){
+                    email.sendMail([recipient.email],'Swap Declined', emailMessages.declined(recipient, sender, message));
+				}
+				else{
+                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
+                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                }
                 deferd.resolve();
             }
         },function(err){
@@ -557,5 +591,12 @@ function updateDates(travelingInfo, travelingDest, departure, returnDate){
     return {_travelingInfo, travelingDest};
 }
 
+function calculateNightsBetween(date1, date2) {
+    var DAYS = 1000 * 60 * 60 * 24;
+    var date1_ms = date1;
+    var date2_ms = date2;
+    var difference_ms = Math.abs(date1_ms - date2_ms);
+    return Math.ceil(difference_ms / DAYS);
+}
 
 module.exports = router;

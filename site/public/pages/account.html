@@ -294,8 +294,7 @@
                                                 <div class="bottom">
                                                     <div class="row last-massage">
                                                         <div class="col-sm-8">
-                                                            <div class="text {{message.read?'not-read':''}}">
-                                                                {{message.messages[message.messages.length -1].message}}
+                                                            <div class="text {{message.read?'not-read':''}}" ng-bind-html="trustAsHtml(message.messages[message.messages.length -1].message)">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
@@ -333,8 +332,7 @@
                             <div class="conversation-messages" id="{{currentConversationId}}">
                                 <div class="con-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}"
                                      ng-repeat="conversation in currentConversation.messages">
-                                    <div class="text">
-                                        {{conversation.message}}
+                                    <div class="text" ng-bind-html="trustAsHtml(conversation.message)">
                                     </div>
                                 </div>
                             </div>
@@ -390,7 +388,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)" ng-hide="saving">Cancel Request</div>
+                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)" ng-hide="saving">{{request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id?'Decline':'Cancel'}} Request</div>
                             </div>
                         </div>
                     </div>
