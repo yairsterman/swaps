@@ -30,7 +30,7 @@ router.post('/sendMessage', function(req, res, next) {
 			}
 
 	saveMessage(sender._id, recipientId, sender._id, newMessage, false).then(function(recipient){
-        email.sendMail([recipient.email],'New Message', emailMessages.message(sender, recipient));
+        email.sendMail([recipient.email],'New Message', emailMessages.message(recipient, sender));
         return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
 	})
 	.then(function(){
