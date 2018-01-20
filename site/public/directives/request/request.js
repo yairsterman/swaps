@@ -27,7 +27,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     $scope.close = function(){
-        $scope.modelInstance.close();
+        $scope.$dismiss();
     }
 
     $scope.sendRequest = function(){
@@ -45,9 +45,9 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
             $scope.requestComplete = true;
             $rootScope.user = response;
             $scope.user = $rootScope.user;
-            $scope.requestSent = true;
+            $scope.$parent.requestSent = true;
             $timeout(function(){
-                $scope.modelInstance.close();
+                $scope.close();
             },5000);
         },
         function(err){

@@ -1,5 +1,5 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $filter, AccountService) {
+swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $timeout, $filter, AccountService) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
@@ -138,6 +138,16 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     $scope.$on('auth-return', function(event, args) {
         $scope.user = $rootScope.user;
         setUserData();
+    });
+
+    $rootScope.$on('geolocation-complete', function(event, args) {
+        if ($rootScope.userCity) {// reload datepicker when city is found
+            $scope.userCity = $rootScope.userCity;
+            $scope.ready = false;
+            $timeout(function(){
+                $scope.ready = true;
+            },1000);
+        }
     });
 
     $scope.isFavorite = function() {
@@ -284,7 +294,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.canSendRequest.status = false;
         setUpMarkers();
         checkRequestSent();
-        $scope.ready = true;
+        $timeout(function(){
+            $scope.ready = true;
+        },1000);
     }
 
     init();
