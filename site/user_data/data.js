@@ -69,6 +69,7 @@ const visibleUserData = {
         deposit:true,
         thingsToDo:true,
         allowViewHome:true,
+        favorites:true,
         rating:true,
         radius:true,
         location:true,

@@ -1,8 +1,26 @@
 <div class="request-page">
     <div class="top-corner icon icon-delete" ng-click="close()"></div>
-    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete">
+    <div class="match" ng-if="isMatch">
+        <div class="title">
+            I like you too!
+            <div class="underline"></div>
+        </div>
+
+        <div class="photo">
+            <div class="profile-img" style="background-image: url('{{profile.image}}')"></div>
+        </div>
+
+        <div class="sub-title center">
+            You and {{profile.firstName}} have liked each others homes! <br>
+            Why waste time? request to Swap now.
+        </div>
+        <input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="showRequest()">
+
+    </div>
+    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete || isMatch">
         <div class="title">
             Request to Swap!
+            <div class="underline"></div>
         </div>
         <div ng-if="!chooseDates">
             <div class="sub-title row">

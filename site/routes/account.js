@@ -466,24 +466,38 @@ router.get('/get-requests', function (req, res, next) {
 
 router.put('/add-favorite', function (req, res, next) {
     var id = req.user.id;
-    var newFavorite = req.body.favorite;
+    let newFavorite = req.body.favorite;
+    let user = {};
 
-    User.update({_id: id}, {"$push": {"favorites": newFavorite}}, function (err, user) {
-            if (err) {
-                error.message = err;
-                res.json(error);
-            } else {
-                User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                    if (err) {
-                        error.message = err;
-                        res.json(error);
-                    }
-                    else {
-                        res.json(user);
-                    }
-                });
-            }
-        });
+    User.update({_id: id}, {"$push": {"favorites": newFavorite}})
+    .then(function (updated) {
+        if (!updated.ok) {
+            error.message = err;
+            throw (error);
+        } else {
+            return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
+        }
+    })
+    .then(function(_user){
+        user = _user;
+        if (!user) {
+            error.message = err;
+            throw (error);
+        }
+        else {
+            return User.findOne({_id: newFavorite, favorites: id});
+        }
+    })
+    .then(function(favorite){
+        if(favorite){
+            res.json({user: user, isMatch: true});
+        }
+        else{
+            res.json({user: user});
+        }
+    },function(err){
+        res.json(error);
+    });
 });
 
 router.get('/is-favorite', function(req, res, next) {

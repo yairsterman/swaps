@@ -165,8 +165,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         var favorite = $scope.profile._id;
 
         AccountService.addFavorite(favorite).then(function(data){
-            $rootScope.user = data;
+            $rootScope.user = data.user;
             $scope.user = $rootScope.user;
+            if(data.isMatch && !$scope.requestSent){
+                openMatch();
+            }
         });
     };
 
@@ -297,6 +300,22 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $timeout(function(){
             $scope.ready = true;
         },1000);
+    }
+
+    function openMatch(){
+        //need all th values for request and datepicker directives
+        $scope.chooseDates = true;
+        $scope.isMatch = true;
+        $scope.data = $rootScope.data;
+        $scope.swap = {};
+        $scope.userCity = $rootScope.userCity;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            controller: 'requestController',
+            scope: $scope
+        });
     }
 
     init();

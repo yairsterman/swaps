@@ -9,7 +9,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.completeText = 'Your request has been sent';
 
     $scope.payment = false;
-
+    $scope.isMatch = $scope.$parent.isMatch;
     $scope.localeFormat = 'MM/DD/YYYY';
     $scope.modelFormat = 'MMMM DD, YYYY';
 
@@ -73,6 +73,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
             $scope.payment = false;
             return;
         }
+    }
+
+    $scope.showRequest = function(){
+        $scope.isMatch = false;
     }
 
     function calculateWeeksBetween(date1, date2) {
