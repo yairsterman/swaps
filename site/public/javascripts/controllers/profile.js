@@ -195,6 +195,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.requestSent = requests.includes($scope.profile._id);
     }
 
+    var myoverlay = new google.maps.OverlayView();
+    myoverlay.draw = function () {
+        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
+        this.getPanes().markerLayer.id='iconsLayer';
+    };
+
     function setMapRadius(){
         var mapOptions = {
             zoom: 14,
@@ -217,6 +223,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             radius: 500
         });
 
+        myoverlay.setMap($scope.map);
     }
 
     function setUpMarkers(){
@@ -250,7 +257,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             map: $scope.map,
             position: info.geometry.location,
             animation: google.maps.Animation.DROP,
-            icon: {url:img, size:new google.maps.Size(50,50)},
+            icon: {url:img, size:new google.maps.Size(35,35)},
             title: info.address,
             optimized: false
         });
@@ -269,12 +276,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
 
     }
-
-    var myoverlay = new google.maps.OverlayView();
-    myoverlay.draw = function () {
-        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
-        this.getPanes().markerLayer.id='iconsLayer';
-    };
 
     function init(){
         $scope.ready = false;

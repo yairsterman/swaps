@@ -568,19 +568,28 @@
 					height: 80vw;
 				}
 				#iconsLayer {
-					img{
+					> div{
 						border-radius:50% !important;
-						width: 50px !important;
-						height: 50px !important;
-						display: block;
 						background-color: white;
-						object-fit: cover;
-						transform: scale(0.75);
 						border:2px solid rgba(13, 134, 234, 0);
-						-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
-						box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
-						-webkit-transition: ease 1s; /* For Safari 3.1 to 6.0 */
-						transition: ease 1s;
+						-webkit-transition: ease 0.3s; /* For Safari 3.1 to 6.0 */
+						transition: ease 0.3s;
+						&:hover{
+							-ms-transform: scale(1.2); /* IE 9 */
+							-webkit-transform: scale(1.2); /* Safari */
+							transform: scale(1.2);
+						}
+					}
+					img{
+						//border-radius:50% !important;
+						width: 35px !important;
+						height: 35px !important;
+						background-position: center;
+						display: block;
+						//background-color: white;
+						object-fit: contain;
+						object-position: center;
+						transform: scale(0.70);
 						&:hover{
 							-ms-transform: scale(1.2); /* IE 9 */
 							-webkit-transform: scale(1.2); /* Safari */

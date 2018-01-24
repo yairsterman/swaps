@@ -45,7 +45,16 @@ $routeProvider
 
 });
 
-swapsApp.run(function($http, $rootScope){
+swapsApp.run(function($http, $rootScope, $location, $window){
+
+    // initialise google analytics
+    $window.ga('create', 'UA-111632373-1', 'auto');
+
+    // track pageview on state change
+    $rootScope.$on('$stateChangeSuccess', function (event) {
+        $window.ga('send', 'pageview', $location.path());
+    });
+
     $http.get('/reauth').then(function(data){
        $rootScope.user = data.data;
        $rootScope.$broadcast('auth-return');
