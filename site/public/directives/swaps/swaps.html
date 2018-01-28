@@ -3,6 +3,10 @@
     <div class="title">{{title}}
         <div class="underline"></div>
     </div>
+    <div class="sub-title">
+        This way you will appear in other Swappers' searches,<br>
+        making it easier for you to find a Swap
+    </div>
     <div class="edit-swaps {{popup || toMany?'':'overflow'}}">
         <div class="single-swap" ng-repeat="swap in swaps track by swap._id | orderBy : 'departure' | limitTo : limit">
             <div class="row search-area">
