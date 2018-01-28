@@ -243,5 +243,9 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $interval.cancel(elementsReady);
         }
     }, 100);
+
+    $scope.$on('login-success', function(event, args) {
+        $scope.user = $rootScope.user;
+    });
 });
 

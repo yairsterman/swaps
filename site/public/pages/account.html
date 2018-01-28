@@ -138,19 +138,25 @@
                     </div>
                     <form class="form-horizontal edit-form" role="form">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Title:</label>
+                            <label class="col-sm-3 control-label listing-label">Title:<br>
+                                <span class="explanation">A short description of your home</span>
+                            </label>
                             <div class="col-sm-8">
                                 <input class="form-control" type="text" ng-model="edit.apptInfo.title">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Address:</label>
+                            <label class="col-sm-3 control-label listing-label">Address:<br>
+                            <span class="explanation">Where you live</span>
+                            </label>
                             <div class="col-sm-8">
                                 <input class="form-control" id="address" type="text" ng-model="edit.address" autocomplete>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Basics:</label>
+                            <label class="col-sm-3 control-label">Basics:<br>
+                            <span class="explanation">Essential information</span>
+                            </label>
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-sm-3 basics">
@@ -189,14 +195,18 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">About my home:</label>
+                            <label class="col-sm-3 control-label listing-label">About my home:<br>
+                            <span class="explanation">What makes your home special</span>
+                            </label>
                             <div class="col-sm-6">
                                 <textarea rows="6" cols="20" class="form-control"
                                           ng-model="edit.apptInfo.about"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Room Type:</label>
+                            <label class="col-sm-3 control-label listing-label">Room Type:<br>
+                            <span class="explanation">The type of room you are offering</span>
+                            </label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType"
                                         ng-options="room.id as room.displayName for room in data.roomType">
@@ -205,18 +215,26 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Deposit Plan:</label>
+                            <label class="col-sm-3 control-label listing-label">Payment Plan:<br>
+                            <span class="explanation">Choose the plan that suits your needs</span>
+                            </label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="deposit" ng-model="edit.deposit"
                                         ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
                                     {{plan.displayName}} - ${{plan.value}} per night
                                 </select>
                             </div>
+                            <div class="col-sm-4 plan-explanation">
+                                This plan covers you for up to ${{data.securityDeposit[edit.deposit].week}} in cases of
+                                damages and cancellations
+                            </div>
                         </div>
                     </form>
                     <div class="info-section rules">
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label">Facilities:</label>
+                            <label class="col-sm-3 control-label listing-label">Facilities:<br>
+                            <span class="explanation">Things you have in your home</span>
+                            </label>
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -228,7 +246,9 @@
                     </div>
                     <div class="info-section rules">
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label">House Rules:</label>
+                            <label class="col-sm-3 control-label listing-label">House Rules:<br>
+                            <span class="explanation">What Swappers can and can't do at your home</span>
+                            </label>
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -238,9 +258,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="info-section rules">
+                    <div class="info-section rules last">
                         <div class="row">
-                            <label class="col-sm-3 control-label">More Information:</label>
+                            <label class="col-sm-3 control-label listing-label">More Information:<br>
+                            <span class="explanation">Is there anything else you'd like Swappers to know about your home?
+                            You can, for example tell them about about attractions near your home,
+                            Pets you own, or even just how to turn on the A/C</span>
+                            </label>
                             <div class="col-sm-6">
                                 <textarea rows="6" cols="20" class="form-control"
                                           ng-model="edit.apptInfo.moreInfo"></textarea>

@@ -147,7 +147,7 @@ const genders =[
 
 const roomType =[
     {id: 0, type: 'SingleRoom', displayName: 'Single Room'},
-    {id: 1, type: 'EntireApartment', displayName: 'Entire Apartment'},
+    {id: 1, type: 'EntireHome', displayName: 'Entire Home'},
     {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
 ];
 
