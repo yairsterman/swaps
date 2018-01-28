@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="section" id="featuredHomes">
+    <div class="section featured-homes" id="featuredHomes">
         <div class="title swappers">
             <span scroll-on-click ng-if="swapperTitle == 'city'">Swappers looking for a place in {{userCity}}</span>
             <span scroll-on-click ng-if="swapperTitle == 'featured'">Meet our top rated Swappers</span>
@@ -56,30 +56,40 @@
     <div class="how-it-works">
         <div class="inner-section row">
             <div class="title">How Does It work?</div>
-            <div class="sub-title">Swapping homes is easy, cheap, and fun</div>
-            <div class="how-inner-ticket col-sm-4 col-xs-12">
-                <div class="join">
-                    <div class="description-icon icon icon-plus1"></div>
-                </div>
-                <div class="ticket-title">Join Swaps</div>
-                <div class="how-inner-sentences">It will only take a few seconds, and it's free!</div>
-            </div>
+            <div class="sub-title">Swapping homes is easy, secure, and cheap</div>
             <div class="how-inner-ticket col-sm-4 col-xs-12">
                 <div class="join">
                     <div class="description-icon icon icon-house"></div>
                 </div>
-                <div class="ticket-title">Find a Match</div>
-                <div class="how-inner-sentences">The perfect home is waiting for you</div>
+                <div class="ticket-title">It's Easy!</div>
+                <div class="how-inner-sentences">
+                    List details about your home and travel plans,
+                    Swaps finds other Swappers who entered similar information,
+                    so you can set up a perfect home swap
+                </div>
             </div>
             <div class="how-inner-ticket col-sm-4 col-xs-12">
                 <div class="join">
-                    <div class="description-icon icon icon-matos"></div>
+                    <div class="description-icon icon icon-keys"></div>
                 </div>
-                <div class="ticket-title">Seal the Deal</div>
-                <div class="how-inner-sentences">Contact your host and you're ready to go</div>
+                <div class="ticket-title">It's Secure!</div>
+                <div class="how-inner-sentences">
+                    Swappers set aside a security deposit to cover for very rare cases
+                    of damages or cancellation.<strong>The entire deposit is returned to you
+                    after the trip</strong>
+                </div>
+            </div>
+            <div class="how-inner-ticket col-sm-4 col-xs-12">
+                <div class="join">
+                    <div class="description-icon icon icon-money"></div>
+                </div>
+                <div class="ticket-title">It's Cheap!</div>
+                <div class="how-inner-sentences">For the price of a cup of coffee, you'll find a
+                home wherever you go and and stay secure while your away</div>
             </div>
             <div class="col-xs-12" >
-                <button class="start-button" ng-click="searchSwap()">Start</button>
+                <button class="start-button" ng-click="searchSwap()" ng-if="user._id">Start</button>
+                <button class="start-button" ng-click="openLogin()" ng-if="!user._id">Join</button>
             </div>
         </div>
     </div>
