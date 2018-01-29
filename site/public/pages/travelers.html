@@ -56,6 +56,18 @@
                               <swapper-home traveler="traveler"></swapper-home>
                         </div>
                     </div>
+                    <div class="traveler-pagination" ng-if="!loading && totalUsers >= pageSize">
+                        <paging
+                                page="currentPage"
+                                page-size="pageSize"
+                                total="totalUsers"
+                                paging-action="getPage(page)"
+                                show-prev-next="true"
+                                li-class="{{totalUsers}}"
+                                text-next-class="glyphicon glyphicon-chevron-right"
+                                text-prev-class="glyphicon glyphicon-chevron-left">
+                        </paging>
+                    </div>
                 </div>
                 <!--------------------------------------------------MAP SECTION--------------------------------------------->
                 <div class="map-view col-md-4 col-xs-12" style="overflow-x: hidden;">

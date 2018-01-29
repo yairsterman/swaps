@@ -13,7 +13,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $scope.checkedAmenities =[];
     $scope.checkedRoomTypes =[];
     var filter = {};
-    const PAGE_DIVIDOR = 10;
+    $scope.pageSize = 10;
     $anchorScroll();
 
 
@@ -279,6 +279,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.filter.amenities = $scope.checkedAmenities;
         $scope.filter.room = $scope.checkedRoomTypes;
         UsersService.getUserByTravelingDest($rootScope.userCity, $scope.city, page, $scope.filter).then(function(data){
+            $scope.currentPage = page + 1;
             var travelers = data.users;
             $scope.totalUsers = data.total;
             $scope.page = parseInt(data.page);

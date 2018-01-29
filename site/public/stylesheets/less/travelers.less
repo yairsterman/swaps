@@ -100,7 +100,38 @@
 		.traveler-col{
 			padding: 5px;
 		}
-
+		.traveler-pagination{
+			width: 100%;
+			text-align: center;
+			.pagination>li>a{
+				border-radius: 50%;
+				background-color: transparent;
+				border-color: transparent;
+				color: #045F79;
+			}
+			.pagination>.disabled>a{
+				background-color: transparent;
+				border-color: transparent;
+				color: #045F79;
+			}
+			.pagination>.active>a{
+				color: #fff;
+				background-color: #045F79;
+				border-color: #045F79;
+			}
+			.pagination>li>a:hover{
+				background-color: rgba(199, 167, 104, 0.4);
+			}
+			.pagination>.active>a:hover{
+				background-color: #045F79;
+			}
+			.pagination>li:last-child>a:hover{
+				background-color: transparent;
+			}
+			.pagination>li:first-child>a:hover{
+				background-color: transparent;
+			}
+		}
 	}
 	.map-view{
 		padding: 0 0 0 5px;
