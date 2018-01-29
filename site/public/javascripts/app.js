@@ -51,7 +51,7 @@ swapsApp.run(function($http, $rootScope, $location, $window){
     $window.ga('create', 'UA-111632373-1', 'auto');
 
     // track pageview on state change
-    $rootScope.$on('$stateChangeSuccess', function (event) {
+    $rootScope.$on('$routeChangeSuccess', function (event) {
         $window.ga('send', 'pageview', $location.path());
     });
 
