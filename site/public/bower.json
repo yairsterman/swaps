@@ -21,6 +21,19 @@
   "dependencies": {
     "angular-sanitize": "^1.6.8",
     "alertifyjs": "^1.0.11",
-    "angular": "^1.6.8"
+    "angular": "^1.6.8",
+    "angular-paging": "^2.2.2",
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.3.1",
+    "angular-animate": "^1.6.8",
+    "angular-aria": "^1.6.8",
+    "angular-messages": "^1.6.8",
+    "angular-material": "^1.1.6",
+    "angular-route": "^1.6.8",
+    "bootstrap-datepicker": "^1.7.1",
+    "moment": "^2.20.1",
+    "daterangepicker": "^1.6.0",
+    "ng-image-gallery": "^2.1.2",
+    "hammerjs": "hammer#^2.0.8"
   }
 }
