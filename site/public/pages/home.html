@@ -75,7 +75,7 @@
                 <div class="ticket-title">It's Secure!</div>
                 <div class="how-inner-sentences">
                     Swappers set aside a security deposit to cover for very rare cases
-                    of damages or cancellation.<strong>The entire deposit is returned to you
+                    of damages or cancellation. <strong> The entire deposit is returned to you
                     after the trip</strong>
                 </div>
             </div>
@@ -89,7 +89,7 @@
             </div>
             <div class="col-xs-12" >
                 <button class="start-button" ng-click="searchSwap()" ng-if="user._id">Start</button>
-                <button class="start-button" ng-click="openLogin()" ng-if="!user._id">Join</button>
+                <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@
 
                     </div>
                     <div class="col-sm-4">
-                        <div class="facebook-signin" ng-click="openLogin()">
+                        <div class="facebook-signin" ng-click="openLogin(true)">
                             <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
                         </div>
                         <div class="google">
