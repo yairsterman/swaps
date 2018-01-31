@@ -1,3 +1,5 @@
+@import 'media.less';
+
 swapper-home{
   .traveler {
     position: relative;
@@ -12,8 +14,8 @@ swapper-home{
     @media (max-width: @screen-sm-max) {
       height: 34vw;
     }
-    @media (max-width: @screen-xs-max) {
-      height: 60vw;
+    @media @mobile {
+      height: 90vw;
     }
     &:focus {
       outline: none;
@@ -23,8 +25,8 @@ swapper-home{
       @media (max-width: @screen-sm-max) {
         height: 22vw;
       }
-      @media (max-width: @screen-xs-max) {
-        height: 40vw;
+      @media @mobile {
+        height: 60vw;
       }
       .carousel-inner {
         height: 100%;
@@ -72,10 +74,10 @@ swapper-home{
         height: 8vw;
         top: 16vw;
       }
-      @media (max-width: @screen-xs-max) {
+      @media @mobile {
         width: 15vw;
         height: 15vw;
-        top: 29vw;
+        top: 45vw;
       }
     }
     .favorite{
@@ -101,8 +103,8 @@ swapper-home{
       @media (max-width: @screen-sm-max) {
         height: 11vw;
       }
-      @media (max-width: @screen-xs-max) {
-        height: 17vw;
+      @media @mobile {
+        height: 28vw;
       }
       .apt-title {
         font-size: 16px;
@@ -111,9 +113,9 @@ swapper-home{
         text-overflow: ellipsis;
         white-space: nowrap;
         color: #484848;
-        @media (max-width: @screen-xs-max) {
-          font-size: 12px;
-          height: 14px;
+        @media @mobile {
+          font-size: 14px;
+          height: 18px;
         }
       }
       .apt-sub-title {
@@ -123,9 +125,9 @@ swapper-home{
         white-space: nowrap;
         height: 14px;
         color: #616161;
-        @media (max-width: @screen-xs-max) {
-          font-size: 10px;
-          height: 12px;
+        @media @mobile {
+          font-size: 12px;
+          height: 16px;
         }
       }
     }
@@ -146,6 +148,10 @@ swapper-home{
       display: flex;
       padding-top: 0.8vw;
       color: #616161;
+      @media @mobile {
+        padding-top: 2vw;
+
+      }
       .tiny-text {
         padding-right: 15px;
         font-size: 12px;
@@ -157,7 +163,7 @@ swapper-home{
             margin-right: 0;
           }
         }
-        @media (max-width: @screen-xs-max) {
+        @media @mobile {
           margin-top: 0;
           font-size: 9px;
         }

@@ -1,3 +1,4 @@
+@import 'media.less';
 .footer{
   position: relative;
   z-index: 10;
@@ -8,6 +9,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media @mobile{
+      flex-direction: column;
+    }
   }
   .link{
     color: #0E5D7C;
@@ -16,6 +20,11 @@
     border-right: 1px solid #0E5D7C;
     &:focus{
       outline: none;
+    }
+    @media @mobile{
+      padding-bottom: 10px;
+      padding-right: 0;
+      border-right: none;
     }
   }
   .social-link{

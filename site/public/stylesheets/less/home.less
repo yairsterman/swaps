@@ -1,4 +1,4 @@
-@import 'media';
+@import 'media.less';
 
 .home-page{
 	//background: rgba(14,93,124,1); /* Old browsers */
@@ -13,6 +13,9 @@
 	position: relative;
 	z-index: 1;
 	background-color: white;
+	@media @mobile{
+		background-size: auto;
+	}
 	.home-bg{
 		//background-image: url('../../images/static/home-bg.jpg');
 		//background-position: center;
@@ -31,11 +34,14 @@
 		font-weight: 500;
 		color: #0E5D7C;
 		padding: 2vw 8vw;
+		@media @mobile {
+			padding: 8vw;
+		}
 		&.swappers{
 			text-align: center;
 			font-size: 30px;
 			font-weight: 400;
-			@media (max-width: @screen-xs-max) {
+			@media @mobile {
 				font-size: 20px;
 			}
 		}
@@ -67,8 +73,12 @@
 			background: linear-gradient(to bottom, rgba(14,93,124,1) 0%,rgba(255,255,255,0.6) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
 			position: relative;
-			@media (max-width: @screen-xs-max) {
-				height: 140vw;
+			@media @mobile {
+				height: 540px;
+				background: -moz-linear-gradient(top, rgba(14,93,124,1) 0%, rgba(255,255,255,0.7) 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, rgba(14,93,124,1) 0%,rgba(255,255,255,0.7) 100%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, rgba(14,93,124,1) 0%,rgba(255,255,255,0.7) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
 			}
 		}
 		&.featured-homes{
@@ -76,12 +86,23 @@
 			background: -webkit-linear-gradient(top, rgba(255,255,255,0.6) 0%,rgba(255,255,255,1) 30%); /* Chrome10-25,Safari5.1-6 */
 			background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,1) 30%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+			@media @mobile {
+				background: -moz-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 15%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 15%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 15%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+			}
 		}
 	}
 	.featured-destinations{
 		height: 48vw;
 		margin: 0 8vw;
 		margin-right: ~'calc(8vw - 5px)';
+		@media @mobile{
+			height: 60vw;
+			margin: 0 4vw;
+			margin-right: calc(4vw - 5px);
+		}
 		.columns{
 			height: 100%;
 			float: left;
@@ -149,7 +170,7 @@
 		width: 70%;
 		margin: auto;
 		padding: 30px;
-		@media (max-width: @screen-xs-max) {
+		@media @mobile {
 			width: 100%;
 		}
 		.title-swaps {
@@ -168,7 +189,7 @@
 				width: 12%;
 				padding-top: 12px;
 				border-bottom: 3px solid rgba(255, 255, 255, 0.5);
-				@media (max-width: @screen-xs-max) {
+				@media @mobile {
 					width: 24%;
 				}
 			}
@@ -188,7 +209,7 @@
 		position: absolute;
 		left: 15%;
 		bottom: 0;
-		@media (max-width: @screen-xs-max) {
+		@media @mobile {
 			width: 100%;
 			left: 0;
 		}
@@ -287,7 +308,7 @@
 				border: 2px #227392 solid;
 				color: #fff;
 			}
-			@media (max-width: @screen-xs-max) {
+			@media @mobile {
 				position: relative;
 				bottom: 0;
 				margin: 0;
@@ -323,20 +344,27 @@
 		height: 53vw;
 		transition: 1.6s ease;
 		overflow: hidden;
-		@media (max-width: @screen-xs-max) {
-			height: 255vw;
+		@media @mobile {
+			height: auto;
 		}
 		.inner-section{
 			background-color: #ffffff;
 			transition: 1.5s ease;
 			overflow: hidden;
 			margin: 4vw 0;
+			@media @mobile{
+				margin: 10vw 0;
+			}
 		}
 		.title{
 			font-size: 40px;
 			text-align: center;
 			color: #848a91;
 			font-weight: 400;
+			@media @mobile {
+				font-size: 30px;
+				padding: 4vw;
+			}
 		}
 		.sub-title{
 			font-size: 20px;
@@ -363,7 +391,7 @@
 			&:focus{
 				outline: none;
 			}
-			@media (max-width: @screen-xs-max) {
+			@media @mobile {
 				width: 60%;
 				margin: 5vw auto;
 				padding: 4%;
@@ -477,12 +505,6 @@
 	.travelers-list {
 		margin: 0 4vw;
 		padding: 0;
-		@media (max-width: @screen-sm-max) {
-			height: 36vw;
-		}
-		@media (max-width: @screen-xs-max) {
-			height: 80vw;
-		}
 		.traveler-col {
 			transition: 0.4s ease;
 			padding: 5px;
@@ -505,6 +527,9 @@
 			&:nth-child(2){
 				margin-left: -16px;
 				margin-top: 7px;
+				@media @mobile {
+					margin-left: 0;
+				}
 				.traveler {
 					transform: rotate(-3deg);
 					z-index: 2;
@@ -522,6 +547,9 @@
 			&:nth-child(3){
 				margin-left: -3px;
 				margin-top: -1px;
+				@media @mobile {
+					margin-left: 3px;
+				}
 				.traveler {
 					transform: rotate(4deg);
 					z-index: 1;
@@ -543,6 +571,9 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center;
+		@media @mobile{
+			height: 80vw;
+		}
 		.bg-image{
 			background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 15%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
 			background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0.9) 15%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -550,6 +581,9 @@
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */			height: 40vw;
 			position: relative;
 			z-index:  1;
+			@media @mobile{
+				height: 80vw;
+			}
 		}
 		.bottom-title{
 			text-align: center;
@@ -557,6 +591,11 @@
 			font-weight: 300;
 			color: #0E5D7C;
 			padding: 9vw 8vw;
+			@media @mobile{
+				padding: 8vw;
+				font-size: 24px;
+				font-weight: 400;
+			}
 		}
 		.join-buttons{
 		}
@@ -573,6 +612,9 @@
 				color: white;
 				padding: .8vw 3vw;
 				font-size: 18px;
+				@media @mobile{
+					padding: 3vw 8vw;
+				}
 			}
 		}
 		.google-signin{
