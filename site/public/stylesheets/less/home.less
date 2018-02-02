@@ -528,7 +528,7 @@
 				margin-left: -16px;
 				margin-top: 7px;
 				@media @mobile {
-					margin-left: 0;
+					margin-left: -4px;
 				}
 				.traveler {
 					transform: rotate(-3deg);
@@ -536,6 +536,9 @@
 					webkit-box-shadow: 0px 10px 20px 0px  rgba(0,0,0,0.39);
 					-moz-box-shadow: 0px 10px 20px 0px  rgba(0,0,0,0.39);
 					box-shadow: 0px 10px 20px 0px rgba(0,0,0,0.39);
+					@media @mobile {
+						transform: rotate(-1deg);
+					}
 				}
 				.push-pin{
 					position: absolute;
@@ -548,7 +551,7 @@
 				margin-left: -3px;
 				margin-top: -1px;
 				@media @mobile {
-					margin-left: 3px;
+					margin-left: -2px;
 				}
 				.traveler {
 					transform: rotate(4deg);
@@ -556,6 +559,9 @@
 					webkit-box-shadow: 1px 5px 5px 0px rgba(0,0,0,0.39);
 					-moz-box-shadow: 1px 5px 5px 0px rgba(0,0,0,0.39);
 					box-shadow: 1px 5px 5px 0px rgba(0,0,0,0.39);
+					@media @mobile {
+						transform: rotate(2deg);
+					}
 				}
 				.push-pin{
 					position: absolute;
@@ -598,6 +604,11 @@
 			}
 		}
 		.join-buttons{
+			.social-join{
+				@media @mobile{
+					margin: 0;
+				}
+			}
 		}
 		.facebook-signin{
 			text-align: center;

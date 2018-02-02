@@ -12,8 +12,10 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $scope.filter = {};
     $scope.checkedAmenities =[];
     $scope.checkedRoomTypes =[];
+    $scope.localeFormat = 'MMM DD';
+    $scope.modelFormat = 'MM/DD/YYYY';
     var filter = {};
-    $scope.pageSize = 10;
+    $scope.pageSize = 1;
     $anchorScroll();
 
 
@@ -22,20 +24,6 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
     if($location.search().guests){
         $scope.filter.guests = $location.search().guests;
-    }
-    $('#filterDates').daterangepicker({
-        autoApply: true,
-        clearBtn: true,
-        opens: 'center',
-        locale: {
-            format: 'MMM DD'
-        }
-    });
-
-    $scope.openDate = function(){
-        $('#filterDates').on('apply.daterangepicker', function(ev, picker) {
-            $scope.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
-        });
     }
 
     $scope.searchCity = function(){

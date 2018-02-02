@@ -1,11 +1,11 @@
 <div class="header">
   	<nav class="navbar navbar-default navbar-toggleable-md navbar-light {{$root.homepage?'':'navbar-other'}} {{$root.searchPage?'no-shadow':''}} bg-faded">
-	  <a class="navbar-brand" href="" ng-click ="go('')">
+	  <a class="navbar-brand hidden-xs" href="" ng-click ="go('')">
 		  <div class="logo" style="background-image:url('../../images/logo/logo.png')">
 		  </div>
 	  </a>
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	  <div class="hidden-xs navbar-collapse" id="navbarSupportedContent">
           <div class="find-swap">
               <!--<div class="start-swapping">Start Swapping</div>-->
               <div class="row header-search-area">
@@ -59,7 +59,8 @@
 				    <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
 				    <span class="caret"></span></div>
 					    <ul class="dropdown-menu">
-					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
+					      <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                            <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
                           <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
                           <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
 					      <li><a href="" ng-click ="logout()">Log out</a></li>
@@ -68,6 +69,43 @@
 			 </div>
 		 </div>
 	  </div>
+        <div class="visible-xs">
+            <div class="mobile-header">
+                <a class="navbar-brand" href="" ng-click ="go('')">
+                    <div class="logo" style="background-image:url('../../images/logo/logo.png')">
+                    </div>
+                </a>
+                <div class="search-field left">
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeaderMobile" ng-model="search.where" autocomplete city="true">
+                </div>
+                <div class="mobile-login login-area" ng-if="!user._id">
+                    <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
+                        Join
+                        <div class="underlined"></div>
+                    </div>
+                    <div class="login" ng-click="openLogin()" ng-hide="user._id">
+                        Log In
+                        <div class="underlined"></div>
+                    </div>
+                </div>
+                <div class="dropdown" ng-if="user._id">
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                        <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
+                        <li><a href="" ng-click ="go('account/messages')">Messages</a></li>
+                        <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id"></div></a></li>
+                        <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
+                        <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
+                        <li><a href="" ng-click ="logout()">Log out</a></li>
+                    </ul>
+                    <div class="hamburger dropdown-toggle" data-toggle="dropdown">
+                        <div class="underline"></div>
+                        <div class="underline"></div>
+                        <div class="underline"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</nav>
 </div>
 

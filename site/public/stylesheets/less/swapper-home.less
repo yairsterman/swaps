@@ -11,7 +11,7 @@ swapper-home{
     height: 28vw;
     cursor: pointer;
     transition: 0.4s ease;
-    @media (max-width: @screen-sm-max) {
+    @media @tablet {
       height: 34vw;
     }
     @media @mobile {
@@ -22,7 +22,7 @@ swapper-home{
     }
     .carousel {
       height: 20vw;
-      @media (max-width: @screen-sm-max) {
+      @media @tablet {
         height: 22vw;
       }
       @media @mobile {
@@ -47,15 +47,25 @@ swapper-home{
       background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, .5)), to(rgba(255, 255, 255, .0001)));
       background-image: linear-gradient(to right, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
       .carousel-control-arrow {
+        color:#0E5D7C;
+        font-size: 26px;
         position: absolute;
-        top: ~'calc(50% - 50px)';
-        left: ~'calc(50% - 50px)';
+        cursor: pointer;
+        top: ~'calc(50% - 20px)';
       }
       &.right {
         background-image: -webkit-linear-gradient(right, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
         background-image: -o-linear-gradient(right, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001));
         background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, .5)), to(rgba(255, 255, 255, .0001)));
         background-image: linear-gradient(to left, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
+        .carousel-control-arrow {
+          right: 10%;
+        }
+      }
+      &.left{
+        .carousel-control-arrow {
+          left: 10%;
+        }
       }
     }
     .profile-img {
