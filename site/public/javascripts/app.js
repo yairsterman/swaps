@@ -55,6 +55,8 @@ swapsApp.run(function($http, $rootScope, $location, $window){
         $window.ga('send', 'pageview', $location.path());
     });
 
+    $rootScope.isMobile = (/android|webos|iphone|ipad|ipod|blackberry|windows phone/).test(navigator.userAgent.toLowerCase()) || $window.outerWidth < 641;
+
     $http.get('/reauth').then(function(data){
        $rootScope.user = data.data;
        $rootScope.$broadcast('auth-return');

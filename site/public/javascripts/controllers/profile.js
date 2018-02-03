@@ -18,6 +18,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     $scope.localeFormat = 'MM/DD/YYYY';
     $scope.modelFormat = 'MMMM DD, YYYY';
 
+    $scope.mobileRequestOpen = false;
+
     $anchorScroll();
 
     $scope.go = function(path){
@@ -29,6 +31,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.openLogin();
         }
         else{
+            $scope.chooseDates = $rootScope.isMobile;
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
@@ -92,30 +95,33 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         return age;
     }
 
-    var elementsReady = $interval(function() {
-        // $('.circle-profile-pic').hide();
-        var input = $('.fix-scroll');
-        if (input && $scope.profile) {
-            // fixmeTop = $('.fix-scroll').offset().top - 25;
-            fixmeTop = $('.fix-scroll').offset().top + 20;
-            var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
-            $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollBottom(); // get current position
-                if ($(this).scrollTop() >= fixmeTop ) {           // apply position: fixed if you
-                    $('.profile-description').css({                      // scroll to that element or below it
-                        position: 'fixed',
-                        top: '0',
-                        right: '0'
-                    });
-                } else {                                    // apply position: static
-                    $('.profile-description').css({                      // if you scroll above it
-                        position: 'static'
-                    });
-                }
-            });
-            $interval.cancel(elementsReady);
-        }
-    }, 100);
+    if(!$rootScope.isMobile){
+        $scope.mobileRequestOpen = true;
+        var elementsReady = $interval(function() {
+            // $('.circle-profile-pic').hide();
+            var input = $('.fix-scroll');
+            if (input && $scope.profile) {
+                // fixmeTop = $('.fix-scroll').offset().top - 25;
+                fixmeTop = $('.fix-scroll').offset().top + 20;
+                var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
+                $(window).scroll(function() {                  // assign scroll event listener
+                    var currentScroll = $(window).scrollBottom(); // get current position
+                    if ($(this).scrollTop() >= fixmeTop ) {           // apply position: fixed if you
+                        $('.profile-description').css({                      // scroll to that element or below it
+                            position: 'fixed',
+                            top: '0',
+                            right: '0'
+                        });
+                    } else {                                    // apply position: static
+                        $('.profile-description').css({                      // if you scroll above it
+                            position: 'static'
+                        });
+                    }
+                });
+                $interval.cancel(elementsReady);
+            }
+        }, 100);
+    }
 
     $scope.readMore = function(showMore, about) {
         showMore[about].active  = !showMore[about].active;

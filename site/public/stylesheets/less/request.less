@@ -1,9 +1,13 @@
+@import 'media.less';
 .request-page{
   position: relative;
   display: flex;
   overflow: hidden;
   height: 320px;
   transition: 0.4s ease;
+  @media @mobile {
+    height: 400px;
+  }
   .center{
     text-align: center;
   }

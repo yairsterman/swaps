@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="profile-description col-sm-3 col-xs-12 fix-scroll">
+            <div class="profile-description col-sm-3 col-xs-12 fix-scroll hidden-xs">
                 <div class="profile-name">
                     <div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
                     <div class="name-occupation">
@@ -25,10 +25,6 @@
                         <div class="occupation">
                             {{age}} • {{profile.occupation}}
                         </div>
-                        <!--<div class="mutual-friends">-->
-                        <!--<div class="icon icon-man"></div>-->
-                        <!--<div class="mutual-friends-text">3 Mutual friends</div>-->
-                        <!--</div>-->
                     </div>
                 </div>
                 <hr>
@@ -81,25 +77,65 @@
                 </div>
                 <div class="end-of-profile"></div>
             </div>
+            <div class="visible-xs">
+                <div class="mobile-request">
+                    <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
+                           ng-click="openRequest()">
+                </div>
+            </div>
         </div>
     </div>
     <div class="main-section container-fluid">
         <div class="row">
             <!--Left section-->
+            <div class="appt-slider-and-profpic visible-xs">
+                <div class="profile-description">
+                    <div class="profile-name">
+                        <div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
+                        <div class="name-occupation">
+                            <div class="name">
+                                {{profile.firstName}}
+                            </div>
+                            <div class="occupation">
+                                {{age}} • {{profile.occupation}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swap">
+                        <div class="favorite">
+                            <div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">
+                                <div class="icon icon-heart-white sharing"></div>
+                                Save
+                            </div>
+                            <div class="btn btn-primary btn-swap share-btn" ng-if="isFavorite()" ng-click="removeFromFavorites()">
+                                <div class="icon icon-heart-white sharing"></div>
+                                Unsave
+                            </div>
+                            <div class="btn btn-primary btn-swap share-btn" ng-click="share()">
+                                <div class="icon icon-envelope-white sharing"></div>
+                                Share
+                            </div>
+                        </div>
+
+                        <div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="apt-description col-sm-9 col-xs-12">
                 <div class="caption-upto-separator">
                     <div class="row">
-                        <div class="col-xs-2">
+                        <div class="col-xs-0">
 
                         </div>
-                        <div class="col-xs-10">
+                        <div class="col-xs-12">
                             <div class="under-title">
                                 {{data.roomType[profile.apptInfo.roomType].displayName}} • {{profile.city}}
                             </div>
                             <div class="description-title">
                                 {{profile.apptInfo.title}}
                             </div>
-                            <div class="rating" ng-if="profile.comments.length > 0">
+                            <div class="rating" ng-if="profile.reviews.length > 0">
                                 <span class="icon icon-star-large"></span>
                                 <span class="icon {{profile.rating > 1?profile.rating < 2?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
                                 <span class="icon {{profile.rating > 2?profile.rating < 3?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
@@ -107,19 +143,19 @@
                                 <span class="icon {{profile.rating > 4?profile.rating < 5?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
                                 <!--<span class="number-reviews">{{profile.comments.length}}</span>-->
                             </div>
-                            <div class="rating" ng-if="profile.comments.length == 0">
+                            <div class="rating" ng-if="profile.reviews.length == 0">
                                 <span class="new-appt" ng-if="profile.reviews.length == 0">New!</span>
                             </div>
                             <div class="simple-apt-info">
                                 <div class="home-info">
                                     <div class="icon icon-swaper"></div>
-                                    <div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}}
+                                    <div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}}<br class="visible-xs">
                                         Swappers
                                     </div>
                                 </div>
                                 <div class="home-info">
                                     <div class="icon icon-door"></div>
-                                    <div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}}
+                                    <div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}}<br class="visible-xs">
                                         {{profile.apptInfo.rooms > 1?'Rooms':'Room'}}
                                     </div>
                                 </div>
@@ -127,13 +163,13 @@
                                 <div class="clearfix visible-xs"></div>
                                 <div class="home-info">
                                     <div class="icon icon-bed"></div>
-                                    <div class="bath-count simple-apt-info-content">{{profile.apptInfo.beds}}
+                                    <div class="bath-count simple-apt-info-content">{{profile.apptInfo.beds}}<br class="visible-xs">
                                         {{profile.apptInfo.beds > 1?'Beds':'Bed'}}
                                     </div>
                                 </div>
                                 <div class="home-info">
                                     <div class="icon icon-bath"></div>
-                                    <div class="room-count simple-apt-info-content">{{profile.apptInfo.baths}}
+                                    <div class="room-count simple-apt-info-content">{{profile.apptInfo.baths}}<br class="visible-xs">
                                         {{profile.apptInfo.baths > 1?'Baths':'Bath'}}
                                     </div>
                                 </div>
@@ -146,8 +182,8 @@
                     <div class="row">
                         <!--The following line is to fix the bootstrap grid on small screens-->
                         <div class="clearfix visible-xs"></div>
-                        <div class="col-xs-2 left-side-description">About My Home</div>
-                        <div class="col-xs-8 right-side-elaboration read-more-activation">{{profile.apptInfo.about}}
+                        <div class="col-sm-2 col-xs-22 left-side-description">About My Home</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">{{profile.apptInfo.about}}
                         </div>
                     </div>
                     <!--<div class="read-more" ng-click="readMore(showMore, 'aboutHome')">-->
@@ -155,8 +191,8 @@
                     <!--<div class="plain-text read-more-button">{{showMore.aboutHome.active?'Read Less':'Read More'}}</div>-->
                     <!--</div>-->
                     <div class="row">
-                        <div class="col-xs-2 left-side-description">About me</div>
-                        <div class="col-xs-8 right-side-elaboration read-more-activation">
+                        <div class="col-sm-2 col-xs-12 left-side-description">About me</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
                             {{profile.aboutMe}}
                         </div>
                     </div>
@@ -167,18 +203,18 @@
 
                     <hr>
                     <div class="row">
-                        <div class="col-xs-2 left-side-description">Basic amenities</div>
-                        <div class="col-xs-8 right-side-elaboration">
+                        <div class="col-sm-2 col-xs-12 left-side-description">Basic amenities</div>
+                        <div class="col-xs-12 right-side-elaboration">
                             <checkbox items="data.amenities" model="profile.apptInfo.amenities"
                                       readonly="true"></checkbox>
                         </div>
                     </div>
                     <hr>
                     <div class="row comments-show" ng-if="profile.reviews.length > 0">
-                        <div class="col-sm-2 left-side-description">
+                        <div class="col-sm-2 col-xs-12  left-side-description">
                             Reviews
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-8 col-xs-12">
                             <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
                                 <review-elm is-profile="true" commenter="commenter"></review-elm>
                                 <hr style="clear: both;">
@@ -189,7 +225,7 @@
                     <!--</div>-->
                     <div class="map-section">
                         <div class="row">
-                            <div class="col-xs-2 left-side-description">Location</div>
+                            <div class="col-sm-2 col-xs-4 left-side-description">Location</div>
                             <div class="col-xs-4">
                                 <div class="country-and-city">{{profile.country}} • {{profile.city}}</div>
                                 <br>
@@ -198,8 +234,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-2"></div>
-                            <div class="col-xs-8 map-fragment">
+                            <div class="col-sm-2 col-xs-0"></div>
+                            <div class="col-sm-8 col-xs-12 map-fragment">
                                 <div class="map" id="cityMap"></div>
                             </div>
                         </div>

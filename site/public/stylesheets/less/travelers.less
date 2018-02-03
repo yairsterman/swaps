@@ -40,7 +40,9 @@
 				outline: none;
 			}
 			&.amenities-dropdown{
-				left: -20vw;
+				@media @mobile {
+					left: -20vw;
+				}
 			}
 		}
 		.amenities{
@@ -122,6 +124,9 @@
 	}
 	.people-and-map{
 		padding: 0 0 0 10px;
+		@media @mobile {
+			padding: 0;
+		}
 	}
 	.mg-0{
 		margin: 0;
@@ -131,10 +136,10 @@
 		height: 78vh;
 		padding: 0;
 		transition: 0.2s ease;
-		@media (max-width: @screen-sm-max) {
+		@media @tablet {
 			height: 60vw;
 		}
-		@media (max-width: @screen-xs-max) {
+		@media @mobile {
 			height: 100vw;
 		}
 		&.loading{
@@ -178,13 +183,16 @@
 	}
 	.map-view{
 		padding: 0 0 0 5px;
+		@media @mobile {
+			padding: 0;
+		}
 	}
 	.map{
 		height: 78vh;
-		@media (max-width: @screen-sm-max) {
+		@media @tablet {
 			height: 36vw;
 		}
-		@media (max-width: @screen-xs-max) {
+		@media @mobile {
 			height: 50vw;
 		}
 		#travelerMarkerLayer {
