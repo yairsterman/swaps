@@ -1,14 +1,16 @@
 <div class="travelers-page">
-    <div class="filters">
-        <div class="dropdown visible-xs">
-            <button class="filter-button dropdown-toggle" id="filterDates">
-                <div class="caret"></div>
-                Dates
-            </button>
-            <div class="dropdown-menu">
+    <div class="visible-xs">
+        <div class="dates row">
+            <div class="search-field col-xs-6">
                 <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="filter.date" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+                <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="filter.date"></div>
+            </div>
+            <div class="search-field col-xs-6">
+                <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="filter.guests" min="1" max="8">
             </div>
         </div>
+    </div>
+    <div class="filters">
         <div class="dropdown">
             <button class="filter-button dropdown-toggle" type="button" id="filterRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="caret"></div>

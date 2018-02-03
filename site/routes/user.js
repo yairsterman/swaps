@@ -236,6 +236,9 @@ function filterDates(user, date, destination){
 	}
 	var searchDates = {};
 	var dates = date.split('-');
+	if(dates.length < 2){
+        return true;
+    }
     searchDates.departure = Date.parse(dates[0].trim());
     searchDates.returnDate = Date.parse(dates[1].trim());
     for (var i = 0; i < user.travelingInfo.length; i++) {
