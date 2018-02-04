@@ -1,3 +1,6 @@
+var sha1 = require('sha1');
+var URLSafeBase64 = require('urlsafe-base64');
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -31,6 +34,13 @@ var error = {
     error: true,
     message: ''
 };
+router.use(function(req,res,next){
+	if(req.user !== undefined)
+		next()
+	else
+		next(new Error('user not login'));
+	
+});
 
 router.post('/edit-profile', function (req, res, next) {
     var id = req.user._id;
@@ -461,8 +471,49 @@ router.get('/get-requests', function (req, res, next) {
     });
 });
 
+router.get('/get-upload-token', function (req, res, next) {
+	eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
+	
+	// public id is in the folder named <userID> and file name is SHA1 of the timestamp
+	// (just using it to generate a random name for each photo
+	timestamp = new Date().getTime()
+	server_path = '' + req.user.id + '/' + URLSafeBase64.encode(sha1(timestamp))
+	public_id = "public_id=" + server_path
+	secret = "DzracCkoJ12usH_8xCe2sG8of3I"
+	//the token is valid for 1 hour from <timestamp> if we want to decrease this time
+	// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
+	// before put it in <ts> 
+	ts = "timestamp=" + timestamp
+	to_sign = ([eager, public_id, ts]).join("&")
+	token = URLSafeBase64.encode(sha1(to_sign + secret))
+	console.log('generate token for user: ' + req.user.id + ' token: ' + token) 
+	//TODO need to update name of photo in DB for later when successful response is return from cloudsomthing server
+	//only after successful update we send the token in the response	
+	res.send( {
+		public_id: public_id,
+		timestamp: timestamp,
+		eager: eager,
+		signature: token
+	})
+	return;
+});
 
-
+router.post('/update-picture-status', function(req, res, next){
+	if(req.body && req.body.public_id && req.body.success){
+		userId = req.user.id
+		public_id = req.body.public_id
+		// check if the user own this picture
+		if(userId == public_id.substring(0, public_id.indexof('/'))){
+			//TODO update DB that image uploaded successfully
+			res.json({result : 'OK'})
+			return
+		}
+		else
+		{
+			next(new Error('user id does not match image'));
+		}
+	}
+});
 
 router.put('/add-favorite', function (req, res, next) {
     var id = req.user.id;
