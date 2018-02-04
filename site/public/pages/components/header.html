@@ -33,7 +33,7 @@
                 <div class="underlined"></div>
             </div>
             <div class="login sign-up" data-toggle="modal" data-target="#swapModel" ng-if="user._id">
-                Set up Swap
+                Set Swap Date
                 <div class="underlined"></div>
             </div>
             <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
@@ -94,15 +94,16 @@
                         <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
                         <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
                         <li><a href="" ng-click ="go('account/messages')">Messages</a></li>
-                        <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id"></div></a></li>
+                        <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id">Set Swap Date</div></a></li>
                         <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
                         <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
                         <li><a href="" ng-click ="logout()">Log out</a></li>
                     </ul>
-                    <div class="hamburger dropdown-toggle" data-toggle="dropdown">
-                        <div class="underline"></div>
-                        <div class="underline"></div>
-                        <div class="underline"></div>
+                    <div class="dropdown-toggle" data-toggle="dropdown">
+                        <div class="profile-pic" style="background-image:url('{{user.image}}')">
+
+                        </div>
+
                     </div>
                 </div>
             </div>
