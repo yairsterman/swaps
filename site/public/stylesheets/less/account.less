@@ -1,3 +1,4 @@
+@import 'media.less';
 .account-page{
 	background-color: #ffffff;
 	padding: 40px 0;
@@ -13,6 +14,9 @@
 		background-color: #F9F6F1;
 		.display-flex{
 			display: flex;
+			@media @mobile {
+				flex-direction: column;
+			}
 		}
 		.align-center{
 			align-items: center;
@@ -22,12 +26,29 @@
 			background-color: #ffffff;
 			margin-bottom: 0;
 			padding-right: 0;
+			@media @mobile {
+				padding: 0;
+				overflow-y: scroll;
+			}
+			.menu{
+				@media @mobile {
+					display: flex !important;
+					margin-bottom: 0;
+					padding: 0;
+				}
+			}
 	    }
 	    .single-link{
 		    list-style: none;
 		    padding: 20px;
 		    font-size: 18px;
 		    width: 100%;
+			@media @mobile {
+				font-size: 14px;
+				white-space: nowrap;
+				padding: 10px;
+				border-right: 1px solid rgba(14,93,124,0.4);
+			}
 		    a{
 		    	color: #0E5D7C;
 		    	&:hover{
@@ -40,6 +61,9 @@
 	    }
 	    .edit-profile{
 			padding: 0 3vw;
+			@media @mobile {
+				padding: 0;
+			}
 	    	.permanent-info{
 	    		padding: 30px 0;
 	    		display: flex;
@@ -64,6 +88,10 @@
 				z-index: 20;
 				bottom: 2%;
 				right: 1%;
+				@media @mobile {
+					bottom: 10px;
+					right: 10px;
+				}
     			.btn-edit{
     				width: 130px;
 					font-size: 18px;
@@ -82,6 +110,9 @@
 	    }
 		.edit-form{
 			padding: 0 15px;
+			@media @mobile {
+				padding: 0;
+			}
 			.control-label{
 				text-align: left;
 				color: #0E5D7C;
@@ -115,6 +146,9 @@
 				padding: 0 15px;
 				margin-bottom: 15px;
 				color: #0E5D7C;
+				@media @mobile {
+					padding: 0;
+				}
 		    	.title{
 		    		padding-bottom: 20px;
 		    	   	font-size: 22px;
@@ -126,6 +160,9 @@
 				}
 				&.last{
 					padding:0 15px 15px 15px;
+					@media @mobile {
+						padding: 0;
+					}
 				}
 				&:last-child{
 					border-bottom: none;
@@ -181,6 +218,9 @@
 					width: 25%;
 					margin: auto;
 					text-align: center;
+					@media @mobile {
+						width: 100%;
+					}
 					input{
 						margin: auto;
 						font-family: MavenPro;
@@ -501,6 +541,9 @@
         .fav-scroll {
           .favorites-show {
             margin-top: 1%;
+			  .single-favorite{
+				  padding: 0;
+			  }
           }
         }
       }
@@ -677,6 +720,12 @@
 			}
 			.traveler-col{
 				padding: 10px 5px;
+			}
+			.request-list{
+				display: flex;
+				@media @mobile {
+					display: block;
+				}
 			}
 		}
 	}

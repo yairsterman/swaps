@@ -2,7 +2,7 @@
     <div class="container inner-page">
         <div class="row display-flex">
             <div class="col-sm-3 sidebar">
-                <ul class="">
+                <ul class="menu">
                     <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href=""
                                                                                    ng-click="go('account/edit')">Profile</a>
                     </li>
@@ -26,7 +26,7 @@
                         I Like</a></li>
                 </ul>
             </div>
-            <div class="col-sm-9 content {{activeTab == 'upcoming-swaps'?'scroll':''}}">
+            <div class="col-sm-9 col-xs-12 content {{activeTab == 'upcoming-swaps'?'scroll':''}}">
                 <div class="edit-profile" ng-if="activeTab == 'edit'">
                     <div class="row permanent-info">
                         <div class="col-sm-3">
@@ -42,19 +42,19 @@
                     <form class="form-horizontal edit-form" role="form">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Email:</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <input class="form-control" type="text" ng-model="edit.email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Birthday:</label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-xs-12">
                                 <input class="datepicker form-control" name="birthday" ng-model="edit.birthday">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Gender:</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 col-xs-12">
                                 <select class="form-control" id="gender" ng-model="edit.gender"
                                         ng-options="gender.value as gender.name for gender in data.genders">
                                     {{gender.name}}
@@ -63,20 +63,20 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">About me:</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <textarea rows="6" cols="20" class="form-control" ng-model="edit.aboutMe"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Occupation:</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <input class="form-control" type="text" ng-model="edit.occupation">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">What are you looking for when you travel? <br> <br>
                                 <span style="font-weight: 400">(This will help us find the best place for you to Swap!)</span></label>
-                            <div class="col-sm-8 things">
+                            <div class="col-sm-8 col-xs-12 things">
                                 <checkbox items="data.thingsToDo" model="edit.thingsToDo"></checkbox>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                             <label class="col-sm-3 control-label listing-label">Title:<br>
                                 <span class="explanation">A short description of your home</span>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8 col-xs-12">
                                 <input class="form-control" type="text" ng-model="edit.apptInfo.title">
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                             <label class="col-sm-3 control-label listing-label">Address:<br>
                             <span class="explanation">Where you live</span>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8 col-xs-12">
                                 <input class="form-control" id="address" type="text" ng-model="edit.address" autocomplete>
                             </div>
                         </div>
@@ -157,9 +157,9 @@
                             <label class="col-sm-3 control-label">Basics:<br>
                             <span class="explanation">Essential information</span>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8 col-xs-12">
                                 <div class="row">
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Swappers</div>
@@ -167,7 +167,7 @@
                                         <input class="form-control" id="swappers" type="number" min="1" max="8"
                                                ng-model="edit.apptInfo.guests">
                                     </div>
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Rooms</div>
@@ -175,7 +175,7 @@
                                         <input class="form-control" id="rooms" type="number" min="1" max="8"
                                                ng-model="edit.apptInfo.rooms">
                                     </div>
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Beds</div>
@@ -183,7 +183,7 @@
                                         <input class="form-control" id="beds" type="number" min="1" max="8"
                                                ng-model="edit.apptInfo.beds">
                                     </div>
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Baths</div>
@@ -198,7 +198,7 @@
                             <label class="col-sm-3 control-label listing-label">About my home:<br>
                             <span class="explanation">What makes your home special</span>
                             </label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <textarea rows="6" cols="20" class="form-control"
                                           ng-model="edit.apptInfo.about"></textarea>
                             </div>
@@ -207,7 +207,7 @@
                             <label class="col-sm-3 control-label listing-label">Room Type:<br>
                             <span class="explanation">The type of room you are offering</span>
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 col-xs-12">
                                 <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType"
                                         ng-options="room.id as room.displayName for room in data.roomType">
                                     {{room.displayName}}
@@ -218,13 +218,13 @@
                             <label class="col-sm-3 control-label listing-label">Payment Plan:<br>
                             <span class="explanation">Choose the plan that suits your needs</span>
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 col-xs-12">
                                 <select class="form-control" id="deposit" ng-model="edit.deposit"
                                         ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
                                     {{plan.displayName}} - ${{plan.value}} per night
                                 </select>
                             </div>
-                            <div class="col-sm-4 plan-explanation">
+                            <div class="col-sm-4 col-xs-12 plan-explanation">
                                 This plan covers you for up to ${{data.securityDeposit[edit.deposit].week}} in cases of
                                 damages and cancellations
                             </div>
@@ -235,7 +235,7 @@
                             <label class="col-sm-3 control-label listing-label">Facilities:<br>
                             <span class="explanation">Things you have in your home</span>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8 col-xs-12">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <checkbox items="data.amenities" model="edit.apptInfo.amenities"></checkbox>
@@ -249,7 +249,7 @@
                             <label class="col-sm-3 control-label listing-label">House Rules:<br>
                             <span class="explanation">What Swappers can and can't do at your home</span>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8 col-xs-12">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <checkbox items="data.houseRules" model="edit.apptInfo.rules"></checkbox>
@@ -265,7 +265,7 @@
                             You can, for example tell them about about attractions near your home,
                             Pets you own, or even just how to turn on the A/C</span>
                             </label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <textarea rows="6" cols="20" class="form-control"
                                           ng-model="edit.apptInfo.moreInfo"></textarea>
                             </div>
@@ -381,7 +381,7 @@
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
                     <div class="loader" ng-if="saving"></div>
                     <div class="swap-title" ng-hide="saving"></div>
-                    <div class="mg-0 row flex" ng-repeat="request in requests" ng-hide="saving">
+                    <div class="mg-0 row request-list" ng-repeat="request in requests" ng-hide="saving">
                         <swapper-home class="traveler-col col-sm-6 col-xs-12" traveler="request"></swapper-home>
                         <div class="request-info col-sm-6 col-xs-12">
                             <div class="form-group row">
@@ -450,7 +450,7 @@
                         <div class="fav-scroll">
                             <div class="favorites-show"
                                  ng-repeat="favorite in likedHomes">
-                                <swapper-home class="col-xs-6" traveler="favorite"></swapper-home>
+                                <swapper-home class="col-sm-6 col-xs-12 single-favorite" traveler="favorite"></swapper-home>
                                 <div class="clearfix visible-xs"></div>
                             </div>
                         </div>
