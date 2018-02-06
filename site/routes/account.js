@@ -383,6 +383,34 @@ router.post('/delete-photo', function (req, res, next) {
     });
 });
 
+/*
+* A route for updating the DB once Cloudinary has successfully
+* completed uploading the user's photos.
+*/
+router.post('/uploadCompleted', function (req, res, next) {
+    let user = req.user;
+    let id = req.user.id;
+    let photos = [];
+
+    //----------------
+    // Here should get photos from Cloudinary from the user's directory
+    //----------------
+
+    User.update({_id: id}, {$set: {photos: photos}})
+    .then(function (updated) {
+        if (!updated.ok) {
+            error.message = 'Failed to update photos';
+            throw (error);
+        } else {
+            return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
+        }
+    }).then(function(user) {
+        res.json(user);
+    },function(err){
+        res.json(error);
+    });
+});
+
 router.post('/upload', upload.array('photos', 8), function (req, res) {
     var id = req.user.id;
     var photos = [];

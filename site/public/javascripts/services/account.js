@@ -175,4 +175,19 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     }
 
+    this.uploadCompleted = function() {
+        var defer = $q.defer();
+        $http.post('/account/uploadCompleted').then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
+    }
+
 });
