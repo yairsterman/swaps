@@ -1,3 +1,8 @@
+var URLSafeBase64 = require('urlsafe-base64');
+var sha1 = require('sha1');
+//use to delete photos from cloudinary
+var cloudinary = require('cloudinary');
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -11,6 +16,12 @@ var multer = require('multer');
 var upload = multer({dest: 'uploads/', limits: {files: 8}});
 
 var NodeGeocoder = require('node-geocoder');
+
+cloudinary.config({ 
+  cloud_name: 'swaps', 
+  api_key: '141879543552186', 
+  api_secret: 'DzracCkoJ12usH_8xCe2sG8of3I' 
+});
 
 var options = {
     provider: 'google',
@@ -356,17 +367,18 @@ router.post('/delete-photo', function (req, res, next) {
                             res.json(error);
                         }
                         else {
-                            var fileName = url.substring(url.indexOf('uploads/'));
-                            var targetPath = path.resolve('public/images/' + fileName);
-                            try {
-                                fs.unlinkSync(targetPath);
-                                console.log("File deleted");
-                                res.json(user);
-                            }
-                            catch (err) {
-                                error.message = "File not removed \n" + err;
-                                res.json(error);
-                            }
+                            var fileName = req.user.id + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.'));
+							cloudinary.v2.uploader.destroy(fileName, function(error, result){
+								if(error || result.result != 'ok'){
+									if(!error)
+										error = {}
+									error.message = "File not removed \n" + result.result;
+									res.json(error);
+								}
+								else{
+									res.json(user);
+								}
+							});
                         }
                     });
                 }
@@ -390,25 +402,77 @@ router.post('/delete-photo', function (req, res, next) {
 router.post('/uploadCompleted', function (req, res, next) {
     let user = req.user;
     let id = req.user.id;
-    let photos = [];
+    let photos = req.user.photos.concat([req.body.url]);
 
-    //----------------
-    // Here should get photos from Cloudinary from the user's directory
-    //----------------
+	cloudinary.v2.api.resources_by_ids([req.body.public_id], function(error, result) {
+		if(error)
+		{
+			error.message = 'could not verify picture in the server';
+			res.json(error);
+			return
+		}
+		if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
+		{
+			User.update({_id: id}, {$set: {photos: photos}})
+			.then(function (updated) {
+				if (!updated.ok) {
+					error.message = 'Failed to update photos';
+					throw (error);
+				} else {
+					return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
+				}
+			}).then(function(user) {
+				res.json(user);
+			},function(err){
+				res.json(error);
+			});
+		}
+		else
+		{
+			error.message = 'picture does not exist on the server';
+			res.json(error);
+		}
+	});
+});
 
-    User.update({_id: id}, {$set: {photos: photos}})
-    .then(function (updated) {
-        if (!updated.ok) {
-            error.message = 'Failed to update photos';
-            throw (error);
-        } else {
-            return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
-        }
-    }).then(function(user) {
-        res.json(user);
-    },function(err){
+router.get('/get-upload-token', function (req, res, next) {
+	
+    if(req.user.photos.length >= 8) {
+		if(!error)
+			error = {}
+		error.message = "cannot have more then 8 files";
         res.json(error);
-    });
+	}
+	else {
+		eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
+		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
+		// (just using it to generate a random name for each photo
+		timestamp = new Date().getTime()
+		if(req.user)
+			server_path = '' + req.user.id + '/' + URLSafeBase64.encode(sha1(timestamp))
+		else
+			server_path = 'qwe/' + URLSafeBase64.encode(sha1(timestamp))
+		public_id = "public_id=" + server_path
+		secret = "DzracCkoJ12usH_8xCe2sG8of3I"
+		//the token is valid for 1 hour from <timestamp> if we want to decrease this time
+		// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
+		// before put it in <ts> 
+		ts = "timestamp=" + timestamp
+		to_sign = ([eager, public_id, ts]).join("&")
+		token = URLSafeBase64.encode(sha1(to_sign + secret))
+		if(req.user)
+			console.log('generate token for user: ' + req.user.id + ' token: ' + token) 
+		else
+			console.log('generate token for user: 1' + ' token: ' + token) 
+		res.send( {
+			public_id: server_path,
+			timestamp: timestamp,
+			eager: "w_1080,h_720,c_crop",
+			signature: token,
+			api_key: "141879543552186",
+		})
+		return;
+	}
 });
 
 router.post('/upload', upload.array('photos', 8), function (req, res) {

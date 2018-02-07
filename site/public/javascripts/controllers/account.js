@@ -149,7 +149,39 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             $scope.saving = false;
         });
     }
+	
+	function add_uploadButton(e, data){
+		AccountService.getUploadToken().then(function( token ) {
+			data.formData = token
+			data.submit()
+		});
+	}
 
+	function change_uploadbutton(e, data){
+		if(this.files.length > 8 - acc.user.photos.length) {
+			alert('You can only have 8 images')
+			return false
+		}
+	}
+	
+	function fileuploaddone_uploadbutton(e, data){
+		AccountService.uploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
+			$scope.user = result;
+            updateUser();
+            showAlert(SUCCESS, false);
+		});
+	}
+	
+	$scope.initUploadButton =function(){
+		console.log("init upload button")
+		$.cloudinary.config({ cloud_name: 'swaps', secure: true});
+		$('input.cloudinary-fileupload[type=file]').fileupload({
+			add: add_uploadButton,
+			change: change_uploadbutton
+		});
+		$('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton)
+	}
+	
     function uploadPhotos(){
       console.log("change");
       console.log($("#my_file")[0].files.length);

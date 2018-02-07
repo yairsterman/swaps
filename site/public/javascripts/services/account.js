@@ -2,6 +2,7 @@ swapsApp.service('AccountService', function($http, $q){
 
     this.editProfile = function(user) {
         var defer = $q.defer();
+		console.log(user)
         $http.post('account/edit-profile', user).then(function(data){
             if(data.data.error){
               defer.reject(data.data.error);
@@ -105,6 +106,21 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     };
 
+	this.getUploadToken = function() {
+        var defer = $q.defer();
+        $http.get('account/get-upload-token').then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
+    };
+	
    this.logout = function(user) {
       return $http.post('/logout', user).then(function(data){
            return data;
@@ -175,9 +191,9 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     }
 
-    this.uploadCompleted = function() {
+    this.uploadCompleted = function(public_id) {
         var defer = $q.defer();
-        $http.post('/account/uploadCompleted').then(function(data){
+        $http.post('/account/uploadCompleted', public_id).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }

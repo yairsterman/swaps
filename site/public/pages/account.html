@@ -98,17 +98,10 @@
                             <div class="no-image">
                                 <img src="https://swapshome.com/images/static/no-image.png" class="no-image-icon">
                             </div>
-                            <div class="upload-photos" ng-if="user.photos.length < 8">
-                                <form method="POST" enctype="multipart/form-data" action="/account/upload">
-                                    <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg"
-                                           onchange="if(this.files.length > 8 - acc.user.photos.length) {
-                              alert('You can only have 8 images');
-                              this.value='';
-                           }" multiple>
-                                    <input type="hidden" name="id" value="{{edit._id}}">
-                                    <div style="margin-top:15px;"></div>
-                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                                </form>
+                            <div class="upload-photos" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
+                                <input class="btn btn-primary btn-edit cloudinary-fileupload" data-cloudinary-field="image_id" 
+								data-max-chunk-size="52428800" data-update-path="google.com" 
+								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>
                         </div>
                         <div class="display-photos" ng-if="user.photos.length > 0">
@@ -122,17 +115,10 @@
                                     on-delete="deletePhoto(img, cb)"
                                     on-close="galeryClosed()"
                             ></ng-image-gallery>
-                            <div class="upload-photos" ng-if="user.photos.length < 8">
-                                <form method="POST" enctype="multipart/form-data" action="/account/upload">
-                                    <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg"
-                                           onchange="if(this.files.length > 8 - acc.user.photos.length) {
-                              alert('You can only have 8 images');
-                              this.value='';
-                           }" multiple>
-                                    <input type="hidden" name="id" value="{{edit._id}}">
-                                    <div style="margin-top:15px;"></div>
-                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                                </form>
+                            <div class="upload-photos" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
+                                <input class="btn btn-primary btn-edit cloudinary-fileupload" data-cloudinary-field="image_id" 
+								data-max-chunk-size="52428800" data-update-path="google.com" 
+								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>
                         </div>
                     </div>
