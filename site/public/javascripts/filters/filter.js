@@ -41,7 +41,7 @@ angular.module('filters', [])
                 return "Today";
             else if (d.getTime() == td.getTime())
                 return "Yesterday";
-            return td.getDate() +'/'+ td.getMonth() +'/'+ td.getFullYear();
+            return td.getDate() +'/'+ td.getMonth() + 1 +'/'+ td.getFullYear();
         };
     });
 
