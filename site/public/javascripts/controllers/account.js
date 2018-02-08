@@ -8,6 +8,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.send = {message : ''};
     $scope.swap = {};
     $scope.showSwapsTab = 'set';
+    $scope.numOfFiles = 0;
+
 
     $scope.select = {};
 
@@ -151,35 +153,57 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 	
 	function add_uploadButton(e, data){
+        $scope.saving = true;
 		AccountService.getUploadToken().then(function( token ) {
-			data.formData = token
-			data.submit()
-		});
+            $scope.numOfFiles++;
+			data.formData = token;
+			data.submit();
+		},function(){
+            $scope.saving = false;
+        });
 	}
 
 	function change_uploadbutton(e, data){
-		if(this.files.length > 8 - acc.user.photos.length) {
-			alert('You can only have 8 images')
-			return false
+		if(data.files.length > 8 - $scope.user.photos.length) {
+            showAlert('You can only have 8 images', true);
+			return false;
 		}
 	}
 	
 	function fileuploaddone_uploadbutton(e, data){
 		AccountService.uploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
 			$scope.user = result;
-            updateUser();
-            showAlert(SUCCESS, false);
-		});
+            setPhotoGalery();
+		},function(err){
+            showAlert('Failed to upload photo, please try again later', true);
+        })
+        .finally(function(){
+            $scope.numOfFiles--;
+            if($scope.numOfFiles === 0){//uploaded all photos
+                updateUser();
+                showAlert('Photos Uploaded Successfully', false);
+                $scope.saving = false;
+            }
+        });
 	}
+
+	function uploadFail(err, data){
+        $scope.numOfFiles--;
+        if($scope.numOfFiles === 0){//uploaded all photos
+            $scope.saving = false;
+            $scope.$apply();
+        }
+        showAlert('Could not upload photo', true);
+    }
 	
 	$scope.initUploadButton =function(){
-		console.log("init upload button")
 		$.cloudinary.config({ cloud_name: 'swaps', secure: true});
 		$('input.cloudinary-fileupload[type=file]').fileupload({
 			add: add_uploadButton,
 			change: change_uploadbutton
 		});
-		$('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton)
+		$('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
+		$('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
 	}
 	
     function uploadPhotos(){
@@ -194,8 +218,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.deletePhoto = function(img, cb){
       var obj = {url: img.url, id: $scope.user._id};
       AccountService.deletePhoto(obj).then(function(data){
-          $scope.edit = data;
-          showAlert(SUCCESS, false);
+          $rootScope.user = data;
+          $scope.user = $rootScope.user;
+          updateUser();
+          showAlert('Photo Deleted', false);
           cb();
       },function(err){
           showAlert('Error deleting photos', true);

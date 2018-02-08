@@ -90,16 +90,22 @@
                     </form>
                 </div>
                 <div class="my-listing" ng-if="activeTab == 'listing'">
-                    <div class="info-section my-photos">
+                    <div class="info-section my-photos {{saving?'saving':''}}">
+                        <div class="loader-wrapper" ng-if="saving">
+                            <div class="loader">
+
+                            </div>
+                        </div>
                         <div class="display-photos no-photos" ng-if="user.photos.length == 0">
                             <div class="text">
                                 You don't have enough photos of your listing, you must have at least 3 photo.
                             </div>
                             <div class="no-image">
-                                <img src="https://swapshome.com/images/static/no-image.png" class="no-image-icon">
+                                <img src="../images/static/no-image.png" class="no-image-icon">
                             </div>
-                            <div class="upload-photos" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
-                                <input class="btn btn-primary btn-edit cloudinary-fileupload" data-cloudinary-field="image_id" 
+                            <div class="upload-photos btn btn-primary btn-edit" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
+                                Upload Photos
+                                <input class="cloudinary-fileupload" data-cloudinary-field="image_id"
 								data-max-chunk-size="52428800" data-update-path="google.com" 
 								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>
@@ -115,8 +121,9 @@
                                     on-delete="deletePhoto(img, cb)"
                                     on-close="galeryClosed()"
                             ></ng-image-gallery>
-                            <div class="upload-photos" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
-                                <input class="btn btn-primary btn-edit cloudinary-fileupload" data-cloudinary-field="image_id" 
+                            <div class="upload-photos btn btn-primary btn-edit" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
+                                Upload Photos
+                                <input class="cloudinary-fileupload" data-cloudinary-field="image_id"
 								data-max-chunk-size="52428800" data-update-path="google.com" 
 								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>

@@ -402,7 +402,13 @@ router.post('/delete-photo', function (req, res, next) {
 router.post('/uploadCompleted', function (req, res, next) {
     let user = req.user;
     let id = req.user.id;
-    let photos = req.user.photos.concat([req.body.url]);
+
+    if(req.user.photos.length >= 8) {
+        if(!error)
+            error = {}
+        error.message = "Cannot have more then 8 files";
+        res.json(error);
+    }
 
 	cloudinary.v2.api.resources_by_ids([req.body.public_id], function(error, result) {
 		if(error)
@@ -413,7 +419,7 @@ router.post('/uploadCompleted', function (req, res, next) {
 		}
 		if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
 		{
-			User.update({_id: id}, {$set: {photos: photos}})
+			User.update({_id: id}, {"$push": {"photos": result.resources[0].secure_url}})
 			.then(function (updated) {
 				if (!updated.ok) {
 					error.message = 'Failed to update photos';
@@ -444,22 +450,23 @@ router.get('/get-upload-token', function (req, res, next) {
         res.json(error);
 	}
 	else {
-		eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
+		let eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
 		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
 		// (just using it to generate a random name for each photo
-		timestamp = new Date().getTime()
+		let timestamp = new Date().getTime();
+		let server_path;
 		if(req.user)
-			server_path = '' + req.user.id + '/' + URLSafeBase64.encode(sha1(timestamp))
+			server_path = '' + req.user.id + '/' + URLSafeBase64.encode(sha1(timestamp));
 		else
-			server_path = 'qwe/' + URLSafeBase64.encode(sha1(timestamp))
-		public_id = "public_id=" + server_path
-		secret = "DzracCkoJ12usH_8xCe2sG8of3I"
+			server_path = 'qwe/' + URLSafeBase64.encode(sha1(timestamp));
+		let public_id = "public_id=" + server_path;
+		secret = "DzracCkoJ12usH_8xCe2sG8of3I";
 		//the token is valid for 1 hour from <timestamp> if we want to decrease this time
 		// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
 		// before put it in <ts> 
-		ts = "timestamp=" + timestamp
-		to_sign = ([eager, public_id, ts]).join("&")
-		token = URLSafeBase64.encode(sha1(to_sign + secret))
+		let ts = "timestamp=" + timestamp;
+		let to_sign = ([eager, public_id, ts]).join("&");
+		let token = URLSafeBase64.encode(sha1(to_sign + secret));
 		if(req.user)
 			console.log('generate token for user: ' + req.user.id + ' token: ' + token) 
 		else
@@ -470,8 +477,7 @@ router.get('/get-upload-token', function (req, res, next) {
 			eager: "w_1080,h_720,c_crop",
 			signature: token,
 			api_key: "141879543552186",
-		})
-		return;
+		});
 	}
 });
 
