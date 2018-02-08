@@ -284,7 +284,7 @@
                             </div>
                             <div class="messages-scroll">
                                 <div class="messages-list"
-                                     ng-repeat="message in user.messages | searchMessages:searchTerm">
+                                     ng-repeat="message in user.messages | searchMessages:searchTerm | orderBy: 'message.messages[message.messages.length -1].date'">
                                     <div class="single-message" ng-click="openConversation(message, $index)">
                                         <div class="">
                                             <div class="photo" style="background-image:url('{{message.image}}')"
