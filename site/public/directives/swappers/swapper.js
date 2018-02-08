@@ -3,13 +3,13 @@ swapsApp.directive('swapperHome', function() {
         restrict: 'E',
         controller: swapperHomeController,
         scope: {
-          traveler: '='
+            traveler: '='
         },
         templateUrl: '../directives/swappers/swapper-home.html'
     }
 });
 
-function swapperHomeController($scope, $rootScope, $location){
+function swapperHomeController($scope, $rootScope, $location, $uibModal, AccountService){
     $scope.carouselPrev = function (id, event) {
         event.preventDefault();
         event.stopPropagation();
@@ -26,5 +26,90 @@ function swapperHomeController($scope, $rootScope, $location){
         $(window).unbind('scroll');
         $rootScope.homepage = false;
         $location.url(path);
+    }
+
+    $scope.openLogin = function(){
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../directives/login/login.html',
+            size: 'sm',
+            controller: 'loginController',
+            resolve: {
+                signin: function () {
+                    return false;
+                }
+            },
+            scope:$scope
+        });
+    }
+
+    $scope.isFavorite = function() {
+        if($rootScope.user && $rootScope.user._id && $scope.traveler && $scope.traveler._id) {
+            return $rootScope.user.favorites.includes($scope.traveler._id);
+        }
+        return false;
+    };
+
+    $scope.setFavorite = function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if($scope.adding){
+            return;
+        }
+        if(!$rootScope.user._id){
+            $scope.openLogin();
+            return;
+        }
+        $scope.adding = true;
+        if(!$scope.isFavorite()){
+            addToFavorites();
+        }
+        else{
+            removeFromFavorites();
+        }
+    }
+
+    function addToFavorites() {
+        var favorite = $scope.traveler._id;
+        $scope.addedFavorite = false;
+        AccountService.addFavorite(favorite).then(function(data){
+            $rootScope.user = data.user;
+            $scope.user = $rootScope.user;
+            $scope.adding = false;
+            $scope.addedFavorite = true;
+            if(data.isMatch){
+                openMatch();
+            }
+        },function(){
+            $scope.adding = false;
+        });
+    };
+
+    function removeFromFavorites() {
+        var id = $scope.traveler._id;
+        AccountService.removeFavorite(id).then(function(data){
+            $rootScope.user = data;
+            $scope.user = $rootScope.user;
+            $scope.adding = false;
+        },function(){
+            $scope.adding = false;
+        });
+    };
+
+    function openMatch(){
+        //need all th values for request and datepicker directives
+        $scope.profile = $scope.traveler;
+        $scope.chooseDates = true;
+        $scope.isMatch = true;
+        $scope.data = $rootScope.data;
+        $scope.swap = {};
+        $scope.userCity = $rootScope.userCity;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            controller: 'requestController',
+            scope: $scope
+        });
     }
 }

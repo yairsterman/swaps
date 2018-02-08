@@ -1,5 +1,5 @@
 var login = null;
-swapsApp.controller('loginController', function($scope, signin, $rootScope, UsersService, MessageService, $timeout) {
+swapsApp.controller('loginController', function($scope, signin, $rootScope, $window, $location, UsersService, MessageService, $timeout) {
     login = $scope;
 
     $scope.signin = signin;
@@ -26,7 +26,11 @@ swapsApp.controller('loginController', function($scope, signin, $rootScope, User
 
     $scope.FBLogin = function(){
         // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('http://swapshome.com:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
+
+    $scope.terms = function(){
+        $window.open('https://swapshome.com/terms-and-conditions' , '_blank')
+    }
 });
 

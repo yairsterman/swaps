@@ -1,3 +1,5 @@
+@import 'media.less';
+
 .header{
 	background-color: #fff;
 	height: 70px;
@@ -22,16 +24,17 @@
 				opacity: 1;
 			}
 		}
-		.navbar-brand{
-			padding: 0;
-		}
 		.navbar-brand {
 		    height: 70px;
-		    padding-left: 20px;
+			padding: 0 0 0 20px;
+			@media @mobile {
+				padding-left: 10px;
+			}
 		}
 		&.navbar-default {
 			background-color: #fff;
-			border: 0;
+			border-bottom: 1px solid #eeeeee;
+			//border: 0;
 			border: none;
 			-webkit-box-shadow: none;
 			box-shadow: none;
@@ -210,11 +213,18 @@
 		    align-items: center;
 		    float: right;
 		    margin-top: 10px;
+			@media @mobile {
+				flex-direction: column;
+				margin-top: 0 !important;
+			}
 			.login{
 				color: rgba(14,93,124,1);
 				padding: 16px;
 				font-size: 16px;
 				cursor: pointer;
+				@media @mobile {
+					padding: 3px 10px;
+				}
 				&:hover{
 					.underlined{
 						width: 28px;
@@ -223,12 +233,33 @@
 				&:focus{
 					outline: none;
 				}
+				&.mail{
+					align-self: end;
+					position: relative;
+				}
+				.unread-messages{
+					border-radius: 50%;
+					background-color: rgba(14,93,124,1);
+					color: #ffffff;
+					font-size: 14px;
+					font-weight: 500;
+					text-align: center;
+					width: 18px;
+					height: 18px;
+					position: absolute;
+					right: 8px;
+					top: 8px;
+				}
 			}
 			.underlined{
 				transition: 0.3s ease;
 				width: 0;
 				border-bottom: 2px solid rgba(14,93,124,0.5);
 				padding-top: 5px;
+				@media @mobile {
+					width: 25px;
+					margin: auto;
+				}
 			}
 			.user-area{
 				display: flex;
@@ -264,6 +295,77 @@
 			}
 		}
 	}
+	.mobile-header{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.mobile-login{
+
+		}
+		.hamburger{
+			padding-right: 12px;
+			.underline{
+				border-top: 3px solid rgba(14,93,124,0.5);
+				padding-top: 5px;
+				width: 25px;
+			}
+		}
+		.dropdown-menu{
+			right: 0;
+			left:initial;
+		}
+		.search-field{
+			width: 50%;
+			padding:0 5px;
+			position: relative;
+			.form-control{
+				padding-right: 40px;
+				text-overflow: ellipsis;
+				border-radius: 0;
+				border: 1px #0E5D7C solid;
+				color: rgba(199, 167, 104, 1);
+				font-size: 14px;
+				height: initial;
+				-webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+				-moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+				box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+				&:focus{
+					border-color: #0E5D7C;
+					-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
+					box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
+				}
+			}
+			.search{
+				position: absolute;
+				font-weight: 600;
+				bottom: 0;
+				right: 8px;
+				margin: 2px;
+				padding: 14px;
+				background-color: rgba(199, 167, 104, 0.2);
+				border: none;
+				border-radius: 5px;
+				&:focus{
+					outline: none;
+				}
+				&:hover{
+					outline: none;
+					color: rgba(255, 245, 225, 0.8);
+					background-color: #0E5D7C;
+				}
+			}
+		}
+		.profile-pic{
+			width: 40px;
+			height: 40px;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			border-radius: 50%;
+			margin: 0 10px;
+			cursor: pointer;
+		}
+	}
 	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
 		color: rgba(199, 167, 104, 0.8);
 	}
@@ -276,9 +378,16 @@
 .modal{
 	.modal-dialog {
 	    width: 400px;
+		@media @mobile {
+			width: auto;
+		}
 		&.large-model{
 			width: 50%;
 			margin: 2% auto;
+			@media @mobile {
+				width: 100%;
+				margin: 10px;
+			}
 		}
     }
 	.facebook-signin{
@@ -342,6 +451,13 @@
 }
 
 
+
+.top-corner{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+}
 
 #aboutModal, #signUpModal {
 	margin: auto;

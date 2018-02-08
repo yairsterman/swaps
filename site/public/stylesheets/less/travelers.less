@@ -1,8 +1,5 @@
-//#navbarSupportedContent {
-//	-webkit-box-shadow: 4px 7px 33px 0px rgba(0,0,0,0.75);
-//	-moz-box-shadow: 4px 7px 33px 0px rgba(0,0,0,0.75);
-//	box-shadow: 3px -2px 19px 0px rgba(0,0,0,0.75);
-//}
+@import 'media.less';
+
 .travelers-page{
 	background-color: #fafafa;
 	.title{
@@ -25,6 +22,9 @@
 		-webkit-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		-moz-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
+		@media @mobile {
+			height: 10vw;
+		}
 		.filter-button{
 			font-size: 14px;
 			padding-right: 3vw;
@@ -39,9 +39,17 @@
 			&:focus{
 				outline: none;
 			}
+			&.amenities-dropdown{
+				@media @mobile {
+					left: -20vw;
+				}
+			}
 		}
 		.amenities{
 			width: 30vw;
+			@media @mobile {
+				width: 60vw;
+			}
 		}
 		.apply{
 			.btn-apply{
@@ -77,22 +85,62 @@
 			}
 		}
 	}
+	.dates{
+		padding: 10px 0;
+		margin: 0 10px;
+		.search-field{
+			padding:0 5px;
+			position: relative;
+			.glyphicon{
+				position: absolute;
+				right: 10px;
+				top: 4px;
+				padding: 6px;
+				font-size: 14px;
+				color: #c7a768;
+				&:focus{
+					outline: none;
+				}
+			}
+		}
+		.form-control {
+			border-radius: 0;
+			border: 1px #0E5D7C solid;
+			color: rgba(199, 167, 104, 1);
+			font-size: 14px;
+			height: initial;
+			-webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+			-moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+			box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+			&:focus{
+				border-color: #0E5D7C;
+				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
+				box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
+			}
+		}
+		::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+			color: rgba(199, 167, 104, 0.8);
+		}
+	}
 	.people-and-map{
 		padding: 0 0 0 10px;
+		@media @mobile {
+			padding: 0;
+		}
 	}
 	.mg-0{
 		margin: 0;
 	}
 	.travelers-list {
 		overflow-y: scroll;
-		height: 46vw;
+		height: 78vh;
 		padding: 0;
-		transition: 0.4s ease;
-		@media (max-width: @screen-sm-max) {
-			height: 36vw;
+		transition: 0.2s ease;
+		@media @tablet {
+			height: 60vw;
 		}
-		@media (max-width: @screen-xs-max) {
-			height: 80vw;
+		@media @mobile {
+			height: 100vw;
 		}
 		&.loading{
 			background-color: rgba(0,0,0,0.2);
@@ -100,18 +148,52 @@
 		.traveler-col{
 			padding: 5px;
 		}
-
+		.traveler-pagination{
+			width: 100%;
+			text-align: center;
+			.pagination>li>a{
+				border-radius: 50%;
+				background-color: transparent;
+				border-color: transparent;
+				color: #045F79;
+			}
+			.pagination>.disabled>a{
+				background-color: transparent;
+				border-color: transparent;
+				color: #045F79;
+			}
+			.pagination>.active>a{
+				color: #fff;
+				background-color: #045F79;
+				border-color: #045F79;
+			}
+			.pagination>li>a:hover{
+				background-color: rgba(199, 167, 104, 0.4);
+			}
+			.pagination>.active>a:hover{
+				background-color: #045F79;
+			}
+			.pagination>li:last-child>a:hover{
+				background-color: transparent;
+			}
+			.pagination>li:first-child>a:hover{
+				background-color: transparent;
+			}
+		}
 	}
 	.map-view{
 		padding: 0 0 0 5px;
+		@media @mobile {
+			padding: 0;
+		}
 	}
 	.map{
-		height: 46vw;
-		@media (max-width: @screen-sm-max) {
+		height: 78vh;
+		@media @tablet {
 			height: 36vw;
 		}
-		@media (max-width: @screen-xs-max) {
-			height: 80vw;
+		@media @mobile {
+			height: 50vw;
 		}
 		#travelerMarkerLayer {
 			img{
@@ -234,12 +316,9 @@
 		//left: 22px !important;
 	}
 
-
 	::-webkit-scrollbar {
 		display: none;
 	}
-
-
 
 	.travelers-result-pages {
 		display: inline-block;
@@ -260,15 +339,11 @@
 			button:hover:not(.active) {
 				background-color: #ddd;
 			}
-
 			button.active {
 				background-color: rgba(55, 217, 255, 0.64);
 				color: white;
 			}
-
-
 		}
-
 		.next-btn {
 			top: 100%;
 			position: absolute;
@@ -279,68 +354,8 @@
 			position: absolute;
 			left: 46%;
 		}
-
-
-	}
-
-}
-
-// Extra small screen / phone
-// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
-@screen-xs:                  480px;
-@screen-xs-min:              @screen-xs;
-@screen-phone:               @screen-xs-min;
-
-// Small screen / tablet
-// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
-@screen-sm:                  768px;
-@screen-sm-min:              @screen-sm;
-@screen-tablet:              @screen-sm-min;
-
-// Medium screen / desktop
-// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
-@screen-md:                  992px;
-@screen-md-min:              @screen-md;
-@screen-desktop:             @screen-md-min;
-
-// Large screen / wide desktop
-// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
-@screen-lg:                  1200px;
-@screen-lg-min:              @screen-lg;
-@screen-lg-desktop:          @screen-lg-min;
-
-// So media queries don't overlap when required, provide a maximum
-@screen-xs-max:              (@screen-sm-min - 1);
-@screen-sm-max:              (@screen-md-min - 1);
-@screen-md-max:              (@screen-lg-min - 1);
-
-
-@media (max-width: @screen-xs-max) {
-	.guy-box {
-		position: relative;
-		height: 32%;
 	}
 }
 
-@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-
-}
-
-@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
-
-}
-
-@media (min-width: @screen-lg-min) {
-
-	.people-list {
-		width: 62%;
-		margin-left: 2%;
-
-		.guy-box {
-			margin-top: 4%;
-			margin-left: 4%;
-		}
-	}
-}
 
 

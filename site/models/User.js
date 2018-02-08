@@ -45,6 +45,7 @@ var UserSchema = new mongoose.Schema({
         bedType: Number,
     },
     paymentInfo: {},
+    transactions: Array,
     deposit: Number,
     updated_at: { type: Date, default: Date.now },
 });

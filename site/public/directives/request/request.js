@@ -6,16 +6,19 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.discount = {
         name: 'Beginners Discount'
     }
+    $scope.completeText = 'Your request has been sent';
 
     $scope.payment = false;
+    $scope.isMatch = $scope.$parent.isMatch;
+    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.modelFormat = 'MMMM DD, YYYY';
 
     $scope.showPayment = function(){
-        $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit].value;
+        $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-        $scope.percentage = {name:'4%', amount:0.04};
-        $scope.totalWithoutDiscount = $scope.depositPlan * $scope.numberOfWeeks * $scope.percentage.amount;
-        $scope.discount.amount = $scope.totalWithoutDiscount;
-        $scope.total = $scope.totalWithoutDiscount - $scope.discount.amount;
+        $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
+        $scope.totalPayment = $scope.depositPlan.night * $scope.numberOfNights;
+        $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.receipt = true;
     }
 
@@ -24,7 +27,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     $scope.close = function(){
-        $scope.modelInstance.close();
+        $scope.$dismiss();
     }
 
     $scope.sendRequest = function(){
@@ -40,31 +43,18 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         .then(function(response){
             $scope.processing = false;
             $scope.requestComplete = true;
-            $rootScope.user = response.data;
+            $rootScope.user = response;
             $scope.user = $rootScope.user;
-            $scope.requestSent = true;
+            $scope.$parent.requestSent = true;
             $timeout(function(){
-                $scope.modelInstance.close();
+                $scope.close();
             },5000);
         },
         function(err){
+            $scope.requestComplete = true;
+            $scope.completeText = err;
+            $scope.error = true;
             $scope.processing = false;
-        });
-    }
-
-    $scope.openDate = function(){
-        $('input[name="dates"]').daterangepicker({
-            autoApply: true,
-            opens: 'left',
-            locale: {
-                format: 'MM/DD/YYYY'
-            },
-            minDate: new Date().toLocaleDateString(),
-        });
-        $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-            $scope.$apply();
         });
     }
 
@@ -85,6 +75,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         }
     }
 
+    $scope.showRequest = function(){
+        $scope.isMatch = false;
+    }
+
     function calculateWeeksBetween(date1, date2) {
         // The number of milliseconds in one week
         var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
@@ -95,6 +89,14 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         var difference_ms = Math.abs(date1_ms - date2_ms);
         // Convert back to weeks and return hole weeks
         return Math.ceil(difference_ms / ONE_WEEK);
+    }
+
+    function calculateNightsBetween(date1, date2) {
+        var DAYS = 1000 * 60 * 60 * 24;
+        var date1_ms = date1.getTime();
+        var date2_ms = date2.getTime();
+        var difference_ms = Math.abs(date1_ms - date2_ms);
+        return Math.ceil(difference_ms / DAYS);
     }
     // return {
     //     restrict: 'E',

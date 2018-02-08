@@ -1,5 +1,6 @@
+@import 'media.less';
 .profile-page{
-	background-color: #f9f6f1;
+	background-color: #ffffff;
 	font-family: MavenPro;
 	.no-padding{
 		padding: 0;
@@ -8,6 +9,9 @@
 		.photos{
 			height:40vw;
 			position: relative;
+			@media @mobile {
+				height:70vw;
+			}
 			.main-photo{
 				background-position: center;
 				background-repeat: no-repeat;
@@ -25,13 +29,12 @@
 			}
 		}
 		.profile-description {
-			min-height: 40vw;
+			height: 40vw;
 			padding-top: 1vw;
 			border: 1px solid rgba(0,0,0,0.2);
-			@media (max-width: @screen-xs-max) {
-				-webkit-box-shadow: -7px -1px 51px -20px rgba(0,0,0,0.75);
-				-moz-box-shadow: -7px -1px 51px -20px rgba(0,0,0,0.75);
-				box-shadow: -7px -1px 51px -20px rgba(0,0,0,0.75);
+			@media @mobile {
+				height:auto;
+				padding: 10px;
 			}
 			.separator-more-padding {
 				padding-top: 15%;
@@ -46,20 +49,21 @@
 						font-weight: bold;
 						padding: 10px 0;
 						color: #0E5D7C;
-						@media (max-width: @screen-xs-max) {
-							font-size: 12px;
-						}
-						@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+						@media @mobile {
 							font-size: 18px;
+							padding: 0;
+						}
+						@media @tablet {
+							font-size: 20px;
+							padding: 0;
 						}
 					}
 					.occupation {
 						font-size: 16px;
-						@media (max-width: @screen-xs-max) {
-							font-size: 12px;
-							text-align: center;
+						@media @mobile {
+							font-size: 16px;
 						}
-						@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+						@media @tablet {
 							font-size: 18px;
 						}
 					}
@@ -71,7 +75,7 @@
 					border-radius: 50%;
 					width: 6vw;
 					height: 6vw;
-					@media (max-width: @screen-xs-max) {
+					@media @mobile {
 						width: 50px;
 						height: 50px;
 						margin-right: 10px;
@@ -83,8 +87,13 @@
 			}
 			.swap{
 				background-color: white;
-				padding: 15px;
 				margin-bottom: 15px;
+				@media @mobile {
+					margin: 15px 0;
+				}
+				hr{
+					margin-top: 10px;
+				}
 				.favorite{
 					display: flex;
 					.share-btn{
@@ -102,12 +111,27 @@
 					}
 					.sharing{
 						margin-right: 10px;
+						transform: scale(0.7);
+						transition: 0.4s ease;
+					}
+					.btn{
+						&:hover{
+							.sharing{
+								transform: scale(0.9);
+							}
+						}
+					}
+					.share-btn-mobile{
+						color: #0E5D7C;
 					}
 				}
 				.deposit{
 					margin-top: 10px;
 					font-size: 16px;
 					opacity: 0.6;
+					@media @mobile {
+						text-align: center;
+					}
 				}
 				.swap-info{
 					.search-field{
@@ -261,15 +285,28 @@
 				}
 			}
 		}
+		.mobile-request{
+			@media @mobile {
+				position: fixed;
+				bottom: 10px;
+				right: 10px;
+				z-index: 12;
+			}
+			.btn-swap{
+				font-size: 16px;
+			}
+		}
 	}
 
 	.main-section {
 		.apt-description {
 			margin-top: 15px;
 			padding: 0 30px;
+			@media @mobile {
+				padding: 0 10px;
+			}
 			.description-title {
 				font-size: 30px;
-				font-weight: bold;
 				color: #0E5D7C;
 				display:inline-block;
 				max-width: 100%;
@@ -279,14 +316,17 @@
 				height: 40px;
 				transition: ease 0.3s;
 
-				@media (max-width: @screen-xs-max) {
-					font-size: 12px;
+				@media @mobile {
+					font-size: 20px;
 					height: 26px;
 				}
 			}
 			.under-title {
 				font-size: 20px;
 				font-weight: 400;
+				@media @mobile {
+					font-size: 14px;
+				}
 			}
 			.rating {
 				display: flex;
@@ -300,24 +340,32 @@
 					margin-left: 10px;
 				}
 				.new-appt {
-
+					font-size: 16px;
 				}
 			}
 			.simple-apt-info {
 				display: flex;
 				padding-top: 1vw;
+				@media @mobile {
+					padding-top: 3vw;
+				}
 				.home-info{
 					display: flex;
 					align-items: center;
 					margin-right: 20px;
+					@media @mobile {
+						width: 25%;
+						padding-right: 10px;
+						margin-right: 0;
+					}
 				}
 				.simple-apt-info-content {
 					font-size: 18px;
 					color: #616161;
 					padding-left: 10px;
-					@media (max-width: @screen-xs-max) {
-						font-size: 14px;
-						clear: left;
+					@media @mobile {
+						font-size: 12px;
+						padding-left: 6px;
 					}
 				}
 			}
@@ -327,10 +375,11 @@
 				font-weight: bold;
 				text-align: left;
 
-				@media (max-width: @screen-xs-max) {
-					font-size: 10px;
+				@media @mobile {
+					padding-bottom: 5px;
+					font-size: 16px;
 				}
-				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+				@media @tablet {
 					font-size: 18px;
 				}
 			}
@@ -341,11 +390,11 @@
 				font-size: 16px;
 				color: #616161;
 
-				@media (max-width: @screen-xs-max) {
-					font-size: 12px;
+				@media @mobile {
+					font-size: 14px;
 				}
-				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-					font-size: 18px;
+				@media @tablet {
+					font-size: 16px;
 				}
 			}
 			.read-more{
@@ -365,6 +414,9 @@
 				display: -webkit-box;
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
+				@media @mobile {
+					-webkit-line-clamp: 4;
+				}
 			}
 			.amenities{
 				.amenity{
@@ -521,13 +573,13 @@
 			}
 			.map-section {
 				.country-and-city {
-					font-size: 120%;
+					font-size: 20PX;
 					color: #616161;
 					font-weight: bold;
 
-					@media (max-width: @screen-xs-max) {
-						font-size: 10px;
-						text-align: center;
+					@media @mobile {
+						font-size: 16px;
+						text-align: left;
 					}
 				}
 				.address {
@@ -557,19 +609,29 @@
 				@media (max-width: @screen-xs-max) {
 					height: 80vw;
 				}
-				#travelerMarkerLayer {
-					img{
+				#iconsLayer {
+					> div{
 						border-radius:50% !important;
-						width: 50px !important;
-						height: 50px !important;
-						display: block;
-						object-fit: cover;
-						transform: scale(0.75);
+						background-color: white;
 						border:2px solid rgba(13, 134, 234, 0);
-						-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
-						box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
-						-webkit-transition: ease 1s; /* For Safari 3.1 to 6.0 */
-						transition: ease 1s;
+						-webkit-transition: ease 0.3s; /* For Safari 3.1 to 6.0 */
+						transition: ease 0.3s;
+						&:hover{
+							-ms-transform: scale(1.2); /* IE 9 */
+							-webkit-transform: scale(1.2); /* Safari */
+							transform: scale(1.2);
+						}
+					}
+					img{
+						//border-radius:50% !important;
+						width: 30px !important;
+						height: 30px !important;
+						background-position: center;
+						display: block;
+						//background-color: white;
+						object-fit: contain;
+						object-position: center;
+						transform: scale(0.80);
 						&:hover{
 							-ms-transform: scale(1.2); /* IE 9 */
 							-webkit-transform: scale(1.2); /* Safari */

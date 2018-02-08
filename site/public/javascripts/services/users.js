@@ -33,8 +33,8 @@ swapsApp.service('UsersService', function($http, $q){
        if(filters.guests){
            requestFilters += '&guests=' + filters.guests;
        }
-       if(filters.date){
-           requestFilters += '&dates=' + filters.date;
+       if(filters.when){
+           requestFilters += '&dates=' + filters.when;
        }
 
        var dfr = $q.defer();

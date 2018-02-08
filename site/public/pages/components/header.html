@@ -1,11 +1,11 @@
 <div class="header">
   	<nav class="navbar navbar-default navbar-toggleable-md navbar-light {{$root.homepage?'':'navbar-other'}} {{$root.searchPage?'no-shadow':''}} bg-faded">
-	  <a class="navbar-brand" href="" ng-click ="go('')">
+	  <a class="navbar-brand hidden-xs" href="" ng-click ="go('')">
 		  <div class="logo" style="background-image:url('../../images/logo/logo.png')">
 		  </div>
 	  </a>
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	  <div class="hidden-xs navbar-collapse" id="navbarSupportedContent">
           <div class="find-swap">
               <!--<div class="start-swapping">Start Swapping</div>-->
               <div class="row header-search-area">
@@ -13,7 +13,7 @@
                       <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeader" ng-model="search.where" autocomplete city="true">
                   </div>
                   <div class="search-field col-sm-4 col-xs-12">
-                      <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">
+                      <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
                       <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
                   </div>
                   <div class="search-field right col-sm-4 col-xs-12 ">
@@ -33,7 +33,7 @@
                 <div class="underlined"></div>
             </div>
             <div class="login sign-up" data-toggle="modal" data-target="#swapModel" ng-if="user._id">
-                Set up Swap
+                Set Swap Date
                 <div class="underlined"></div>
             </div>
             <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
@@ -43,6 +43,10 @@
 		    <div class="login" ng-click="openLogin()" ng-hide="user._id">
 		    	Log In
                 <div class="underlined"></div>
+            </div>
+            <div class="login sign-up mail" ng-if="user._id" ng-click="go('account/messages')">
+                <div class="unread-messages" ng-if="unread > 0">{{unread}}</div>
+                <div class="icon icon-mail"></div>
             </div>
 			 <div class="user-area" ng-if="user._id">
 			    <div class="profile-pic" style="background-image:url('{{user.image}}')">
@@ -55,8 +59,9 @@
 				    <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
 				    <span class="caret"></span></div>
 					    <ul class="dropdown-menu">
-					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
-                          <li><a class="nav-link" href="" ng-click ="go('account/swaps')">My Swaps</a></li>
+					      <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                            <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
+                          <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
                           <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
 					      <li><a href="" ng-click ="logout()">Log out</a></li>
 				    </ul>
@@ -64,6 +69,45 @@
 			 </div>
 		 </div>
 	  </div>
+        <div class="visible-xs">
+            <div class="mobile-header">
+                <a class="navbar-brand" href="" ng-click ="go('')">
+                    <div class="logo" style="background-image:url('../../images/logo/logo.png')">
+                    </div>
+                </a>
+                <div class="search-field left">
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeaderMobile" ng-model="search.where" autocomplete city="true">
+                    <button class="search icon icon-search" ng-click="searchSwap()"></button>
+                </div>
+                <div class="mobile-login login-area" ng-if="!user._id">
+                    <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
+                        Join
+                        <div class="underlined"></div>
+                    </div>
+                    <div class="login" ng-click="openLogin()" ng-hide="user._id">
+                        Log In
+                        <div class="underlined"></div>
+                    </div>
+                </div>
+                <div class="dropdown" ng-if="user._id">
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                        <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
+                        <li><a href="" ng-click ="go('account/messages')">Messages</a></li>
+                        <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id">Set Swap Date</div></a></li>
+                        <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
+                        <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
+                        <li><a href="" ng-click ="logout()">Log out</a></li>
+                    </ul>
+                    <div class="dropdown-toggle" data-toggle="dropdown">
+                        <div class="profile-pic" style="background-image:url('{{user.image}}')">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 	</nav>
 </div>
 
@@ -85,6 +129,7 @@
 <div id="swapModel" class="modal fade" role="dialog" ng-if="user._id">
     <div class="modal-dialog large-model">
         <div class="modal-content">
+            <div class="icon icon-delete top-corner" data-dismiss="modal"></div>
             <swaps swaps="user.travelingInfo" popup="true"></swaps>
         </div>
     </div>

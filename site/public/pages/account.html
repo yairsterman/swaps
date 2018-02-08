@@ -2,7 +2,7 @@
     <div class="container inner-page">
         <div class="row display-flex">
             <div class="col-sm-3 sidebar">
-                <ul class="">
+                <ul class="menu">
                     <li class="single-link {{activeTab == 'edit'?'active':''}}"><a href=""
                                                                                    ng-click="go('account/edit')">Profile</a>
                     </li>
@@ -12,8 +12,11 @@
                     <li class="single-link {{activeTab == 'messages'?'active':''}}"><a href=""
                                                                                        ng-click="go('account/messages')">Messages</a>
                     </li>
-                    <li class="single-link {{activeTab == 'swaps'?'active':''}}"><a href=""
-                                                                                    ng-click="go('account/swaps')">Swaps</a>
+                    <li class="single-link {{activeTab == 'set-up-swaps'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/set-up-swaps')">Set up Swap</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'upcoming-swaps'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/upcoming-swaps')">Upcoming Swaps</a>
                     </li>
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
                                                                                       ng-click="go('account/reviews')">Reviews</a>
@@ -23,7 +26,7 @@
                         I Like</a></li>
                 </ul>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9 col-xs-12 content {{activeTab == 'upcoming-swaps'?'scroll':''}}">
                 <div class="edit-profile" ng-if="activeTab == 'edit'">
                     <div class="row permanent-info">
                         <div class="col-sm-3">
@@ -39,19 +42,19 @@
                     <form class="form-horizontal edit-form" role="form">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Email:</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <input class="form-control" type="text" ng-model="edit.email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Birthday:</label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-xs-12">
                                 <input class="datepicker form-control" name="birthday" ng-model="edit.birthday">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Gender:</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 col-xs-12">
                                 <select class="form-control" id="gender" ng-model="edit.gender"
                                         ng-options="gender.value as gender.name for gender in data.genders">
                                     {{gender.name}}
@@ -60,55 +63,51 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">About me:</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <textarea rows="6" cols="20" class="form-control" ng-model="edit.aboutMe"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Occupation:</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-xs-12">
                                 <input class="form-control" type="text" ng-model="edit.occupation">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">What are you looking for when you travel? <br> <br>
                                 <span style="font-weight: 400">(This will help us find the best place for you to Swap!)</span></label>
-                            <div class="col-sm-8 things">
+                            <div class="col-sm-8 col-xs-12 things">
                                 <checkbox items="data.thingsToDo" model="edit.thingsToDo"></checkbox>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label"></label>
-                            <div class="buttons col-sm-6">
+                            <div class="buttons">
                                 <input type="button" class="btn btn-primary btn-edit" value="Save"
-                                       ng-click="saveChanges()" ng-disabled="saving">
-                                <span class="space"></span>
-                                <input type="reset" class="btn btn-primary btn-edit cancel" value="Cancel"
-                                       ng-click="cancel()" ng-if="editing">
+                                       ng-click="saveChanges()" ng-disabled="saving" disabled="{{saving}}">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="my-listing" ng-if="activeTab == 'listing'">
-                    <div class="info-section my-photos">
+                    <div class="info-section my-photos {{saving?'saving':''}}">
+                        <div class="loader-wrapper" ng-if="saving">
+                            <div class="loader">
+
+                            </div>
+                        </div>
                         <div class="display-photos no-photos" ng-if="user.photos.length == 0">
                             <div class="text">
                                 You don't have enough photos of your listing, you must have at least 3 photo.
                             </div>
                             <div class="no-image">
-                                <img src="http://swapshome.com:3000/images/static/no-image.png" class="no-image-icon">
+                                <img src="../images/static/no-image.png" class="no-image-icon">
                             </div>
-                            <div class="upload-photos" ng-if="user.photos.length < 8">
-                                <form method="POST" enctype="multipart/form-data" action="/account/upload">
-                                    <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg"
-                                           onchange="if(this.files.length > 8 - acc.user.photos.length) {
-                              alert('You can only have 8 images');
-                              this.value='';
-                           }" multiple>
-                                    <input type="hidden" name="id" value="{{edit._id}}">
-                                    <div style="margin-top:15px;"></div>
-                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                                </form>
+                            <div class="upload-photos btn btn-primary btn-edit" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
+                                Upload Photos
+                                <input class="cloudinary-fileupload" data-cloudinary-field="image_id"
+								data-max-chunk-size="52428800" data-update-path="google.com" 
+								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>
                         </div>
                         <div class="display-photos" ng-if="user.photos.length > 0">
@@ -122,38 +121,38 @@
                                     on-delete="deletePhoto(img, cb)"
                                     on-close="galeryClosed()"
                             ></ng-image-gallery>
-                            <div class="upload-photos" ng-if="user.photos.length < 8">
-                                <form method="POST" enctype="multipart/form-data" action="/account/upload">
-                                    <input type="file" name="photos" id="my_file" accept="image/jpg, image/jpeg"
-                                           onchange="if(this.files.length > 8 - acc.user.photos.length) {
-                              alert('You can only have 8 images');
-                              this.value='';
-                           }" multiple>
-                                    <input type="hidden" name="id" value="{{edit._id}}">
-                                    <div style="margin-top:15px;"></div>
-                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-edit">
-                                </form>
+                            <div class="upload-photos btn btn-primary btn-edit" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
+                                Upload Photos
+                                <input class="cloudinary-fileupload" data-cloudinary-field="image_id"
+								data-max-chunk-size="52428800" data-update-path="google.com" 
+								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>
                         </div>
                     </div>
                     <form class="form-horizontal edit-form" role="form">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Title:</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-3 control-label listing-label">Title:<br>
+                                <span class="explanation">A short description of your home</span>
+                            </label>
+                            <div class="col-sm-8 col-xs-12">
                                 <input class="form-control" type="text" ng-model="edit.apptInfo.title">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Address:</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-3 control-label listing-label">Address:<br>
+                            <span class="explanation">Where you live</span>
+                            </label>
+                            <div class="col-sm-8 col-xs-12">
                                 <input class="form-control" id="address" type="text" ng-model="edit.address" autocomplete>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Basics:</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-3 control-label">Basics:<br>
+                            <span class="explanation">Essential information</span>
+                            </label>
+                            <div class="col-sm-8 col-xs-12">
                                 <div class="row">
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Swappers</div>
@@ -161,7 +160,7 @@
                                         <input class="form-control" id="swappers" type="number" min="1" max="8"
                                                ng-model="edit.apptInfo.guests">
                                     </div>
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Rooms</div>
@@ -169,7 +168,7 @@
                                         <input class="form-control" id="rooms" type="number" min="1" max="8"
                                                ng-model="edit.apptInfo.rooms">
                                     </div>
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Beds</div>
@@ -177,7 +176,7 @@
                                         <input class="form-control" id="beds" type="number" min="1" max="8"
                                                ng-model="edit.apptInfo.beds">
                                     </div>
-                                    <div class="col-sm-3 basics">
+                                    <div class="col-sm-3 col-xs-3 basics">
                                         <div class="name-with-icon">
                                             <div class="icon icon-duck-small"></div>
                                             <div class="basics-name">Baths</div>
@@ -189,15 +188,19 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">About my home:</label>
-                            <div class="col-sm-6">
+                            <label class="col-sm-3 control-label listing-label">About my home:<br>
+                            <span class="explanation">What makes your home special</span>
+                            </label>
+                            <div class="col-sm-6 col-xs-12">
                                 <textarea rows="6" cols="20" class="form-control"
                                           ng-model="edit.apptInfo.about"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Room Type:</label>
-                            <div class="col-sm-4">
+                            <label class="col-sm-3 control-label listing-label">Room Type:<br>
+                            <span class="explanation">The type of room you are offering</span>
+                            </label>
+                            <div class="col-sm-4 col-xs-12">
                                 <select class="form-control" id="roomType" ng-model="edit.apptInfo.roomType"
                                         ng-options="room.id as room.displayName for room in data.roomType">
                                     {{room.displayName}}
@@ -205,19 +208,27 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Deposit Plan:</label>
-                            <div class="col-sm-4">
+                            <label class="col-sm-3 control-label listing-label">Payment Plan:<br>
+                            <span class="explanation">Choose the plan that suits your needs</span>
+                            </label>
+                            <div class="col-sm-4 col-xs-12">
                                 <select class="form-control" id="deposit" ng-model="edit.deposit"
-                                        ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per week' for plan in data.securityDeposit">
-                                    {{plan.displayName}} - ${{plan.value}} per week
+                                        ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
+                                    {{plan.displayName}} - ${{plan.value}} per night
                                 </select>
+                            </div>
+                            <div class="col-sm-4 col-xs-12 plan-explanation">
+                                This plan covers you for up to ${{data.securityDeposit[edit.deposit].week}} in cases of
+                                damages and cancellations
                             </div>
                         </div>
                     </form>
                     <div class="info-section rules">
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label">Facilities:</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-3 control-label listing-label">Facilities:<br>
+                            <span class="explanation">Things you have in your home</span>
+                            </label>
+                            <div class="col-sm-8 col-xs-12">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <checkbox items="data.amenities" model="edit.apptInfo.amenities"></checkbox>
@@ -228,8 +239,10 @@
                     </div>
                     <div class="info-section rules">
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label">House Rules:</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-3 control-label listing-label">House Rules:<br>
+                            <span class="explanation">What Swappers can and can't do at your home</span>
+                            </label>
+                            <div class="col-sm-8 col-xs-12">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <checkbox items="data.houseRules" model="edit.apptInfo.rules"></checkbox>
@@ -238,10 +251,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="info-section rules">
+                    <div class="info-section rules last">
                         <div class="row">
-                            <label class="col-sm-3 control-label">More Information:</label>
-                            <div class="col-sm-6">
+                            <label class="col-sm-3 control-label listing-label">More Information:<br>
+                            <span class="explanation">Is there anything else you'd like Swappers to know about your home?
+                            You can, for example tell them about about attractions near your home,
+                            Pets you own, or even just how to turn on the A/C</span>
+                            </label>
+                            <div class="col-sm-6 col-xs-12">
                                 <textarea rows="6" cols="20" class="form-control"
                                           ng-model="edit.apptInfo.moreInfo"></textarea>
                             </div>
@@ -249,9 +266,9 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-3"></div>
-                        <div class="buttons col-sm-4">
+                        <div class="buttons">
                             <input type="button" class="btn btn-primary btn-edit" value="Save" ng-click="editlisting()"
-                                   ng-disabled="saving">
+                                   ng-disabled="saving" disabled="{{saving}}">
                         </div>
                     </div>
                 </div>
@@ -294,8 +311,7 @@
                                                 <div class="bottom">
                                                     <div class="row last-massage">
                                                         <div class="col-sm-8">
-                                                            <div class="text {{message.read?'not-read':''}}">
-                                                                {{message.messages[message.messages.length -1].message}}
+                                                            <div class="text {{message.read?'not-read':''}}" ng-bind-html="trustAsHtml(message.messages[message.messages.length -1].message)">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
@@ -333,8 +349,7 @@
                             <div class="conversation-messages" id="{{currentConversationId}}">
                                 <div class="con-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}"
                                      ng-repeat="conversation in currentConversation.messages">
-                                    <div class="text">
-                                        {{conversation.message}}
+                                    <div class="text" ng-bind-html="trustAsHtml(conversation.message)">
                                     </div>
                                 </div>
                             </div>
@@ -342,44 +357,55 @@
                                 <input type="button"
                                        class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
                                        value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
-                                       ng-disabled="currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1"
+                                       ng-disabled="(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1) || saving}}"
                                        ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):setSwap(currentConversation)">
                                 <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
                                 <input type="button" class="btn btn-primary btn-send" value="Send"
-                                       ng-click="sendMessage()" ng-disabled="send.message == '' ">
+                                       ng-click="sendMessage()" ng-disabled="send.message == '' " disabled="{{send.message == ''}}">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="swaps-and-requests" ng-if="activeTab == 'swaps'">
-                    <div class="tabs">
-                        <div class="tab {{showSwapsTab == 'set'?'active':''}}" ng-click="showSwapsTab = 'set'">
-                            Set up Swap
-                        </div>
-                        <div class="tab {{showSwapsTab == 'upcoming'?'active':''}}"
-                             ng-click="showSwapsTab = 'upcoming'">
-                            Upcoming Swaps
-                        </div>
-                    </div>
-                    <swaps swaps="user.travelingInfo" ng-if="showSwapsTab == 'set'"></swaps>
-                    <div class="mg-0 row" ng-if="showSwapsTab == 'upcoming'">
-                        <div class="traveler-col col-sm-6 col-xs-12" ng-repeat="request in requests">
-                            <swapper-home traveler="request"></swapper-home>
-                            <div class="request-info">
-                                <div class="request-dates">{{request.requestInfo.departure | date :'MMMM dd, yyyy'}} -
+                <div class="swaps-and-requests" ng-if="activeTab == 'set-up-swaps'">
+                    <div class="swap-title"></div>
+                    <swaps swaps="user.travelingInfo"></swaps>
+                </div>
+                <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
+                    <div class="loader" ng-if="saving"></div>
+                    <div class="swap-title" ng-hide="saving"></div>
+                    <div class="mg-0 row request-list" ng-repeat="request in requests" ng-hide="saving">
+                        <swapper-home class="traveler-col col-sm-6 col-xs-12" traveler="request"></swapper-home>
+                        <div class="request-info col-sm-6 col-xs-12">
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">Check in:</label>
+                                <div class="col-sm-6">
+                                    {{request.requestInfo.departure | date :'MMMM dd, yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">Check out:</label>
+                                <div class="col-sm-6">
                                     {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}
                                 </div>
-                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)">Cancel Request</div>
                             </div>
-                            <div class="request-status"
-                                 ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">
-                                Pending
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">Request Status:</label>
+                                <div class="statuses col-sm-6">
+                                    <div class="request-status"
+                                         ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">
+                                        Pending
+                                    </div>
+                                    <div class="request-status confirmed" ng-if="request.requestInfo.status == 1">Confirmed</div>
+                                    <div class="icon icon-check" ng-if="request.requestInfo.status == 1"></div>
+                                    <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
+                                         ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id"
+                                         ng-click="confirmRequest(request.requestInfo)">Confirm
+                                    </div>
+                                </div>
                             </div>
-                            <div class="request-status" ng-if="request.requestInfo.status == 1">Confirmed</div>
-                            <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
-                                 ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id"
-                                 ng-click="confirmRequest(request.requestInfo)">Confirm
+                            <div class="">
+                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)" ng-hide="saving">{{request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id?'Decline':'Cancel'}} Request</div>
                             </div>
                         </div>
                     </div>
@@ -417,8 +443,7 @@
                         <div class="fav-scroll">
                             <div class="favorites-show"
                                  ng-repeat="favorite in likedHomes">
-
-                                <swapper-home class="col-xs-6" traveler="favorite"></swapper-home>
+                                <swapper-home class="col-sm-6 col-xs-12 single-favorite" traveler="favorite"></swapper-home>
                                 <div class="clearfix visible-xs"></div>
                             </div>
                         </div>

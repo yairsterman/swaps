@@ -1,10 +1,22 @@
+@import 'media.less';
 .account-page{
 	background-color: #ffffff;
 	padding: 40px 0;
+	min-height: 75vh;
+	.content{
+		min-height: 75vh;
+		&.scroll{
+			overflow-y: scroll;
+			max-height: ~'calc(56vw + 40px)';
+		}
+	}
 	.inner-page {
 		background-color: #F9F6F1;
 		.display-flex{
 			display: flex;
+			@media @mobile {
+				flex-direction: column;
+			}
 		}
 		.align-center{
 			align-items: center;
@@ -14,12 +26,29 @@
 			background-color: #ffffff;
 			margin-bottom: 0;
 			padding-right: 0;
+			@media @mobile {
+				padding: 0;
+				overflow-y: scroll;
+			}
+			.menu{
+				@media @mobile {
+					display: flex !important;
+					margin-bottom: 0;
+					padding: 0;
+				}
+			}
 	    }
 	    .single-link{
 		    list-style: none;
 		    padding: 20px;
 		    font-size: 18px;
 		    width: 100%;
+			@media @mobile {
+				font-size: 14px;
+				white-space: nowrap;
+				padding: 10px;
+				border-right: 1px solid rgba(14,93,124,0.4);
+			}
 		    a{
 		    	color: #0E5D7C;
 		    	&:hover{
@@ -32,6 +61,9 @@
 	    }
 	    .edit-profile{
 			padding: 0 3vw;
+			@media @mobile {
+				padding: 0;
+			}
 	    	.permanent-info{
 	    		padding: 30px 0;
 	    		display: flex;
@@ -52,9 +84,16 @@
 	    		}
 	    	}
 	    	.buttons{
-    			margin-top: 15px;
+				position: fixed;
+				z-index: 20;
+				bottom: 2%;
+				right: 1%;
+				@media @mobile {
+					bottom: 10px;
+					right: 10px;
+				}
     			.btn-edit{
-    				width: 48%;
+    				width: 130px;
 					font-size: 18px;
     				&.cancel{
     					background-color: #edefed;
@@ -71,9 +110,20 @@
 	    }
 		.edit-form{
 			padding: 0 15px;
+			@media @mobile {
+				padding: 0;
+			}
 			.control-label{
 				text-align: left;
 				color: #0E5D7C;
+				&.listing-label{
+					padding-top: 0;
+				}
+				.explanation{
+					font-size: 11px;
+					font-weight: 300;
+					color: #000;
+				}
 			}
 			textarea.form-control {
 				background-color: #ffffff;
@@ -88,7 +138,7 @@
 				padding: 10%;
 				margin: 0.25% !important;
 			}
-			.control-labe{
+			.control-label{
 				color: #0E5D7C;
 			}
 	    	.info-section{
@@ -96,14 +146,33 @@
 				padding: 0 15px;
 				margin-bottom: 15px;
 				color: #0E5D7C;
+				@media @mobile {
+					padding: 0;
+				}
 		    	.title{
 		    		padding-bottom: 20px;
 		    	   	font-size: 22px;
 		    	}
 				&.my-photos{
+					position: relative;
 					background-color: #ffffff;
 					padding: 15px;
 					margin-bottom: 15px;
+					.loader-wrapper{
+						position: absolute;
+						background-color: rgba(169,169,169,0.7);
+						width: 100%;
+						height: 100%;
+						top: 0;
+						left: 0;
+						z-index: 10;
+					}
+				}
+				&.last{
+					padding:0 15px 15px 15px;
+					@media @mobile {
+						padding: 0;
+					}
 				}
 				&:last-child{
 					border-bottom: none;
@@ -127,10 +196,15 @@
 		    	.about-listing{
 		    		font-size: 16px;
 		    	}
+				.listing-label{
+					padding-top: 0;
+				}
+				.explanation{
+					font-size: 11px;
+					font-weight: 300;
+					color: #000;
+				}
 	    	}
-    	    .upload-photos{
-    	    	padding-top: 30px;
-    	    }
 	    	.display-photos{
     	    	.text{
     	    		padding: 15px;
@@ -148,12 +222,26 @@
 	    	    	}
 	    	    }
 				.upload-photos{
+					position: relative;
 					width: 25%;
-					margin: auto;
+					margin: 15px auto;
+					display: block;
 					text-align: center;
+					font-size: 16px;
+					@media @mobile {
+						width: 100%;
+					}
 					input{
 						margin: auto;
-						font-family: MavenPro;
+						cursor: pointer;
+						height: 100%;
+						width: 100%;
+						position: absolute;
+						top: 0;
+						right: 0;
+						z-index: 99;
+						font-size: 0;
+						opacity: 0;
 					}
 				}
 		    	.photos-row{
@@ -185,10 +273,13 @@
 				}
 			}
 	    	.buttons{
-    			margin: 15px 0;
+    			position: fixed;
+				z-index: 20;
+				bottom: 2%;
+				right: 1%;
     			.btn-edit{
-    				width: 48%;
-					font-size: 16px;
+    				width: 130px;
+					font-size: 18px;
     				&.cancel{
     					background-color: #edefed;
     					color: #484848;
@@ -468,6 +559,9 @@
         .fav-scroll {
           .favorites-show {
             margin-top: 1%;
+			  .single-favorite{
+				  padding: 0;
+			  }
           }
         }
       }
@@ -597,17 +691,23 @@
 				}
 			}
 			.request-info{
-				margin-top: 5px;
-				display: flex;
-				justify-content: space-between;
+				padding-top: 10px;
 				font-size: 16px;
-				.request-dates{
+				position: relative;
+				.form-group{
 					color: #0E5D7C;
+				}
+				.statuses{
+					display: flex;
+					align-items: baseline;
 				}
 				.cancel{
 					color: #c7a768;
 					margin-bottom: 5px;
 					font-size: 14px;
+					position: absolute;
+					bottom: 15px;
+					right: 15px;
 					&:hover{
 						text-decoration: underline;
 					}
@@ -618,8 +718,10 @@
 			}
 			.request-status{
 				color: #484848;
+				&.confirmed{
+					color: #0E5D7C;
+				}
 				&.confirm{
-					width: 25%;
 					border-radius: 4px;
 					padding: 10px;
 					font-size: 18px;
@@ -635,7 +737,13 @@
 				}
 			}
 			.traveler-col{
-				padding: 5px;
+				padding: 10px 5px;
+			}
+			.request-list{
+				display: flex;
+				@media @mobile {
+					display: block;
+				}
 			}
 		}
 	}

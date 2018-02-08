@@ -1,8 +1,10 @@
 var pro = null;
-swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $filter, AccountService) {
+swapsApp.controller('profileController', function($scope, $rootScope, $document, $routeParams, $window, $anchorScroll, $interval, MessageService, UsersService, $location, $uibModal, $timeout, $filter, AccountService) {
     pro = $scope;
     $scope.message = {};
     $scope.user = $rootScope.user;
+    $scope.userCity = $rootScope.userCity;
+    $rootScope.homepage = false;
     $scope.showMore = {
         aboutMe: {active:false},
         aboutHome: {active:false},
@@ -12,22 +14,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         guests: 2,
         when:{}
     };
+    $scope.canSendRequest = {};
+    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.modelFormat = 'MMMM DD, YYYY';
+
+    $scope.mobileRequestOpen = false;
 
     $anchorScroll();
-
-    UsersService.getProfile($routeParams.id).then(function(data){
-    	$scope.profile = data.data;
-        $scope.age = getAge($scope.profile.birthday);
-    	setPhotoGalery();
-    	setMapRadius();
-    	if($scope.user._id){
-            setUpMarkers();
-        }
-    	if($scope.user._id){
-            checkRequestSent();
-            findTravelInfo();
-        }
-    });
 
     $scope.go = function(path){
       $location.url('/' + path);
@@ -38,6 +31,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.openLogin();
         }
         else{
+            $scope.chooseDates = $rootScope.isMobile;
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
@@ -68,7 +62,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.message.message = '';
         MessageService.sendMessage($rootScope.user, $scope.profile._id, message).then(function(data){
             $scope.messageSent = true;
-            $('#requestModal').modal('hide');
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
         });
@@ -102,32 +95,33 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         return age;
     }
 
-    var elementsReady = $interval(function() {
-        // $('.circle-profile-pic').hide();
-        var input = $('.fix-scroll');
-        if (input && $scope.profile) {
-            setDates();
-            // fixmeTop = $('.fix-scroll').offset().top - 25;
-            fixmeTop = $('.fix-scroll').offset().top + 20;
-            var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
-            $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollBottom(); // get current position
-                if ($(this).scrollTop() >= fixmeTop ) {           // apply position: fixed if you
-                    $('.profile-description').css({                      // scroll to that element or below it
-                        position: 'fixed',
-                        top: '0',
-                        right: '0'
-                    });
-                } else {                                    // apply position: static
-                    $('.profile-description').css({                      // if you scroll above it
-                        position: 'static'
-                    });
-                }
-            });
-            setDates();
-            $interval.cancel(elementsReady);
-        }
-    }, 100);
+    if(!$rootScope.isMobile){
+        $scope.mobileRequestOpen = true;
+        var elementsReady = $interval(function() {
+            // $('.circle-profile-pic').hide();
+            var input = $('.fix-scroll');
+            if (input && $scope.profile) {
+                // fixmeTop = $('.fix-scroll').offset().top - 25;
+                fixmeTop = $('.fix-scroll').offset().top + 20;
+                var bottom = $(window).height() - fixmeTop - $('.fix-scroll').height();
+                $(window).scroll(function() {                  // assign scroll event listener
+                    var currentScroll = $(window).scrollBottom(); // get current position
+                    if ($(this).scrollTop() >= fixmeTop ) {           // apply position: fixed if you
+                        $('.profile-description').css({                      // scroll to that element or below it
+                            position: 'fixed',
+                            top: '0',
+                            right: '0'
+                        });
+                    } else {                                    // apply position: static
+                        $('.profile-description').css({                      // if you scroll above it
+                            position: 'static'
+                        });
+                    }
+                });
+                $interval.cancel(elementsReady);
+            }
+        }, 100);
+    }
 
     $scope.readMore = function(showMore, about) {
         showMore[about].active  = !showMore[about].active;
@@ -144,13 +138,26 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;
-        checkRequestSent();
-        findTravelInfo();
-        setUpMarkers();
+        setUserData();
+    });
+
+    $scope.$on('auth-return', function(event, args) {
+        $scope.user = $rootScope.user;
+        setUserData();
+    });
+
+    $rootScope.$on('geolocation-complete', function(event, args) {
+        if ($rootScope.userCity) {// reload datepicker when city is found
+            $scope.userCity = $rootScope.userCity;
+            $scope.ready = false;
+            $timeout(function(){
+                $scope.ready = true;
+            },1000);
+        }
     });
 
     $scope.isFavorite = function() {
-        if($rootScope.user._id && $scope.profile && $scope.profile._id) {
+        if($rootScope.user && $rootScope.user._id && $scope.profile && $scope.profile._id) {
             return $rootScope.user.favorites.includes($scope.profile._id);
         }
         return false;
@@ -164,14 +171,17 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         var favorite = $scope.profile._id;
 
         AccountService.addFavorite(favorite).then(function(data){
-            $rootScope.user = data;
+            $rootScope.user = data.user;
             $scope.user = $rootScope.user;
+            if(data.isMatch && !$scope.requestSent){
+                openMatch();
+            }
         });
     };
 
     $scope.removeFromFavorites = function() {
         if(!$rootScope.user._id){
-            $('#loginModal').modal('show');
+            $scope.openLogin();
             return;
         }
         var id = $scope.profile._id;
@@ -191,57 +201,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.requestSent = requests.includes($scope.profile._id);
     }
 
-    function findTravelInfo(){
-        if($rootScope.userCity && $scope.profile.travelingInfo && $scope.profile.travelingInfo.length > 0){
-            for(var i = 0; i < $scope.profile.travelingInfo.length; i++){
-                if($scope.profile.travelingInfo[i].destination == $rootScope.userCity){
-                    setDates($scope.profile.travelingInfo[i].departure, $scope.profile.travelingInfo[i].returnDate)
-                    return;
-                }
-            }
-        }
-        else{
-            setDates();
-        }
-    }
-
-    function setDates(departure, returnDate){
-        if(!$rootScope.userCity || !$scope.profile.travelingInfo || $scope.profile.travelingInfo.length == 0){
-            $scope.notSwapping = true;
-            $('input[name="swapDates"]').daterangepicker({
-                autoApply: true,
-                opens: 'left',
-                locale: {
-                    format: 'MM/DD/YYYY'
-                },
-                minDate: new Date().toLocaleDateString(),
-            });
-            $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-                $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-                $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-            });
-            return;
-        }
-        var startDate = departure?new Date(departure).toLocaleDateString():false;
-        var endDate = returnDate?new Date(returnDate).toLocaleDateString():false;
-        $scope.swap.from = departure?$filter('date')(departure, 'MMMM dd, yyyy'):undefined;
-        $scope.swap.to = returnDate?$filter('date')(returnDate, 'MMMM dd, yyyy'):undefined;
-        $('input[name="swapDates"]').daterangepicker({
-            autoApply: true,
-            opens: 'left',
-            locale: {
-                format: 'MM/DD/YYYY'
-            },
-            startDate: startDate,
-            endDate: endDate,
-            minDate: startDate,
-            maxDate: endDate
-        });
-        $('input[name="swapDates"]').on('apply.daterangepicker', function(ev, picker) {
-            $scope.swap.from = picker.startDate.format('MMMM DD, YYYY');
-            $scope.swap.to = picker.endDate.format('MMMM DD, YYYY');
-        });
-    }
+    var myoverlay = new google.maps.OverlayView();
+    myoverlay.draw = function () {
+        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
+        this.getPanes().markerLayer.id='iconsLayer';
+    };
 
     function setMapRadius(){
         var mapOptions = {
@@ -265,6 +229,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             radius: 500
         });
 
+        myoverlay.setMap($scope.map);
     }
 
     function setUpMarkers(){
@@ -281,7 +246,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             };
             service.textSearch(request, function (results, status) {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
-                    for (var i = 0; i < 4; i++) {
+                    for (var i = 0; i < 3; i++) {
                         createMarker(results[i], img);
                     }
                 }
@@ -298,7 +263,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             map: $scope.map,
             position: info.geometry.location,
             animation: google.maps.Animation.DROP,
-            icon: {url:img, size:new google.maps.Size(50,50)},
+            icon: {url:img, size:new google.maps.Size(35,35)},
             title: info.address,
             optimized: false
         });
@@ -317,5 +282,49 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
 
     }
+
+    function init(){
+        $scope.ready = false;
+        UsersService.getProfile($routeParams.id).then(function(data){
+            $scope.profile = data.data;
+            $scope.age = getAge($scope.profile.birthday);
+            setPhotoGalery();
+            setMapRadius();
+            if($scope.user && $scope.user._id){
+                setUserData();
+            }
+            else{
+                $scope.ready = true;
+            }
+        });
+    }
+
+    function setUserData(){
+        $scope.ready = false;
+        $scope.canSendRequest.status = false;
+        setUpMarkers();
+        checkRequestSent();
+        $timeout(function(){
+            $scope.ready = true;
+        },1000);
+    }
+
+    function openMatch(){
+        //need all th values for request and datepicker directives
+        $scope.chooseDates = true;
+        $scope.isMatch = true;
+        $scope.data = $rootScope.data;
+        $scope.swap = {};
+        $scope.userCity = $rootScope.userCity;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            controller: 'requestController',
+            scope: $scope
+        });
+    }
+
+    init();
 
 });

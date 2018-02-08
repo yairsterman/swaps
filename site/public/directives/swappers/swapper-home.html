@@ -17,15 +17,17 @@
             </div>
             <!-- Carousel controls -->
             <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
-                <span class="carousel-control-arrow icon icon-arrow-left"></span>
+                <span class="carousel-control-arrow glyphicon glyphicon-menu-left"></span>
             </div>
             <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
-                <span class="carousel-control-arrow icon icon-arrow-right"></span>
+                <span class="carousel-control-arrow glyphicon glyphicon-menu-right"></span>
             </div>
         </div>
     </div>
     <div class="profile-img" style="background-image: url('{{traveler.image}}')">
 
+    </div>
+    <div class="favorite icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)">
     </div>
     <!--CAROUSEL END-->
     <div class="user-info">

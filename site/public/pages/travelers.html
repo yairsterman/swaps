@@ -1,11 +1,16 @@
 <div class="travelers-page">
+    <div class="visible-xs">
+        <div class="dates row">
+            <div class="search-field col-xs-6">
+                <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="filter.date" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+                <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="filter.date"></div>
+            </div>
+            <div class="search-field col-xs-6">
+                <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="filter.guests" min="1" max="8">
+            </div>
+        </div>
+    </div>
     <div class="filters">
-        <!--<div class="dropdown">-->
-            <!--<button class="filter-button dropdown-toggle"  id="filterDates" ng-click="openDate()">-->
-                <!--<div class="caret"></div>-->
-                <!--Dates-->
-            <!--</button>-->
-        <!--</div>-->
         <div class="dropdown">
             <button class="filter-button dropdown-toggle" type="button" id="filterRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="caret"></div>
@@ -29,9 +34,9 @@
                 <div class="caret"></div>
                 Amenities
             </button>
-            <div class="dropdown-menu" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
+            <div class="dropdown-menu amenities-dropdown" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
                 <div class="row mg-0 amenities">
-                    <div class="filter col-sm-6 col-xs-12" ng-repeat="amenity in data.amenities">
+                    <div class="filter col-sm-6 col-xs-6" ng-repeat="amenity in data.amenities">
                         <div class="filter-checkbox" ng-click="checkAmenity(amenity.id, $event)">
                             <div class="check icon icon-check {{isCheckedAmenity(amenity.id)?'checked':''}}"></div>
                         </div>
@@ -49,16 +54,28 @@
     <div class="people-and-map">
         <div class="">
             <div class="row mg-0">
-                <div class="travelers-list col-md-8 col-sm-12 {{loading?'loading':''}}" id="swappers">
+                <div class="travelers-list col-md-8 col-sm-12" id="swappers">
                     <div class="loader" ng-if="loading"></div>
                     <div class="mg-0 row" ng-if="!loading">
                         <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
                               <swapper-home traveler="traveler"></swapper-home>
                         </div>
                     </div>
+                    <div class="traveler-pagination" ng-if="!loading && totalUsers >= pageSize">
+                        <paging
+                                page="currentPage"
+                                page-size="pageSize"
+                                total="totalUsers"
+                                paging-action="getPage(page)"
+                                show-prev-next="true"
+                                li-class="{{totalUsers}}"
+                                text-next-class="glyphicon glyphicon-chevron-right"
+                                text-prev-class="glyphicon glyphicon-chevron-left">
+                        </paging>
+                    </div>
                 </div>
                 <!--------------------------------------------------MAP SECTION--------------------------------------------->
-                <div class="map-view col-md-4 col-xs-12" style="overflow-x: hidden;">
+                <div class="map-view col-md-4 col-xs-12 hidden-xs" style="overflow-x: hidden;">
                     <div class="map" id="travelerMap"></div>
                 </div>
             </div>

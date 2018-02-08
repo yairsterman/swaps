@@ -1,3 +1,4 @@
+@import 'media.less';
 .login-model{
   .top-corner{
     position: absolute;
@@ -43,6 +44,9 @@
     padding: 5vw 0 ;
     text-align: center;
     font-size: 20px;
+    @media @mobile {
+      padding: 15vw 0;
+    }
     .fa{
       padding-right: 10px;
       font-size: 20px;
@@ -52,6 +56,10 @@
       color: white;
       font-size: 18px;
       padding: 0.8vw 3vw;
+      @media @mobile {
+        padding: 2vw 8vw;
+
+      }
     }
   }
 }

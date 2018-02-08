@@ -1,14 +1,19 @@
 var acc = null;
-swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, AccountService, MessageService, UsersService) {
+swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
     $scope.homepage = false;
+    $rootScope.searchPage = false;
     $scope.editing = false;
     $scope.send = {message : ''};
     $scope.swap = {};
     $scope.showSwapsTab = 'set';
+    $scope.numOfFiles = 0;
+
 
     $scope.select = {};
+
+    const SUCCESS = 'Changes saved successfully';
 
     if($rootScope.user && $rootScope.user._id) {
         init();
@@ -78,6 +83,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         if($scope.activeTab == 'homes-i-like'){
             AccountService.getFavorites().then(function(data) {
                 $scope.likedHomes = data;
+            },function(err){
+                showAlert(err, true);
             });
         }
     });
@@ -89,15 +96,15 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
    	$scope.saveChanges = function(){
         $scope.saving = true;
      	AccountService.editProfile($scope.edit).then(function(data){
-     		if(data.data.error){
-     			console.log("error");
-                $scope.saving = true;
-     		}
-     		else{
-                $scope.user = data.data;
-                updateUser();
-     		}
-     	});
+            $scope.user = data;
+            updateUser();
+            showAlert(SUCCESS, false);
+     	},function(err){
+            showAlert('Error saving changes', true);
+        })
+        .finally(function(){
+            $scope.saving = false;
+        });
    	}
 
    	$scope.cancel = function(){
@@ -109,29 +116,96 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.editlisting = function(){
         $scope.saving = true;
         AccountService.editListing($scope.edit).then(function(data){
-            if(!data || (data && data.error)){
-                console.log("error");
-                $scope.saving = false;
-            }
-            else{
-                $scope.user = data.data;
-                updateUser();
-            }
-        });
+            $scope.user = data;
+            updateUser();
+            showAlert(SUCCESS, false);
+        },function(err){
+            showAlert('Error saving changes', true);
+        })
+        .finally(function(){
+            $scope.saving = false;
+        });;
     }
 
     $scope.cancelRequest = function(requestInfo){
+        var decline = requestInfo.status == 0 && requestInfo.sentBy != $scope.user._id
         $scope.saving = true;
-        MessageService.cancelRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-            if(!data || (data && data.error)){
-                console.log("error");
-            }
-            else{
-                updateUser();
-            }
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/cancelSwap/cancel.html',
+            size: 'sm',
+            controller: 'cancelController',
+            resolve: {
+                decline: function () {
+                    return decline;
+                },
+                requestInfo: function () {
+                    return requestInfo;
+                }
+            },
+            scope:$scope
+        })
+        $scope.modelInstance.closed.then(function(){
+            updateUser();
+        },function(){
+            $scope.saving = false;
         });
     }
+	
+	function add_uploadButton(e, data){
+        $scope.saving = true;
+		AccountService.getUploadToken().then(function( token ) {
+            $scope.numOfFiles++;
+			data.formData = token;
+			data.submit();
+		},function(){
+            $scope.saving = false;
+        });
+	}
 
+	function change_uploadbutton(e, data){
+		if(data.files.length > 8 - $scope.user.photos.length) {
+            showAlert('You can only have 8 images', true);
+			return false;
+		}
+	}
+	
+	function fileuploaddone_uploadbutton(e, data){
+		AccountService.uploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
+			$scope.user = result;
+            setPhotoGalery();
+		},function(err){
+            showAlert('Failed to upload photo, please try again later', true);
+        })
+        .finally(function(){
+            $scope.numOfFiles--;
+            if($scope.numOfFiles === 0){//uploaded all photos
+                updateUser();
+                showAlert('Photos Uploaded Successfully', false);
+                $scope.saving = false;
+            }
+        });
+	}
+
+	function uploadFail(err, data){
+        $scope.numOfFiles--;
+        if($scope.numOfFiles === 0){//uploaded all photos
+            $scope.saving = false;
+            $scope.$apply();
+        }
+        showAlert('Could not upload photo', true);
+    }
+	
+	$scope.initUploadButton =function(){
+		$.cloudinary.config({ cloud_name: 'swaps', secure: true});
+		$('input.cloudinary-fileupload[type=file]').fileupload({
+			add: add_uploadButton,
+			change: change_uploadbutton
+		});
+		$('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
+		$('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
+	}
+	
     function uploadPhotos(){
       console.log("change");
       console.log($("#my_file")[0].files.length);
@@ -144,13 +218,13 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.deletePhoto = function(img, cb){
       var obj = {url: img.url, id: $scope.user._id};
       AccountService.deletePhoto(obj).then(function(data){
-        if(data.error){
-          console.log("error");
-        }
-        else{
-          $scope.edit = data.data;
+          $rootScope.user = data;
+          $scope.user = $rootScope.user;
+          updateUser();
+          showAlert('Photo Deleted', false);
           cb();
-        }
+      },function(err){
+          showAlert('Error deleting photos', true);
       });
     }
 
@@ -196,34 +270,25 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.setSwap = function(message){
+        $scope.saving = true;
         UsersService.getProfile(message.id).then(function(data){
             $scope.profile = data.data;
-            $scope.chooseDates = true
+            $scope.chooseDates = true;
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
                 size: 'sm',
                 controller: 'requestController',
                 scope: $scope
-                });
-            })
-            .closed.then(function(){
-                updateUser();
             });
+            $scope.modelInstance.closed.then(function(){
+                $scope.user = $rootScope.user;
+                updateUser();
+            },function(){
+                $scope.saving = false;
+            });
+        })
     }
-
-    $scope.sendRequest = function(){
-        var request = '##!REQUEST!##';
-        var dates = $scope.swap.dates;
-        console.log($scope.swap.dates);
-        $scope.swap.dates = null;
-        // var user = {_id:"58f7324594b427e59aec391b",image:"http://localhost:3000/images/static/profile5.jpg",firstName:"Marisha",lastName:"Natarajan"};
-        MessageService.sendRequest($scope.user, $scope.currentConversationId, request, dates).then(function(data){
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
-            scrollMessagesToTop();
-        });
-    };
 
     $scope.$on('auth-return', function(event, args) {
         $scope.user = $rootScope.user;
@@ -252,16 +317,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             }
         }
         MessageService.confirmRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-            if(data.data.error){
-                console.log("error");
-                $scope.saving = true;
-            }
-            else{
-                $scope.user = data.data;
-                updateUser();
-            }
+            $scope.user = data;
+            updateUser();
         }
         ,function(err){
+            showAlert(err, true);
             $scope.saving = false;
         });
     }
@@ -304,6 +364,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         return null;
     };
 
+    $scope.trustAsHtml = function(html) {
+        return $sce.trustAsHtml(html);
+    }
+
     function scrollMessagesToTop(){
         $('.message-area').css({transform: "translate(0)"});
         $timeout(function(){
@@ -320,12 +384,28 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.saving = false;
         $scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
+        if($scope.currentConversationId){
+            $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
+            $scope.requestSentByMe = $scope.currentConversationRequest?$scope.currentConversationRequest.sentBy == $scope.user._id:false;
+            $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
+        }
         AccountService.getRequests().then(function(requests){
             $scope.requests = requests;
             $scope.requests.forEach(function(value){
                 value.requestInfo = $scope.getRequest(value._id);
             });
+        },function(err){
+            showAlert('Error getting requests', true);
         });
+    }
+
+    function showAlert(msg, error){
+        if(!error){
+            alertify.success(msg);
+        }
+        else{
+            alertify.error(msg);
+        }
     }
 
 });

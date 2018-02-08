@@ -8,6 +8,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.options = ['cities'];
 
     $rootScope.homepage = true;
+    $scope.localeFormat = 'MMM DD';
+    $scope.modelFormat = 'MM/DD/YYYY';
 
     $scope.cities = [
         {
@@ -52,6 +54,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     $scope.go = function(path){
         $(window).unbind('scroll');
+        $('.navbar').removeClass('sticky');
         $rootScope.homepage = false;
         $location.url(path);
     }
@@ -240,5 +243,9 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $interval.cancel(elementsReady);
         }
     }, 100);
+
+    $scope.$on('login-success', function(event, args) {
+        $scope.user = $rootScope.user;
+    });
 });
 

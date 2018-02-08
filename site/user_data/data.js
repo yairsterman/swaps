@@ -26,7 +26,6 @@ const visibleUserData = {
     },
     member: {
         firstName:true,
-        lastName:true,
         birthday:true,
         gender:true,
         image:true,
@@ -70,6 +69,7 @@ const visibleUserData = {
         deposit:true,
         thingsToDo:true,
         allowViewHome:true,
+        favorites:true,
         rating:true,
         radius:true,
         location:true,
@@ -82,7 +82,7 @@ const amenities = [
     {id: 0, name: 'kitchen', displayName:'Kitchen', icon:'icon-kitchen'},
     {id: 1, name: 'wifi', displayName:'Wi-Fi', icon:'icon-wifi'},
     {id: 2, name: 'washer', displayName:'Washer', icon:'icon-washer'},
-    {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-hairdry'},
+    {id: 3, name: 'dryer', displayName:'Dryer', icon:'icon-Dryer'},
     {id: 4, name: 'shower', displayName:'Shower', icon:'icon-shower'},
     {id: 5, name: 'elevator', displayName:'Elevator', icon:'icon-elevator'},
     {id: 6, name: 'garden', displayName:'Garden', icon:'icon-vegen'},
@@ -90,7 +90,7 @@ const amenities = [
     {id: 8, name: 'parking', displayName:'Parking', icon:'icon-parking'},
     {id: 9, name: 'air', displayName:'Air Conditioning', icon:'icon-snowflake'},
     {id: 10, name: 'heat', displayName:'Heating', icon:'icon-heating'},
-    {id: 11, name: 'laptop', displayName:'Laptop Friendly', icon:'icon-laptop'},
+    {id: 11, name: 'laptop', displayName:'Laptop Friendly', icon:'icon-LAPTOP'},
     {id: 12, name: 'tv', displayName:'TV', icon:'icon-TV'},
     {id: 13, name: 'entrance', displayName:'Private Entrance', icon:'icon-privateE'},
     {id: 14, name: 'gym', displayName:'Gym', icon:'icon-gym'},
@@ -99,6 +99,8 @@ const amenities = [
     {id: 17, name: 'iron', displayName:'Iron', icon:'icon-iron'},
     {id: 18, name: 'pool', displayName:'Pool', icon:'icon-pool'},
     {id: 19, name: 'hottub', displayName:'Hot Tub', icon:'icon-hotub'},
+    {id: 20, name: 'firplace', displayName:'Fire Place', icon:'icon-fire'},
+    {id: 21, name: 'hairdryer', displayName:'Hair Dryer', icon:'icon-hairdry'},
 
 ];
 
@@ -116,7 +118,7 @@ const thingsToDo = [
     {id: 10, name: 'bus tour', displayName:'Bus tours', icon:'icon-bus', img:'../images/icons/bus.png'},
     {id: 11, name: 'cafe', displayName:'Local Cafes', icon:'icon-coffee', img:'../images/icons/coffee.png'},
     {id: 12, name: 'restaurant', displayName:'Local food', icon:'icon-restaurant', img:'../images/icons/restaurant.png'},
-    {id: 13, name: 'workspace', displayName:'Workspaces', icon:'icon-laptop', img:'../images/icons/LAPTOP.png'},
+    {id: 13, name: 'workspace', displayName:'Workspaces', icon:'icon-LAPTOP', img:'../images/icons/LAPTOP.png'},
     {id: 14, name: 'market', displayName:'Market', icon:'icon-shopping', img:'../images/icons/openmarket.png'},
     {id: 15, name: 'zoo', displayName:'Zoo', icon:'icon-zoo', img:'../images/icons/zoo.png'},
     {id: 16, name: 'park', displayName:'Park', icon:'icon-park', img:'../images/icons/park.png'},
@@ -145,17 +147,14 @@ const genders =[
 
 const roomType =[
     {id: 0, type: 'SingleRoom', displayName: 'Single Room'},
-    {id: 1, type: 'EntireApartment', displayName: 'Entire Apartment'},
+    {id: 1, type: 'EntireHome', displayName: 'Entire Home'},
     {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
 ];
 
 const securityDeposit =[
-    {id: 0, type: 'basic', displayName: 'Basic', value:100},
-    {id: 1, type: 'bronze', displayName: 'Bronze', value:150},
-    {id: 2, type: 'silver', displayName: 'Silver', value:200},
-    {id: 3, type: 'gold', displayName: 'Gold', value:300},
-    {id: 4, type: 'platinum', displayName: 'Platinum', value:400},
-    {id: 5, type: 'diamond', displayName: 'Diamond', value:400},
+    {id: 0, type: 'nomad', displayName: 'Nomad', value:1 , night:1, week:70},
+    {id: 1, type: 'globetrotter', displayName: 'Globetrotter', value:5, night:5, week:350},
+    {id: 2, type: 'cosmopolite', displayName: 'Cosmopolite', value:12, night:12, week:800},
 ];
 
 const creditCards = [

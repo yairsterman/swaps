@@ -236,6 +236,9 @@ function filterDates(user, date, destination){
 	}
 	var searchDates = {};
 	var dates = date.split('-');
+	if(dates.length < 2){
+        return true;
+    }
     searchDates.departure = Date.parse(dates[0].trim());
     searchDates.returnDate = Date.parse(dates[1].trim());
     for (var i = 0; i < user.travelingInfo.length; i++) {
@@ -253,7 +256,8 @@ function compareDates(userDates, searchDates){
         return true;
     }
 	return (searchDates.departure >= userDates.departure && searchDates.departure <= userDates.returnDate)
-		|| (searchDates.returnDate >= userDates.departure && searchDates.returnDate <= userDates.returnDate);
+		|| (searchDates.returnDate >= userDates.departure && searchDates.returnDate <= userDates.returnDate)
+        || (userDates.returnDate >= searchDates.departure && userDates.returnDate <= searchDates.returnDate);
 }
 
 function compareDestinations(userDestination, destination){
@@ -272,6 +276,7 @@ function setRequiredParams(params){
     params['apptInfo.rooms'] = {$exists: true}; // number of rooms set
     params['apptInfo.beds'] = {$exists: true};// number of beds set
     params['apptInfo.baths'] = {$exists: true};// number of baths set
+    params['apptInfo.roomType'] = {$exists: true};// room type set
     params['apptInfo.title'] = {$ne: ''}; // home title set
     params['$or'] = [{'travelingInfo.0':{$exists:true}},{allowViewHome:true}];// either traveling or allowed to view home
 }

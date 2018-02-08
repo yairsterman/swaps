@@ -1,0 +1,44 @@
+// Extra small screen / phone
+// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
+@screen-xs:                  480px;
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+// Media query variables. Usage: @media @sm-and-up { ... } or @media @tablet, @desktop { ... }
+// Media query names like Bootstrap
+@xs-and-up: ~"only screen"; // xs is the smallest size, so "xs and up" is basically "everything on a screen"
+@xs-only: ~"only screen and (max-width: @{screen-xs-max})";
+@sm-and-up: ~"only screen and (min-width: @{screen-sm-min})";
+@sm-only: ~"only screen and (min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max})";
+@md-and-up: ~"only screen and (min-width: @{screen-md-min})";
+@md-only: ~"only screen and (min-width: @{screen-md-min}) and (max-width: @{screen-md-max})";
+@lg-and-up: ~"only screen and (min-width: @{screen-lg-min})";
+@lg-only: @lg-and-up;
+// Media query names like how we talk in the project (although "true" responsive webdesign shouldn't use these terms)
+@print: ~"print";
+@mobile: @xs-only; // Don't use this if you're using other sizes too, because Mobile First should be the default.
+@tablet: @sm-only;
+@desktop: @md-and-up;
