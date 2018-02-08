@@ -27,7 +27,7 @@ var messages = {
         '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', thanks for joining Swaps. ' +
         'You are almost ready to start Swapping, be sure to complete your profile and add all the necessary information ' +
         'so you can request a Swap and allow users to view your profile. </div>' +
-        '<a class="no-decoration" style="text-decoration: none;" href="' + ACCOUNT + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 33%;margin-top: 20px;font-size: 20px; border-radius: 5px;">Complete Profile</div></a>' +
+        '<a class="no-decoration" style="text-decoration: none;" href="' + ACCOUNT + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Complete Profile</div></a>' +
         '</div>' + SIGNITURE + STYLE
     },
 
@@ -39,7 +39,7 @@ var messages = {
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Address: ' + swapper.address + '</div><br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Don't forget to give each other all the necessary information needed to access your homes. </div>" +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 33%;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
             '</div>' + SIGNITURE + STYLE
     },
 
@@ -51,7 +51,7 @@ var messages = {
             (message?'<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">'+swapper.firstName+ ' says: ' + '<div class="message" style="font-size: 18px; color:black;">"' + message +'"</div></div>':'') +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Be sure to replay as soon as possible in order to allow " + swapper.firstName + ' to plan accordingly.' + "</div>" +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 33%;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
             '</div>' + SIGNITURE + STYLE
     },
 
@@ -59,7 +59,7 @@ var messages = {
         return '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Request Sent</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Your Swap request to ' + swapper.firstName + ' has been sent</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Check out your Swap request status</div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 33%;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
             '</div>' + SIGNITURE + STYLE
     },
 
