@@ -62,10 +62,18 @@ passport.use(new FacebookStrategy({
             city: '',
             address: '',
             swaps: 0,
-            allowViewHome: false,
+            allowViewHome: true,
             traveling: false,
             travelingDates: {},
-            apptInfo: {},
+            apptInfo: {
+                roomType: 0,
+                propertyType: 0,
+                beds: 1,
+                baths: 1,
+                guests: 2,
+                rooms: 1,
+                bedType: 1,
+            },
             deposit: 1,
             paymentInfo: {}
           });
