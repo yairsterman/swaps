@@ -277,7 +277,7 @@
                         <div class="no-messages">You Have no messages</div>
                     </div>
                     <div class="messages" ng-if="user.messages.length > 0">
-                        <div class="all-messages">
+                        <div class="all-messages {{messageOpened?'mobile-no-width':''}}">
                             <div class="search-messages">
                                 <input type="text" class="search" placeholder="Search Messages"
                                        ng-model="$parent.searchTerm">
@@ -295,12 +295,12 @@
                                             <div class="message">
                                                 <div class="top">
                                                     <div class="row">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-xs-6">
                                                             <div class="name">
                                                                 {{message.name}}
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-xs-6">
                                                             <div class="date {{message.read?'not-read':''}}">
                                                                 {{message.messages[message.messages.length -1].date |
                                                                 dateFilter}}
@@ -310,11 +310,11 @@
                                                 </div>
                                                 <div class="bottom">
                                                     <div class="row last-massage">
-                                                        <div class="col-sm-8">
+                                                        <div class="col-xs-8">
                                                             <div class="text {{message.read?'not-read':''}}" ng-bind-html="trustAsHtml(message.messages[message.messages.length -1].message)">
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
+                                                        <div class="col-xs-4 {{requestStatus(message.id) != -1?'display-flex':''}} align-center">
                                                             <div class="request"
                                                                  ng-if="requestStatus(message.id) != -1">
                                                                 <div class="request-status">{{requestStatus(message.id)
@@ -337,7 +337,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="message-area">
+                        <div class="message-area {{messageOpened?'':'mobile-no-width'}}">
+                            <div class="icon icon-delete top-corner visible-xs" ng-click="closeMessage()"></div>
                             <div class="conversation-profile">
                                 <div class="photo" style="background-image:url('{{currentConversation.image}}')"
                                      ng-click="go('profile/'+message.id )">

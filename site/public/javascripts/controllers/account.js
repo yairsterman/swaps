@@ -252,7 +252,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 }
             });
         }
+        $scope.messageOpened = true;
         scrollMessagesToTop();
+    }
+
+    $scope.closeMessage = function(){
+        $scope.messageOpened = false;
     }
 
     $scope.sendMessage = function(){
@@ -369,7 +374,6 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     function scrollMessagesToTop(){
-        $('.message-area').css({transform: "translate(0)"});
         $timeout(function(){
             var objDiv = $('.conversation-messages');
             var scrollHeight = objDiv[0].scrollHeight;
