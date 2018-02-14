@@ -153,9 +153,15 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 	
 	function add_uploadButton(e, data){
+        if(data.files[0].type.indexOf('image') === -1){
+            showAlert('Wrong file type, only images are allowed', true);
+            return;
+        }
+        console.log("add_uploadButton");
         $scope.saving = true;
 		AccountService.getUploadToken().then(function( token ) {
             $scope.numOfFiles++;
+            console.log("add_uploadButton $scope.numOfFiles: " + $scope.numOfFiles);
 			data.formData = token;
 			data.submit();
 		},function(){
@@ -171,14 +177,18 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 	}
 	
 	function fileuploaddone_uploadbutton(e, data){
+        console.log("calling  uploadCompleted");
 		AccountService.uploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
 			$scope.user = result;
+            console.log("calling  uploadCompleted success");
             setPhotoGalery();
 		},function(err){
+            console.log("calling  uploadCompleted fail " +err);
             showAlert('Failed to upload photo, please try again later', true);
         })
         .finally(function(){
             $scope.numOfFiles--;
+            console.log("$scope.numOfFiles: " +$scope.numOfFiles);
             if($scope.numOfFiles === 0){//uploaded all photos
                 updateUser();
                 showAlert('Photos Uploaded Successfully', false);
@@ -197,13 +207,19 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 	
 	$scope.initUploadButton =function(){
+
 		$.cloudinary.config({ cloud_name: 'swaps', secure: true});
 		$('input.cloudinary-fileupload[type=file]').fileupload({
 			add: add_uploadButton,
-			change: change_uploadbutton
+			change: change_uploadbutton,
+            done: fileuploaddone_uploadbutton,
+            fail: uploadFail,
+            maxFileSize: 20000000,                        // 20MB is an example value
+            loadImageMaxFileSize: 20000000,               // default is 10MB
+            acceptFileTypes: /(\.|\/)(jpe?g|png)$/i
 		});
-		$('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
-		$('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
+		// $('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
+		// $('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
 	}
 	
     function uploadPhotos(){
@@ -216,14 +232,20 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.deletePhoto = function(img, cb){
+        if($scope.saving){
+            return;
+        }
+        $scope.saving = true;
       var obj = {url: img.url, id: $scope.user._id};
       AccountService.deletePhoto(obj).then(function(data){
           $rootScope.user = data;
           $scope.user = $rootScope.user;
+          $scope.saving = false;
           updateUser();
           showAlert('Photo Deleted', false);
           cb();
       },function(err){
+          $scope.saving = false;
           showAlert('Error deleting photos', true);
       });
     }

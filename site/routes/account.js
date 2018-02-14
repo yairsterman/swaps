@@ -410,8 +410,8 @@ router.post('/uploadCompleted', function (req, res, next) {
         res.json(error);
     }
 
-	cloudinary.v2.api.resources_by_ids([req.body.public_id], function(error, result) {
-		if(error)
+	cloudinary.v2.api.resources_by_ids([req.body.public_id], function(err, result) {
+		if(err)
 		{
 			error.message = 'could not verify picture in the server';
 			res.json(error);
@@ -453,7 +453,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		let eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
 		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
 		// (just using it to generate a random name for each photo
-		let timestamp = new Date().getTime();
+		let timestamp = Math.floor(Date.now() * Math.random());
 		let server_path;
 		if(req.user)
 			server_path = '' + req.user.id + '/' + URLSafeBase64.encode(sha1(timestamp));

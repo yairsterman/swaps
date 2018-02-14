@@ -10,6 +10,7 @@ var error = {
 };
 
 const USERS_PER_PAGE = 10;
+const ADMIN_PASSWORD = 'q3e5t7u';
 
 /* GET /Users listing. */
 router.get('/', function(req, res, next) {
@@ -77,6 +78,21 @@ router.get('/get-all-users', function(req, res, next) {
     var params = {};
     setRequiredParams(params);
     User.find(params, Data.getVisibleUserData().accessible).limit(10)
+        .exec(function (err, users) {
+            if (err) return next(err);
+            res.json({users: users});
+        });
+});
+
+router.get('/get-all-users-admin', function(req, res, next) {
+    var password = req.query.password;
+    if(password !== ADMIN_PASSWORD){
+        error.message = "No Access";
+        res.json(error);
+        return;
+    }
+    var params = {};
+    User.find(params, Data.getVisibleUserData().accessible)
         .exec(function (err, users) {
             if (err) return next(err);
             res.json({users: users});
