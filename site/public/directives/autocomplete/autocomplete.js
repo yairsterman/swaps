@@ -5,19 +5,19 @@ swapsApp.directive('autocomplete', function() {
             var options = {
                 types: attrs.city?['(cities)']:['address']
             };
-            scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
+            var gPlace = new google.maps.places.Autocomplete(element[0], options);
 
-            google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
+            google.maps.event.addListener(gPlace, 'place_changed', function() {
                 scope.$apply(function() {
                     if(attrs.city){
-                        model.$setViewValue(scope.gPlace.getPlace().name);
+                        model.$setViewValue(gPlace.getPlace().name);
                     }
                     else{
-                        if(scope.gPlace.getPlace().formatted_address){
-                            model.$setViewValue(scope.gPlace.getPlace().formatted_address);
+                        if(gPlace.getPlace().formatted_address){
+                            model.$setViewValue(gPlace.getPlace().formatted_address);
                         }
                         else{
-                            model.$setViewValue(scope.gPlace.getPlace().name);
+                            model.$setViewValue(gPlace.getPlace().name);
                         }
                     }
                 });

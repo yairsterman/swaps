@@ -157,11 +157,9 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             showAlert('Wrong file type, only images are allowed', true);
             return;
         }
-        console.log("add_uploadButton");
         $scope.saving = true;
 		AccountService.getUploadToken().then(function( token ) {
             $scope.numOfFiles++;
-            console.log("add_uploadButton $scope.numOfFiles: " + $scope.numOfFiles);
 			data.formData = token;
 			data.submit();
 		},function(){
@@ -177,18 +175,14 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 	}
 	
 	function fileuploaddone_uploadbutton(e, data){
-        console.log("calling  uploadCompleted");
 		AccountService.uploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
 			$scope.user = result;
-            console.log("calling  uploadCompleted success");
             setPhotoGalery();
 		},function(err){
-            console.log("calling  uploadCompleted fail " +err);
             showAlert('Failed to upload photo, please try again later', true);
         })
         .finally(function(){
             $scope.numOfFiles--;
-            console.log("$scope.numOfFiles: " +$scope.numOfFiles);
             if($scope.numOfFiles === 0){//uploaded all photos
                 updateUser();
                 showAlert('Photos Uploaded Successfully', false);
