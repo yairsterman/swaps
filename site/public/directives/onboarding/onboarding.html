@@ -2,16 +2,59 @@
     <div class="icon icon-delete top-corner" ng-click="close()"></div>
     <div class="onboarding-header">
         <div class="phases">
-            <div class="phase">
-                <div class="phase-title">
+            <div class="col-sm-4 phase">
+                <div class="top">
+                    <div class="line {{phase == 'address'?'active':''}}">
 
+                    </div>
+                    <div class="circle {{phase == 'address'?'active':''}}">
+
+                    </div>
+                    <div class="line {{phase == 'address'?'active':''}}">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        Address
+                    </div>
                 </div>
             </div>
-            <div class="phase">
+            <div class="col-sm-4 phase">
+                <div class="top">
+                    <div class="line">
 
+                    </div>
+                    <div class="circle">
+
+                    </div>
+                    <div class="line">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        Home Information
+                    </div>
+                </div>
             </div>
-            <div class="phase">
+            <div class="col-sm-4 phase">
+                <div class="top">
+                    <div class="line">
 
+                    </div>
+                    <div class="circle">
+
+                    </div>
+                    <div class="line">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        Photos
+                    </div>
+                </div>
             </div>
         </div>
     </div>

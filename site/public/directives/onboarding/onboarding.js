@@ -1,15 +1,6 @@
-swapsApp.directive('onboarding', function() {
-    return {
-        restrict: 'E',
-        controller: onboardingController,
-        scope: {
+swapsApp.controller('onboardingController', function($scope, $rootScope) {
 
-        },
-        templateUrl: '../../directives/onboarding/onboarding.html'
-    }
-});
-
-function onboardingController($scope){
+    $scope.phase = 'address';
     $scope.addItem = function(index, event){
         if($scope.readonly){
             return;
@@ -35,4 +26,4 @@ function onboardingController($scope){
         }
         return false;
     }
-}
+});

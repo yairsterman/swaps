@@ -45,4 +45,8 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
         }
     }
 
+    $scope.profileComplete = function(){
+        return false;
+    }
+
 });
