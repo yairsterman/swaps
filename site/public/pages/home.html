@@ -92,33 +92,28 @@
     <div class="title" id="featuredDestinations">
         <span scroll-on-click>Featured Destinations</span>
     </div>
-    <div class="section featured-destinations">
+    <div class="section featured-destinations" ng-click="searchSwap()">
         <div class="columns col-30">
             <div class="city he-60"
-                 ng-mouseover="changeImage(0)"
                  ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
 
                 <div class="city-text">{{cities[0].name}}</div>
             </div>
             <div class="city he-40"
-                 ng-mouseover="changeImage(1)"
                  ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
                 <div class="city-text">{{cities[1].name}}</div>
             </div>
         </div>
         <div class="columns col-70">
             <div class="city he-40"
-                 ng-mouseover="changeImage(2)"
                  ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
                 <div class="city-text">{{cities[2].name}}</div>
             </div>
             <div class="city he-60 width-60 "
-                 ng-mouseover="changeImage(3)"
                  ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
                 <div class="city-text">{{cities[3].name}}</div>
             </div>
             <div class="city he-60 width-40"
-                 ng-mouseover="changeImage(4)"
                  ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
                 <div class="city-text">{{cities[4].name}}</div>
             </div>
