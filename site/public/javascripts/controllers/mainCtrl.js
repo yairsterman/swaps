@@ -31,4 +31,18 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
         $location.url('/' + path);
     }
 
+    $scope.link = function(link){
+        switch(link){
+            case 'facebook':
+                $window.open('https://www.facebook.com/swapshome/' , '_blank');
+                break;
+            case 'instagram':
+                $window.open('https://www.instagram.com/swaps.home/' , '_blank');
+                break;
+            case 'twitter':
+                $window.open('https://twitter.com/Swaps_Home' , '_blank');
+                break;
+        }
+    }
+
 });

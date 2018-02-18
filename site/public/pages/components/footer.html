@@ -1,7 +1,7 @@
 <div class="footer">
     <div class="links">
-        <div class="link ">
-            About us
+        <div class="link " ng-click="go('faq')" scroll-to-top>
+            FAQ
         </div>
         <div class="link ">
             Contact us
@@ -14,13 +14,13 @@
         </div>
         <div class="social-link ">
             Follow us:
-            <div class="social facebook">
+            <div class="social facebook" ng-click="link('facebook')">
                 <i class="fa fa-facebook"></i>
             </div>
-            <div class="social instagram">
+            <div class="social instagram" ng-click="link('instagram')">
                 <i class="fa fa-instagram"></i>
             </div>
-            <div class="social twitter">
+            <div class="social twitter" ng-click="link('twitter')">
                 <i class="fa fa-twitter"></i>
             </div>
         </div>
