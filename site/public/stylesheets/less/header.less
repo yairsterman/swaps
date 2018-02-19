@@ -97,6 +97,22 @@
 					@media (max-width: @screen-xs-max) {
 						width: 50vw;
 					}
+					.icon{
+						position: absolute;
+						&.icon-man-small{
+							bottom: 8px;
+							left: 10px;
+						}
+						&.icon-calender{
+							bottom: 7px;
+							left: 14px;
+						}
+						&.icon-infocenter{
+							transform: scale(0.70);
+							bottom: 2px;
+							left: 10px;
+						}
+					}
 					.search-field{
 						padding: 0 5px;
 					}
@@ -123,6 +139,7 @@
 					margin-bottom: 1vw;
 				}
 				.form-control {
+					padding-left: 36px;
 					border-radius: 0;
 					border: 1px #0E5D7C solid;
 					color: rgba(199, 167, 104, 1);

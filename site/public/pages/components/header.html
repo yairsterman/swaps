@@ -11,16 +11,19 @@
               <div class="row header-search-area">
                   <div class="search-field left col-sm-4 col-xs-12">
                       <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeader" ng-model="search.where" autocomplete city="true">
+                      <div class="icon icon-infocenter"></div>
                   </div>
                   <div class="search-field col-sm-4 col-xs-12">
                       <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
                       <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
+                      <div class="icon icon-calender"></div>
                   </div>
                   <div class="search-field right col-sm-4 col-xs-12 ">
                       <div class="guests-search">
                           <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
                       </div>
                       <button class="search icon icon-search" ng-click="searchSwap()"></button>
+                      <div class="icon icon-man-small"></div>
                   </div>
               </div>
           </div>

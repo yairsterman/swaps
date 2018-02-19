@@ -11,6 +11,9 @@ swapper-home{
     height: 28vw;
     cursor: pointer;
     transition: 0.4s ease;
+    @media @desktop {
+      height: 29vw;
+    }
     @media @tablet {
       height: 34vw;
     }
@@ -110,7 +113,10 @@ swapper-home{
       padding-top: 4px;
       overflow: hidden;
       color:#0E5D7C;
-      @media (max-width: @screen-sm-max) {
+      @media @desktop {
+        height: 8.5vw;
+      }
+      @media @tablet {
         height: 11vw;
       }
       @media @mobile {
@@ -158,6 +164,12 @@ swapper-home{
       display: flex;
       padding-top: 0.8vw;
       color: #616161;
+      @media @desktop {
+        padding-top: 0.4vw;
+      }
+      @media @tablet {
+        padding-top: 0.8vw;
+      }
       @media @mobile {
         padding-top: 2vw;
 
