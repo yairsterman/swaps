@@ -30,14 +30,14 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         if(!$rootScope.user._id){
             $scope.openLogin();
         }
-        else if(!$scope.profileComplete()){
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/onboarding/onboarding.html',
-                size: 'md',
-                controller: 'onboardingController',
-            });
-        }
+        // else if(!$scope.profileComplete()){
+        //     $scope.modelInstance = $uibModal.open({
+        //         animation: true,
+        //         templateUrl: '../../directives/onboarding/onboarding.html',
+        //         size: 'md',
+        //         controller: 'onboardingController',
+        //     });
+        // }
         else{
             $scope.modelInstance = $uibModal.open({
                 animation: true,

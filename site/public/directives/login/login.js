@@ -32,5 +32,9 @@ swapsApp.controller('loginController', function($scope, signin, $rootScope, $win
     $scope.terms = function(){
         $window.open('https://swapshome.com/terms-and-conditions' , '_blank')
     }
+
+    $scope.policy = function(){
+        $window.open('https://swapshome.com/privacy-policy' , '_blank')
+    }
 });
 
