@@ -181,7 +181,10 @@
 			color: #fff;
 			font-size: 56px;
 			font-weight: 500;
-			height: 80px;
+			height: 170px;
+			@media @mobile {
+				height: 115px;
+			}
 		}
 
 		.points-container {
@@ -189,7 +192,12 @@
 			font-weight: 400;
 			padding: 5px 0;
 			font-size: 32px;
+			margin-top: -40px;
 			line-height: 1.2em;
+			@media @mobile {
+				font-size: 21px;
+				margin-top: -28px;
+			}
 			.points-container-border{
 				width: 12%;
 				padding-top: 12px;

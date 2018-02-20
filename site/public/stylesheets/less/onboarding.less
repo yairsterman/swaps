@@ -1,6 +1,6 @@
 @import 'media.less';
 .onboarding-wrapper {
-  height: 500px;
+  height: 610px;
   position: relative;
   .top-corner {
     position: absolute;
@@ -20,6 +20,7 @@
             height: 35px;
             border-radius: 50%;
             border: 2px solid #848a91;
+            transition: 0.4s ease;
             &.active{
               border-color: #0E5D7C;
               background-color: #0E5D7C;
@@ -28,6 +29,7 @@
           .line{
             border-bottom: 1px solid #848a91;
             width: 40%;
+            transition: 0.4s ease;
             &.active{
               border-color: #0E5D7C;
             }
@@ -49,6 +51,23 @@
     .user-info{
       padding: 0 5%;
     }
+    .basics{
+      .name-with-icon{
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 4px;
+        .icon-bed-small{
+          height: 21px;
+        }
+      }
+      .basics-name{
+        font-size: 14px;
+        text-align: left;
+        color: #0E5D7C;
+        margin-left: 4px;
+        padding-top: 6px;
+      }
+    }
     .address-title{
       padding-bottom: 10px;
       font-size: 26px;
@@ -60,9 +79,25 @@
       font-size: 18px;
       font-weight: 300;
     }
-    .address-input{
+    .large-input{
       font-size: 20px;
       height: 44px;
+    }
+    .listing-label{
+      color: #0E5D7C;
+      .explanation{
+        font-size: 11px;
+        font-weight: 300;
+        color: #000;
+      }
+    }
+    checkbox {
+      .single-checkbox{
+        width: 33%;
+      }
+    }
+    .info-section{
+      padding: 0 15px;
     }
   }
   .buttons{
@@ -71,6 +106,9 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    &.home{
+      flex-direction: row-reverse;
+    }
     .button{
       display: flex;
       align-items: center;
@@ -84,9 +122,12 @@
           -webkit-transform: translateZ(0);
           -ms-transform: translateZ(0);
           transform: translateZ(0);
-          -webkit-animation: next 1.5s ease;
-          animation: next 1.5s ease;
+          -webkit-animation: next 1.2s ease;
+          animation: next 1.2s ease;
         }
+      }
+      &:active, &:focus{
+        outline: none;
       }
     }
   }
