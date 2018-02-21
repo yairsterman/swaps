@@ -1,5 +1,5 @@
 var login = null;
-swapsApp.controller('loginController', function($scope, signin, $rootScope, $window, $location, UsersService, MessageService, $timeout) {
+swapsApp.controller('loginController', function($scope, signin, $rootScope, $window, $location, UsersService, $uibModal, MessageService, $timeout) {
     login = $scope;
 
     $scope.signin = signin;
@@ -21,8 +21,23 @@ swapsApp.controller('loginController', function($scope, signin, $rootScope, $win
             $rootScope.user = data.data;
             $rootScope.$broadcast('login-success');
             $scope.modelInstance.close();
+            if(!$scope.profileComplete()) {
+                $scope.modelInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: '../../directives/onboarding/onboarding.html',
+                    size: 'md',
+                    controller: 'onboardingController',
+                });
+            }
         });
     };
+
+    $scope.profileComplete = function(){
+        if(!$scope.user._id)
+            return false;
+        return $scope.user.photos.length >= 3 && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' &&
+            $scope.user.address && $scope.user.address !== '';
+    }
 
     $scope.FBLogin = function(){
         // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');

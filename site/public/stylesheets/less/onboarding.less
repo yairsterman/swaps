@@ -2,6 +2,9 @@
 .onboarding-wrapper {
   height: 610px;
   position: relative;
+  @media @mobile {
+    height: 750px;
+  }
   .top-corner {
     position: absolute;
     top: 0;
@@ -41,6 +44,9 @@
             font-size: 18px;
             font-weight: 300;
             padding-top: 10px;
+            @media @mobile {
+              font-size: 14px;
+            }
           }
         }
       }
@@ -48,6 +54,9 @@
   }
   .info-area{
     padding: 80px 20px;
+    @media @mobile {
+      padding: 80px 0;
+    }
     .user-info{
       padding: 0 5%;
     }
@@ -58,6 +67,11 @@
         margin-bottom: 4px;
         .icon-bed-small{
           height: 21px;
+        }
+      }
+      .form-control{
+        @media @mobile {
+          padding: 6px;
         }
       }
       .basics-name{
@@ -94,6 +108,9 @@
     checkbox {
       .single-checkbox{
         width: 33%;
+        @media @mobile {
+          width: 50%;
+        }
       }
     }
     .info-section{
@@ -152,9 +169,12 @@
       .complete-btn{
         font-size: 18px;
         width: 170px;
+        @media @mobile {
+          font-size: 16px;
+          width: 48%;
+        }
         &.btn-close{
           font-size: 18px;
-          width: 170px;
           background-color: #ffffff;
           color: #0e5d7c;
           transition: ease 0.3s;
