@@ -51,6 +51,7 @@ const visibleUserData = {
         firstName:true,
         lastName:true,
         birthday:true,
+        email:true,
         gender:true,
         image:true,
         country:true,

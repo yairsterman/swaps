@@ -27,10 +27,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.openRequest = function(){
-        // if(!$rootScope.user._id){
-        //     $scope.openLogin();
-        // }
-        if(!$scope.profileComplete()){
+        if(!$rootScope.user._id){
+            $scope.openLogin();
+        }
+        else if(!$scope.profileComplete()){
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/onboarding/onboarding.html',

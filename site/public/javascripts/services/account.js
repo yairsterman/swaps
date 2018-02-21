@@ -2,7 +2,6 @@ swapsApp.service('AccountService', function($http, $q){
 
     this.editProfile = function(user) {
         var defer = $q.defer();
-		console.log(user)
         $http.post('account/edit-profile', user).then(function(data){
             if(data.data.error){
               defer.reject(data.data.error);

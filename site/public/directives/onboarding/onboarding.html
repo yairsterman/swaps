@@ -64,20 +64,20 @@
                 You are almost ready to start swapping!
             </div>
             <div class="sub-title">
-                Complete your profile so other Swappers will be able to request Swaps
+                Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
             </div>
             <div class="form-group">
                 <label class="control-label listing-label" for="address">Address:
                     <span class="explanation">(Where you live)</span>
                 </label>
-                <input class="form-control large-input" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
             </div>
             <div class="form-group">
                 <label class="control-label listing-label" for="title">Home Title:
                     <span class="explanation">(A short description of your home)</span>
                 </label>
                 <div class="">
-                    <input class="form-control large-input" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="row">
@@ -104,7 +104,7 @@
                     </div>
                     <div class="plan-explanation">
                         This plan covers you for up to ${{data.securityDeposit[user.deposit].week}} in cases of
-                        damages and cancellations
+                        damages and cancellations.
                     </div>
                 </div>
             </div>
@@ -168,22 +168,41 @@
             </div>
         </div>
         <div class="user-info" ng-if="phase == 'photos'">
-            <div class="sub-title">
-                Upload your main photo and two more photos of your home.
+            <div class="sub-title" ng-if="user.photos.length == 0">
+                Upload 3 photos of your home. <br>
+                These photos are how other Swappers will see your home, make sure they best represent your home.
             </div>
-            <form>
-                <div class="main-photo" style="background-image: url({{user.photos[0]}})"></div>
-                <div class="other-photos">
-                    <div class="photo" style="background-image: url({{user.photos[1]}})"></div>
-                    <div class="photo" style="background-image: url({{user.photos[2]}})"></div>
+            <div class="sub-title" ng-if="user.photos.length < 3 && user.photos.length > 0">
+                Upload {{3 - user.photos.length}} more {{user.photos.length == 2?'photo':'photos'}} of your home.
+            </div>
+            <div class="photos-area">
+                <div class="box has-advanced-upload" ng-if="user.photos.length < 3">
+                    <div class="loader-wrapper" ng-if="saving">
+                        <div class="loader">
+
+                        </div>
+                    </div>
+                    <div class="box__input">
+                        <input class="cloudinary-fileupload" id="file" data-ng-init="initUploadButton()" ng-if="user.photos.length < 3" data-cloudinary-field="image_id"
+                        data-max-chunk-size="52428800" data-update-path="google.com"
+                        data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
+                        <label for="file" class="choose-file"><strong>Choose files</strong><span class="box__dragndrop"> or drag them here.</span></label>
+                    </div>
                 </div>
-                <div class="upload-photos btn btn-primary btn-edit" data-ng-init="initUploadButton()">
-                    Upload Photos
-                    <input class="cloudinary-fileupload" data-cloudinary-field="image_id"
-                           data-max-chunk-size="52428800" data-update-path="google.com"
-                           data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
+                <div class="uploaded-photos row">
+                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
+                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[1]}})"></div>
+                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[2]}})"></div>
                 </div>
-            </form>
+            </div>
+            <div class="complete-buttons" ng-if="user.photos.length >= 3">
+                <div class="complete-btn btn btn-primary btn-close" ng-click="close()">
+                    Close
+                </div>
+                <div class="complete-btn btn btn-primary" ng-click="go('account/set-up-swaps')">
+                    Set Swap Date
+                </div>
+            </div>
         </div>
     </div>
     <div class="buttons {{phase == 'home'?'home':''}}">

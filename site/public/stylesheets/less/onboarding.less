@@ -75,8 +75,8 @@
       text-align: center;
     }
     .sub-title{
-      padding: 20px 0;
-      font-size: 18px;
+      padding: 18px 0;
+      font-size: 16px;
       font-weight: 300;
     }
     .large-input{
@@ -98,6 +98,73 @@
     }
     .info-section{
       padding: 0 15px;
+    }
+    .photos-area{
+      .box{
+        height: 200px;
+        background-color: rgba(199, 167, 104, 0.2);
+        position: relative;
+        &.has-advanced-upload {
+          outline: 2px dashed grey;
+          outline-offset: -10px;
+          .box__dragndrop {
+            display: inline;
+            color: grey;
+            font-weight: 400;
+          }
+        }
+        .cloudinary-fileupload{
+          opacity: 0;
+        }
+        .choose-file{
+          color: #0E5D7C;
+          cursor: pointer;
+          position: absolute;
+          text-align: center;
+          font-size: 16px;
+          top: 50%;
+          width: 100%;
+        }
+      }
+      .uploaded-photos{
+        padding-top: 10px;
+        .photo{
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          height: 120px;
+        }
+      }
+      .loader-wrapper{
+        position: absolute;
+        background-color: rgba(169,169,169,0.7);
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 10;
+      }
+    }
+    .complete-buttons{
+      padding-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      .complete-btn{
+        font-size: 18px;
+        width: 170px;
+        &.btn-close{
+          font-size: 18px;
+          width: 170px;
+          background-color: #ffffff;
+          color: #0e5d7c;
+          transition: ease 0.3s;
+          &:hover{
+            background-color: #0e5d7c;
+            border-color: #0e5d7c;
+            color: #ffffff;
+          }
+        }
+      }
     }
   }
   .buttons{
