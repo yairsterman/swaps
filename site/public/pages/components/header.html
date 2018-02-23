@@ -84,7 +84,7 @@
                 </a>
                 <div class="search-field left">
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeaderMobile" ng-model="search.where" autocomplete city="true">
-                    <button class="search icon icon-search" ng-click="searchSwap()"></button>
+                    <button class="search icon icon-search" ng-click="searchSwap($event)"></button>
                 </div>
                 <div class="mobile-login login-area" ng-if="!user._id">
                     <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
