@@ -541,8 +541,10 @@
 			padding: 5px;
 			z-index: 0;
 			&:hover{
-				transform: scale(1.1);
-				z-index: 1;
+				@media @sm-and-up {
+					transform: scale(1.1);
+					z-index: 1;
+				}
 			}
 	//		&:first-child{
 	//			margin-top: -16px;
