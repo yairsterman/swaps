@@ -31,11 +31,13 @@
                     <div class="guests-search">
                         <input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">
                     </div>
-                    <button class="search hidden-xs" ng-click="searchSwap()">Search</button>
+                    <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
+                        <button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>
+                    </a>
                     <div class="icon icon-man-small"></div>
                 </div>
                 <div class="no-padding col-sm-4 col-xs-12 visible-xs">
-                    <button class="search" ng-click="searchSwap()">Search</button>
+                    <button class="search" ng-click="searchSwap($event)">Search</button>
                 </div>
             </div>
         </div>
@@ -50,7 +52,7 @@
         <div class="travelers-list">
             <div class="mg-0 row">
                 <div class= "traveler-col col-sm-4 col-xs-12" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}">
-                    <div class="push-pin icon {{$index==0?'icon-pin-green':$index==1?'icon-pin-blue':$index==2?'icon-pin-red':''}}"></div>
+                    <!--<div class="push-pin icon {{$index==0?'icon-pin-green':$index==1?'icon-pin-blue':$index==2?'icon-pin-red':''}}"></div>-->
                     <swapper-home traveler="traveler"></swapper-home>
                 </div>
             </div>
@@ -87,7 +89,7 @@
                 <div class="how-inner-sentences">Save a ton of money and find a home wherever you go! </div>
             </div>
             <div class="col-xs-12" >
-                <button class="start-button" ng-click="searchSwap()" ng-if="user._id">Start</button>
+                <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
                 <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
             </div>
         </div>
@@ -95,7 +97,7 @@
     <div class="title" id="featuredDestinations">
         <span scroll-on-click>Featured Destinations</span>
     </div>
-    <div class="section featured-destinations" ng-click="searchSwap()">
+    <div class="section featured-destinations" ng-click="searchSwap($event)">
         <div class="columns col-30">
             <div class="city he-60"
                  ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">

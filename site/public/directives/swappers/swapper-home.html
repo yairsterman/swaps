@@ -1,5 +1,6 @@
 <div class="traveler" ng-click="go('profile/'+traveler._id)">
-    <div class="">
+    <div>
+    <a href="/profile/{{traveler._id}}" class="">
         <!--CAROUSEL START-->
         <div ng-attr-id="{{'myCarousel' + traveler._id}}"  class="carousel slide" data-ride="carousel" data-interval="false">
             <!-- Wrapper for carousel items -->
@@ -66,5 +67,6 @@
                 {{traveler.apptInfo.baths}} {{traveler.apptInfo.baths == 1?'Bath':'Baths'}}
             </div>
         </div>
+    </a>
     </div>
 </div>

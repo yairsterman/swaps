@@ -4,7 +4,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     tr = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = true;
-    $scope.city = $routeParams.city;
+    $scope.city = $routeParams.city && $routeParams.city !== ''?$routeParams.city:'Anywhere';
     $scope.user = $rootScope.user;
     $scope.yourCity = $rootScope.userCity;
     $scope.search = {};

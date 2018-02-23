@@ -196,8 +196,8 @@
                 </div>
             </div>
             <div class="complete-buttons" ng-if="user.photos.length >= 3">
-                <div class="complete-btn btn btn-primary btn-close" ng-click="close()">
-                    Close
+                <div class="complete-btn btn btn-primary btn-close" ng-click="go('profile/'+user._id)">
+                    View Profile
                 </div>
                 <div class="complete-btn btn btn-primary" ng-click="go('account/set-up-swaps')">
                     Set Swap Date

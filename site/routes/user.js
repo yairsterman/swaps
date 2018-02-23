@@ -30,7 +30,7 @@ router.get('/get-user-by-travelingDest', function(req, res, next) {
 		var params = {};
         setRequiredParams(params);
         if(req.query.guests){
-            params['apptInfo.guests'] = {'$lt':(guests+1)}; //guests less then
+            params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
         }
 		if(req.query.dest && req.query.dest != 'undefined'){
 			params.travelingDest = {$regex: destination, $options: 'i'};

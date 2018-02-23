@@ -41,7 +41,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     init();
 
-    $scope.searchSwap = function(){
+    $scope.searchSwap = function(e){
+        e.preventDefault();
         var where = $rootScope.search.where;
         if(!where || where == ''){
             where	= 'Anywhere';

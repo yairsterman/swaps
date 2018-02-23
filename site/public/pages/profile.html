@@ -29,7 +29,7 @@
                 </div>
                 <hr>
 
-                <div class="swap">
+                <div class="swap" ng-if="user._id != profile._id">
                     <div class="favorite">
                         <div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">
                             <div class="icon icon-heart-white sharing"></div>
@@ -74,6 +74,11 @@
                     <div class="not-charged" ng-hide="requestSent">
                         You won't be charged yet
                     </div>
+                </div>
+                <div class="" ng-if="user._id == profile._id">
+                    <a href="/account/edit">
+                        <input type="button" class="btn btn-primary btn-swap" value="Edit Profile" >
+                    </a>
                 </div>
                 <div class="end-of-profile"></div>
             </div>

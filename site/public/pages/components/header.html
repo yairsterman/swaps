@@ -22,7 +22,9 @@
                       <div class="guests-search">
                           <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
                       </div>
-                      <button class="search icon icon-search" ng-click="searchSwap()"></button>
+                      <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
+                        <button class="search icon icon-search" ng-click="searchSwap($event)"></button>
+                      </a>
                       <div class="icon icon-man-small"></div>
                   </div>
               </div>
@@ -32,8 +34,10 @@
 		      <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
 		    </form> -->
             <div class="login sign-up" ng-click="go('how-it-works')">
-                How it Works
-                <div class="underlined"></div>
+                <a href="/how-it-works">
+                    How it Works
+                    <div class="underlined"></div>
+                </a>
             </div>
             <div class="login sign-up" data-toggle="modal" data-target="#swapModel" ng-if="user._id">
                 Set Swap Date
