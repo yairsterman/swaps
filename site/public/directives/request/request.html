@@ -24,36 +24,36 @@
         </div>
         <div ng-if="!chooseDates">
             <div class="sub-title row">
-                <div class="col-sm-4">
+                <div class="col-xs-4">
                     <strong class="blue">Check in:</strong>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-xs-8">
                     {{swap.from}}
                 </div>
             </div>
             <div class="sub-title row">
-                <div class="col-sm-4">
+                <div class="col-xs-4">
                     <strong class="blue">Check out:</strong>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-xs-8">
                     {{swap.to}}
                 </div>
             </div>
             <div class="sub-title row">
-                <div class="col-sm-4">
+                <div class="col-xs-4">
                     <strong class="blue">Swappers:</strong>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-xs-8">
                     {{swap.guests}}
                 </div>
             </div>
         </div>
         <div class="sub-title" ng-if="chooseDates">
             <div class="dates row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 col-xs-12">
                     <label for="dates" class="blue">When: </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 col-xs-12">
                     <div class="search-field">
                         <input type="text" class="form-control" id="dates" name="dates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                user-city="userCity" locale-format="localeFormat" model-format="modelFormat" find-travel="true" data="data" datepicker>
@@ -62,10 +62,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 col-xs-12">
                     <label for="guests" class="blue">Swappers: </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 col-xs-12">
                     <div class="guests-search">
                         <input type="number" class="form-control guests" id="guests" ng-model="swap.guests"
                                min="1" max="8">
@@ -73,8 +73,9 @@
                 </div>
             </div>
         </div>
-        <div class="send-message">
-            <textarea rows="3" cols="20" class="form-control send-text" ng-model="send.message" placeholder="Tell {{profile.firstName}} a little about your trip">
+        <div class="sub-title send-message">
+            <label for="about" class="small-text blue">Tell {{profile.firstName}} a little about your trip</label>
+            <textarea id="about" rows="3" cols="20" class="form-control send-text" ng-model="send.message" placeholder="Hey {{profile.firstName}}! ...">
                           </textarea>
         </div>
         <input type="button" class="btn btn-primary btn-swap {{send.message == '' || !swap.from || !swap.to || !swap.guests?'disabled':''}}" value="Go to Payment" ng-click="showPayment()" ng-disabled="send.message == '' || !swap.from || !swap.to || !swap.guests" disabled="{{send.message == '' || !swap.from || !swap.to || !swap.guests}}">
@@ -92,13 +93,13 @@
             <div class="back btn-primary" ng-click="goBack()">
                 Back
             </div>
-            <div class="back btn-primary" ng-click="goToPayment()">
+            <div class="pay btn-primary" ng-click="goToPayment()">
                 Pay
             </div>
         </div>
     </div>
     <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
-        <payment ng-if="payment" action="sendRequest()"></payment>
+        <payment ng-if="payment" amount="totalPayment" action="sendRequest()"></payment>
         <div class="loader-wrapper" ng-if="processing">
             <div class="loader">
 

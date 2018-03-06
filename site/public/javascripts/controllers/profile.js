@@ -43,6 +43,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
                 size: 'sm',
+                windowClass: 'request-modal',
                 controller: 'requestController',
                 scope: $scope
             });
@@ -327,6 +328,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             animation: true,
             templateUrl: '../../directives/request/request.html',
             size: 'sm',
+            windowClass: 'request-modal',
             controller: 'requestController',
             scope: $scope
         });

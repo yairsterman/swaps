@@ -108,6 +108,7 @@ function swapperHomeController($scope, $rootScope, $location, $uibModal, Account
             animation: true,
             templateUrl: '../../directives/request/request.html',
             size: 'sm',
+            windowClass: 'request-modal',
             controller: 'requestController',
             scope: $scope
         });

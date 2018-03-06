@@ -299,6 +299,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
                 size: 'sm',
+                windowClass: 'request-modal',
                 controller: 'requestController',
                 scope: $scope
             });
