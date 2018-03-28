@@ -27,6 +27,23 @@ router.post('/notify', function(req, res, next) {
     res.end();
 });
 
+router.post('/success', function(req, res, next) {
+    var recipientId = req.body.recipientId;
+    var sender = req.user;
+    var message = req.body.message;
+    var now = Date.now();
+    var newMessage = {
+        date: now,
+        isRequest: false,
+        message: message
+    }
+    res.end();
+});
+
+router.post('/fail', function(req, res, next) {
+    res.redirect('/fail');
+});
+
 router.get('/get-token', function(req, res, next) {
     request('https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier=ttxswaps&TranzilaPW=cZa6gd&TranzilaTK=1', function (error, response, body) {
         if (!error && response.statusCode == 200) {

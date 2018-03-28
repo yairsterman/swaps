@@ -13,7 +13,7 @@ swapsApp.directive('payment', function() {
 });
 
 function paymentController($scope, $sce){
-    $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/ttxswaps/iframe.php/?sum="+$scope.amount+"&currency=1&tranmode=VK");
+    $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/ttxswaps/iframe.php/?sum="+$scope.amount+"&currency=1&cred_type=1&tranmode=VK");
 
     $scope.go = function(){
 
