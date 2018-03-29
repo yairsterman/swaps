@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../../stylesheets/css/main.min.css">
 </head>
-<body class="white-background" onload="window.parent.close();">
-    <div class="msg-title">
-        Sorry! the payment failed, please try again later
-    </div>
-
-
+<body class="white-background" onload="window.parent.postMessage('fail','http://localhost:3000');">
 </body>
 
 </html>

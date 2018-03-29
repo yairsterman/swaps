@@ -99,7 +99,7 @@
         </div>
     </div>
     <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
-        <payment ng-if="payment" amount="totalPayment" action="sendRequest()"></payment>
+        <payment ng-if="payment" deposit="totalDeposit" pay="totalPayment" action="sendRequest()"></payment>
         <div class="loader-wrapper" ng-if="processing">
             <div class="loader">
 

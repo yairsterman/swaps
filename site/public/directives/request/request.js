@@ -1,4 +1,6 @@
+let request = null
 swapsApp.controller('requestController', function($scope, $rootScope, MessageService, $timeout) {
+    request = $scope;
     $scope.send = {
         message: ''
     };
@@ -98,17 +100,20 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         var difference_ms = Math.abs(date1_ms - date2_ms);
         return Math.ceil(difference_ms / DAYS);
     }
-    // return {
-    //     restrict: 'E',
-    //     controller: requestController,
-    //     scope: {
-    //         swapper: '=',
-    //         details: '=',
-    //     },
-    //     templateUrl: '../directives/request/request.html'
-    // }
+
+    window.addEventListener("message", receiveMessage, false);
+
+    function receiveMessage(event) {
+        $scope.requestComplete = true;
+        if(event.data == 'success'){
+            //$scope.sendRequest();
+        }
+        if(event.data == 'fail'){
+            $scope.completeText = 'Sorry! the payment failed, please try again later';
+            $scope.$apply();
+        }
+    }
+
 });
 
-// function requestController($scope, $rootScope, $location){
-//     $scope.send = {}
-// }
+
