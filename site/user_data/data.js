@@ -153,9 +153,9 @@ const roomType =[
 ];
 
 const securityDeposit =[
-    {id: 0, type: 'nomad', displayName: 'Nomad', value:1 , night:1, week:70},
-    {id: 1, type: 'globetrotter', displayName: 'Globetrotter', value:5, night:5, week:350},
-    {id: 2, type: 'cosmopolite', displayName: 'Cosmopolite', value:12, night:12, week:800},
+    {id: 0, type: 'nomad', displayName: 'Nomad', value:1 , night:1, week:70, damage: 150},
+    {id: 1, type: 'globetrotter', displayName: 'Globetrotter', value:5, night:5, week:150, damage: 300},
+    {id: 2, type: 'cosmopolite', displayName: 'Cosmopolite', value:12, night:12, week:300, damage: 600},
 ];
 
 const creditCards = [
