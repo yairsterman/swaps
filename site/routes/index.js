@@ -89,7 +89,7 @@ passport.use(new FacebookStrategy({
 ));
 
 router.get('/auth/facebook',
-  passport.authenticate('facebook', { scope: ['user_birthday','user_about_me', 'email']}));
+  passport.authenticate('facebook', { scope: ['user_birthday', 'email']}));
 
 router.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/' })

@@ -15,7 +15,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         when:{}
     };
     $scope.canSendRequest = {};
-    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.localeFormat = 'MMM D, YYYY';
     $scope.modelFormat = 'MMMM DD, YYYY';
 
     $scope.mobileRequestOpen = false;
@@ -27,7 +27,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.openRequest = function(){
-        if(!$rootScope.user._id){
+        $scope.noDates = false;
+        if(!$rootScope.user || !$rootScope.user._id){
             $scope.openLogin();
         }
         else if(!$scope.profileComplete()){
@@ -39,6 +40,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
         }
         else{
+            if(!$scope.swap.from || !$scope.swap.to || $scope.swap.from == $scope.swap.to || !$scope.canSendRequest.status){
+                $scope.noDates = true;
+                return;
+            }
+            if(!$scope.swap.guests || $scope.swap.guests < 1){
+                return;
+            }
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
