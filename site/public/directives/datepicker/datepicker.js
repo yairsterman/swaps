@@ -37,7 +37,7 @@ swapsApp.directive('datepicker', function() {
                     locale: {
                         format: scope.localeFormat
                     },
-                    minDate: minDate,
+                    minDate: formatDate(new Date(minDate), scope.localeFormat),
                 });
                 element.on('apply.daterangepicker', function(ev, picker) {
                     scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
@@ -139,7 +139,7 @@ swapsApp.directive('datepicker', function() {
                     maxDate = false;
                 }
                 else{
-                    maxDate = (new Date(maxDate)).toLocaleDateString('en-US');
+                    maxDate = formatDate(new Date(maxDate), scope.localeFormat);
                 }
                 setDates();
             }
@@ -156,17 +156,12 @@ swapsApp.directive('datepicker', function() {
                 date._d = date;
                 if(isInvalidDate(date)){// if minDate is invalid, start looking for next valid date
                     if(maxDate && date.getTime() >= maxDate){// if reached the last available date
-                        return (new Date(maxDate)).toLocaleDateString('en-US');
+                        return formatDate(new Date(maxDate), scope.localeFormat);
                     }
                     return getMinDate(addDays(date, 1));
                 }
                 else{
-                    if(scope.setUpSwap){ // return the right date format
-                        return date.toLocaleString('en-us', {month: 'short', day: 'numeric',});
-                    }
-                    else{
-                        return date.toLocaleDateString('en-US');
-                    }
+                    return formatDate(date, scope.localeFormat);
                 }
             }
 
@@ -175,7 +170,7 @@ swapsApp.directive('datepicker', function() {
                 var currentDate = startDate;
                 while (currentDate <= stopDate) {
                     var date = new Date (currentDate);
-                    dateArray.push(date.toLocaleDateString('en-US'));
+                    dateArray.push(formatDate(date, 'MM/DD/YYYY'));
                     currentDate = addDays(date, 1).getTime();
                 }
                 return dateArray;
@@ -184,6 +179,20 @@ swapsApp.directive('datepicker', function() {
             function addDays(date, days) {
                 date.setDate(date.getDate() + days);
                 return date;
+            }
+
+            function formatDate(date, format){
+                switch(format){
+                    case 'MMM DD':
+                        return date.toLocaleDateString('en-us', {month: 'short', day: 'numeric',});
+                        break;
+                    case 'MM/DD/YYYY':
+                        return date.toLocaleDateString('en-US');
+                        break;
+                    default:
+                        return date.toLocaleDateString('en-US');
+                        break;
+                }
             }
 
             function isInvalidDate(date){

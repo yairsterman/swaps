@@ -12,7 +12,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
 
     $scope.payment = false;
     $scope.isMatch = $scope.$parent.isMatch;
-    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MMMM DD, YYYY';
 
     $scope.showPayment = function(){

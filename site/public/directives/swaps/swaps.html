@@ -8,7 +8,7 @@
         making it easier for you to find a Swap
     </div>
     <div class="edit-swaps {{popup || toMany?'':'overflow'}}">
-        <div class="single-swap" ng-repeat="swap in swaps track by swap._id | orderBy : 'departure' | limitTo : limit">
+        <div class="single-swap" ng-repeat="swap in swaps | orderBy : orderByDeparture | limitTo : limit track by swap._id ">
             <div class="row search-area">
                 <div class="search-field left col-sm-4 col-xs-12">
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-model="swap.destination" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" autocomplete city="true">
