@@ -429,4 +429,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
     }
 
+    $scope.orderByDate = function(conversation){
+        return -(conversation.messages[conversation.messages.length -1].date);
+    }
+
 });

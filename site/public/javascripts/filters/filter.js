@@ -37,11 +37,16 @@ angular.module('filters', [])
             td.setMinutes(0);
             td.setSeconds(0, 0);
 
+            var locale = "en-us";
+            var month = td.toLocaleString(locale, { month: "short" });
+
             if (d.getTime() == td.getTime())
                 return "Today";
             else if (d.getTime() == td.getTime())
                 return "Yesterday";
-            return td.getDate() +'/'+ (td.getMonth() + 1) +'/'+ td.getFullYear();
+            else if (d.getFullYear() != td.getFullYear())
+                return month + ' ' + td.getFullYear();
+            return month + ' ' + td.getDate();
         };
     });
 
