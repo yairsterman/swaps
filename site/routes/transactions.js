@@ -16,6 +16,7 @@ var error = {
 
 const tranzillaSupplier = 'ttxswaps';
 const TranzilaPW = 'cZa6gd';
+const tranmode = 'A';
 
 router.post('/notify', function(req, res, next) {
     var recipientId = req.body.recipientId;
@@ -32,14 +33,22 @@ router.post('/notify', function(req, res, next) {
 
 router.post('/success', function(req, res, next) {
     let token = req.body.TranzilaTK;
+    let cred_type = req.body.cred_type;
+    let expmonth = req.body.expmonth;
+    let expyear = req.body.expyear;
+    let currency = req.body.currency;
+    let sum = 5;
 
     let params = {
         token: token,
+        cred_type: cred_type,
+        expdate: expmonth+expyear,
+        currency: currency,
+        sum: sum,
     };
+    
 
-    let completeTransaction = completeTransaction(params);
-
-    completeTransaction.then(function (){
+    completeTransaction(params).then(function (){
         res.redirect('/success');
     });
 });
@@ -49,7 +58,7 @@ router.post('/fail', function(req, res, next) {
 });
 
 router.get('/get-token', function(req, res, next) {
-    request('https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier=ttxswaps&TranzilaPW=cZa6gd&TranzilaTK=1', function (error, response, body) {
+    request('https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier='+tranzillaSupplier+'&TranzilaPW='+TranzilaPW+'&TranzilaTK=1', function (error, response, body) {
         if (!error && response.statusCode == 200) {
             res.json(response);
         }
@@ -62,7 +71,7 @@ router.get('/get-token', function(req, res, next) {
 function completeTransaction(params){
 
     let dfr = Q.defer();
-    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier=${tranzillaSupplier}&TranzilaPW=${TranzilaPW}&TranzilaTK=${params.token}&expdate=${params.expdate}&sum=${params.sum}currency=${params.currency}&cred_type=${params.cred_type}`;
+    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier=${tranzillaSupplier}&TranzilaPW=${TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&expdate=${params.expdate}&sum=${params.sum}currency=${params.currency}&cred_type=${params.cred_type}`;
 
     request(requestUrl, function (error, response, body) {
         if (!error && response.statusCode == 200) {
