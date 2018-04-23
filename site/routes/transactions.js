@@ -71,9 +71,13 @@ router.get('/get-token', function(req, res, next) {
 function completeTransaction(params){
 
     let dfr = Q.defer();
-    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier=${tranzillaSupplier}&TranzilaPW=${TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&expdate=${params.expdate}&sum=${params.sum}currency=${params.currency}&cred_type=${params.cred_type}`;
+    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi`;
 
-    request(requestUrl, function (error, response, body) {
+    request.post({
+            headers : {"Content-Type": "application/x-www-form-urlencoded"},
+            url: requestUrl,
+            body: `supplier=${tranzillaSupplier}&TranzilaPW=${TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&expdate=${params.expdate}&sum=${params.sum}&currency=${params.currency}&cred_type=${params.cred_type}`
+        }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             dfr.resolve(response);
         }

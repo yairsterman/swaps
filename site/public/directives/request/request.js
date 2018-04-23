@@ -106,6 +106,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     function receiveMessage(event) {
         $scope.requestComplete = true;
         if(event.data == 'success'){
+            $scope.$apply();
             //$scope.sendRequest();
         }
         if(event.data == 'fail'){
