@@ -14,8 +14,8 @@ var error = {
     message: ''
 };
 
-const tranzillaSupplier = 'ttxswaps';
-const TranzilaPW = 'cZa6gd';
+const tranzillaSupplier = 'ttxswapstok';
+const TranzilaPW = 'gwO8GByr';
 const tranmode = 'A';
 
 router.post('/notify', function(req, res, next) {
@@ -71,7 +71,7 @@ router.get('/get-token', function(req, res, next) {
 function completeTransaction(params){
 
     let dfr = Q.defer();
-    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi`;
+    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71pme.cgi`;
 
     request.post({
             headers : {"Content-Type": "application/x-www-form-urlencoded"},
