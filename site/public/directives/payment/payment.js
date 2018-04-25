@@ -17,9 +17,9 @@ let payment = null;
 function paymentController($scope, $sce){
     payment = $scope;
     $scope.deposit = 5;
-    $scope.pay = 1;
+    $scope.pay = 5;
 
-    $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/ttxswaps/iframe.php/?sum="+$scope.deposit+"&pdesc="+$scope.pay+"&currency=1&cred_type=1&tranmode=VK&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=pay");
+    $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/ttxswaps/iframe.php/?sum="+$scope.deposit+"&amount="+$scope.pay+"&currency=1&cred_type=1&tranmode=VK&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=pay");
 
     $scope.go = function(){
 
