@@ -140,6 +140,14 @@ const requestStatus ={
     canceled: 2,
 };
 
+const requestType ={
+    request: 0,
+    confirm: 1,
+    cancel: 2,
+};
+
+const requestData = 'firstName image photos _id apptInfo country city reviews rating occupation';
+
 const genders =[
     {value:1, name:'Female'},
     {value:2, name:'Male'},
@@ -192,6 +200,7 @@ var dataForSite = {
     amenities: amenities,
     thingsToDo: thingsToDo,
     requestStatus: requestStatus,
+    requestType: requestType,
     houseRules: houseRules,
     genders: genders,
     roomType: roomType,
@@ -239,6 +248,14 @@ data.getHouseRules = function(){
 
 data.getData = function(){
     return dataForSite;
+};
+
+data.getRequestType = function(){
+    return requestType;
+};
+
+data.getRequestData = function(){
+    return requestData;
 };
 
 module.exports = data;

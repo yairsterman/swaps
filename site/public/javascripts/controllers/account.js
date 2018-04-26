@@ -412,9 +412,6 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         AccountService.getRequests().then(function(requests){
             $scope.requests = requests;
-            $scope.requests.forEach(function(value){
-                value.requestInfo = $scope.getRequest(value._id);
-            });
         },function(err){
             showAlert('Error getting requests', true);
         });

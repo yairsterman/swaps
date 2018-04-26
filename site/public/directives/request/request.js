@@ -1,5 +1,5 @@
 let request = null
-swapsApp.controller('requestController', function($scope, $rootScope, MessageService, $timeout) {
+swapsApp.controller('requestController', function($scope, $rootScope, MessageService, UsersService, $timeout) {
     request = $scope;
     $scope.send = {
         message: ''
@@ -14,6 +14,8 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.isMatch = $scope.$parent.isMatch;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MMMM DD, YYYY';
+    $scope.recipientId = $scope.profile._id;
+    $scope.userId = $scope.user._id;
 
     $scope.showPayment = function(){
         $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit];
@@ -25,6 +27,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     $scope.goToPayment = function(){
+        $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.payment = true;
     }
 
@@ -106,8 +109,12 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     function receiveMessage(event) {
         $scope.requestComplete = true;
         if(event.data == 'success'){
-            $scope.$apply();
-            //$scope.sendRequest();
+            $scope.$parent.requestSent = true;
+            //get updated user
+            UsersService.getUser($scope.user._id).then(function(data){
+                $rootScope.user = data.data;
+                $scope.user = $rootScope.user;
+            })
         }
         if(event.data == 'fail'){
             $scope.completeText = 'Sorry! the payment failed, please try again later';

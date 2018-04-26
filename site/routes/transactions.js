@@ -2,21 +2,17 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
-var Transaction = require('../models/transaction.js');
 var Q = require('q');
 var request = require('request');
 var email = require('../services/email.js');
-var emailMessages = require('../services/email-messages.js');
+var transactionsService = require('../services/transactionsService.js');
+var requestsService = require('../services/requestsService.js');
 var Data = require('../user_data/data.js');
 
 var error = {
     error: true,
     message: ''
 };
-
-const tranzillaSupplier = 'ttxswapstok';
-const TranzilaPW = 't97lyt';
-const tranmode = 'A';
 
 router.post('/notify', function(req, res, next) {
     var recipientId = req.body.recipientId;
@@ -40,6 +36,17 @@ router.post('/success', function(req, res, next) {
     let sum = req.body.amount; // this is the direct payment sum
     let deposit = req.body.sum; // this is the deposit sum
 
+    let requestDetails = {};
+    if(req.body.requestType == Data.getRequestType().request){
+        requestDetails = {
+            user1: req.body.user1,
+            user2: req.body.user2,
+            dates: req.body.dates,
+            guests: req.body.guests,
+            message: req.body.message
+        };
+    }
+
     let params = {
         token: token,
         cred_type: cred_type,
@@ -48,9 +55,13 @@ router.post('/success', function(req, res, next) {
         sum: sum,
         deposit: deposit,
     };
-    
 
-    completeTransaction(params).then(function (){
+    transactionsService.completeTransaction(params, requestDetails.user1) // save transaction in db and save id to user.transactions
+    .then(function (transactionId){
+        requestDetails.transactionId = transactionId;
+        return requestsService.sendRequest(requestDetails);
+    })
+    .then(function (){
         res.redirect('/success');
     },function (err){
         console.log(err);
@@ -61,68 +72,6 @@ router.post('/success', function(req, res, next) {
 router.post('/fail', function(req, res, next) {
     res.redirect('/fail');
 });
-
-router.get('/get-token', function(req, res, next) {
-    request('https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi?supplier='+tranzillaSupplier+'&TranzilaPW='+TranzilaPW+'&TranzilaTK=1', function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            res.json(response);
-        }
-        else{
-            res.json(error);
-        }
-    })
-});
-
-function completeTransaction(params){
-
-    let dfr = Q.defer();
-    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71pme.cgi`;
-
-    request.post({
-            headers : {"Content-Type": "application/x-www-form-urlencoded"},
-            url: requestUrl,
-            body: `supplier=${tranzillaSupplier}&TranzilaPW=${TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&expdate=${params.expdate}&sum=${params.sum}&currency=${params.currency}&cred_type=${params.cred_type}&response_return_format=json`
-        }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let result;
-            try{
-                result = JSON.parse(body);
-                result.deposit = params.deposit;
-
-                createTransaction(result).then(function(){
-                    dfr.resolve(response);
-                },function(err){
-                    dfr.reject(err);
-                });
-            }
-            catch(e){
-                dfr.reject(e);
-            }
-        }
-        else{
-            dfr.reject(error);
-        }
-    })
-
-    return dfr.promise;
-}
-
-function createTransaction(data){
-    let dfr = Q.defer();
-    let transaction = new Transaction({
-        token: data.TranzilaTK,
-        confirmationCode: data.ConfirmationCode,
-        index: data.index,
-        payment: data.sum,
-        deposit: data.deposit,
-        date: Date.now()
-    });
-    transaction.save(function (err, transaction) {
-        if (err) return dfr.reject(err);
-        return dfr.resolve(transaction._id);
-    });
-    return dfr.promise;
-}
 
 
 module.exports = router;
