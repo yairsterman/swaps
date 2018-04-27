@@ -401,7 +401,7 @@
                                     <div class="request-status confirmed" ng-if="request.status == 1">Confirmed</div>
                                     <div class="icon icon-check" ng-if="request.status == 1"></div>
                                     <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
-                                         ng-if="request.status == 0 && request.requestInfo.user2"
+                                         ng-if="request.status == 0 && request.user1"
                                          ng-click="confirmRequest(request)">Confirm
                                     </div>
                                 </div>

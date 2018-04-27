@@ -97,6 +97,13 @@ module.exports.confirm = function(params) {
     let recipient = {};
     let sender = {};
 
+    let now = Date.now();
+    let newMessage = {
+        date: now,
+        isRequest: false,
+        message: 'Request Confirmed'
+    };
+
    chargeUsers(params).then(function(results){
         return confirmRequest(results);
     }).then(function(result){
@@ -208,10 +215,10 @@ function confirmRequest(info){
 
     Request.findOneAndUpdate({_id: info.requestId}, {$set: set})
         .populate({
-            path: 'user1',
+            path: 'user1'
         })
         .populate({
-            path: 'user2',
+            path: 'user2'
         })
         .exec(function (err, request) {
             if (err || !request) {
@@ -354,7 +361,7 @@ function chargeUsers(params){
                 verifyTransactionUser2: verifyTransactionUser2,
                 transactionUser1: transactionUser1,
                 transactionUser2: transactionUser2,
-            }
+            };
             dfr.resolve(results);
         },function(err){
             dfr.reject(err);

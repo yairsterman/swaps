@@ -10,6 +10,8 @@ swapsApp.directive('payment', function() {
             recipientId: '=',
             message: '=',
             guests: '=',
+            pay: '=',
+            plan: '=',
             requestType: '=',
             requestId: '=',
         },

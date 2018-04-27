@@ -43,13 +43,8 @@ router.post('/success', function(req, res, next) {
         requestId: req.body.requestId
     };
 
-    let params = {
-        token: token,
-        cred_type: cred_type,
-        currency: currency,
-        sum: sum,
-        type: Data.getTransactionType().verify
-    };
+    let params = req.body;
+    params.type = Data.getTransactionType().verify;
 
     transactionsService.createAndSaveToUser(params, requestDetails.user1) // save transaction in db and save id to user.transactions
     .then(function ({transactionId, token}){

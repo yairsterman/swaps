@@ -13,6 +13,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.select = {};
 
+    const DAY = 1000*60*60*24;
+
     const SUCCESS = 'Changes saved successfully';
 
     if($rootScope.user && $rootScope.user._id) {
@@ -327,25 +329,34 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.confirmRequest = function(requestInfo){
-        if($scope.saving){
+        var request = requestInfo._id?requestInfo:$scope.getRequest(requestInfo.id);
+        if(!request){
+            showAlert('Could not get request', true);
             return;
         }
-        $scope.saving = true;
-        if(!requestInfo.userId){ //this means the confirm was sent from message
-            requestInfo = $scope.getRequest(requestInfo.id);
-            if(!requestInfo){
+        var userId = requestInfo._id?requestInfo.user1?requestInfo.user1._id:requestInfo.user2._id:requestInfo.id
+        $scope.swap.from = request.checkin;
+        $scope.swap.to = request.checkout + DAY; // request is saved as nights so add day to checkout
+        UsersService.getProfile(userId).then(function(data){
+            $scope.profile = data.data;
+            $scope.requestId = request._id;
+            $scope.chooseDates = false;
+            $scope.confirmation = true;
+            $scope.modelInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '../../directives/request/request.html',
+                size: 'sm',
+                windowClass: 'request-modal',
+                controller: 'requestController',
+                scope: $scope
+            });
+            $scope.modelInstance.closed.then(function(){
+                $scope.user = $rootScope.user;
+                updateUser();
+            },function(){
                 $scope.saving = false;
-                return;
-            }
-        }
-        MessageService.confirmRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-            $scope.user = data;
-            updateUser();
-        }
-        ,function(err){
-            showAlert(err, true);
-            $scope.saving = false;
-        });
+            });
+        })
     }
 
     $scope.requestStatus = function(id){

@@ -42,7 +42,7 @@ function chargeRequest(token, userId, plan, guests, nights){
             try{
                 result = JSON.parse(body);
                 result.type = Data.getTransactionType().regular;
-                createAndSaveToUser(result, userId).then(function(transactionId){
+                createAndSaveToUser(result, userId).then(function({transactionId, token}){
                     dfr.resolve(transactionId);
                 },function(err){
                     dfr.reject(err);
