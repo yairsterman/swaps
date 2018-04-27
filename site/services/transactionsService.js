@@ -31,7 +31,7 @@ function completeTransaction(params, userId){
     request.post({
         headers : {"Content-Type": "application/x-www-form-urlencoded"},
         url: requestUrl,
-        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&expdate=${params.expdate}&sum=${params.sum}&currency=${params.currency}&cred_type=${params.cred_type}&response_return_format=json`
+        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&sum=${params.sum}&currency=${params.currency}&cred_type=${params.cred_type}&response_return_format=json`
     }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             let result;
