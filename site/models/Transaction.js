@@ -3,8 +3,8 @@ var schema = new mongoose.Schema({
     token: String,
     confirmationCode: String,
     index: String,
-    payment: Number,
-    deposit: Number,
+    amount: Number,
+    type: Number,
     date: Number,
     updated_at: { type: Date, default: Date.now },
 });

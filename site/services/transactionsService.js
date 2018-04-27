@@ -14,32 +14,35 @@ let error = {
     message: ''
 };
 
-const tranmode = 'A';
-
 /**
- * Send a transaction request with the payment amount and save the
- * new transaction to the DB
+ * Send a transaction request to charge the payment amount based on the number
+ * of nights and guests, then save the new transaction to the DB
  *
- * @param params - transaction details
+ * @param token - user card token
  * @param userId - id of user to save the transaction on
+ * @param nights - nights of request in order to calculate payment
  */
-function completeTransaction(params, userId){
+function chargeRequest(token, userId, plan, guests, nights){
 
     let dfr = Q.defer();
-    let requestUrl = `https://secure5.tranzila.com/cgi-bin/tranzila71pme.cgi`;
+    let requestUrl = config.tranzilaRequestUrl;
+    let perNight = Data.getSecurityDeposit()[plan].night; // how much to pay per night based on plan
+    let amount = perNight * guests * nights; // pay for each guests per night
+    amount = 5; //TODO: this is Debug REMOVE!!
+
+    let tranmode = Data.getTransactionMode().regular;
 
     request.post({
         headers : {"Content-Type": "application/x-www-form-urlencoded"},
         url: requestUrl,
-        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&TranzilaTK=${params.token}&tranmode=${tranmode}&sum=${params.sum}&currency=${params.currency}&cred_type=${params.cred_type}&response_return_format=json`
+        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&TranzilaTK=${token}&tranmode=${tranmode}&sum=${amount}&currency=1&cred_type=1&response_return_format=json`
     }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             let result;
             try{
                 result = JSON.parse(body);
-                result.deposit = params.deposit;
-
-                createTransaction(result, userId).then(function(transactionId){
+                result.type = Data.getTransactionType().regular;
+                createAndSaveToUser(result, userId).then(function(transactionId){
                     dfr.resolve(transactionId);
                 },function(err){
                     dfr.reject(err);
@@ -62,15 +65,16 @@ function completeTransaction(params, userId){
  *
  * @param data - transaction data
  */
-function createTransaction(data, userId){
+function createAndSaveToUser (data, userId){
     let dfr = Q.defer();
 
+    let token = data.TranzilaTK;
     let transaction = new Transaction({
-        token: data.TranzilaTK,
+        token: token,
         confirmationCode: data.ConfirmationCode,
         index: data.index,
-        payment: data.sum,
-        deposit: data.deposit,
+        amount: data.sum,
+        type: data.type,
         date: Date.now()
     });
 
@@ -78,13 +82,13 @@ function createTransaction(data, userId){
         if (err)
             return dfr.reject(err);
         saveTransactionId(userId, transaction._id).then(function(transactionId){
-            dfr.resolve(transactionId);
+            dfr.resolve({transactionId, token});
         },function(err){
             dfr.reject(err);
         });
     })
     return dfr.promise;
-}
+};
 
 /**
  * Save transaction ID to user's transactions
@@ -110,5 +114,6 @@ function saveTransactionId(userId, transactionId){
 }
 
 module.exports = {
-    completeTransaction: completeTransaction
+    chargeRequest: chargeRequest,
+    createAndSaveToUser: createAndSaveToUser,
 };

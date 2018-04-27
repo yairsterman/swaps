@@ -30,36 +30,38 @@ router.post('/notify', function(req, res, next) {
 router.post('/success', function(req, res, next) {
     let token = req.body.TranzilaTK;
     let cred_type = req.body.cred_type;
-    let expmonth = req.body.expmonth;
-    let expyear = req.body.expyear;
     let currency = req.body.currency;
-    let sum = req.body.amount; // this is the direct payment sum
-    let deposit = req.body.sum; // this is the deposit sum
+    let sum = req.body.amount; // this is the payment sum
 
-    let requestDetails = {};
-    if(req.body.requestType == Data.getRequestType().request){
-        requestDetails = {
-            user1: req.body.user1,
-            user2: req.body.user2,
-            dates: req.body.dates,
-            guests: req.body.guests,
-            message: req.body.message
-        };
-    }
+    let requestDetails = {
+        user1: req.body.user1,
+        user2: req.body.user2,
+        dates: req.body.dates,
+        guests: req.body.guests,
+        message: req.body.message,
+        plan: req.body.plan,
+        requestId: req.body.requestId
+    };
 
     let params = {
         token: token,
         cred_type: cred_type,
-        expdate: expmonth+expyear,
         currency: currency,
         sum: sum,
-        deposit: deposit,
+        type: Data.getTransactionType().verify
     };
 
-    transactionsService.completeTransaction(params, requestDetails.user1) // save transaction in db and save id to user.transactions
-    .then(function (transactionId){
+    transactionsService.createAndSaveToUser(params, requestDetails.user1) // save transaction in db and save id to user.transactions
+    .then(function ({transactionId, token}){
         requestDetails.transactionId = transactionId;
-        return requestsService.sendRequest(requestDetails);
+        //see whether this is a first request or a confirmation
+        if(req.body.requestType == Data.getRequestType().request){
+            return requestsService.sendRequest(requestDetails);
+        }
+        else {
+            requestDetails.token = token;
+            return requestsService.confirm(requestDetails);
+        }
     })
     .then(function (){
         res.redirect('/success');

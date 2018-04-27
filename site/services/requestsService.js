@@ -5,7 +5,9 @@ let dateFormat = require('dateformat');
 let email = require('../services/email.js');
 let emailMessages = require('../services/email-messages.js');
 let MessageService = require('../services/messageService.js');
+let transactionService = require('../services/transactionsService.js');
 let Data = require('../user_data/data.js');
+let util = require('../utils/util.js');
 
 
 const DAY = 1000*60*60*24;
@@ -27,7 +29,6 @@ module.exports.sendRequest = function(params) {
     let senderId = params.user1;
     let recipientId = params.user2;
     let guests = params.guests;
-    let recipient ={};
     let now = Date.now();
     let departure;
     let returnDate;
@@ -41,7 +42,7 @@ module.exports.sendRequest = function(params) {
         dates = params.dates.split('-'); // dates are in format '11/11/2011-12/12/2012'
         departure = Date.parse(dates[0].trim());
         returnDate = Date.parse(dates[1].trim());
-        nights = calculateNightsBetween(departure, returnDate);
+        nights = util.calculateNightsBetween(departure, returnDate);
     }
     else{
         error.message = "No dates specified";
@@ -49,7 +50,18 @@ module.exports.sendRequest = function(params) {
     }
     checkAvailability(senderId, recipientId, departure, returnDate)
     .then(function() {
-        return saveRequest(senderId, recipientId, departure, returnDate, Data.getRequestStatus().pending, params.transactionId);
+        let requestDetails = {
+            senderId: senderId,
+            recipientId: recipientId,
+            departure: departure,
+            returnDate: returnDate,
+            status: Data.getRequestStatus().pending,
+            guests: guests,
+            nights: nights,
+            plan: params.plan,
+            transactionId: params.transactionId,
+        };
+        return saveRequest(requestDetails);
     })
     .then( function({sender, recipient}){
         email.sendMail([recipient.email],'New Swap Request!', emailMessages.request(recipient, sender, {departure:departure,returnDate:returnDate}, nights, params.message));
@@ -74,44 +86,34 @@ module.exports.sendRequest = function(params) {
     .then(function(){
         dfr.resolve();
     },function(err){
-        dfr.reject();
+        dfr.reject(err);
     });
     return dfr.promise;
 };
 
 module.exports.confirm = function(params) {
-    var recipientId = req.body.recipientId;
-    var sender = req.user;
-    var departure = req.body.departure;
-    var returnDate = req.body.returnDate;
-    var now = Date.now();
-    var newMessage = {
-        date: now,
-        isRequest: false,
-        message: 'Request Confirmed'
-    }
-    checkAvailability(sender._id, recipientId, departure, returnDate).then(function(){
-        return confirmRequest(sender._id, recipientId, departure, returnDate);
-    }).then(function(){
-        return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
+
+    let dfr = Q.defer();
+    let recipient = {};
+    let sender = {};
+
+   chargeUsers(params).then(function(results){
+        return confirmRequest(results);
+    }).then(function(result){
+        sender = result.sender;
+        recipient = result.recipient;
+        return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
     })
-        .then(function(){
-            return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
-        })
-        .then(function(){
-            User.findOne({_id: sender._id}, function (err, updatedUser) {
-                if (err){
-                    console.log("couldn't find user but Confirm was sent" + err);
-                    error.message = "couldn't find user but Confirm was sent";
-                    res.json(error);
-                }
-                else{
-                    res.json(updatedUser);
-                }
-            });
-        },function(err){
-            res.json(err);
-        });
+    .then(function(){
+        return MessageService.saveMessage(recipient._id, sender._id, sender._id, newMessage, true);
+    })
+   .then(function(){
+       dfr.resolve();
+   },function(err){
+       dfr.reject(err);
+   });
+
+   return dfr.promise;
 };
 
 module.exports.cancel = function(params) {
@@ -138,18 +140,30 @@ module.exports.cancel = function(params) {
  * @param status - request status
  * @param transaction - transaction id of the sender
  */
-function saveRequest(senderId, recipientId, departure, returnDate, status, transaction){
+function saveRequest(requestDetails){
     let defferd = Q.defer();
+
+    let senderId = requestDetails.senderId;
+    let recipientId = requestDetails.recipientId;
+    let departure = requestDetails.departure;
+    let returnDate = requestDetails.returnDate - DAY; // book only the nights, without checkout date
+    let transaction = requestDetails.transactionId;
+    let guests = requestDetails.guests;
+    let nights = requestDetails.nights;
+    let plan =requestDetails.plan;
+    let status = requestDetails.status;
 
     let request = new Request({
         user1: senderId,
         user2: recipientId,
         checkin: departure,
-        checkout : returnDate - DAY, // book only the nights, without checkout date
-        transactionUser1: transaction,
+        checkout : returnDate,
+        verifyTransactionUser1: transaction,
+        guests1: guests,
+        nights: nights,
+        plan: plan,
         status: status
     });
-    let requestObj = {};
     let sender = {};
     let recipient = {};
     let requestId;
@@ -177,77 +191,56 @@ function saveRequest(senderId, recipientId, departure, returnDate, status, trans
     return defferd.promise;
 }
 
-function confirmRequest(senderId, recipientId, departure, returnDate){
-    var deferd = Q.defer();
-    let sender = {};
-    let recipient = {};
-    let dates = {
-        departure: departure,
-        returnDate: returnDate
-    };
-    User.findOne({_id: senderId})
-        .then(function (_sender) {
-            sender = _sender;
-            if (!sender){
-                error.message = "confirmation not sent";
-                throw new Error(error.message);
-            }
-            else {
+/**
+ * Confirm the request and save the new data on the request model
+ *
+ * @param info - verifyTransactionUser2, transactionUser1, transactionUser2, requestId
+ */
+function confirmRequest(info){
+    let deferd = Q.defer();
 
-                var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                    var updatedInfo = updateDates(sender.travelingInfo, sender.travelingDest, departure, returnDate);
-                    return User.update({_id: sender._id}, {$set: {requests: sender.requests, travelingInfo: updatedInfo._travelingInfo, travelingDest: updatedInfo.travelingDest}});
-                }
-            }
+    let set = {
+        verifyTransactionUser2: info.verifyTransactionUser2,
+        transactionUser1: info.transactionUser1,
+        transactionUser2: info.transactionUser2,
+        status: Data.getRequestStatus().confirmed
+    };
+
+    Request.findOneAndUpdate({_id: info.requestId}, {$set: set})
+        .populate({
+            path: 'user1',
         })
-        .then(function (updated) {
-            if (!updated.ok) {
-                error.message = "confirmation not sent";
-                throw new Error(error.message);
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, request) {
+            if (err || !request) {
+                let msg = err;
+                if(!request){
+                    msg = 'No relevant request found';
+                }
+                deferd.reject(msg);
             }
             else {
-                return User.findOne({_id: recipientId});
-            }
-        })
-        .then(function(_recipient){
-            recipient = _recipient;
-            if (!recipient){
-                error.message = "confirmation not sent";
-                throw new Error(error.message);
-            }
-            else{
-                var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                    var updatedInfo = updateDates(recipient.travelingInfo, recipient.travelingDest, departure, returnDate);
-                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests, travelingInfo: updatedInfo._travelingInfo, travelingDest: updatedInfo.travelingDest}});                }
-            }
-        })
-        .then(function (updated) {
-            if (!updated.ok){
-                console.log("confirmation not sent" + err);
-                error.message = "confirmation not sent";
-                deferd.reject(error);
-            }
-            else{
-                console.log("updated DB");
+                let sender = request.user1;
+                let recipient = request.user2;
+                let dates = {
+                    departure: request.checkin,
+                    returnDate: request.checkout,
+                };
+                let result = {
+                    sender: sender,
+                    recipient: recipient,
+                    dates: dates,
+                };
+
                 email.sendMail([sender.email],'Swap Confirmation', emailMessages.confirmation(sender, recipient, dates));
                 email.sendMail([recipient.email],'Swap Confirmation', emailMessages.confirmation(recipient, sender, dates));
-                deferd.resolve();
+
+                deferd.resolve(result);
             }
-        },function(err){
-            deferd.reject(err);
         });
+
     return deferd.promise;
 }
 
@@ -328,86 +321,67 @@ function cancelRequest(senderId, recipientId, departure, returnDate, message){
     return deferd.promise;
 }
 
-function markedMessageRead(senderId, recipientId){
-    var deferd = Q.defer();
-    User.findOne({_id: senderId})
-        .then(function (sender) {
-            if (!sender._id){
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else {
-                var messageIndex = findMessage(sender.messages, recipientId);
-                if(messageIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    sender.messages[messageIndex].read = true;
-                    return User.update({_id: sender._id}, {$set: {messages: sender.messages}});
-                }
-            }
+function chargeUsers(params){
+    let dfr = Q.defer();
+
+    let requestId = params.requestId;
+    let tokenUser2 = params.token;
+    let guests2 = params.guests;
+    let verifyTransactionUser2 = params.transactionId;
+    let transactionUser1;
+    let transactionUser2;
+
+    getRequest(requestId).then(function(request){
+        let user1 = request.user1;
+        let user2 = request.user2;
+        let tokenUser1 = request.verifyTransactionUser1.token;
+        let guests1 = request.guests1;
+        let nights = request.nights;
+        let plan = request.plan;
+
+        checkAvailability(user1, user2, request.checkin, request.checkout)
+        .then(function() {
+            return transactionService.chargeRequest(tokenUser1, user1, plan, guests1, nights);
         })
-        .then(function (updated) {
-            if (!updated.ok) {
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else {
-                return User.findOne({_id: recipientId});
-            }
+        .then(function(transactionId){
+            transactionUser1 = transactionId;
+            return transactionService.chargeRequest(tokenUser2, user2, plan, guests2, nights);
         })
-        .then(function(recipient){
-            if (!recipient._id){
-                error.message = "Request not sent";
-                throw new Error(error.message);
+        .then(function(transactionId){
+            transactionUser2 = transactionId;
+            let results = {
+                requestId: requestId,
+                verifyTransactionUser2: verifyTransactionUser2,
+                transactionUser1: transactionUser1,
+                transactionUser2: transactionUser2,
             }
-            else{
-                var messageIndex = findMessage(recipient.messages, senderId);
-                if(messageIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    recipient.messages[messageIndex].read = true;
-                    return User.update({_id: recipient._id}, {$set: {messages: recipient.messages}});
-                }
-            }
-        })
-        .then(function (updated) {
-            if (!updated.ok){
-                console.log("Request not sent" + err);
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else{
-                console.log("updated DB");
-                deferd.resolve();
-            }
+            dfr.resolve(results);
         },function(err){
-            deferd.reject(err);
+            dfr.reject(err);
         });
-    return deferd.promise;
+    });
+    return dfr.promise;
 }
 
-function findMessage(messages, id){
-    for(var i = 0; i < messages.length; i++){
-        var message = messages[i];
-        if(message.id == id){
-            return i;
-        }
-    }
-    return -1;
-}
-
-function findRequest(requests, id, departure, returnDate){
-    for(let i = 0; i < requests.length; i++){
-        let request = requests[i];
-        if(request.userId == id.toString() && request.departure == departure && request.returnDate == returnDate){
-            return i;
-        }
-    }
-    return -1;
+function getRequest(id){
+    let dfr = Q.defer();
+    Request.findOne({_id: id, status: Data.getRequestStatus().pending})
+        .populate({
+            path: 'verifyTransactionUser1',
+        })
+        .exec(function (err, request) {
+            if (err || !request) {
+                let msg = err;
+                if(!request){
+                    msg = 'No relevant request found';
+                }
+                dfr.reject(msg);
+            }
+            else {
+                dfr.resolve(request);
+            }
+        });
+    return dfr.promise;
 }
 
 /**
@@ -492,18 +466,4 @@ function updateDates(travelingInfo, travelingDest, departure, returnDate){
         }
     });
     return {_travelingInfo, travelingDest};
-}
-
-/**
- * calculate how many nights are between the two dates
- * @param date1 - first date
- * @param date2 - second date
- * @return {number} number of nights
- */
-function calculateNightsBetween(date1, date2) {
-    var DAYS = 1000 * 60 * 60 * 24;
-    var date1_ms = date1;
-    var date2_ms = date2;
-    var difference_ms = Math.abs(date1_ms - date2_ms);
-    return Math.ceil(difference_ms / DAYS);
 }

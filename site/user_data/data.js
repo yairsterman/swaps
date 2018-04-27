@@ -146,7 +146,29 @@ const requestType ={
     cancel: 2,
 };
 
+const visibleRequestData ={
+    transactionUser1: false,
+    transactionUser2: false,
+    verifyTransactionUser1: false,
+    verifyTransactionUser2: false,
+};
+
 const requestData = 'firstName image photos _id apptInfo country city reviews rating occupation';
+
+
+const transactionType = {
+    verify: 0,
+    regular: 1,
+    refund: 2,
+    rejected: 3,
+};
+
+const transactionMode = {
+    verify: 'V',
+    regular: 'A',
+    refund: 2,
+    rejected: 3,
+};
 
 const genders =[
     {value:1, name:'Female'},
@@ -257,5 +279,19 @@ data.getRequestType = function(){
 data.getRequestData = function(){
     return requestData;
 };
+
+data.getTransactionType = function(){
+    return transactionType;
+};
+
+data.getTransactionMode = function(){
+    return transactionMode;
+};
+
+
+data.getVisibleRequestData = function(){
+    return visibleRequestData;
+};
+
 
 module.exports = data;

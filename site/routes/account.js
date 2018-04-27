@@ -545,7 +545,7 @@ router.get('/get-requests', function (req, res, next) {
         res.json(requestIds);
         return;
     }
-    Request.find({_id: {$in: requestIds}, status: {$ne: Data.getRequestStatus().canceled}})
+    Request.find({_id: {$in: requestIds}, status: {$ne: Data.getRequestStatus().canceled}}, Data.getVisibleRequestData())
         .populate({
             path: 'user1',
             match: { _id: { $ne: id }}, // no need to populate user's own document
