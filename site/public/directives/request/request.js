@@ -18,49 +18,25 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.userId = $scope.user._id;
 
     $scope.showPayment = function(){
+        if(!validateRequest()){
+            return;
+        }
+        $scope.datesError = $scope.guestsError =  $scope.messageError = false;
         $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
         $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
         $scope.totalPayment = $scope.depositPlan.night * $scope.numberOfNights;
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
+        $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
     }
 
     $scope.goToPayment = function(){
-        $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.payment = true;
     }
 
     $scope.close = function(){
         $scope.$dismiss();
-    }
-
-    $scope.sendRequest = function(){
-        $scope.processing = true;
-        var data = {
-            user: $scope.user,
-            recipientId: $scope.profile._id,
-            dates: $scope.swap.dates,
-            message: $scope.send.message,
-            guests: $scope.swap.guests
-        }
-        MessageService.sendRequest(data.user, data.recipientId, data.message, data.dates, data.guests)
-        .then(function(response){
-            $scope.processing = false;
-            $scope.requestComplete = true;
-            $rootScope.user = response;
-            $scope.user = $rootScope.user;
-            $scope.$parent.requestSent = true;
-            $timeout(function(){
-                $scope.close();
-            },5000);
-        },
-        function(err){
-            $scope.requestComplete = true;
-            $scope.completeText = err;
-            $scope.error = true;
-            $scope.processing = false;
-        });
     }
 
     $scope.removeDates = function(swap){
@@ -82,6 +58,26 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
 
     $scope.showRequest = function(){
         $scope.isMatch = false;
+    }
+
+    function validateRequest(){
+        $scope.datesError = $scope.guestsError =  $scope.messageError = false;
+
+        if(!$scope.swap.to || !$scope.swap.from || ($scope.swap.to == $scope.swap.from)){
+            $scope.datesError = true;
+            return false;
+        }
+        if(!$scope.swap.guests){
+            $scope.swap.guests = 2;
+            $scope.guestsError = true;
+            return false;
+        }
+        if($scope.send.message == ''){
+            $scope.messageError = true;
+            return false;
+        }
+
+        return true;
     }
 
     function calculateWeeksBetween(date1, date2) {

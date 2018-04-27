@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-sm-8 col-xs-12">
                     <div class="search-field">
-                        <input type="text" class="form-control" id="dates" name="dates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                        <input type="text" class="form-control {{datesError?'error':''}}" id="dates" name="dates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                user-city="userCity" locale-format="localeFormat" model-format="modelFormat" find-travel="true" data="data" datepicker>
                         <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates()"></div>
                     </div>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-sm-8 col-xs-12">
                     <div class="guests-search">
-                        <input type="number" class="form-control guests" id="guests" ng-model="swap.guests"
+                        <input type="number" class="form-control guests {{guestsError?'error':''}}" id="guests" ng-model="swap.guests"
                                min="1" max="8">
                     </div>
                 </div>
@@ -75,10 +75,10 @@
         </div>
         <div class="sub-title send-message">
             <label for="about" class="small-text blue">Tell {{profile.firstName}} a little about your trip</label>
-            <textarea id="about" rows="3" cols="20" class="form-control send-text" ng-model="send.message" placeholder="Hey {{profile.firstName}}! ...">
+            <textarea id="about" rows="3" cols="20" class="form-control send-text {{messageError?'error':''}}" ng-model="send.message" placeholder="Hey {{profile.firstName}}! ...">
                           </textarea>
         </div>
-        <input type="button" class="btn btn-primary btn-swap {{send.message == '' || !swap.from || !swap.to || !swap.guests?'disabled':''}}" value="Go to Payment" ng-click="showPayment()" ng-disabled="send.message == '' || !swap.from || !swap.to || !swap.guests" disabled="{{send.message == '' || !swap.from || !swap.to || !swap.guests}}">
+        <input type="button" class="btn btn-primary btn-swap" value="Go to Payment" ng-click="showPayment()">
     </div>
     <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
         <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
@@ -99,7 +99,7 @@
         </div>
     </div>
     <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
-        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="swap.dates" message="send.message" guests="swap.guests" request-type="data.requestType.request" action="sendRequest()"></payment>
+        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="dates" message="send.message" guests="swap.guests" request-type="data.requestType.request" action="sendRequest()"></payment>
         <div class="loader-wrapper" ng-if="processing">
             <div class="loader">
 
