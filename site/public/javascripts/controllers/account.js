@@ -258,7 +258,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.send.message = '';
         $scope.messageIndex = $index;
         $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
-        $scope.requestSentByMe = $scope.currentConversationRequest?$scope.currentConversationRequest.sentBy == $scope.user._id:false;
+        $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
         $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
         if(!$scope.currentConversation.read){
             MessageService.readMessage($scope.user, $scope.currentConversationId).then(function(data){
@@ -348,40 +348,38 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
     }
 
-    $scope.requestIsPending = function(){
-        for(i = 0; i < $scope.user.requests.length; i++){
-            if($scope.user.requests[i].id == $scope.currentConversationId && $scope.user.requests[i].status == 0){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    $scope.requestAwaitingConfirm = function(){
-        for(i = 0; i < $scope.user.requests.length; i++){
-            if($scope.user.requests[i].id == $scope.currentConversationId && $scope.user.requests[i].status == 1){
-                return true;
-            }
-        }
-        return false;
-    };
-
     $scope.requestStatus = function(id){
-        for(var i = 0; i < $scope.user.requests.length; i++){
-            var request = $scope.user.requests[i];
-            if(request.userId == id){
-                return request.status;
+        if(!$scope.requests){
+            return -1;
+        }
+        var requests = $scope.requests.filter(function(request){
+            if(request.user1){ //user was the request recipient
+                return request.user1._id == id;
             }
+            else{ //user was the request sender
+                return request.user2._id == id;
+            }
+        });
+        if(requests[0]){
+            return requests[0].status;
         }
         return -1;
     };
 
     $scope.getRequest = function(id){
-        for(var i = 0; i < $scope.user.requests.length; i++){
-            var request = $scope.user.requests[i];
-            if(request.userId == id){
-                return request;
+        if(!$scope.requests){
+            return null;
+        }
+        var requests = $scope.requests.filter(function(request){
+            if(request.user1){ //user was the request recipient
+                return request.user1._id == id;
             }
+            else{ //user was the request sender
+                return request.user2._id == id;
+            }
+        });
+        if(requests[0]){
+            return requests[0];
         }
         return null;
     };
@@ -407,7 +405,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){
             $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
-            $scope.requestSentByMe = $scope.currentConversationRequest?$scope.currentConversationRequest.sentBy == $scope.user._id:false;
+            $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
             $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
         }
         AccountService.getRequests().then(function(requests){

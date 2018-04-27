@@ -285,7 +285,7 @@
                             <div class="messages-scroll">
                                 <div class="messages-list"
                                      ng-repeat="message in user.messages | searchMessages:searchTerm | orderBy: orderByDate">
-                                    <div class="single-message" ng-click="openConversation(message, $index)">
+                                    <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="openConversation(message, $index)">
                                         <div class="">
                                             <div class="photo" style="background-image:url('{{message.image}}')"
                                                  ng-click="go('profile/'+message.id )">
@@ -358,7 +358,7 @@
                                 <input type="button"
                                        class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
                                        value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
-                                       ng-disabled="(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1) || saving}}"
+                                       ng-disabled="(currentConversationRequest && currentConversationRequest.user2 && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.user2 && currentConversationStatus != -1) || saving}}"
                                        ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):setSwap(currentConversation)">
                                 <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>

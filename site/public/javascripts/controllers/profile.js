@@ -207,14 +207,19 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
     };
     
-    function checkRequestSent() {
-        var requests = $scope.user.requests.filter(function (request) {
-            return request.status != $scope.data.requestStatus.canceled;
+    function checkRequestSent(){
+        AccountService.getRequests().then(function(requests){
+            $scope.user.requests = requests;
+            var requests = $scope.user.requests.filter(function (request) {
+                return request.status != $scope.data.requestStatus.canceled;
+            });
+            requests = requests.map(function(request){
+                return request.user1?request.user1._id:request.user2._id;
+            });
+            $scope.requestSent = requests.includes($scope.profile._id);
+        },function(err){
+            $scope.requestSent = false;
         });
-        requests = requests.map(function(request){
-            return request.userId;
-        });
-        $scope.requestSent = requests.includes($scope.profile._id);
     }
 
     var myoverlay = new google.maps.OverlayView();
