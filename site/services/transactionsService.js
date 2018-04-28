@@ -61,12 +61,67 @@ function chargeRequest(token, userId, plan, guests, nights){
 }
 
 /**
+ * Send a refund to the token saved on this transaction,
+ * then save the new transaction to the DB
+ *
+ * @param transaction - transaction to refund
+ * @param userId - id of user to save the transaction on
+ */
+function refund(transaction, userId){
+
+    let dfr = Q.defer();
+
+    let requestUrl = config.tranzilaRequestUrl;
+
+    let amount = transaction.amount;
+    let index = transaction.index;
+    let confirmationCode = transaction.confirmationCode;
+    let token = transaction.token;
+
+    let tranmode = Data.getTransactionMode().refund + index;
+
+    request.post({
+        headers : {"Content-Type": "application/x-www-form-urlencoded"},
+        url: requestUrl,
+        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&CreditPass=${config.CreditPass}&authnr=${confirmationCode}&TranzilaTK=${token}&tranmode=${tranmode}&sum=${amount}&currency=1&cred_type=1&response_return_format=json`
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            let result;
+            try{
+                result = JSON.parse(body);
+                if(result.error_msg){
+                    return dfr.reject(result.error_msg);
+                }
+                result.type = Data.getTransactionType().refund;
+                createAndSaveToUser(result, userId).then(function({transactionId, token}){
+                    dfr.resolve(transactionId);
+                },function(err){
+                    dfr.reject(err);
+                });
+            }
+            catch(e){
+                dfr.reject(e);
+            }
+        }
+        else{
+            dfr.reject(error);
+        }
+    });
+
+    return dfr.promise;
+}
+
+/**
  * Create and save transaction in DB, then save transaction on user
  *
  * @param data - transaction data
  */
 function createAndSaveToUser (data, userId){
     let dfr = Q.defer();
+
+    // if(data.ConfirmationCode == '0000000'){//failed transaction
+    //     dfr.reject('transaction failed');
+    // }
 
     let token = data.TranzilaTK;
     let transaction = new Transaction({
@@ -116,4 +171,5 @@ function saveTransactionId(userId, transactionId){
 module.exports = {
     chargeRequest: chargeRequest,
     createAndSaveToUser: createAndSaveToUser,
+    refund: refund,
 };

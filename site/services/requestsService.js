@@ -96,6 +96,7 @@ module.exports.confirm = function(params) {
     let dfr = Q.defer();
     let recipient = {};
     let sender = {};
+    let dates = {};
 
     let now = Date.now();
     let newMessage = {
@@ -104,37 +105,30 @@ module.exports.confirm = function(params) {
         message: 'Request Confirmed'
     };
 
-   chargeUsers(params).then(function(results){
+    chargeUsers(params).then(function(results){
         return confirmRequest(results);
     }).then(function(result){
         sender = result.sender;
         recipient = result.recipient;
+        dates = result.dates;
+        return updateUserTravelInfo(sender, dates);
+    })
+    .then(function(){
+        return updateUserTravelInfo(recipient, dates);
+    })
+    .then(function(){
         return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
     })
     .then(function(){
         return MessageService.saveMessage(recipient._id, sender._id, sender._id, newMessage, true);
     })
-   .then(function(){
-       dfr.resolve();
-   },function(err){
-       dfr.reject(err);
-   });
+    .then(function(){
+        dfr.resolve();
+    },function(err){
+        dfr.reject(err);
+    });
 
-   return dfr.promise;
-};
-
-module.exports.cancel = function(params) {
-    var recipientId = req.body.recipientId;
-    var sender = req.user;
-    var departure = req.body.departure;
-    var returnDate = req.body.returnDate;
-    var message = req.body.message;
-    cancelRequest(sender._id, recipientId, departure, returnDate, message).then(function(){
-            res.json({status: 'success', message: 'canceled'});
-        },
-        function(err){
-            res.json(err);
-        });
+    return dfr.promise;
 };
 
 /**
@@ -184,6 +178,7 @@ function saveRequest(requestDetails){
             if (!_sender)
                 return defferd.reject(err);
             sender = _sender;
+            // save request to second user
             return User.findOneAndUpdate({_id: recipientId}, { $push: { requests: requestId}});
         })
         .then(function(_recipient){
@@ -214,6 +209,7 @@ function confirmRequest(info){
     };
 
     Request.findOneAndUpdate({_id: info.requestId}, {$set: set})
+        // populate both users to get their information
         .populate({
             path: 'user1'
         })
@@ -251,83 +247,158 @@ function confirmRequest(info){
     return deferd.promise;
 }
 
-function cancelRequest(senderId, recipientId, departure, returnDate, message){
-    var deferd = Q.defer();
-    let declined = false;
-    let sender = {};
-    let recipient = {};
-    User.findOne({_id: senderId})
-        .then(function (_sender) {
-            sender = _sender;
-            if (!sender._id){
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else {
-                var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    if(sender.requests[requestIndex].status === Data.getRequestStatus().pending){
-                        declined = true;
-                    }
-                    sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
-                    return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
-                }
-            }
-        })
-        .then(function (updated) {
-            if (!updated.ok) {
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else {
-                return User.findOne({_id: recipientId});
-            }
-        })
-        .then(function(_recipient){
-            recipient = _recipient;
-            if (!recipient._id){
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else{
-                var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    recipient.requests[requestIndex].status = Data.getRequestStatus().canceled;
-                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
-                }
-            }
-        })
-        .then(function (updated) {
-            if (!updated.ok){
-                console.log("Request not sent" + err);
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else{
-                console.log("updated DB");
-                if(declined){
-                    email.sendMail([recipient.email],'Swap Declined', emailMessages.declined(recipient, sender, message));
-                }
-                else{
-                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
-                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
-                }
-                deferd.resolve();
-            }
-        },function(err){
-            deferd.reject(err);
-        });
-    return deferd.promise;
+/**
+ * Update the travel information of the user according to the confirmed
+ * travel dates
+ *
+ * @param user - user to update
+ * @param dates - confirmed dates
+ */
+function updateUserTravelInfo(user, dates){
+    let updatedInfo = updateDates(user.travelingInfo, user.travelingDest, dates.departure, dates.returnDate);
+
+    let toUpdate = {
+        travelingInfo: updatedInfo._travelingInfo,
+        travelingDest: updatedInfo.travelingDest
+    };
+    return updateUser(user, toUpdate);
 }
 
+/**
+ * Remove and update user's canceled requests
+ *
+ * @param user - user to update
+ * @param requestId - requestId to remove from requests
+ */
+function removeCanceledRequest(user, requestId){
+    //find index
+    let index = -1;
+    user.requests.forEach(function(request, i){
+        if(request.toString() == requestId)
+            index = i;
+    });
+    if(index != -1){
+        user.requests = user.requests.splice(index,1) // remove the request;
+    }
+    return updateUser(user, {requests: user.requests});
+}
+
+/**
+ * Update user model
+ *
+ * @param user - user to update
+ * @param toUpdate - fields to update
+ */
+function updateUser(user, toUpdate){
+    let dfr = Q.defer();
+    User.update({_id: user._id}, {$set: toUpdate})
+        .then(function (updated) {
+            if (!updated.ok) {
+                dfr.reject('User not updated');
+            }
+            else {
+                dfr.resolve();
+            }
+        });
+    return dfr.promise;
+}
+
+/**
+ * Cancel or decline a swap request
+ *
+ * @param requestId - the request ID
+ */
+module.exports.cancelRequest = function(requestId, userId, message){
+    let defer = Q.defer();
+
+    let user1 = {};
+    let user2 = {};
+    let transaction1 = {};
+    let transaction2 = {};
+    let declined = false;
+
+    getConfirmedRequest(requestId).then(function(request){
+        user1 = request.user1;
+        user2 = request.user2;
+        transaction1 = request.transactionUser1;
+        transaction2 = request.transactionUser1;
+        // if status s pending and the call came from user2 then send decline message
+        declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
+
+        //refund transactions
+        return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
+    })
+    .then(function(){
+        //update request
+        return Request.update({_id: requestId}, {$set: {status: Data.getRequestStatus().canceled}});
+    })
+    .then(function(updated){
+        if (!updated.ok) {
+            defer.reject("Request not updated");
+        }
+        // update users requests
+        else {
+            return removeCanceledRequest(user1, requestId);
+        }
+    })
+    .then(function(){
+        return removeCanceledRequest(user2, requestId);
+    })
+    .then(function(){
+        defer.resolve();
+        if(declined){
+            email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
+        }
+        else{
+            let sender = user1._id == userId?user1:user2;
+            let recipient = user1._id != userId?user1:user2;
+            email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
+            email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+        }
+    },function(err){
+        error.message = err;
+        defer.reject(error);
+    });
+
+    return defer.promise;
+};
+
+/**
+ * Send refund for both transactions upon canceling request.
+ * if user2 is declining request then no need to send refunds
+ *
+ * @param transaction1 - first user transaction
+ * @param transaction2 - second user transaction
+ * @param user1 - first user
+ * @param user2 - second user
+ * @param declined - is request declined
+ */
+function sendRefundTransactions(transaction1, transaction2, user1, user2, declined){
+    let dfr = Q.defer();
+    if(declined){
+        return dfr.resolve();
+    }
+    dfr.resolve();
+
+    //TODO - currently transactions arent working so can't cancel them.
+    // transactionService.refund(transaction1, user1._id)
+    // .then(function(){
+    //     return transactionService.refund(transaction2, user2._id);
+    // })
+    // .then(function(){
+    //     dfr.resolve();
+    // },function(err){
+    //     dfr.reject(err);
+    // });
+
+    return dfr.promise;
+}
+
+/**
+ * Charge the users with the transaction tokens saved on the request
+ *
+ * @param params
+ */
 function chargeUsers(params){
     let dfr = Q.defer();
 
@@ -370,6 +441,11 @@ function chargeUsers(params){
     return dfr.promise;
 }
 
+/**
+ * Get a request that is still pending.
+ *
+ * @param id - request ID
+ */
 function getRequest(id){
     let dfr = Q.defer();
     Request.findOne({_id: id, status: Data.getRequestStatus().pending})
@@ -390,6 +466,43 @@ function getRequest(id){
         });
     return dfr.promise;
 }
+
+/**
+ * Get a request that is has been confirmed.
+ *
+ * @param id - request ID
+ */
+function getConfirmedRequest(id){
+    let dfr = Q.defer();
+    //populate transactions in order to cancel them
+    Request.findOne({_id: id})
+        .populate({
+            path: 'transactionUser1',
+        })
+        .populate({
+            path: 'transactionUser2',
+        })
+        .populate({
+            path: 'user1',
+        })
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, request) {
+            if (err || !request) {
+                let msg = err;
+                if(!request){
+                    msg = 'No relevant request found';
+                }
+                dfr.reject(msg);
+            }
+            else {
+                dfr.resolve(request);
+            }
+        });
+    return dfr.promise;
+}
+
 
 /**
  * Check if given dates are available for anyone of the users

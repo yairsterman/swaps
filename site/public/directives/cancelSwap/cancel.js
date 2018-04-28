@@ -4,6 +4,7 @@ swapsApp.controller('cancelController', function($scope, decline, requestInfo, $
     $scope.requestInfo = requestInfo;
     $scope.subTitle = 'Are you sure you want to ' + ($scope.decline?'decline':'cancel') + ' this Swap' + ($scope.decline?' request?':'?');
     $scope.send = {};
+    $scope.name = requestInfo.user1?requestInfo.user1.firstName:requestInfo.user2.firstName;
 
     $scope.close = function(){
         $scope.modelInstance.close();
@@ -15,7 +16,7 @@ swapsApp.controller('cancelController', function($scope, decline, requestInfo, $
 
     $scope.cancelRequest = function(){
         $scope.processing = true;
-        MessageService.cancelRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate, $scope.send.message).then(function(data){
+        MessageService.cancelRequest(requestInfo._id, $scope.send.message).then(function(data){
             $scope.processing = false;
             $scope.cancelSent = true;
             $timeout(function(){

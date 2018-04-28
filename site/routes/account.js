@@ -539,7 +539,7 @@ router.post('/upload', upload.array('photos', 8), function (req, res) {
 
 router.get('/get-requests', function (req, res, next) {
     var id = req.user._id;
-    var requestIds = req.user.requests
+    var requestIds = req.user.requests;
 
     if (requestIds.length == 0) {
         res.json(requestIds);

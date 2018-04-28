@@ -166,7 +166,7 @@ const transactionType = {
 const transactionMode = {
     verify: 'V',
     regular: 'A',
-    refund: 2,
+    refund: 'C',
     rejected: 3,
 };
 

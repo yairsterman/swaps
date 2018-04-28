@@ -14,6 +14,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.select = {};
 
     const DAY = 1000*60*60*24;
+    $scope.day = DAY;
 
     const SUCCESS = 'Changes saved successfully';
 
@@ -130,7 +131,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.cancelRequest = function(requestInfo){
-        var decline = requestInfo.status == 0 && requestInfo.sentBy != $scope.user._id
+        var decline = requestInfo.status == 0 && requestInfo.user1
         $scope.saving = true;
         $scope.modelInstance = $uibModal.open({
             animation: true,
@@ -421,6 +422,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         AccountService.getRequests().then(function(requests){
             $scope.requests = requests;
+            if($scope.currentConversationId){
+                $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
+                $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
+                $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
+            }
         },function(err){
             showAlert('Error getting requests', true);
         });

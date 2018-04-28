@@ -8,7 +8,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.discount = {
         name: 'Beginners Discount'
     }
-    $scope.completeText = 'Your request has been sent';
+    $scope.completeText = $scope.confirmation?'Request Confirmed!':'Your request has been sent';
 
     $scope.payment = false;
     $scope.isMatch = $scope.$parent.isMatch;
@@ -22,10 +22,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
             return;
         }
         $scope.datesError = $scope.guestsError =  $scope.messageError = false;
-        $scope.depositPlan = $scope.data.securityDeposit[$scope.profile.deposit];
+        $scope.depositPlan = $scope.confirmation?$scope.data.securityDeposit[$scope.user.deposit]:$scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
         $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-        $scope.totalPayment = $scope.depositPlan.night * $scope.numberOfNights;
+        $scope.totalPayment = $scope.depositPlan.night * $scope.numberOfNights * $scope.swap.guests;
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
