@@ -7,6 +7,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
+var Request = require('../models/Request.js');
 var path = require('path');
 var fs = require('fs');
 var Q = require('q');
@@ -538,29 +539,33 @@ router.post('/upload', upload.array('photos', 8), function (req, res) {
 
 router.get('/get-requests', function (req, res, next) {
     var id = req.user._id;
-    var requestIds = req.user.requests.filter(function (request) {
-        return request.status != Data.getRequestStatus().canceled;
-    });
-    requestIds = requestIds.map(function (request) {
-        return request.userId;
-    });
+    var requestIds = req.user.requests;
+
     if (requestIds.length == 0) {
         res.json(requestIds);
         return;
     }
-    User.find({_id: {$in: requestIds}}, Data.getVisibleUserData().accessible, function (err, users) {
-        if (err) {
-            error.message = err;
-            res.json(error);
-        }
-        else {
-            res.json(users);
-        }
-    });
+    Request.find({_id: {$in: requestIds}, status: {$ne: Data.getRequestStatus().canceled}}, Data.getVisibleRequestData())
+        .populate({
+            path: 'user1',
+            match: { _id: { $ne: id }}, // no need to populate user's own document
+            select: Data.getRequestData(),
+        })
+        .populate({
+            path: 'user2',
+            match: { _id: { $ne: id }}, // no need to populate user's own document
+            select: Data.getRequestData(),
+        })
+        .exec(function (err, requests) {
+            if (err) {
+                error.message = err;
+                res.json(error);
+            }
+            else {
+                res.json(requests);
+            }
+        });
 });
-
-
-
 
 router.put('/add-favorite', function (req, res, next) {
     var id = req.user.id;

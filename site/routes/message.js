@@ -7,6 +7,7 @@ var dateFormat = require('dateformat');
 var email = require('../services/email.js');
 var emailMessages = require('../services/email-messages.js');
 var Data = require('../user_data/data.js');
+var requestsService = require('../services/requestsService.js');
 
 var error = {
 	error: true,
@@ -49,117 +50,16 @@ router.post('/sendMessage', function(req, res, next) {
 	});
 });
 
-router.post('/sendRequest', function(req, res, next) {
-	let recipientId = req.body.recipientId;
-	let sender = req.user;
-	let recipient ={};
-	let guests = req.body.guests;
-	let now = Date.now();
-	let departure;
-	let returnDate;
-	let message;
-	let newMessage;
-	let dates;
-    let nights;
-	console.log(req.body.dates);
-	if(req.body.dates){
-		dates = req.body.dates.split('-');
-		departure = Date.parse(dates[0].trim());
-		returnDate = Date.parse(dates[1].trim());
-		nights = calculateNightsBetween(departure, returnDate);
-	}
-	else{
-        error.message = "No dates specified";
-        res.json(error);
-        return;
-	}
-    checkAvailability(sender._id, recipientId, departure, returnDate).then(function() {
-        return saveRequest(sender._id, recipientId, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
-    }).then(function(_recipient){
-    	recipient = _recipient;
-        email.sendMail([recipient.email],'New Swap Request!', emailMessages.request(recipient, sender, {departure:departure,returnDate:returnDate}, nights, req.body.message));
-        return saveRequest(recipientId, sender._id, departure, returnDate, Data.getRequestStatus().pending, guests, sender._id);
-	})
-	.then( function(user){
-        email.sendMail([sender.email],'Swap Request Sent', emailMessages.requestSent(sender, recipient));
-        message = 'SWAP REQUEST:<br>' + sender.firstName+ ' Requested to swap for ' + nights + (nights >1?' Nights':' Night') + '<br>' +
-		'Check in: ' + dates[0] +'<br>' +
-		'Check out: ' + dates[1] +'<br>' +
-			(req.body.message?sender.firstName + ' Says: ' + req.body.message:'') + '<br>';
-        newMessage = {
-            id: sender._id,
-            date: now,
-            isRequest: true,
-            message: message
-        }
-		return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
-	})
-	.then( function(){
-		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
-	})
-	.then(function(){
-		User.findOne({_id: sender._id}, function (err, updatedUser) {
-			if (err){
-				console.log("couldn't find user but Message was sent" + err);
-				error.message = "couldn't find user but Message was sent";
-				res.json(error);
-			}
-			else{
-				res.json(updatedUser);
-			}
-		});
-	},function(err){
-		res.json(err);
-	});
-});
-
-router.post('/confirmRequest', function(req, res, next) {
-	var recipientId = req.body.recipientId;
-	var sender = req.user;
-    var departure = req.body.departure;
-    var returnDate = req.body.returnDate;
-    var now = Date.now();
-    var newMessage = {
-        date: now,
-        isRequest: false,
-        message: 'Request Confirmed'
-    }
-    checkAvailability(sender._id, recipientId, departure, returnDate).then(function(){
-    	return confirmRequest(sender._id, recipientId, departure, returnDate);
-	}).then(function(){
-        return saveMessage(sender._id, recipientId, sender._id, newMessage, false);
-    })
-	.then(function(){
-		return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
-	})
-	.then(function(){
-		User.findOne({_id: sender._id}, function (err, updatedUser) {
-			if (err){
-				console.log("couldn't find user but Confirm was sent" + err);
-				error.message = "couldn't find user but Confirm was sent";
-				res.json(error);
-			}
-			else{
-				res.json(updatedUser);
-			}
-		});
-	},function(err){
-		res.json(err);
-	});
-});
-
 router.post('/cancelRequest', function(req, res) {
-    var recipientId = req.body.recipientId;
-    var sender = req.user;
-    var departure = req.body.departure;
-    var returnDate = req.body.returnDate;
-    var message = req.body.message;
-    cancelRequest(sender._id, recipientId, departure, returnDate, message).then(function(){
-            res.json({status: 'success', message: 'canceled'});
-        },
-        function(err){
-            res.json(err);
-        });
+    let requestId = req.body.requestId;
+    let message = req.body.message;
+    let userId = req.user._id;
+    requestsService.cancelRequest(requestId, userId, message).then(function(){
+		res.json({status: 'success', message: 'canceled'});
+	},
+	function(err){
+		res.json(err);
+	});
 });
 
 router.post('/readMessage', function(req, res) {
@@ -233,136 +133,6 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 		}
 	});
 	return defferd.promise;
-}
-
-function saveRequest(senderId, recipientId, departure, returnDate, status, guests, sentBy){
-	var defferd = Q.defer();
-	User.findOne({_id: senderId}, function (err, sender) {
-		if (err){
-			error.message = "Request not sent";
-			defferd.reject(error);
-		}
-		else{
-			if(sender._id){
-				User.findOne({_id: recipientId}, function (err, user) {
-					if (err){
-						error.message = "Request not sent";
-						defferd.reject(error);
-					}
-					else{
-						if(user){
-							var requests = user.requests;
-							var index = -1;
-
-							requests.unshift({
-								_id: requests.length + 1,
-								userId: sender._id,
-								image: sender.image,
-								name: sender.firstName,
-								city: sender.city,
-								departure: departure,
-								returnDate : returnDate - DAY, // book only the nights, without checkout date
-                                sentBy: sentBy,
-                                guests: guests,
-								status: status
-							});
-
-							User.update({_id: recipientId}, { $set: { requests: requests}}, function (err, updated) {
-								if (err){
-									console.log("Request not sent" + err);
-									error.message = "Request not sent";
-									defferd.reject(error);
-								}
-								else{
-									console.log("updated DB");
-									defferd.resolve(user);
-								}
-							});
-						}
-						else{
-							error.message = "Request not sent";
-							defferd.reject(error);
-						}
-					}
-				});
-			}
-		}
-	});
-	return defferd.promise;
-}
-
-function confirmRequest(senderId, recipientId, departure, returnDate){
-    var deferd = Q.defer();
-    let sender = {};
-    let recipient = {};
-    let dates = {
-        departure: departure,
-        returnDate: returnDate
-	};
-    User.findOne({_id: senderId})
-		.then(function (_sender) {
-            sender = _sender;
-			if (!sender){
-				error.message = "confirmation not sent";
-                throw new Error(error.message);
-			}
-			else {
-
-				var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    sender.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                    var updatedInfo = updateDates(sender.travelingInfo, sender.travelingDest, departure, returnDate);
-                    return User.update({_id: sender._id}, {$set: {requests: sender.requests, travelingInfo: updatedInfo._travelingInfo, travelingDest: updatedInfo.travelingDest}});
-                }
-            }
-		})
-    	.then(function (updated) {
-            if (!updated.ok) {
-                error.message = "confirmation not sent";
-                throw new Error(error.message);
-            }
-            else {
-                return User.findOne({_id: recipientId});
-            }
-        })
-		.then(function(_recipient){
-            recipient = _recipient;
-			if (!recipient){
-				error.message = "confirmation not sent";
-                throw new Error(error.message);
-			}
-			else{
-				var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
-				if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-				}
-				else{
-                    recipient.requests[requestIndex].status = Data.getRequestStatus().confirmed;
-                    var updatedInfo = updateDates(recipient.travelingInfo, recipient.travelingDest, departure, returnDate);
-                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests, travelingInfo: updatedInfo._travelingInfo, travelingDest: updatedInfo.travelingDest}});                }
-			}
-		})
-		.then(function (updated) {
-			if (!updated.ok){
-				console.log("confirmation not sent" + err);
-				error.message = "confirmation not sent";
-				deferd.reject(error);
-			}
-			else{
-				console.log("updated DB");
-                email.sendMail([sender.email],'Swap Confirmation', emailMessages.confirmation(sender, recipient, dates));
-                email.sendMail([recipient.email],'Swap Confirmation', emailMessages.confirmation(recipient, sender, dates));
-                deferd.resolve();
-			}
-		},function(err){
-            deferd.reject(err);
-		});
-	return deferd.promise;
 }
 
 function cancelRequest(senderId, recipientId, departure, returnDate, message){

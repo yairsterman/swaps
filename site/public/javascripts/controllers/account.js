@@ -13,6 +13,9 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.select = {};
 
+    const DAY = 1000*60*60*24;
+    $scope.day = DAY;
+
     const SUCCESS = 'Changes saved successfully';
 
     if($rootScope.user && $rootScope.user._id) {
@@ -128,7 +131,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.cancelRequest = function(requestInfo){
-        var decline = requestInfo.status == 0 && requestInfo.sentBy != $scope.user._id
+        var decline = requestInfo.status == 0 && requestInfo.user1
         $scope.saving = true;
         $scope.modelInstance = $uibModal.open({
             animation: true,
@@ -258,7 +261,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.send.message = '';
         $scope.messageIndex = $index;
         $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
-        $scope.requestSentByMe = $scope.currentConversationRequest?$scope.currentConversationRequest.sentBy == $scope.user._id:false;
+        $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
         $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
         if(!$scope.currentConversation.read){
             MessageService.readMessage($scope.user, $scope.currentConversationId).then(function(data){
@@ -299,6 +302,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
                 size: 'sm',
+                windowClass: 'request-modal',
                 controller: 'requestController',
                 scope: $scope
             });
@@ -326,61 +330,68 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.confirmRequest = function(requestInfo){
-        if($scope.saving){
+        var request = requestInfo._id?requestInfo:$scope.getRequest(requestInfo.id);
+        if(!request){
+            showAlert('Could not get request', true);
             return;
         }
-        $scope.saving = true;
-        if(!requestInfo.userId){ //this means the confirm was sent from message
-            requestInfo = $scope.getRequest(requestInfo.id);
-            if(!requestInfo){
+        var userId = requestInfo._id?requestInfo.user1?requestInfo.user1._id:requestInfo.user2._id:requestInfo.id
+        $scope.swap.from = request.checkin;
+        $scope.swap.to = request.checkout + DAY; // request is saved as nights so add day to checkout
+        UsersService.getProfile(userId).then(function(data){
+            $scope.profile = data.data;
+            $scope.requestId = request._id;
+            $scope.chooseDates = false;
+            $scope.confirmation = true;
+            $scope.modelInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '../../directives/request/request.html',
+                size: 'sm',
+                windowClass: 'request-modal',
+                controller: 'requestController',
+                scope: $scope
+            });
+            $scope.modelInstance.closed.then(function(){
+                $scope.user = $rootScope.user;
+                updateUser();
+            },function(){
                 $scope.saving = false;
-                return;
-            }
-        }
-        MessageService.confirmRequest(requestInfo.userId, requestInfo.departure, requestInfo.returnDate).then(function(data){
-            $scope.user = data;
-            updateUser();
-        }
-        ,function(err){
-            showAlert(err, true);
-            $scope.saving = false;
-        });
+            });
+        })
     }
-
-    $scope.requestIsPending = function(){
-        for(i = 0; i < $scope.user.requests.length; i++){
-            if($scope.user.requests[i].id == $scope.currentConversationId && $scope.user.requests[i].status == 0){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    $scope.requestAwaitingConfirm = function(){
-        for(i = 0; i < $scope.user.requests.length; i++){
-            if($scope.user.requests[i].id == $scope.currentConversationId && $scope.user.requests[i].status == 1){
-                return true;
-            }
-        }
-        return false;
-    };
 
     $scope.requestStatus = function(id){
-        for(var i = 0; i < $scope.user.requests.length; i++){
-            var request = $scope.user.requests[i];
-            if(request.userId == id){
-                return request.status;
+        if(!$scope.requests){
+            return -1;
+        }
+        var requests = $scope.requests.filter(function(request){
+            if(request.user1){ //user was the request recipient
+                return request.user1._id == id;
             }
+            else{ //user was the request sender
+                return request.user2._id == id;
+            }
+        });
+        if(requests[0]){
+            return requests[0].status;
         }
         return -1;
     };
 
     $scope.getRequest = function(id){
-        for(var i = 0; i < $scope.user.requests.length; i++){
-            var request = $scope.user.requests[i];
-            if(request.userId == id){
-                return request;
+        if(!$scope.requests){
+            return null;
+        }
+        var requests = $scope.requests.filter(function(request){
+            if(request.user1){ //user was the request recipient
+                return request.user1._id == id;
             }
+            else{ //user was the request sender
+                return request.user2._id == id;
+            }
+        });
+        if(requests[0]){
+            return requests[0];
         }
         return null;
     };
@@ -406,14 +417,16 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){
             $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
-            $scope.requestSentByMe = $scope.currentConversationRequest?$scope.currentConversationRequest.sentBy == $scope.user._id:false;
+            $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
             $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
         }
         AccountService.getRequests().then(function(requests){
             $scope.requests = requests;
-            $scope.requests.forEach(function(value){
-                value.requestInfo = $scope.getRequest(value._id);
-            });
+            if($scope.currentConversationId){
+                $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
+                $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
+                $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
+            }
         },function(err){
             showAlert('Error getting requests', true);
         });
@@ -426,6 +439,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         else{
             alertify.error(msg);
         }
+    }
+
+    $scope.orderByDate = function(conversation){
+        return -(conversation.messages[conversation.messages.length -1].date);
     }
 
 });

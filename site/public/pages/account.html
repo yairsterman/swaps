@@ -284,8 +284,8 @@
                             </div>
                             <div class="messages-scroll">
                                 <div class="messages-list"
-                                     ng-repeat="message in user.messages | searchMessages:searchTerm | orderBy: 'message.messages[message.messages.length -1].date'">
-                                    <div class="single-message" ng-click="openConversation(message, $index)">
+                                     ng-repeat="message in user.messages | searchMessages:searchTerm | orderBy: orderByDate">
+                                    <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="openConversation(message, $index)">
                                         <div class="">
                                             <div class="photo" style="background-image:url('{{message.image}}')"
                                                  ng-click="go('profile/'+message.id )">
@@ -358,7 +358,7 @@
                                 <input type="button"
                                        class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
                                        value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
-                                       ng-disabled="(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.sentBy == user._id && currentConversationStatus != -1) || saving}}"
+                                       ng-disabled="(currentConversationRequest && currentConversationRequest.user2 && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.user2 && currentConversationStatus != -1) || saving}}"
                                        ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):setSwap(currentConversation)">
                                 <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
                           </textarea>
@@ -376,37 +376,38 @@
                     <div class="loader" ng-if="saving"></div>
                     <div class="swap-title" ng-hide="saving"></div>
                     <div class="mg-0 row request-list" ng-repeat="request in requests" ng-hide="saving">
-                        <swapper-home class="traveler-col col-sm-6 col-xs-12" traveler="request"></swapper-home>
+                        <swapper-home ng-if="request.user1" class="traveler-col col-sm-6 col-xs-12" traveler="request.user1"></swapper-home>
+                        <swapper-home ng-if="request.user2" class="traveler-col col-sm-6 col-xs-12" traveler="request.user2"></swapper-home>
                         <div class="request-info col-sm-6 col-xs-12">
                             <div class="form-group row">
                                 <label class="col-sm-4 control-label">Check in:</label>
                                 <div class="col-sm-6">
-                                    {{request.requestInfo.departure | date :'MMMM dd, yyyy'}}
+                                    {{request.checkin | date :'MMMM dd, yyyy'}}
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 control-label">Check out:</label>
                                 <div class="col-sm-6">
-                                    {{request.requestInfo.returnDate | date :'MMMM dd, yyyy'}}
+                                    {{request.checkout + day | date :'MMMM dd, yyyy'}}
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 control-label">Request Status:</label>
                                 <div class="statuses col-sm-6">
                                     <div class="request-status"
-                                         ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy == user._id">
+                                         ng-if="request.status == 0 && request.user2">
                                         Pending
                                     </div>
-                                    <div class="request-status confirmed" ng-if="request.requestInfo.status == 1">Confirmed</div>
-                                    <div class="icon icon-check" ng-if="request.requestInfo.status == 1"></div>
+                                    <div class="request-status confirmed" ng-if="request.status == 1">Confirmed</div>
+                                    <div class="icon icon-check" ng-if="request.status == 1"></div>
                                     <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
-                                         ng-if="request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id"
-                                         ng-click="confirmRequest(request.requestInfo)">Confirm
+                                         ng-if="request.status == 0 && request.user1"
+                                         ng-click="confirmRequest(request)">Confirm
                                     </div>
                                 </div>
                             </div>
                             <div class="">
-                                <div class="cancel" ng-click="cancelRequest(request.requestInfo)" ng-hide="saving">{{request.requestInfo.status == 0 && request.requestInfo.sentBy != user._id?'Decline':'Cancel'}} Request</div>
+                                <div class="cancel" ng-click="cancelRequest(request)" ng-hide="saving">{{request.status == 0 && request.user1?'Decline':'Cancel'}} Request</div>
                             </div>
                         </div>
                     </div>

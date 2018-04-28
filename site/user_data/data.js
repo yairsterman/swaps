@@ -140,6 +140,36 @@ const requestStatus ={
     canceled: 2,
 };
 
+const requestType ={
+    request: 0,
+    confirm: 1,
+    cancel: 2,
+};
+
+const visibleRequestData ={
+    transactionUser1: false,
+    transactionUser2: false,
+    verifyTransactionUser1: false,
+    verifyTransactionUser2: false,
+};
+
+const requestData = 'firstName image photos _id apptInfo country city reviews rating occupation';
+
+
+const transactionType = {
+    verify: 0,
+    regular: 1,
+    refund: 2,
+    rejected: 3,
+};
+
+const transactionMode = {
+    verify: 'V',
+    regular: 'A',
+    refund: 'C',
+    rejected: 3,
+};
+
 const genders =[
     {value:1, name:'Female'},
     {value:2, name:'Male'},
@@ -153,9 +183,9 @@ const roomType =[
 ];
 
 const securityDeposit =[
-    {id: 0, type: 'nomad', displayName: 'Nomad', value:1 , night:1, week:70},
-    {id: 1, type: 'globetrotter', displayName: 'Globetrotter', value:5, night:5, week:350},
-    {id: 2, type: 'cosmopolite', displayName: 'Cosmopolite', value:12, night:12, week:800},
+    {id: 0, type: 'nomad', displayName: 'Nomad', value:1 , night:1, week:70, damage: 150},
+    {id: 1, type: 'globetrotter', displayName: 'Globetrotter', value:5, night:5, week:150, damage: 300},
+    {id: 2, type: 'cosmopolite', displayName: 'Cosmopolite', value:12, night:12, week:300, damage: 600},
 ];
 
 const creditCards = [
@@ -192,6 +222,7 @@ var dataForSite = {
     amenities: amenities,
     thingsToDo: thingsToDo,
     requestStatus: requestStatus,
+    requestType: requestType,
     houseRules: houseRules,
     genders: genders,
     roomType: roomType,
@@ -240,5 +271,27 @@ data.getHouseRules = function(){
 data.getData = function(){
     return dataForSite;
 };
+
+data.getRequestType = function(){
+    return requestType;
+};
+
+data.getRequestData = function(){
+    return requestData;
+};
+
+data.getTransactionType = function(){
+    return transactionType;
+};
+
+data.getTransactionMode = function(){
+    return transactionMode;
+};
+
+
+data.getVisibleRequestData = function(){
+    return visibleRequestData;
+};
+
 
 module.exports = data;

@@ -346,6 +346,9 @@
 						display: flex;
 						align-items: center;
 						cursor: pointer;
+						&.opened{
+							background-color: #d3d3d3;
+						}
 						&:first-child{
 							border-top: 1px solid #d3d3d3;
 						}
@@ -557,10 +560,19 @@
 						font-size: 16px;
 					}
 					.btn-swap{
-						background-color: #00BC00;
-						border-color: #027C00;
+						background-color: white;
+						color: #333;
+						transition: 0.3s ease;
+						&:hover{
+							color: white;
+							background-color: #0E5D7C;
+						}
 						&.btn-pending{
 							opacity: 0.5;
+							&:hover{
+								background-color: white;
+								color: #333;
+							}
 						}
 						&.btn-confirm{
 							background-color: white;

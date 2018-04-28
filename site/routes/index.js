@@ -108,9 +108,18 @@ router.post('/logout', function(req, res) {
     res.redirect('/');
 });
 
-router.get('/*', function(req, res, next) {
-    res.render('index.html', { title: 'Express' });
+router.get('/fail', function(req, res, next) {
+    res.render('transactions/fail.html', { });
 });
+
+router.get('/success', function(req, res, next) {
+    res.render('transactions/success.html', { });
+});
+
+router.get('/*', function(req, res, next) {
+    res.render('index.html', {});
+});
+
 
 function getGender(gender){
     if(gender.toLowerCase() == 'female')

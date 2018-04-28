@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="cancel-swap" ng-if="showMessage && !cancelSent">
-        <div class="sub-title" ng-if="decline">Please tell {{requestInfo.name}} why you wish to decline the request</div>
+        <div class="sub-title" ng-if="decline">Please tell {{name}} why you wish to decline the request</div>
         <div class="sub-title" ng-if="!decline">Canceling a confirmed Swap can be an inconvenience, please tell {{requestInfo.name}} why you wish to cancel the Swap</div>
         <div class="send-message">
             <textarea rows="3" cols="20" class="form-control send-text" ng-model="send.message" placeholder="">

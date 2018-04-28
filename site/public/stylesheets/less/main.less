@@ -17,6 +17,7 @@
 @import "info.less";
 @import "footer.less";
 @import "onboarding.less";
+@import "transactions.less";
 
 @font-face {
   font-family: 'MavenPro';
@@ -142,6 +143,15 @@ a{
 div{
   &:focus{
     outline: none;
+  }
+}
+
+.request-modal{
+  .modal-sm{
+    width: 435px !important;
+    @media @mobile {
+      width: auto !important;
+    }
   }
 }
 

@@ -119,6 +119,10 @@ function swapsController($scope, $rootScope, $filter, AccountService){
         $dismiss;
     };
 
+    $scope.orderByDeparture = function(swap){
+        return -(swap.departure);
+    };
+
     function updateUser(){
         $scope.user = $rootScope.user;
         $scope.swaps = $scope.user.travelingInfo;

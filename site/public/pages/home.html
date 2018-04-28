@@ -124,7 +124,7 @@
             </div>
         </div>
     </div>
-    <div class="join-now">
+    <div class="join-now" ng-if="false">
         <div class="bg-image">
             <div class="bottom-title">What are you waiting for? Start Swapping today!</div>
             <div class="join-buttons">
@@ -144,6 +144,103 @@
 
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="title">
+        <span>Our security plans</span>
+    </div>
+    <div class="payment-plan">
+        <div class="row all-plans">
+            <div class="col-sm-4">
+                <a href="/faq#securityDeposit">
+                    <div class="single-plan nomad">
+                        <div class="plan-top">
+                            <div class="plan-title">
+                                {{data.securityDeposit[0].displayName}}
+                                <br>
+                                Security Plan
+                            </div>
+                            <div class="plan-image">
+
+                            </div>
+                        </div>
+                        <div class="plan-bottom">
+                            <div class="small-text">
+                                Per night
+                            </div>
+                            <div class="price">
+                                {{data.securityDeposit[0].night}}$
+                            </div>
+                            <div class="covers">
+                                This plan covers up to <br> {{data.securityDeposit[0].damage}}$
+                            </div>
+                            <div class="small-text">
+                                in damages or cancellations
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <a href="/faq#securityDeposit">
+                <div class="col-sm-4">
+                    <div class="single-plan globetrotter">
+                        <div class="plan-top">
+                            <div class="plan-title">
+                                {{data.securityDeposit[1].displayName}}
+                                <br>
+                                Security Plan
+                            </div>
+                            <div class="plan-image">
+
+                            </div>
+                        </div>
+                        <div class="plan-bottom">
+                            <div class="small-text">
+                                Per night
+                            </div>
+                            <div class="price">
+                                {{data.securityDeposit[1].night}}$
+                            </div>
+                            <div class="covers">
+                                This plan covers up to <br> {{data.securityDeposit[1].damage}}$
+                            </div>
+                            <div class="small-text">
+                                in damages or cancellations
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="col-sm-4">
+                <a href="/faq#securityDeposit">
+                    <div class="single-plan cosmopolite">
+                        <div class="plan-top">
+                            <div class="plan-title">
+                                {{data.securityDeposit[2].displayName}}
+                                <br>
+                                Security Plan
+                            </div>
+                            <div class="plan-image">
+
+                            </div>
+                        </div>
+                        <div class="plan-bottom">
+                            <div class="small-text">
+                                Per night
+                            </div>
+                            <div class="price">
+                                {{data.securityDeposit[2].night}}$
+                            </div>
+                            <div class="covers">
+                                This plan covers up to <br> {{data.securityDeposit[2].damage}}$
+                            </div>
+                            <div class="small-text">
+                                in damages or cancellations
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

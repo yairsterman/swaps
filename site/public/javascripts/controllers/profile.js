@@ -15,7 +15,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         when:{}
     };
     $scope.canSendRequest = {};
-    $scope.localeFormat = 'MM/DD/YYYY';
+    $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MMMM DD, YYYY';
 
     $scope.mobileRequestOpen = false;
@@ -27,7 +27,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.openRequest = function(){
-        if(!$rootScope.user._id){
+        $scope.noDates = false;
+        if(!$rootScope.user || !$rootScope.user._id){
             $scope.openLogin();
         }
         else if(!$scope.profileComplete()){
@@ -39,10 +40,18 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
         }
         else{
+            if(!$scope.swap.from || !$scope.swap.to || $scope.swap.from == $scope.swap.to || !$scope.canSendRequest.status){
+                $scope.noDates = true;
+                return;
+            }
+            if(!$scope.swap.guests || $scope.swap.guests < 1){
+                return;
+            }
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/request/request.html',
                 size: 'sm',
+                windowClass: 'request-modal',
                 controller: 'requestController',
                 scope: $scope
             });
@@ -198,14 +207,19 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
     };
     
-    function checkRequestSent() {
-        var requests = $scope.user.requests.filter(function (request) {
-            return request.status != $scope.data.requestStatus.canceled;
+    function checkRequestSent(){
+        AccountService.getRequests().then(function(requests){
+            $scope.user.requests = requests;
+            var requests = $scope.user.requests.filter(function (request) {
+                return request.status != $scope.data.requestStatus.canceled;
+            });
+            requests = requests.map(function(request){
+                return request.user1?request.user1._id:request.user2._id;
+            });
+            $scope.requestSent = requests.includes($scope.profile._id);
+        },function(err){
+            $scope.requestSent = false;
         });
-        requests = requests.map(function(request){
-            return request.userId;
-        });
-        $scope.requestSent = requests.includes($scope.profile._id);
     }
 
     var myoverlay = new google.maps.OverlayView();
@@ -327,6 +341,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             animation: true,
             templateUrl: '../../directives/request/request.html',
             size: 'sm',
+            windowClass: 'request-modal',
             controller: 'requestController',
             scope: $scope
         });

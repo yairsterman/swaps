@@ -413,6 +413,9 @@
 	.modal-dialog {
 		&.modal-sm{
 			width: 400px;
+			@media @mobile {
+				width: auto !important;
+			}
 		}
 		@media @mobile {
 			width: auto;

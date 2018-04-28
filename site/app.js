@@ -16,6 +16,7 @@ var users = require('./routes/user');
 var account = require('./routes/account');
 var message = require('./routes/message');
 var utils = require('./routes/utils');
+var transactions = require('./routes/transactions');
 
 var app = express();
 
@@ -44,8 +45,8 @@ var mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 // connect to MongoDB
-// mongoose.connect('mongodb://18.221.167.219/test')
-mongoose.connect('mongodb://127.0.0.1/test')
+mongoose.connect('mongodb://18.221.167.219/test')
+// mongoose.connect('mongodb://127.0.0.1/test')
     .then(() =>  console.log('connection succesful'))
 .catch((err) => console.error(err));
 //app.use(function(req, res, next) {  
@@ -57,6 +58,7 @@ app.use('/user', users);
 app.use('/account', account);
 app.use('/message', message);
 app.use('/utils', utils);
+app.use('/transactions', transactions);
 app.use('/', index);
 
 // app.use(bodyParser({uploadDir:'./uploads'}));

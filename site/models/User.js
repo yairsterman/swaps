@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var UserSchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+var UserSchema = new Schema({
     firstName: String,
     lastName: String,
     displayName: String,
@@ -21,7 +22,7 @@ var UserSchema = new mongoose.Schema({
     departure: Date,
     returnDate: Date,
     rating: Number,
-    requests: Array,
+    requests: [{ type: Schema.Types.ObjectId, ref: 'Request' }],
     notifications: Array,
     messages: Array,
     reviews: Array,
@@ -45,7 +46,7 @@ var UserSchema = new mongoose.Schema({
         bedType: Number,
     },
     paymentInfo: {},
-    transactions: Array,
+    transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
     deposit: Number,
     updated_at: { type: Date, default: Date.now },
 });

@@ -51,14 +51,14 @@
                     <div class="swap-info">
                         <div class="search-field">
                             <label for="swapDates">When</label>
-                            <input type="text" class="form-control" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                            <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
                                    not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" >
                         </div>
                         <div class="search-field">
                             <label for="guests">Swappers</label>
                             <div class="guests-search">
-                                <input type="number" class="form-control guests" id="guests" ng-model="swap.guests"
+                                <input type="number" class="form-control guests dates {{!swap.guests || swap.guests < 1?'error':''}}" id="guests" ng-model="swap.guests"
                                        min="1" max="8" ng-disabled="requestSent" disabled="{{requestSent}}">
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                     <hr>
                     <div class="req-swap">
                         <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
-                               ng-click="openRequest()" ng-hide="requestSent" ng-disabled="!swap.from || !swap.to || !canSendRequest.status" disabled="{{!swap.from || !swap.to || !canSendRequest}}">
+                               ng-click="openRequest()" ng-hide="requestSent">
                         <div class="req-sent" ng-show="requestSent">
                             Request Sent
                         </div>
