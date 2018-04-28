@@ -352,7 +352,7 @@ module.exports.cancelRequest = function(requestId, userId, message){
         else{
             let sender;
             let recipient;
-            if(user1._id == userId){
+            if((user1._id).toString() == userId.toString()){
                 sender = user1;
                 recipient = user2;
             }
