@@ -350,8 +350,16 @@ module.exports.cancelRequest = function(requestId, userId, message){
             email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
         }
         else{
-            let sender = user1._id == userId?user1:user2;
-            let recipient = user1._id != userId?user1:user2;
+            let sender;
+            let recipient;
+            if(user1._id == userId){
+                sender = user1;
+                recipient = user2;
+            }
+            else{
+                sender = user2;
+                recipient = user1;
+            }
             email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
             email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
         }
