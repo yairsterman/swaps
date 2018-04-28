@@ -37,6 +37,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     function init(){
         updateUser();
         setPhotoGalery();
+        if($scope.activeTab == 'listing' && $routeParams.plan){
+            var plan = parseInt($routeParams.plan);
+            $scope.edit.deposit = plan;
+            $scope.focusPlan = true;
+        }
     }
 
     var autocomplete;
@@ -413,6 +418,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     function updateUser(){
         $rootScope.user = $scope.user;
         $scope.saving = false;
+        $scope.focusPlan=false;
         $scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){

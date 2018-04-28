@@ -81,6 +81,15 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         });
     }
 
+    $scope.choosePlan = function(plan){
+        if(!$scope.user || !$scope.user._id){
+            $scope.go('/faq#securityDeposit');
+        }
+        else{
+            $scope.go('/account/listing?plan='+plan);
+        }
+    };
+
     function init(){
         angular.forEach($scope.cities, function(value, key) {
             $scope.featured[key] = value.faded;

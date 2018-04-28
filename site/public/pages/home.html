@@ -94,8 +94,9 @@
             </div>
         </div>
     </div>
-    <div class="title" id="featuredDestinations">
+    <div class="title swappers" id="featuredDestinations">
         <span scroll-on-click>Featured Destinations</span>
+        <div class="swappers-border"></div>
     </div>
     <div class="section featured-destinations" ng-click="searchSwap($event)">
         <div class="columns col-30">
@@ -147,100 +148,95 @@
             </div>
         </div>
     </div>
-    <div class="title">
-        <span>Our security plans</span>
+    <div class="title swappers">
+        <span>Payment Plans</span>
+        <div class="swappers-border"></div>
     </div>
     <div class="payment-plan">
         <div class="row all-plans">
             <div class="col-sm-4">
-                <a href="/faq#securityDeposit">
-                    <div class="single-plan nomad">
-                        <div class="plan-top">
-                            <div class="plan-title">
-                                {{data.securityDeposit[0].displayName}}
-                                <br>
-                                Security Plan
-                            </div>
-                            <div class="plan-image">
-
-                            </div>
+                <div class="single-plan nomad" ng-click="choosePlan(0)">
+                    <div class="plan-top">
+                        <div class="plan-title">
+                            {{data.securityDeposit[0].displayName}}
+                            <br>
+                            Payment Plan
                         </div>
-                        <div class="plan-bottom">
-                            <div class="small-text">
-                                Per night
-                            </div>
-                            <div class="price">
-                                {{data.securityDeposit[0].night}}$
-                            </div>
-                            <div class="covers">
-                                This plan covers up to <br> {{data.securityDeposit[0].damage}}$
-                            </div>
-                            <div class="small-text">
-                                in damages or cancellations
-                            </div>
+                        <div class="plan-image">
+
                         </div>
                     </div>
-                </a>
-            </div>
-            <a href="/faq#securityDeposit">
-                <div class="col-sm-4">
-                    <div class="single-plan globetrotter">
-                        <div class="plan-top">
-                            <div class="plan-title">
-                                {{data.securityDeposit[1].displayName}}
-                                <br>
-                                Security Plan
-                            </div>
-                            <div class="plan-image">
-
-                            </div>
+                    <div class="plan-bottom">
+                        <div class="small-text">
+                            Per night
                         </div>
-                        <div class="plan-bottom">
-                            <div class="small-text">
-                                Per night
-                            </div>
-                            <div class="price">
-                                {{data.securityDeposit[1].night}}$
-                            </div>
-                            <div class="covers">
-                                This plan covers up to <br> {{data.securityDeposit[1].damage}}$
-                            </div>
-                            <div class="small-text">
-                                in damages or cancellations
-                            </div>
+                        <div class="price">
+                            {{data.securityDeposit[0].night}}$
+                        </div>
+                        <div class="covers">
+                            This plan covers up to <br> {{data.securityDeposit[0].damage}}$
+                        </div>
+                        <div class="small-text">
+                            in damages or cancellations
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
             <div class="col-sm-4">
-                <a href="/faq#securityDeposit">
-                    <div class="single-plan cosmopolite">
-                        <div class="plan-top">
-                            <div class="plan-title">
-                                {{data.securityDeposit[2].displayName}}
-                                <br>
-                                Security Plan
-                            </div>
-                            <div class="plan-image">
-
-                            </div>
+                <div class="single-plan globetrotter" ng-click="choosePlan(1)">
+                    <div class="plan-top">
+                        <div class="plan-title">
+                            {{data.securityDeposit[1].displayName}}
+                            <br>
+                            Payment Plan
                         </div>
-                        <div class="plan-bottom">
-                            <div class="small-text">
-                                Per night
-                            </div>
-                            <div class="price">
-                                {{data.securityDeposit[2].night}}$
-                            </div>
-                            <div class="covers">
-                                This plan covers up to <br> {{data.securityDeposit[2].damage}}$
-                            </div>
-                            <div class="small-text">
-                                in damages or cancellations
-                            </div>
+                        <div class="plan-image">
+
                         </div>
                     </div>
-                </a>
+                    <div class="plan-bottom">
+                        <div class="small-text">
+                            Per night
+                        </div>
+                        <div class="price">
+                            {{data.securityDeposit[1].night}}$
+                        </div>
+                        <div class="covers">
+                            This plan covers up to <br> {{data.securityDeposit[1].damage}}$
+                        </div>
+                        <div class="small-text">
+                            in damages or cancellations
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="single-plan cosmopolite" ng-click="choosePlan(2)">
+                    <div class="plan-top">
+                        <div class="plan-title">
+                            {{data.securityDeposit[2].displayName}}
+                            <br>
+                            Payment Plan
+                        </div>
+                        <div class="plan-image">
+
+                        </div>
+                    </div>
+                    <div class="plan-bottom">
+                        <div class="small-text">
+                            Per night
+                        </div>
+                        <div class="price">
+                            {{data.securityDeposit[2].night}}$
+                        </div>
+                        <div class="covers">
+                            This plan covers up to <br> {{data.securityDeposit[2].damage}}$
+                        </div>
+                        <div class="small-text">
+                            in damages or cancellations
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
