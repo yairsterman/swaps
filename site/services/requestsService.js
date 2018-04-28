@@ -272,14 +272,14 @@ function updateUserTravelInfo(user, dates){
  */
 function removeCanceledRequest(user, requestId){
     //find index
-    let index = -1;
-    user.requests.forEach(function(request, i){
-        if(request.toString() == requestId)
-            index = i;
-    });
-    if(index != -1){
-        user.requests = user.requests.splice(index,1) // remove the request;
-    }
+    // let index = -1;
+    // user.requests.forEach(function(request, i){
+    //     if(request.toString() == requestId)
+    //         index = i;
+    // });
+    // if(index != -1){
+    //     user.requests = user.requests.splice(index,1) // remove the request;
+    // }
     return updateUser(user, {requests: user.requests});
 }
 
