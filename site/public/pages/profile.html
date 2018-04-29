@@ -56,7 +56,7 @@
                                    not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" >
                         </div>
                         <div class="search-field">
-                            <label for="guests">Swappers</label>
+                            <label for="guests">Travelers</label>
                             <div class="guests-search">
                                 <input type="number" class="form-control guests dates {{!swap.guests || swap.guests < 1?'error':''}}" id="guests" ng-model="swap.guests"
                                        min="1" max="8" ng-disabled="requestSent" disabled="{{requestSent}}">
@@ -122,7 +122,7 @@
                             </div>
                         </div>
 
-                        <div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}
+                        <div class="deposit">Payment Plan - {{data.securityDeposit[profile.deposit].displayName}}
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                                     <div class="icon icon-man hidden-xs"></div>
                                     <div class="icon icon-man-small visible-xs"></div>
                                     <div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}}<br class="visible-xs">
-                                        Swappers
+                                        {{profile.apptInfo.guests > 1?'Guests':'Guest'}}
                                     </div>
                                 </div>
                                 <div class="home-info">
