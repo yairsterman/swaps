@@ -35,7 +35,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.modelInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '../../directives/onboarding/onboarding.html',
-                size: 'md',
+                size: 'lg',
                 controller: 'onboardingController',
             });
         }

@@ -23,8 +23,22 @@
             height: 35px;
             border-radius: 50%;
             border: 2px solid #848a91;
-            transition: 0.4s ease;
-            &.active{
+            transition: 0.3s ease;
+            &.first{
+              background: rgb(14,93,124); /* Old browsers */
+              background: -moz-linear-gradient(top, rgba(14,93,124,1) 0%, rgba(255,255,255,1) 66%); /* FF3.6-15 */
+              background: -webkit-linear-gradient(top, rgba(14,93,124,1) 0%, rgba(255,255,255,1) 66%); /* Chrome10-25,Safari5.1-6 */
+              background: linear-gradient(to bottom, rgba(14,93,124,1) 0% ,rgba(255,255,255,1) 66%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0E5D7C', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+            }
+            &.second{
+              background: rgb(14,93,124); /* Old browsers */
+              background: -moz-linear-gradient(top, rgba(14,93,124,1) 0%, rgba(14,93,124,1) 33%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+              background: -webkit-linear-gradient(top, rgba(14,93,124,1) 0%, rgba(14,93,124,1) 33%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+              background: linear-gradient(to bottom, rgba(14,93,124,1) 0%, rgba(14,93,124,1) 33%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0E5D7C', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+            }
+            &.done{
               border-color: #0E5D7C;
               background-color: #0E5D7C;
             }
@@ -53,7 +67,39 @@
     }
   }
   .info-area{
-    padding: 80px 20px;
+    padding: 80px 40px;
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+      .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        position: absolute;
+        z-index: 1;
+      }
+      &:hover{
+        .tooltiptext {
+          visibility: visible;
+        }
+      }
+    }
+    .form-control{
+      height: 42px;
+      font-size: 18px;
+    }
+    textarea.form-control{
+      height: auto;
+    }
+    .mg-0{
+      margin:0;
+    }
     @media @mobile {
       padding: 80px 0;
     }
@@ -89,7 +135,7 @@
       text-align: center;
     }
     .sub-title{
-      padding: 18px 0;
+      padding: 18px 15px;
       font-size: 16px;
       font-weight: 300;
     }
@@ -99,6 +145,7 @@
     }
     .listing-label{
       color: #0E5D7C;
+      font-size: 16px;
       .explanation{
         font-size: 11px;
         font-weight: 300;

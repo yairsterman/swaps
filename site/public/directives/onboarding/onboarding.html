@@ -2,33 +2,51 @@
     <div class="icon icon-delete top-corner" ng-click="close()"></div>
     <div class="onboarding-header">
         <div class="phases">
-            <div class="col-xs-4 phase">
+            <div class="col-xs-3 phase">
                 <div class="top">
-                    <div class="line active">
+                    <div class="line">
 
                     </div>
-                    <div class="circle active">
+                    <div class="circle {{aboutCircle}}">
 
                     </div>
-                    <div class="line active">
+                    <div class="line">
 
                     </div>
                 </div>
                 <div class="bottom">
                     <div class="phase-title">
-                        Your Home
+                        About Me
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4 phase">
+            <div class="col-xs-3 phase">
                 <div class="top">
-                    <div class="line {{phase == 'basic' || phase == 'photos'?'active':''}}">
+                    <div class="line">
 
                     </div>
-                    <div class="circle {{phase == 'basic' || phase == 'photos'?'active':''}}">
+                    <div class="circle {{homeCircle}}">
 
                     </div>
-                    <div class="line {{phase == 'basic' || phase == 'photos'?'active':''}}">
+                    <div class="line">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        My Home
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 phase">
+                <div class="top">
+                    <div class="line">
+
+                    </div>
+                    <div class="circle {{basicCircle}}">
+
+                    </div>
+                    <div class="line">
 
                     </div>
                 </div>
@@ -38,15 +56,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4 phase">
+            <div class="col-xs-3 phase">
                 <div class="top">
-                    <div class="line {{phase == 'photos'?'active':''}}">
+                    <div class="line">
 
                     </div>
-                    <div class="circle {{phase == 'photos'?'active':''}}">
+                    <div class="circle {{photosCircle}}">
 
                     </div>
-                    <div class="line {{phase == 'photos'?'active':''}}">
+                    <div class="line">
 
                     </div>
                 </div>
@@ -59,42 +77,31 @@
         </div>
     </div>
     <div class="info-area">
-        <div class="user-info address" ng-if="phase == 'home'">
+        <div class="user-info address" ng-if="phase == 'about'">
             <div class="address-title">
                 You are almost ready to start swapping!
             </div>
             <div class="sub-title">
                 Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
             </div>
-            <div class="form-group">
-                <label class="control-label listing-label" for="address">Address:
-                    <span class="explanation">(Where you live)</span>
+            <div class="form-group col-sm-12 col-md-8">
+                <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="left">Occupation:
+                    <span class="explanation "></span>
                 </label>
-                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
+                <input class="form-control" type="text" ng-model="user.occupation">
             </div>
-            <div class="form-group">
-                <label class="control-label listing-label" for="title">Home Title:
-                    <span class="explanation">(A short description of your home)</span>
+            <div class="form-group col-sm-12 col-md-8">
+                <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="left">About Me:
+                    <span class="explanation "></span>
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
+                    <textarea id="aboutMe" rows="4" cols="20" class="form-control" ng-model="user.aboutMe"></textarea>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    <label class="control-label listing-label">Room Type:<br>
-                        <span class="explanation">The type of room you are offering</span>
-                    </label>
-                    <div class="">
-                        <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"
-                                ng-options="room.id as room.displayName for room in data.roomType">
-                            {{room.displayName}}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group col-sm-6">
-                    <label class="control-label listing-label">Payment Plan:<br>
-                        <span class="explanation">Choose the plan that suits your needs</span>
+            <div class="row mg-0">
+                <div class="form-group col-sm-8">
+                    <label class="control-label listing-label" for="deposit" data-toggle="tooltip" title="Choose the plan that suits your needs" data-placement="left">Payment Plan:<br>
+                        <span class="explanation"></span>
                     </label>
                     <div class="">
                         <select class="form-control" id="deposit" ng-model="user.deposit"
@@ -102,10 +109,40 @@
                             {{plan.displayName}} - ${{plan.value}} per night
                         </select>
                     </div>
+                </div>
+                <div class="form-group col-sm-4">
                     <div class="plan-explanation">
                         This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
                         damages and cancellations.
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-info address" ng-if="phase == 'home'">
+
+            <div class="form-group col-sm-12 col-md-8">
+                <label class="control-label listing-label" for="address" for="deposit" data-toggle="tooltip" title="Where you live" data-placement="left">Address:
+                    <span class="explanation"></span>
+                </label>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
+            </div>
+            <div class="form-group col-sm-12 col-md-8">
+                <label class="control-label listing-label" for="title">Home Title:
+                    <span class="explanation">(A short description of your home)</span>
+                </label>
+                <div class="">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
+                </div>
+            </div>
+            <div class="form-group col-sm-12 col-md-8">
+                <label class="control-label listing-label">Room Type:<br>
+                    <span class="explanation">The type of room you are offering</span>
+                </label>
+                <div class="">
+                    <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"
+                            ng-options="room.id as room.displayName for room in data.roomType">
+                        {{room.displayName}}
+                    </select>
                 </div>
             </div>
 
@@ -205,8 +242,8 @@
             </div>
         </div>
     </div>
-    <div class="buttons {{phase == 'home'?'home':''}}">
-        <div class="button back" ng-click="back()" ng-hide="phase == 'home'">
+    <div class="buttons {{phase == 'about'?'home':''}}">
+        <div class="button back" ng-click="back()" ng-hide="phase == 'about'">
             <div class="glyphicon glyphicon-chevron-left"></div>
             Back
         </div>

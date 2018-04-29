@@ -1,13 +1,39 @@
 swapsApp.controller('onboardingController', function($scope, $rootScope, $location, AccountService, alertify) {
     $scope.user = $rootScope.user;
-    $scope.phase = !$scope.user.apptInfo.title || $scope.user.apptInfo.title == '' ||  !$scope.user.address ||  $scope.user.address == ''?'home':'photos';
     $scope.numOfFiles = 0;
+
+    $scope.getInitialPhase = function(){
+        $scope.phase = 'about';
+        //find the first phase that is not fully complete
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            return;
+        }
+        $scope.phase = 'home';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            return;
+        }
+        $scope.phase = 'basic';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            return;
+        }
+        $scope.phase = 'photos';
+        $scope.fillCircle();
+    }
+
     $scope.close = function(){
         $scope.$dismiss();
     }
 
     $scope.next = function(){
         saveChanges();
+        $scope.fillCircle();
+        if($scope.phase == 'about'){
+            $scope.phase = 'home';
+            return;
+        }
         if($scope.phase == 'home'){
             $scope.phase = 'basic';
             return;
@@ -19,6 +45,10 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.back = function(){
+        if($scope.phase == 'home'){
+            $scope.phase = 'about';
+            return;
+        }
         if($scope.phase == 'basic'){
             $scope.phase = 'home';
             return;
@@ -28,6 +58,55 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             return;
         }
     }
+
+    $scope.fillCircle = function(){
+        var complete = 0;
+        if($scope.phase == 'about'){
+            complete = $scope.isPhaseComplete();
+            $scope.aboutCircle = getFill(complete);
+        }
+        if($scope.phase == 'home'){
+            complete = $scope.isPhaseComplete();
+            $scope.homeCircle = getFill(complete);
+        }
+        if($scope.phase == 'basic'){
+            complete = $scope.isPhaseComplete();
+            $scope.basicCircle = getFill(complete);
+        }
+        if($scope.phase == 'photos'){
+            complete = $scope.isPhaseComplete();
+            $scope.photosCircle = getFill(complete);
+        }
+    };
+
+    function getFill(complete){
+        return complete == 1?'first':complete==2?'second':complete==3?'done':'';
+    }
+
+    // returns how much of the phase is complete 1,2, or 3
+    $scope.isPhaseComplete = function(){
+        var complete = 0;
+        if($scope.phase == 'about'){
+            $scope.user.occupation?complete++:null;
+            $scope.user.aboutMe?complete++:null;
+            typeof $scope.user.deposit != 'undefined'?complete++:null;
+        }
+        if($scope.phase == 'home'){
+            $scope.user.address?complete++:null;
+            $scope.user.apptInfo.title?complete++:null;
+            typeof $scope.user.apptInfo.roomType != 'undefined'?complete++:null;
+       }
+        if($scope.phase == 'basic'){
+            complete = $scope.apptInfo.amenities.length > 0?3:2;
+        }
+        if($scope.phase == 'photos'){
+            complete = $scope.user.photos.length;
+        }
+        return complete;
+    };
+
+    $scope.getInitialPhase();
+    $scope.fillCircle();
 
     function add_uploadButton(e, data){
         if(data.files[0].type.indexOf('image') === -1){
@@ -62,6 +141,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             $scope.numOfFiles--;
             if($scope.numOfFiles === 0){//uploaded all photos
                 showAlert('Photos Uploaded Successfully', false);
+                $scope.fillCircle();
                 $scope.saving = false;
             }
         });
@@ -102,7 +182,25 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     function saveChanges(){
+        if($scope.phase == 'about'){
+            saveProfileChanges();
+        }
+        else{
+            saveListingChanges();
+        }
+    }
+
+    function saveListingChanges(){
         AccountService.editListing($scope.user).then(function(data){
+            $rootScope.user = data;
+            $scope.user = $rootScope.user;
+        },function(err){
+            showAlert('Error saving changes', true);
+        });
+    }
+
+    function saveProfileChanges(){
+        AccountService.editProfile($scope.user).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
         },function(err){
