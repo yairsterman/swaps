@@ -97,7 +97,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             typeof $scope.user.apptInfo.roomType != 'undefined'?complete++:null;
        }
         if($scope.phase == 'basic'){
-            complete = $scope.apptInfo.amenities.length > 0?3:2;
+            complete = $scope.user.apptInfo.amenities.length > 0?3:2;
         }
         if($scope.phase == 'photos'){
             complete = $scope.user.photos.length;

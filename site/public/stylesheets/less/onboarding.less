@@ -68,10 +68,28 @@
   }
   .info-area{
     padding: 80px 40px;
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      border-bottom: 1px dotted black;
+    .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+      border-top-color: white !important;
+    }
+
+    .bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^="right"] .arrow::before {
+      border-right-color: white !important;
+    }
+
+
+    .bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+      border-bottom-color: white !important;
+    }
+
+
+    .bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
+      border-left-color: white !important;
+    }
+    .tooltip-inner {
+      background-color: white !important;
+      width: 100% !important;
+      max-width: 400px !important;
+      color: black !important;
       .tooltiptext {
         visibility: hidden;
         width: 120px;

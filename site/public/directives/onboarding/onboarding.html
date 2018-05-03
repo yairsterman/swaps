@@ -85,13 +85,13 @@
                 Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
             </div>
             <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="left">Occupation:
+                <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
                     <span class="explanation "></span>
                 </label>
                 <input class="form-control" type="text" ng-model="user.occupation">
             </div>
             <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="left">About Me:
+                <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
                     <span class="explanation "></span>
                 </label>
                 <div class="">
@@ -100,7 +100,7 @@
             </div>
             <div class="row mg-0">
                 <div class="form-group col-sm-8">
-                    <label class="control-label listing-label" for="deposit" data-toggle="tooltip" title="Choose the plan that suits your needs" data-placement="left">Payment Plan:<br>
+                    <label class="control-label listing-label" for="deposit" data-toggle="tooltip" title="Choose the plan that suits your needs" data-placement="right" tooltip>Payment Plan:<br>
                         <span class="explanation"></span>
                     </label>
                     <div class="">
@@ -121,22 +121,22 @@
         <div class="user-info address" ng-if="phase == 'home'">
 
             <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label" for="address" for="deposit" data-toggle="tooltip" title="Where you live" data-placement="left">Address:
+                <label class="control-label listing-label" for="address" for="deposit" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
                     <span class="explanation"></span>
                 </label>
                 <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
             </div>
             <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label" for="title">Home Title:
-                    <span class="explanation">(A short description of your home)</span>
+                <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
+                    <span class="explanation"></span>
                 </label>
                 <div class="">
                     <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label">Room Type:<br>
-                    <span class="explanation">The type of room you are offering</span>
+                <label class="control-label listing-label" data-toggle="tooltip" title="The type of room you are offering" data-placement="right" tooltip>Room Type:<br>
+                    <span class="explanation"></span>
                 </label>
                 <div class="">
                     <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"
@@ -149,15 +149,15 @@
         </div>
         <div class="" ng-if="phase == 'basic'">
             <div class="form-group">
-                <label class="control-label listing-label">Basics:
-                    <span class="explanation">(Essential information about you home)</span>
+                <label class="control-label listing-label" data-toggle="tooltip" title="Essential information about you home" data-placement="right" tooltip>Basics:
+                    <span class="explanation"></span>
                 </label>
                 <div class="">
                     <div class="row">
                         <div class="col-sm-3 col-xs-3  basics">
                             <div class="name-with-icon">
                                 <div class="icon icon-man-small hidden-xs"></div>
-                                <div class="basics-name">Guests</div>
+                                <div class="basics-name" data-toggle="tooltip" title="How many guests can your home accommodate" data-placement="right" tooltip>Guests</div>
                             </div>
                             <input class="form-control" id="swappers" type="number" min="1" max="8"
                                    ng-model="user.apptInfo.guests">
@@ -191,8 +191,8 @@
             </div>
             <div class="info-section rules">
                 <div class="form-group row">
-                    <label class="control-label listing-label">Facilities:
-                        <span class="explanation">(Things you have in your home)</span>
+                    <label class="control-label listing-label" data-toggle="tooltip" title="Things you have in your home" data-placement="right" tooltip>Facilities:
+                        <span class="explanation"></span>
                     </label>
                     <div class="">
                         <div class="row">
