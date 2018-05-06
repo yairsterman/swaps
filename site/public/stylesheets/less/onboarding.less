@@ -67,7 +67,7 @@
     }
   }
   .info-area{
-    padding: 80px 40px;
+    padding: 80px 0;
     .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
       border-top-color: white !important;
     }
@@ -85,10 +85,15 @@
     .bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
       border-left-color: white !important;
     }
+    .tooltip{
+      .tooltip-arrow{
+        border-color: transparent !important;
+      }
+    }
     .tooltip-inner {
       background-color: white !important;
       width: 100% !important;
-      max-width: 400px !important;
+      max-width: 700px !important;
       color: black !important;
       .tooltiptext {
         visibility: hidden;
@@ -122,7 +127,12 @@
       padding: 80px 0;
     }
     .user-info{
-      padding: 0 5%;
+      padding: 1% 0;
+      width: 50%;
+      margin: auto;
+      &.photos{
+        padding: 0;
+      }
     }
     .basics{
       .name-with-icon{
@@ -148,14 +158,30 @@
     }
     .address-title{
       padding-bottom: 10px;
-      font-size: 26px;
+      color: #0E5D7C;
+      font-size: 30px;
       font-weight: 300;
       text-align: center;
     }
     .sub-title{
       padding: 18px 15px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 300;
+      width: 66%;
+      text-align: center;
+      margin: auto;
+    }
+    .start-button{
+      padding-top: 60px;
+      display: flex;
+      .complete-btn {
+        font-size: 18px;
+        width: 170px;
+        @media @mobile {
+          font-size: 16px;
+          width: 48%;
+        }
+      }
     }
     .large-input{
       font-size: 20px;
@@ -182,10 +208,19 @@
       padding: 0 15px;
     }
     .photos-area{
+      position: relative;
+      .photos-title{
+        font-size: 15px;
+        text-align: center;
+        padding-bottom: 10px;
+      }
       .box{
-        height: 200px;
         background-color: rgba(199, 167, 104, 0.2);
-        position: relative;
+        z-index: 1;
+        position: absolute;
+        width: 107%;
+        height: 100%;
+        margin: 0 -15px;
         &.has-advanced-upload {
           outline: 2px dashed grey;
           outline-offset: -10px;
@@ -209,12 +244,11 @@
         }
       }
       .uploaded-photos{
-        padding-top: 10px;
         .photo{
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
-          height: 120px;
+          height: 200px;
           border: 1px solid grey;
         }
       }
@@ -251,6 +285,9 @@
           }
         }
       }
+    }
+    .basic{
+      padding: 0 30px;
     }
   }
   .buttons{
@@ -329,4 +366,84 @@
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
   }
+}
+.payment-plan{
+  .all-plans{
+  }
+  .single-plan{
+    color: #ffffff;
+    text-align: center;
+    border: 2px solid #c7a768;
+    transition: 0.4s ease;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0,0,0,0.39);
+    cursor: pointer;
+
+    &.nomad{
+      background: #b2def7; /* Old browsers */
+      background: -moz-linear-gradient(top, #68b8d5 0%, #b2def7 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #68b8d5 0%,#b2def7 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #68b8d5 0%,#b2def7 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#68b8d5', endColorstr='#b2def7',GradientType=0 ); /* IE6-9 */
+      .plan-image{
+        background-image: url('../../images/static/backpack.png');
+      }
+    }
+    &.globetrotter{
+      background: #68b8d5; /* Old browsers */
+      background: -moz-linear-gradient(top, #006EA5 0%, #68b8d5 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #006EA5 0%,#68b8d5 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #006EA5 0%,#68b8d5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#006EA5', endColorstr='#68b8d5',GradientType=0 ); /* IE6-9 */
+      .plan-image{
+        background-image: url('../../images/static/trolley.png');
+      }
+    }
+    &.cosmopolite{
+      background: #0E5D7C; /* Old browsers */
+      background: -moz-linear-gradient(top, #0E5D7C 0%, #006EA5 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #0E5D7C 0%,#006EA5 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #0E5D7C 0%,#006EA5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0E5D7C', endColorstr='#006EA5',GradientType=0 ); /* IE6-9 */
+      .plan-image{
+        background-image: url('../../images/static/suitcase.png');
+      }
+    }
+    .plan-top{
+      padding: 10px 0;
+      margin: 0 20px;
+      border-bottom: 2px solid #ffffff;
+    }
+    .plan-title{
+      font-size: 18px;
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+    .plan-image{
+      margin: auto;
+      height: 60px;
+      width: 60px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .price{
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .plan-bottom{
+      padding: 20px;
+    }
+    .small-text{
+      font-size: 12px;
+      padding-bottom: 5px;
+    }
+    .covers{
+      font-size: 14px;
+      padding: 5px 0;
+    }
+  }
+}
+.tooltip.in{
+  opacity: 1;
 }

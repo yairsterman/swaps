@@ -1,26 +1,36 @@
-swapsApp.controller('onboardingController', function($scope, $rootScope, $location, AccountService, alertify) {
+swapsApp.controller('onboardingController', function($scope, $rootScope, $location, $sce,AccountService, alertify) {
     $scope.user = $rootScope.user;
     $scope.numOfFiles = 0;
 
     $scope.getInitialPhase = function(){
-        $scope.phase = 'about';
-        //find the first phase that is not fully complete
-        $scope.fillCircle();
-        if($scope.isPhaseComplete() < 3){
+        var initialPhase = 'onSignup';
+        $scope.phase = 'onSignup';
+        if($scope.isPhaseComplete() == 0){
             return;
         }
-        $scope.phase = 'home';
+        //find the first phase that is not fully complete
+        $scope.phase = 'photos';
         $scope.fillCircle();
         if($scope.isPhaseComplete() < 3){
-            return;
+            initialPhase = 'photos';
         }
         $scope.phase = 'basic';
         $scope.fillCircle();
         if($scope.isPhaseComplete() < 3){
-            return;
+            initialPhase = 'basic';
         }
-        $scope.phase = 'photos';
+        $scope.phase = 'home';
         $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            initialPhase = 'home';
+        }
+        $scope.phase = 'about';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            initialPhase = 'about';
+        }
+
+        $scope.phase = initialPhase;
     }
 
     $scope.close = function(){
@@ -28,6 +38,13 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.next = function(){
+        if($scope.profileComplete()){
+            $scope.finish();
+        }
+        if($scope.phase == 'onSignup'){
+            $scope.phase = 'about';
+            return;
+        }
         saveChanges();
         $scope.fillCircle();
         if($scope.phase == 'about'){
@@ -59,6 +76,11 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         }
     }
 
+    $scope.finish = function(){
+        $scope.fillCircle();
+        $scope.phase = 'completedOnboarding' ;
+    }
+
     $scope.fillCircle = function(){
         var complete = 0;
         if($scope.phase == 'about'){
@@ -86,6 +108,13 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     // returns how much of the phase is complete 1,2, or 3
     $scope.isPhaseComplete = function(){
         var complete = 0;
+        if($scope.phase == 'onSignup'){
+            if(!$scope.user.occupation && !$scope.user.aboutMe
+                && !$scope.user.address && !$scope.user.apptInfo.title
+                && $scope.user.photos.length == 0 && $scope.user.apptInfo.amenities.length == 0)
+                return 0;
+            else return 1;
+        }
         if($scope.phase == 'about'){
             $scope.user.occupation?complete++:null;
             $scope.user.aboutMe?complete++:null;

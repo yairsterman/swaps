@@ -77,56 +77,65 @@
         </div>
     </div>
     <div class="info-area">
-        <div class="user-info address" ng-if="phase == 'about'">
+        <div class="user-info address" ng-if="phase == 'onSignup'">
             <div class="address-title">
                 You are almost ready to start swapping!
             </div>
             <div class="sub-title">
                 Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
             </div>
-            <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
-                    <span class="explanation "></span>
-                </label>
-                <input class="form-control" type="text" ng-model="user.occupation">
+            <div class="start-button" ng-if="user.photos.length >= 3">
+                <div class="complete-btn btn btn-primary" ng-click="next()">
+                    Start!
+                </div>
             </div>
-            <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
-                    <span class="explanation "></span>
-                </label>
+        </div>
+        <div class="user-info address" ng-if="phase == 'about'">
+            <div class="row">
                 <div class="">
-                    <textarea id="aboutMe" rows="4" cols="20" class="form-control" ng-model="user.aboutMe"></textarea>
-                </div>
-            </div>
-            <div class="row mg-0">
-                <div class="form-group col-sm-8">
-                    <label class="control-label listing-label" for="deposit" data-toggle="tooltip" title="Choose the plan that suits your needs" data-placement="right" tooltip>Payment Plan:<br>
-                        <span class="explanation"></span>
-                    </label>
-                    <div class="">
-                        <select class="form-control" id="deposit" ng-model="user.deposit"
-                                ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
-                            {{plan.displayName}} - ${{plan.value}} per night
-                        </select>
+                    <div class="form-group">
+                        <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
+                            <span class="explanation "></span>
+                        </label>
+                        <input class="form-control" type="text" ng-model="user.occupation">
                     </div>
-                </div>
-                <div class="form-group col-sm-4">
-                    <div class="plan-explanation">
-                        This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
-                        damages and cancellations.
+                    <div class="form-group">
+                        <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
+                            <span class="explanation "></span>
+                        </label>
+                        <div class="">
+                            <textarea id="aboutMe" rows="4" cols="20" class="form-control" ng-model="user.aboutMe"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label listing-label" for="deposit">Payment Plan:<br>
+                            <span class="explanation"></span>
+                        </label>
+                        <div class="" tooltip-placement="top-left" uib-tooltip-template="'../../pages/components/payment-plans.html'">
+                            <select class="form-control" id="deposit" ng-model="user.deposit"
+                                    ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
+                                {{plan.displayName}} - ${{plan.value}} per night
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="plan-explanation">
+                            This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
+                            damages and cancellations.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="user-info address" ng-if="phase == 'home'">
 
-            <div class="form-group col-sm-12 col-md-8">
-                <label class="control-label listing-label" for="address" for="deposit" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
+            <div class="form-group">
+                <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
                     <span class="explanation"></span>
                 </label>
                 <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
             </div>
-            <div class="form-group col-sm-12 col-md-8">
+            <div class="form-group">
                 <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
                     <span class="explanation"></span>
                 </label>
@@ -134,7 +143,7 @@
                     <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
                 </div>
             </div>
-            <div class="form-group col-sm-12 col-md-8">
+            <div class="form-group">
                 <label class="control-label listing-label" data-toggle="tooltip" title="The type of room you are offering" data-placement="right" tooltip>Room Type:<br>
                     <span class="explanation"></span>
                 </label>
@@ -147,7 +156,7 @@
             </div>
 
         </div>
-        <div class="" ng-if="phase == 'basic'">
+        <div class="basic" ng-if="phase == 'basic'">
             <div class="form-group">
                 <label class="control-label listing-label" data-toggle="tooltip" title="Essential information about you home" data-placement="right" tooltip>Basics:
                     <span class="explanation"></span>
@@ -204,12 +213,12 @@
                 </div>
             </div>
         </div>
-        <div class="user-info" ng-if="phase == 'photos'">
-            <div class="sub-title" ng-if="user.photos.length == 0">
+        <div class="user-info photos" ng-if="phase == 'photos'">
+            <div class="photos-title" ng-if="user.photos.length == 0">
                 Upload 3 photos of your home. <br>
                 These photos are how other Swappers will see your home, make sure they best represent your home.
             </div>
-            <div class="sub-title" ng-if="user.photos.length < 3 && user.photos.length > 0">
+            <div class="photos-title" ng-if="user.photos.length < 3 && user.photos.length > 0">
                 Upload {{3 - user.photos.length}} more {{user.photos.length == 2?'photo':'photos'}} of your home.
             </div>
             <div class="photos-area">
@@ -227,12 +236,26 @@
                     </div>
                 </div>
                 <div class="uploaded-photos row">
-                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
-                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[1]}})"></div>
-                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[2]}})"></div>
+                    <div class="col-sm-12 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
+                    <div class="col-sm-6 col-xs-12 photo" style="background-image: url({{user.photos[1]}})"></div>
+                    <div class="col-sm-6 col-xs-12 photo" style="background-image: url({{user.photos[2]}})"></div>
                 </div>
             </div>
-            <div class="complete-buttons" ng-if="user.photos.length >= 3">
+        </div>
+        <div ng-if="phase == 'completedOnboarding'">
+            <div class="address-title">
+                Congratulations! <br>
+                You've completed you're profile.
+            </div>
+            <div class="sub-title">
+                What would you like to do next?
+            </div>
+            <div class="start-button">
+                <div class="complete-btn btn btn-primary">
+                    Search for Swap!
+                </div>
+            </div>
+            <div class="complete-buttons">
                 <div class="complete-btn btn btn-primary btn-close" ng-click="go('profile/'+user._id)">
                     View Profile
                 </div>
@@ -243,13 +266,20 @@
         </div>
     </div>
     <div class="buttons {{phase == 'about'?'home':''}}">
-        <div class="button back" ng-click="back()" ng-hide="phase == 'about'">
+        <div class="button back" ng-click="back()" ng-hide="phase == 'about' || phase == 'onSignup' || phase == 'completedOnboarding'">
             <div class="glyphicon glyphicon-chevron-left"></div>
             Back
         </div>
-        <div class="button next" ng-click="next()" ng-hide="phase == 'photos'">
+        <div class="button next" ng-click="next()" ng-hide="phase == 'photos' || phase == 'onSignup'">
             Next
             <div class="glyphicon glyphicon-chevron-right"></div>
+        </div>
+        <div class="button next" ng-click="finish()" ng-if="phase == 'photos'">
+            Finish
+            <div class="glyphicon glyphicon-chevron-right"></div>
+        </div>
+        <div class="button next" ng-click="close()" ng-if="phase == 'completedOnboarding'">
+            Close
         </div>
     </div>
 </div>
