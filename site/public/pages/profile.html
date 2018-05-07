@@ -1,254 +1,257 @@
 <div class="profile-page">
-	<div class="photos">
-		<div class="gallery">
-			<ng-image-gallery
-		      images="images"
-		      methods="methods"
-		      img-anim="slide"
-		    ></ng-image-gallery>
-	    </div>
-	    <div class="main-photo" style="background-image:url('{{profile.photos[0]}}')" ng-click="openGallery()">
-	    </div>
-  	</div>
-  	<div class="info">
-  		<div class="row info-row">
-		  	<div class="col-sm-8">
-			  	<div class="appt-info">
-		  			<div class="section">
-					  	<div class="description-title">
-					  		{{profile.apptInfo.description}}
-						</div>
-						<div class="city">
-					  		{{profile.city}}, {{profile.country}}
-						</div>
-						<div class="rating">
-                            <div class="icon-star"></div>
-                            <div class="icon-star" ng-if="profile.rating > 1"></div>
-                            <div class="icon-star" ng-if="profile.rating > 2"></div>
-                            <div class="icon-star" ng-if="profile.rating > 3"></div>
-                            <div class="icon-star" ng-if="profile.rating > 4"></div>
-                            <div class="number-reviews">{{profile.reviews.length}} Reviews</div>
+    <div class="appt-slider-and-profpic container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-xs-12 no-padding">
+                <div class="photos">
+                    <div class="gallery">
+                        <ng-image-gallery
+                                images="images"
+                                methods="methods"
+                                img-anim="slide"
+                        ></ng-image-gallery>
+                    </div>
+                    <div class="main-photo" style="background-image:url('{{profile.photos[0]}}')"
+                         ng-click="openGallery()">
+                    </div>
+                </div>
+            </div>
+            <div class="profile-description col-sm-3 col-xs-12 fix-scroll hidden-xs">
+                <div class="profile-name">
+                    <div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
+                    <div class="name-occupation">
+                        <div class="name">
+                            {{profile.firstName}}
                         </div>
-					</div>
-					<div class="section row">
-						<div class="col-sm-4">
-						  	<div class="listing">
-								<i class="fa fa-home" aria-hidden="true"></i></br>
-						  		{{profile.apptInfo.property}}
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="listing">
-							<i class="fa fa-bed" aria-hidden="true"></i></br>
-						  		{{profile.apptInfo.room}}
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="listing">
-							<i class="fa fa-users" aria-hidden="true"></i></br>
-						  		{{profile.apptInfo.guests}} guests
-							</div>
-						</div>
-					</div>
-					<div class="section">
-						<div class="title">
-							About this place
-						</div>
-						<div class="text">
-							{{profile.apptInfo.about}}
-						</div>
-					</div>
-					<div class="section">
-						<div class="title">
-							Amenities
-						</div>
-						<ul class="unstyled-list">
-							<li ng-if="profile.apptInfo.essentials">
-								<div class="amenity">
-									<i class="fa fa-bath" aria-hidden="true"></i> Essentials
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.wifi">
-								<div class="amenity">
-									<i class="fa fa-wifi" aria-hidden="true"></i> Wifi
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.airconditioning">
-								<div class="amenity">
-									<i class="fa fa-snowflake-o" aria-hidden="true"></i> Air conditioning
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.heating">
-								<div class="amenity">
-									<i class="fa fa-sun-o" aria-hidden="true"></i> Heating
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.kitchen">
-								<div class="amenity">
-									<i class="fa fa-cutlery" aria-hidden="true"></i> Kitchen
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.events">
-								<div class="amenity">
-									<i class="fa fa-music" aria-hidden="true"></i> Can host events
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.tv">
-								<div class="amenity">
-									<i class="fa fa-television" aria-hidden="true"></i> Tv
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.wheelchair">
-								<div class="amenity">
-									<i class="fa fa-wheelchair" aria-hidden="true"></i> Wheelchair accessable
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.transportation">
-								<div class="amenity">
-									<i class="fa fa-bus" aria-hidden="true"></i> Public transportation
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.kids">
-								<div class="amenity">
-									<i class="fa fa-futbol-o" aria-hidden="true"></i> Kid friendly
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.parking">
-								<div class="amenity">
-									<i class="fa fa-product-hunt" aria-hidden="true"></i> Parking
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.elevator">
-								<div class="amenity">
-									<i class="fa fa-building-o" aria-hidden="true"></i> Elevator
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.washing">
-								<div class="amenity">
-									<i class="fa fa-shower" aria-hidden="true"></i> Washing machine
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.dryer">
-								<div class="amenity">
-									<i class="fa fa-shopping-basket" aria-hidden="true"></i> Dryer
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.smoking">
-								<div class="amenity">
-									<i class="fa fa-exclamation-circle" aria-hidden="true"></i> Smoking allowed
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.pool">
-								<div class="amenity">
-									<i class="fa fa-tint" aria-hidden="true"></i> Pool
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.pets">
-								<div class="amenity">
-									<i class="fa fa-paw" aria-hidden="true"></i> Pets allowed
-								</div>
-							</li>
-							<li ng-if="profile.apptInfo.bathroom">
-								<div class="amenity">
-									<i class="fa fa-bath" aria-hidden="true"></i> Private bathroom
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div class="section">
-						<div class="title">
-							Reviews
-						</div>
-						<div class="reviews">
-							<div class="review" ng-repeat="review in profile.reviews">
-								<div class="row" >
-									<div class="col-sm-6" >
-										<div class="reviewer-info" >
-											<div class="review-photo" style="background-image:url('{{review.image}}')" ng-click="go('profile/'+review.userId)">
-					   						</div>
-											<div class="name">
-												{{review.name}}
-												<div class="city">
-													{{review.city}}, {{review.country}}
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6" >
-										<div class="date">
-												{{review.date | date: 'MMMM yyyy'}}
-										</div>
-									</div>
-								</div>
-								<div class="text">
-									{{review.review}}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4 fix-scroll">
-			  	<div class="user-info">
-				  	<div class="profile-pic" style="background-image:url('{{profile.image}}')">
-					</div>
+                        <div class="occupation">
+                            {{age}} • {{profile.occupation}}
+                        </div>
+                    </div>
+                </div>
+                <hr>
 
-					<div class="personal">
-						<div class="name text">
-							{{profile.firstName}}
-						</div>
-						<div class="text">
-							{{profile.age}},{{profile.gender}}
-						</div>
-						<div class="text">
-							{{profile.ocupation}}
-						</div>
-						<div class="text" style="text-align:left;">
-							{{profile.aboutMe}}
-						</div>
-					</div>
-					<div class="swaps text">
-						Swaps: {{profile.swaps}}
-					</div>
-					<div class="traveling text">
-						<div class="not-swapping" ng-if="!profile.traveling">
-							Currently not swapping
-							<i id="datefilter0"></i>
-						</div>
-						<div class="swaps swapping" ng-if="profile.traveling">
-							Looking to swap in:
-							<div class="dates">
-								<div class="traveling-cities" ng-repeat="trip in profile.travelingInfo track by $index">
-									<strong>{{trip.dest}}</strong>: {{trip.departure | date : 'MM/dd/yy'}} - {{trip.returnDate | date : 'MM/dd/yy'}}
-									<i id="datefilter{{$index}}" class="datefilter glyphicon glyphicon-calendar fa fa-calendar"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="req-swap">
-						<input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="openRequest()" ng-hide="messageSent">
-						<div class="req-sent" ng-show="messageSent">
-							Request Sent
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div id="requestModal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-		  <div class="send-messege">
-			  <div class="title">
-				  Send {{profile.firstName}} a Message
-			  </div>
-			  <textarea rows="6" cols="20" class="form-control" ng-model="message.message"></textarea>
-			  <div class="modal-footer">
-				  <input type="button" class="btn btn-primary fll btn-send" value="Send" ng-click="sendMessage()" ng-disabled="message.message == '' ">
-				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			  </div>
-		</div>
-	</div>
+                <div class="swap" ng-if="user._id != profile._id">
+                    <div class="favorite">
+                        <div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">
+                            <div class="icon icon-heart-white sharing"></div>
+                            Save
+                        </div>
+                        <div class="btn btn-primary btn-swap share-btn" ng-if="isFavorite()" ng-click="removeFromFavorites()">
+                            <div class="icon icon-heart-white sharing"></div>
+                            Unsave
+                        </div>
+                        <div class="btn btn-primary btn-swap share-btn" ng-click="share()">
+                            <div class="icon icon-envelope-white sharing"></div>
+                            Share
+                        </div>
+                    </div>
+
+                    <div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}
+                    </div>
+                    <hr>
+                    <div class="swap-info">
+                        <div class="search-field">
+                            <label for="swapDates">When</label>
+                            <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                                   user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
+                                   not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" >
+                        </div>
+                        <div class="search-field">
+                            <label for="guests">Travelers</label>
+                            <div class="guests-search">
+                                <input type="number" class="form-control guests dates {{!swap.guests || swap.guests < 1?'error':''}}" id="guests" ng-model="swap.guests"
+                                       min="1" max="8" ng-disabled="requestSent" disabled="{{requestSent}}">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="req-swap">
+                        <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
+                               ng-click="openRequest()" ng-hide="requestSent">
+                        <div class="req-sent" ng-show="requestSent">
+                            Request Sent
+                        </div>
+                    </div>
+                    <div class="not-charged" ng-hide="requestSent">
+                        You won't be charged yet
+                    </div>
+                </div>
+                <div class="" ng-if="user._id == profile._id">
+                    <a href="/account/edit">
+                        <input type="button" class="btn btn-primary btn-swap" value="Edit Profile" >
+                    </a>
+                </div>
+                <div class="end-of-profile"></div>
+            </div>
+            <div class="visible-xs">
+                <div class="mobile-request">
+                    <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
+                           ng-click="openRequest()">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-section container-fluid">
+        <div class="row">
+            <!--Left section-->
+            <div class="appt-slider-and-profpic visible-xs">
+                <div class="profile-description">
+                    <div class="profile-name">
+                        <div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
+                        <div class="name-occupation">
+                            <div class="name">
+                                {{profile.firstName}}
+                            </div>
+                            <div class="occupation">
+                                {{age}} • {{profile.occupation}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swap">
+                        <div class="favorite">
+                            <div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">
+                                <div class="icon icon-heart-white sharing"></div>
+                                Save
+                            </div>
+                            <div class="btn btn-primary btn-swap share-btn" ng-if="isFavorite()" ng-click="removeFromFavorites()">
+                                <div class="icon icon-heart-white sharing"></div>
+                                Unsave
+                            </div>
+                            <div class="btn btn-primary btn-swap share-btn" ng-click="share()">
+                                <div class="icon icon-envelope-white sharing"></div>
+                                Share
+                            </div>
+                        </div>
+
+                        <div class="deposit">Payment Plan - {{data.securityDeposit[profile.deposit].displayName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="apt-description col-sm-9 col-xs-12">
+                <div class="caption-upto-separator">
+                    <div class="row">
+                        <div class="col-sm-2 col-xs-0">
+
+                        </div>
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="under-title">
+                                {{data.roomType[profile.apptInfo.roomType].displayName}} • {{profile.city}}
+                            </div>
+                            <div class="description-title">
+                                {{profile.apptInfo.title}}
+                            </div>
+                            <div class="rating" ng-if="profile.reviews.length > 0">
+                                <span class="icon icon-star-large"></span>
+                                <span class="icon {{profile.rating > 1?profile.rating < 2?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                <span class="icon {{profile.rating > 2?profile.rating < 3?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                <span class="icon {{profile.rating > 3?profile.rating < 4?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                <span class="icon {{profile.rating > 4?profile.rating < 5?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                <!--<span class="number-reviews">{{profile.comments.length}}</span>-->
+                            </div>
+                            <div class="rating" ng-if="profile.reviews.length == 0">
+                                <span class="new-appt" ng-if="profile.reviews.length == 0">New!</span>
+                            </div>
+                            <div class="simple-apt-info">
+                                <div class="home-info">
+                                    <div class="icon icon-man hidden-xs"></div>
+                                    <div class="icon icon-man-small visible-xs"></div>
+                                    <div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}}<br class="visible-xs">
+                                        {{profile.apptInfo.guests > 1?'Guests':'Guest'}}
+                                    </div>
+                                </div>
+                                <div class="home-info">
+                                    <div class="icon icon-door hidden-xs"></div>
+                                    <div class="icon icon-door-small visible-xs"></div>
+                                    <div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}}<br class="visible-xs">
+                                        {{profile.apptInfo.rooms > 1?'Rooms':'Room'}}
+                                    </div>
+                                </div>
+                                <!--The following line is to fix the bootstrap grid on small screens-->
+                                <div class="clearfix visible-xs"></div>
+                                <div class="home-info">
+                                    <div class="icon icon-bed hidden-xs"></div>
+                                    <div class="icon icon-bed-small visible-xs"></div>
+                                    <div class="bath-count simple-apt-info-content">{{profile.apptInfo.beds}}<br class="visible-xs">
+                                        {{profile.apptInfo.beds > 1?'Beds':'Bed'}}
+                                    </div>
+                                </div>
+                                <div class="home-info">
+                                    <div class="icon icon-duck hidden-xs"></div>
+                                    <div class="icon icon-duck-small visible-xs"></div>
+                                    <div class="room-count simple-apt-info-content">{{profile.apptInfo.baths}}<br class="visible-xs">
+                                        {{profile.apptInfo.baths > 1?'Baths':'Bath'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="">
+                    <div class="row">
+                        <!--The following line is to fix the bootstrap grid on small screens-->
+                        <div class="clearfix visible-xs"></div>
+                        <div class="col-sm-2 col-xs-22 left-side-description">About My Home</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">{{profile.apptInfo.about}}
+                        </div>
+                    </div>
+                    <!--<div class="read-more" ng-click="readMore(showMore, 'aboutHome')">-->
+                    <!--<div class="icon-plus read-more-button" ></div>-->
+                    <!--<div class="plain-text read-more-button">{{showMore.aboutHome.active?'Read Less':'Read More'}}</div>-->
+                    <!--</div>-->
+                    <div class="row">
+                        <div class="col-sm-2 col-xs-12 left-side-description">About me</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
+                            {{profile.aboutMe}}
+                        </div>
+                    </div>
+                    <!--<div class="read-more" ng-click="readMore(showMore, 'aboutMe')">-->
+                    <!--<div class="icon-plus read-more-button" ></div>-->
+                    <!--<div class="plain-text read-more-button" >{{showMore.aboutMe.active?'Read Less':'Read More'}}</div>-->
+                    <!--</div>-->
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-2 col-xs-12 left-side-description">Basic amenities</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration">
+                            <checkbox items="data.amenities" model="profile.apptInfo.amenities"
+                                      readonly="true"></checkbox>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row comments-show" ng-if="profile.reviews.length > 0">
+                        <div class="col-sm-2 col-xs-12  left-side-description">
+                            Reviews
+                        </div>
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
+                                <review-elm is-profile="true" commenter="commenter"></review-elm>
+                                <hr style="clear: both;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--</div>-->
+                    <div class="map-section">
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-4 left-side-description">Location</div>
+                            <div class="col-sm-4 col-xs-8">
+                                <div class="country-and-city">{{profile.country}} • {{profile.city}}</div>
+                                <br>
+                                <div class="address">{{profile.address.substr(0, profile.address.indexOf(','));}}</div>
+                                <div class="address">{{profile.address}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-0"></div>
+                            <div class="col-sm-8 col-xs-12 map-fragment">
+                                <div class="map" id="cityMap"></div>
+                            </div>
+                        </div>
+                        <!--END OF MAP SECTION-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

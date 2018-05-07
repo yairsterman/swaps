@@ -1,4 +1,4 @@
-var swapsApp = angular.module('swapsApp', ['filters', 'ngRoute', 'ui.bootstrap', 'ngMaterial', 'ngMessages', 'thatisuday.ng-image-gallery']);
+var swapsApp = angular.module('swapsApp', ['filters','ngRoute', 'ui.bootstrap', 'ngMaterial', 'ngAlertify', 'ngMessages', 'ngSanitize','thatisuday.ng-image-gallery', 'bw.paging']);
 
 // configure our routes
 swapsApp.config(function($routeProvider, $locationProvider) {
@@ -19,17 +19,48 @@ $routeProvider
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
     })
+    .when('/privacy-policy', {
+        templateUrl : '/pages/privacy.html',
+        controller  : 'mainController'
+    })
+    .when('/terms-and-conditions', {
+        templateUrl : '/pages/terms.html',
+        controller  : 'mainController'
+    })
+    .when('/faq', {
+        templateUrl : '/pages/faq.html',
+        controller  : 'mainController'
+    })
+    .when('/contact', {
+        templateUrl : '/pages/contact.html',
+        controller  : 'mainController'
+    })
+    .when('/how-it-works', {
+        templateUrl : '/pages/how-it-works.html',
+        controller  : 'mainController'
+    })
     .when('/travelers/:city', {
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
     });
 
     $locationProvider.html5Mode(true);
-    $locationProvider.hashPrefix('!');
+    // $locationProvider.hashPrefix('!');
 
 });
 
-swapsApp.run(function($http, $rootScope){
+swapsApp.run(function($http, $rootScope, $location, $window){
+
+    // initialise google analytics
+    $window.ga('create', 'UA-111632373-1', 'auto');
+
+    // track pageview on state change
+    $rootScope.$on('$routeChangeSuccess', function (event) {
+        $window.ga('send', 'pageview', $location.path());
+    });
+
+    $rootScope.isMobile = (/android|webos|iphone|ipad|ipod|blackberry|windows phone/).test(navigator.userAgent.toLowerCase()) || $window.outerWidth < 641;
+
     $http.get('/reauth').then(function(data){
        $rootScope.user = data.data;
        $rootScope.$broadcast('auth-return');

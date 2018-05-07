@@ -1,0 +1,218 @@
+<div class="onboarding-wrapper">
+    <div class="icon icon-delete top-corner" ng-click="close()"></div>
+    <div class="onboarding-header">
+        <div class="phases">
+            <div class="col-xs-4 phase">
+                <div class="top">
+                    <div class="line active">
+
+                    </div>
+                    <div class="circle active">
+
+                    </div>
+                    <div class="line active">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        Your Home
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 phase">
+                <div class="top">
+                    <div class="line {{phase == 'basic' || phase == 'photos'?'active':''}}">
+
+                    </div>
+                    <div class="circle {{phase == 'basic' || phase == 'photos'?'active':''}}">
+
+                    </div>
+                    <div class="line {{phase == 'basic' || phase == 'photos'?'active':''}}">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        Basic Information
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 phase">
+                <div class="top">
+                    <div class="line {{phase == 'photos'?'active':''}}">
+
+                    </div>
+                    <div class="circle {{phase == 'photos'?'active':''}}">
+
+                    </div>
+                    <div class="line {{phase == 'photos'?'active':''}}">
+
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="phase-title">
+                        Photos
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="info-area">
+        <div class="user-info address" ng-if="phase == 'home'">
+            <div class="address-title">
+                You are almost ready to start swapping!
+            </div>
+            <div class="sub-title">
+                Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
+            </div>
+            <div class="form-group">
+                <label class="control-label listing-label" for="address">Address:
+                    <span class="explanation">(Where you live)</span>
+                </label>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
+            </div>
+            <div class="form-group">
+                <label class="control-label listing-label" for="title">Home Title:
+                    <span class="explanation">(A short description of your home)</span>
+                </label>
+                <div class="">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label class="control-label listing-label">Room Type:<br>
+                        <span class="explanation">The type of room you are offering</span>
+                    </label>
+                    <div class="">
+                        <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"
+                                ng-options="room.id as room.displayName for room in data.roomType">
+                            {{room.displayName}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="control-label listing-label">Payment Plan:<br>
+                        <span class="explanation">Choose the plan that suits your needs</span>
+                    </label>
+                    <div class="">
+                        <select class="form-control" id="deposit" ng-model="user.deposit"
+                                ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
+                            {{plan.displayName}} - ${{plan.value}} per night
+                        </select>
+                    </div>
+                    <div class="plan-explanation">
+                        This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
+                        damages and cancellations.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="" ng-if="phase == 'basic'">
+            <div class="form-group">
+                <label class="control-label listing-label">Basics:
+                    <span class="explanation">(Essential information about you home)</span>
+                </label>
+                <div class="">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-3  basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-man-small hidden-xs"></div>
+                                <div class="basics-name">Guests</div>
+                            </div>
+                            <input class="form-control" id="swappers" type="number" min="1" max="8"
+                                   ng-model="user.apptInfo.guests">
+                        </div>
+                        <div class="col-sm-3 col-xs-3 basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-door-small hidden-xs"></div>
+                                <div class="basics-name">Rooms</div>
+                            </div>
+                            <input class="form-control" id="rooms" type="number" min="1" max="8"
+                                   ng-model="user.apptInfo.rooms">
+                        </div>
+                        <div class="col-sm-3 col-xs-3 basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-bed-small hidden-xs"></div>
+                                <div class="basics-name">Beds</div>
+                            </div>
+                            <input class="form-control" id="beds" type="number" min="1" max="8"
+                                   ng-model="user.apptInfo.beds">
+                        </div>
+                        <div class="col-sm-3 col-xs-3 basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-duck-small hidden-xs"></div>
+                                <div class="basics-name">Baths</div>
+                            </div>
+                            <input class="form-control" id="baths" type="number" min="1" max="8"
+                                   ng-model="user.apptInfo.baths">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-section rules">
+                <div class="form-group row">
+                    <label class="control-label listing-label">Facilities:
+                        <span class="explanation">(Things you have in your home)</span>
+                    </label>
+                    <div class="">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <checkbox items="data.amenities" model="user.apptInfo.amenities"></checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-info" ng-if="phase == 'photos'">
+            <div class="sub-title" ng-if="user.photos.length == 0">
+                Upload 3 photos of your home. <br>
+                These photos are how other Swappers will see your home, make sure they best represent your home.
+            </div>
+            <div class="sub-title" ng-if="user.photos.length < 3 && user.photos.length > 0">
+                Upload {{3 - user.photos.length}} more {{user.photos.length == 2?'photo':'photos'}} of your home.
+            </div>
+            <div class="photos-area">
+                <div class="box has-advanced-upload" ng-if="user.photos.length < 3">
+                    <div class="loader-wrapper" ng-if="saving">
+                        <div class="loader">
+
+                        </div>
+                    </div>
+                    <div class="box__input">
+                        <input class="cloudinary-fileupload" id="file" data-ng-init="initUploadButton()" ng-if="user.photos.length < 3" data-cloudinary-field="image_id"
+                        data-max-chunk-size="52428800" data-update-path="google.com"
+                        data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
+                        <label for="file" class="choose-file"><strong>Choose files</strong><span class="box__dragndrop"> or drag them here.</span></label>
+                    </div>
+                </div>
+                <div class="uploaded-photos row">
+                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
+                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[1]}})"></div>
+                    <div class="col-sm-4 col-xs-12 photo" style="background-image: url({{user.photos[2]}})"></div>
+                </div>
+            </div>
+            <div class="complete-buttons" ng-if="user.photos.length >= 3">
+                <div class="complete-btn btn btn-primary btn-close" ng-click="go('profile/'+user._id)">
+                    View Profile
+                </div>
+                <div class="complete-btn btn btn-primary" ng-click="go('account/set-up-swaps')">
+                    Set Swap Date
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="buttons {{phase == 'home'?'home':''}}">
+        <div class="button back" ng-click="back()" ng-hide="phase == 'home'">
+            <div class="glyphicon glyphicon-chevron-left"></div>
+            Back
+        </div>
+        <div class="button next" ng-click="next()" ng-hide="phase == 'photos'">
+            Next
+            <div class="glyphicon glyphicon-chevron-right"></div>
+        </div>
+    </div>
+</div>

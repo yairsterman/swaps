@@ -1,4 +1,4 @@
-swapsApp.service('UsersService', function($http){
+swapsApp.service('UsersService', function($http, $q){
 
    this.getUser = function(id) {
       return $http.get('user/get-user?id=' + id).then(function(data){
@@ -19,30 +19,66 @@ swapsApp.service('UsersService', function($http){
    };
 
    this.getUserByTravelingDest = function(dest, from, page, filters) {
-      var fromCity = '';
-      var requestFilters = '';
-      if(from){
+        var fromCity = '';
+        var requestFilters = '';
+        if(from){
           fromCity = '&from=' + from;
-      }
-      angular.forEach(filters, function(value, key) {
-          requestFilters += '&' + key + '=' +  value;
-      });
+        }
+        if(filters.amenities){
+          requestFilters += '&amenities=' + filters.amenities;
+        }
+       if(filters.room){
+           requestFilters += '&room=' + filters.room;
+       }
+       if(filters.guests){
+           requestFilters += '&guests=' + filters.guests;
+       }
+       if(filters.when){
+           requestFilters += '&dates=' + filters.when;
+       }
+
+       var dfr = $q.defer();
       var query ='?dest=' + dest + fromCity + requestFilters + '&page=' + page;
-      return $http.get('user/get-user-by-travelingDest' + query).then(function(data){
-           return data;
+      $http.get('user/get-user-by-travelingDest' + query).then(function(data){
+          if(data.data && data.data.err){
+              dfr.reject({error: true, msg: data.data.err});
+          }
+          else{
+              dfr.resolve(data.data);
+          }
         },
-        function(){
-             console.log("error")
+        function(err){
+            dfr.reject({error: true, msg: err});
         });
+      return dfr.promise;
    };
 
-   this.fbLogin = function() {
-      return $http.get('/auth/facebook/callback').then(function(data){
-           return data.data;
+    this.getFeaturedUsers = function() {
+        return $http.get('user/get-featured-users').then(function(data){
+            return data;
         },
-        function(){
-             console.log("error")
+        function(err){
+            return {error: true, msg: err};
         });
-   };
+    };
+
+    this.getNewUsers = function() {
+        return $http.get('user/get-new-users').then(function(data){
+            return data;
+        },
+        function(err){
+            return {error: true, msg: err};
+        });
+    };
+
+    this.getAllUsers = function() {
+        return $http.get('user/get-all-users').then(function(data){
+                return data;
+            },
+            function(err){
+                return {error: true, msg: err};
+            });
+    };
+
 
 });

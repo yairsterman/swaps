@@ -1,0 +1,238 @@
+@import 'media.less';
+
+swapper-home{
+  .traveler {
+    position: relative;
+    background-color: #ffffff;
+    padding: 5px;
+    -webkit-box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
+    -moz-box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
+    box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
+    height: 28vw;
+    cursor: pointer;
+    transition: 0.4s ease;
+    @media @desktop {
+      height: 29vw;
+    }
+    @media @tablet {
+      height: 34vw;
+    }
+    @media @mobile {
+      height: 90vw;
+    }
+    &:focus {
+      outline: none;
+    }
+    .carousel {
+      height: 20vw;
+      @media @tablet {
+        height: 22vw;
+      }
+      @media @mobile {
+        height: 60vw;
+      }
+      .carousel-inner {
+        height: 100%;
+      }
+      .item {
+        height: 100%;
+      }
+      .carousel-caption {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+    }
+    .carousel-control {
+      transition: 0.3s ease;
+      background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
+      background-image: -o-linear-gradient(left, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001));
+      background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, .5)), to(rgba(255, 255, 255, .0001)));
+      background-image: linear-gradient(to right, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
+      .carousel-control-arrow {
+        color:#0E5D7C;
+        font-size: 26px;
+        position: absolute;
+        cursor: pointer;
+        top: ~'calc(50% - 20px)';
+      }
+      &.right {
+        background-image: -webkit-linear-gradient(right, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
+        background-image: -o-linear-gradient(right, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001));
+        background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, .5)), to(rgba(255, 255, 255, .0001)));
+        background-image: linear-gradient(to left, rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .0001) 100%);
+        .carousel-control-arrow {
+          right: 10%;
+        }
+      }
+      &.left{
+        .carousel-control-arrow {
+          left: 10%;
+        }
+      }
+    }
+    .profile-img {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border: 1px solid grey;
+      width: 4vw;
+      height: 4vw;
+      border-radius: 50%;
+      position: absolute;
+      top: ~'calc(16vw - 5px)';
+      right: 15px;
+      @media (max-width: @screen-sm-max) {
+        width: 8vw;
+        height: 8vw;
+        top: 16vw;
+      }
+      @media @mobile {
+        width: 15vw;
+        height: 15vw;
+        top: 45vw;
+      }
+    }
+    .favorite{
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      &:focus{
+        outline: none;
+      }
+      &.pulse{
+        -webkit-animation: pulse 0.6s linear;
+        animation: pulse 0.6s linear;
+      }
+    }
+    .user-info {
+      height: 7.5vw;
+      padding-top: 4px;
+      overflow: hidden;
+      color:#0E5D7C;
+      @media @desktop {
+        height: 8.5vw;
+      }
+      @media @tablet {
+        height: 11vw;
+      }
+      @media @mobile {
+        height: 28vw;
+      }
+      .apt-title {
+        font-size: 16px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #484848;
+        @media @mobile {
+          font-size: 14px;
+          height: 18px;
+        }
+      }
+      .apt-sub-title {
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 14px;
+        color: #616161;
+        @media @mobile {
+          font-size: 12px;
+          height: 16px;
+        }
+      }
+    }
+    .rating {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      height: 15px;
+      margin-top: 2px;
+      .number-reviews {
+        margin-left: 10px;
+      }
+      .new-appt {
+        color:#0E5D7C;
+      }
+    }
+    .basics {
+      display: flex;
+      padding-top: 0.8vw;
+      color: #616161;
+      @media @desktop {
+        padding-top: 0.4vw;
+      }
+      @media @tablet {
+        padding-top: 0.8vw;
+      }
+      @media @mobile {
+        padding-top: 2vw;
+
+      }
+      .tiny-text {
+        padding-right: 15px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        .icon{
+          margin-right: 8px;
+          &.icon-door{
+            margin-right: 0;
+          }
+        }
+        @media @mobile {
+          margin-top: 0;
+          font-size: 9px;
+        }
+      }
+    }
+
+    .age-and-city {
+
+    }
+
+    .carousel-image {
+      width: 100%;
+      height: 100%;
+      top: 0%;
+      right: 0;
+      left: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}

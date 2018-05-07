@@ -1,0 +1,119 @@
+<div class="request-page">
+    <div class="top-corner icon icon-delete" ng-click="close()"></div>
+    <div class="match" ng-if="isMatch">
+        <div class="title">
+            I like you too!
+            <div class="underline"></div>
+        </div>
+
+        <div class="photo">
+            <div class="profile-img" style="background-image: url('{{profile.image}}')"></div>
+        </div>
+
+        <div class="sub-title center">
+            You and {{profile.firstName}} have liked each others homes! <br>
+            Why waste time? request to Swap now.
+        </div>
+        <input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="showRequest()">
+
+    </div>
+    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete || isMatch">
+        <div class="title">
+            {{confirmation?'Confirm Swap':'Request to Swap!'}}
+            <div class="underline"></div>
+        </div>
+        <div ng-if="!chooseDates">
+            <div class="sub-title row">
+                <div class="col-xs-4">
+                    <strong class="blue">Check in:</strong>
+                </div>
+                <div class="col-xs-8" ng-if="!confirmation">
+                    {{swap.from}}
+                </div>
+                <div class="col-xs-8" ng-if="confirmation">
+                    {{swap.from | date: 'MMM dd, yyyy '}}
+                </div>
+            </div>
+            <div class="sub-title row">
+                <div class="col-xs-4">
+                    <strong class="blue">Check out:</strong>
+                </div>
+                <div class="col-xs-8" ng-if="!confirmation">
+                    {{swap.to}}
+                </div>
+                <div class="col-xs-8" ng-if="confirmation">
+                    {{swap.to | date: 'MMM dd, yyyy '}}
+                </div>
+            </div>
+            <div class="sub-title row" ng-if="!confirmation">
+                <div class="col-xs-4">
+                    <strong class="blue">Swappers:</strong>
+                </div>
+                <div class="col-xs-8">
+                    {{swap.guests}}
+                </div>
+            </div>
+        </div>
+        <div class="sub-title">
+            <div class="dates row" ng-if="chooseDates">
+                <div class="col-sm-4 col-xs-12">
+                    <label for="dates" class="blue">When: </label>
+                </div>
+                <div class="col-sm-8 col-xs-12">
+                    <div class="search-field">
+                        <input type="text" class="form-control {{datesError?'error':''}}" id="dates" name="dates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                               user-city="userCity" locale-format="localeFormat" model-format="modelFormat" find-travel="true" data="data" datepicker>
+                        <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates()"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="chooseDates || confirmation">
+                <div class="col-sm-4 col-xs-12">
+                    <label for="guests" class="blue">Swappers: </label>
+                </div>
+                <div class="col-sm-8 col-xs-12">
+                    <div class="guests-search">
+                        <input type="number" class="form-control guests {{guestsError?'error':''}}" id="guests" ng-model="swap.guests"
+                               min="1" max="8">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub-title send-message">
+            <label for="about" class="small-text blue">Tell {{profile.firstName}} a little about your trip</label>
+            <textarea id="about" rows="3" cols="20" class="form-control send-text {{messageError?'error':''}}" ng-model="send.message" placeholder="Hey {{profile.firstName}}! ...">
+                          </textarea>
+        </div>
+        <input type="button" class="btn btn-primary btn-swap" value="Go to Payment" ng-click="showPayment()">
+    </div>
+    <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
+        <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
+        <div class="dates"></div>
+        <div class="type">Payment</div>
+        <div class="amount">${{depositPlan.night}} Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>
+        <div class="total">Total Payment: <strong>${{totalPayment}}</strong></div>
+        <div class="type">Deposit</div>
+        <div class="amount">${{depositPlan.week}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
+        <div class="total">Total Deposit: <strong>${{totalDeposit}}</strong></div>
+        <div class="buttons">
+            <div class="back btn-primary" ng-click="goBack()">
+                Back
+            </div>
+            <div class="pay btn-primary" ng-click="goToPayment()">
+                Pay
+            </div>
+        </div>
+    </div>
+    <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
+        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="dates" message="send.message" guests="swap.guests" plan="profile.deposit" request-type="confirmation?data.requestType.confirm:data.requestType.request" request-id="requestId"></payment>
+        <div class="loader-wrapper" ng-if="processing">
+            <div class="loader">
+
+            </div>
+        </div>
+    </div>
+    <div class="request-complete" ng-if="requestComplete">
+        <div class="title"> {{completeText}}</div>
+        <div class="btn-primary ok-btn" ng-click="close()">OK</div>
+    </div>
+</div>

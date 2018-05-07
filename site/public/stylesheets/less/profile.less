@@ -1,24 +1,684 @@
+@import 'media.less';
 .profile-page{
-	background-color: #e1e1e1;
-	.photos{
-		height:30vw;
-		position: relative;
-		.main-photo{
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: cover;
-			margin: auto;
-			height: 100%;
-    		width: 100%;
-		}
-		.ng-image-gallery {
-			.ng-image-gallery-thumbnails{
-				.thumb{
-					display: none;
+	background-color: #ffffff;
+	font-family: MavenPro;
+	.no-padding{
+		padding: 0;
+	}
+	.appt-slider-and-profpic {
+		.photos{
+			height:40vw;
+			position: relative;
+			@media @mobile {
+				height:70vw;
+			}
+			.main-photo{
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				margin: auto;
+				height: 100%;
+				width: 100%;
+			}
+			.ng-image-gallery {
+				.ng-image-gallery-thumbnails{
+					.thumb{
+						display: none;
+					}
 				}
 			}
 		}
+		.profile-description {
+			height: 40vw;
+			padding-top: 1vw;
+			border: 1px solid rgba(0,0,0,0.2);
+			@media @mobile {
+				height:auto;
+				padding: 10px;
+			}
+			.separator-more-padding {
+				padding-top: 15%;
+			}
+			.profile-name{
+				display: flex;
+				align-items: flex-start;
+				.name-occupation {
+					margin-left: 15px;
+					.name {
+						font-size: 32px;
+						font-weight: bold;
+						padding: 10px 0;
+						color: #0E5D7C;
+						@media @mobile {
+							font-size: 18px;
+							padding: 0;
+						}
+						@media @tablet {
+							font-size: 20px;
+							padding: 0;
+						}
+					}
+					.occupation {
+						font-size: 16px;
+						@media @mobile {
+							font-size: 16px;
+						}
+						@media @tablet {
+							font-size: 18px;
+						}
+					}
+				}
+				.circle-profile-pic {
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+					border-radius: 50%;
+					width: 6vw;
+					height: 6vw;
+					@media @mobile {
+						width: 50px;
+						height: 50px;
+						margin-right: 10px;
+					}
+				}
+			}
+			.looking-to-swap{
+
+			}
+			.btn-swap{
+				width: 100%;
+				font-size: 18px;
+			}
+			.swap{
+				background-color: white;
+				margin-bottom: 15px;
+				@media @mobile {
+					margin: 15px 0;
+				}
+				hr{
+					margin-top: 10px;
+				}
+				.favorite{
+					display: flex;
+					.share-btn{
+						display: flex;
+						align-items: center;
+						font-size: 16px;
+						text-align: right;
+						width: 48%;
+						&:first-child{
+							margin-right: 1%;
+						}
+						&:nth-child(2){
+							margin-left: 1%;
+						}
+					}
+					.sharing{
+						margin-right: 10px;
+						transform: scale(0.7);
+						transition: 0.4s ease;
+					}
+					.btn{
+						&:hover{
+							.sharing{
+								transform: scale(0.9);
+							}
+						}
+					}
+					.share-btn-mobile{
+						color: #0E5D7C;
+					}
+				}
+				.deposit{
+					margin-top: 10px;
+					font-size: 16px;
+					opacity: 0.6;
+					@media @mobile {
+						text-align: center;
+					}
+				}
+				.swap-info{
+					.search-field{
+						width:100%;
+						&:nth-child(2){
+							margin-top: 15px;
+						}
+						.dates{
+							transition: 0.4s ease;
+							&.error{
+								border: 1px solid #a94442;
+								box-shadow: 0px 0px 3px 3px rgba(169,68,66,0.4);
+							}
+						}
+					}
+				}
+				.req-swap{
+					.btn-swap{
+						width: 100%;
+						font-size: 18px;
+						transition: 0.3s ease;
+						&.error{
+							border: 1px solid #a94442
+						}
+					}
+					.req-sent{
+						text-align: center;
+						font-size: 18px;
+						font-weight: 300;
+					}
+				}
+				.not-charged{
+					font-size: 14px;
+					text-align: center;
+					padding-top: 10px;
+					opacity: 0.8;
+				}
+			}
+			.mutual-friends {
+				.icon-man {
+					background-position: -207px -5px;
+					float: left;
+
+
+					@media (max-width: @screen-xs-max) {
+						width: 30px;
+						height: 30px;
+						background-size: 185px 185px;
+						background-position: -144px -5px;
+					}
+				}
+				.mutual-friends-text {
+					margin-top: 5%;
+					margin-left: 16%;
+					padding-top: 4%;
+					color: #616161;
+					font-size: 130%;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 10px;
+					}
+				}
+			}
+			.about-me {
+				font-size: 120%;
+				font-weight: bold;
+				color: #0E5D7C;
+				margin-bottom: 4%;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+				}
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
+			}
+			.about-text {
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 10px;
+				}
+			}
+			.contact-host {
+				font-size: 120%;
+				font-weight: bold;
+				color: #616161;
+				margin-bottom: 4%;
+
+				@media (max-width: @screen-xs-max) {
+					font-size: 14px;
+				}
+			}
+			.icon-plus-checkbox {
+				.pet-icon {
+					float: left;
+					background-image: url("../../images/icons/pets.png");
+					display: block;
+					background-size: contain;
+					width: 50px;
+					height: 50px;
+
+					@media (max-width: @screen-xs-max) {
+						width: 30px;
+						height: 30px;
+						//margin-left: 30px;
+					}
+				}
+				.smoke-icon {
+					float: left;
+					background-image: url("../../images/icons/homeswap.png");
+					display: block;
+					background-size: contain;
+					width: 50px;
+					height: 50px;
+
+					@media (max-width: @screen-xs-max) {
+						width: 30px;
+						height: 30px;
+						//margin-left: 30px;
+					}
+				}
+				.description-text {
+					float: left;
+					padding: 8% 0 0 6%;
+					font-size: 122%;
+					color: #616161;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 12px;
+					}
+				}
+
+				.check-container {
+					float: right;
+					display: block;
+					background-color: #e0e0e0;
+					width: 20px;
+					height: 20px;
+					margin-top: 5%;
+					margin-left: 7%;
+					margin-right: 4%;
+					@media (max-width: @screen-xs-max) {
+						width: 10px;
+						height: 10px;
+					}
+
+					.checkbox-div {
+						float: left;
+						//background-image: url("../../images/icons/V.png");
+						display: block;
+						background-size: contain;
+						width: 30px;
+						height: 30px;
+						margin-top: -8px;
+						margin-left: 0;
+
+						@media (max-width: @screen-xs-max) {
+							width: 24px;
+							height: 26px;
+						}
+					}
+				}
+			}
+		}
+		.mobile-request{
+			@media @mobile {
+				position: fixed;
+				bottom: 10px;
+				right: 10px;
+				z-index: 12;
+			}
+			.btn-swap{
+				font-size: 16px;
+			}
+		}
 	}
+
+	.main-section {
+		.apt-description {
+			margin-top: 15px;
+			padding: 0 30px;
+			@media @mobile {
+				padding: 0 10px;
+			}
+			.description-title {
+				font-size: 30px;
+				color: #0E5D7C;
+				display:inline-block;
+				max-width: 100%;
+				white-space: nowrap;
+				overflow:hidden;
+				text-overflow: ellipsis;
+				height: 40px;
+				transition: ease 0.3s;
+
+				@media @mobile {
+					font-size: 20px;
+					height: 26px;
+				}
+			}
+			.under-title {
+				font-size: 20px;
+				font-weight: 400;
+				@media @mobile {
+					font-size: 14px;
+				}
+			}
+			.rating {
+				display: flex;
+				align-items: center;
+				font-size: 12px;
+				height: 15px;
+				.icon{
+					margin-right: 4px;
+				}
+				.number-reviews {
+					margin-left: 10px;
+				}
+				.new-appt {
+					font-size: 16px;
+				}
+			}
+			.simple-apt-info {
+				display: flex;
+				padding-top: 1vw;
+				@media @mobile {
+					padding-top: 3vw;
+				}
+				.home-info{
+					display: flex;
+					align-items: center;
+					margin-right: 20px;
+					@media @mobile {
+						width: 25%;
+						padding-right: 10px;
+						margin-right: 0;
+					}
+				}
+				.simple-apt-info-content {
+					font-size: 18px;
+					color: #616161;
+					padding-left: 10px;
+					@media @mobile {
+						font-size: 12px;
+						padding-left: 6px;
+					}
+				}
+			}
+			.left-side-description {
+				font-size: 20px;
+				color: #0E5D7C;
+				font-weight: bold;
+				text-align: left;
+
+				@media @mobile {
+					padding-bottom: 5px;
+					font-size: 16px;
+				}
+				@media @tablet {
+					font-size: 18px;
+				}
+			}
+			.facilities {
+
+			}
+			.right-side-elaboration {
+				font-size: 16px;
+				color: #616161;
+
+				@media @mobile {
+					font-size: 14px;
+				}
+				@media @tablet {
+					font-size: 16px;
+				}
+			}
+			.read-more{
+				display: flex;
+				.read-more-button {
+					@media (max-width: @screen-xs-max) {
+						&.plain-text {
+							font-size: 14px;
+							width: 114px;
+						}
+					}
+				}
+			}
+			.read-more-activation {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 6;
+				-webkit-box-orient: vertical;
+				@media @mobile {
+					-webkit-line-clamp: 4;
+				}
+			}
+			.amenities{
+				.amenity{
+					display: flex;
+					.icon{
+						transform: scale(0.4);
+						margin: -31px;
+					}
+				}
+				.amenity-name{
+					width:50%;
+				}
+				.not-available{
+					opacity: 0.5;
+				}
+			}
+			.icon-plus {
+				background-image: url("../../images/icons/plus1.png");
+				width: 38px;
+				height: 38px;
+				background-position: 1px -31px;
+				background-size: 214%;
+				float: left;
+			}
+			.plain-text {
+				font-size: 14px;
+				font-weight: bold;
+				color: #616161;
+			}
+			.check-container {
+				float: right;
+				display: block;
+				background-color: #e0e0e0;
+				width: 20px;
+				height: 20px;
+				margin-top: 5%;
+				margin-left: 7%;
+				margin-right: 4%;
+
+				@media (max-width: @screen-xs-max) {
+					width: 10px;
+					height: 10px;
+				}
+
+				.checkbox-div {
+					float: left;
+					//background-image: url("../../images/icons/V.png");
+					display: block;
+					background-size: contain;
+					width: 30px;
+					height: 30px;
+					margin-top: -8px;
+					margin-left: 0;
+
+					@media (max-width: @screen-xs-max) {
+						width: 24px;
+						height: 26px;
+					}
+				}
+			}
+			.description-text {
+				float: left;
+				padding: 4% 0 0 8%;
+				font-size: 122%;
+				color: #616161;
+			}
+			.stars {
+				float: left;
+				margin-left: 1%;
+				.star {
+					margin-top: -28%;
+				}
+			}
+			.comments-smaller-header {
+				float: left;
+				margin-right: 5%;
+				font-weight: bold;
+			}
+			.left-floaters-likes {
+				clear: both;
+				float: left;
+				width: 100%;
+
+				.icon-like{
+					float: left;
+					background-image: url("../../images/icons/like.png");
+				}
+				.icon-dislike {
+					float: left;
+					background-image: url("../../images/icons/dislike.png");
+				}
+				.icon-flag {
+					float: left;
+					background-image: url("../../images/icons/FLAG.png");
+				}
+				.like-count {
+					float: left;
+					margin: 3% 3%;
+				}
+			}
+
+			.separator {
+				&.before-comments {
+					margin: 2% 0;
+					clear: both;
+				}
+			}
+			.comments-show {
+				.comment {
+
+					.commenter-photo {
+						height: 70px;
+						width: 70px;
+						border-radius: 50%;
+						background-position: center;
+						background-repeat: no-repeat;
+						background-size: cover;
+
+						@media (max-width: @screen-xs-max) {
+							height: 50px;
+							width: 50px;
+							float: left;
+							margin-right: 7%;
+						}
+					}
+
+					.review-stars {
+						float: right;
+						display: inline-flex;
+					}
+
+					.commenter-name {
+						font-size: 120%;
+						font-weight: bold;
+						color: #0E5D7C;
+						margin-bottom: 2%;
+					}
+					.commenter-country-and-age {
+						color: #616161;
+						font-size: 120%;
+						margin-bottom: 2%;
+					}
+					.commenter-comment {
+						color: #616161;
+						letter-spacing: 0.2px;
+						margin-bottom: 2%;
+					}
+
+					.separator {
+						padding-bottom: 12%;
+						margin: 2% 0;
+					}
+				}
+			}
+			.map-section {
+				.country-and-city {
+					font-size: 20PX;
+					color: #616161;
+					font-weight: bold;
+
+					@media @mobile {
+						font-size: 16px;
+						text-align: left;
+					}
+				}
+				.address {
+					font-size: 120%;
+					font-weight: 100;
+					color: #616161;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: 14px;
+						text-align: center;
+					}
+				}
+			}
+
+			.row {
+				margin-bottom: 2%;
+			}
+			// MAP
+			.map-view{
+				padding: 0 0 0 5px;
+			}
+			.map{
+				height: 40vw;
+				@media (max-width: @screen-sm-max) {
+					height: 36vw;
+				}
+				@media (max-width: @screen-xs-max) {
+					height: 80vw;
+				}
+				#iconsLayer {
+					> div{
+						border-radius:50% !important;
+						background-color: white;
+						border:2px solid rgba(13, 134, 234, 0);
+						-webkit-transition: ease 0.3s; /* For Safari 3.1 to 6.0 */
+						transition: ease 0.3s;
+						&:hover{
+							-ms-transform: scale(1.2); /* IE 9 */
+							-webkit-transform: scale(1.2); /* Safari */
+							transform: scale(1.2);
+						}
+					}
+					img{
+						//border-radius:50% !important;
+						width: 30px !important;
+						height: 30px !important;
+						background-position: center;
+						display: block;
+						//background-color: white;
+						object-fit: contain;
+						object-position: center;
+						transform: scale(0.80);
+						&:hover{
+							-ms-transform: scale(1.2); /* IE 9 */
+							-webkit-transform: scale(1.2); /* Safari */
+							transform: scale(1.2);
+						}
+					}
+				}
+				.infoWindowContent{
+					font-size: 16px;
+					font-weight: bold;
+					padding-top: 10px;
+					color: #000;
+					background-color: rgba(192,192,192,0.8);
+				}
+				.travelers{
+					font-size:20px;
+					text-align: center;
+					font-weight: bold;
+					color: #045f79;
+				}
+				.map-photo{
+					width: 20vw;
+					height: 15vw;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+				}
+			}
+			// END MAP
+		}
+	}
+
 	.info{
 		.info-row{
 		    margin-right: 0;
@@ -120,7 +780,7 @@
 				.req-sent{
 					text-align: center;
 					font-size: 20px;
-					color: 	#204d74;
+					color: 	#227392;
 				}
 			}
 			.btn-swap{
@@ -141,6 +801,7 @@
 				font-size: 36px;
 			    font-weight: bold;
 			    padding: 10px 0;
+
 			}
 			.city{
 				font-size: 18px;
@@ -214,6 +875,21 @@
 			}
 		}
 	}
+	.spinner {
+		animation: spin 2s;
+		transform: rotate(360deg);
+	}
+	.separator {
+		border-bottom: 1px solid #bababa;
+		width: 100%;
+		margin: 15px 0;
+	}
+	.hideme {
+		opacity: 0;
+	}
+	.visible {
+		opacity: 1;
+	}
 }
 .modal-content{
 	padding: 15px;
@@ -226,3 +902,46 @@
 		float: left;
 	}
 }
+
+
+// Extra small screen / phone
+// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
+@screen-xs:                  480px;
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+
+}
+
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+
+}
+
+@media (min-width: @screen-lg-min) {
+
+}
+

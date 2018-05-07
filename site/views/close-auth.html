@@ -2,9 +2,9 @@
     if (window.opener) {
         window.opener.focus();
 
-      if(window.opener.he.loginCallBack) {
+      if(window.opener.login.loginCallBack) {
       	var userId = '<%= userId %>';
-        window.opener.he.loginCallBack(userId);
+        window.opener.login.loginCallBack(userId);
       }
     }
 

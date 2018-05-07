@@ -1,0 +1,49 @@
+<!--The directive for profile page:-->
+
+<div ng-if="isProfile" class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
+</div>
+<div ng-if="isProfile" class="col-md-10 commenter-comment-section">
+
+    <div class="review-stars">
+        <span class="icon icon-star"></span>
+        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+    </div>
+
+    <div class="commenter-name">{{commenter.name}}</div>
+
+    <div class="commenter-country-and-age">
+        {{commenter.country}}
+    </div>
+    <div class="commenter-comment">
+        {{commenter.review}}
+    </div>
+</div>
+
+
+
+<!--The directive for account page:-->
+
+<div ng-if="!isProfile" class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
+</div>
+<div ng-if="!isProfile" class="col-md-10 commenter-comment-section">
+
+    <div class="review-stars">
+        <span class="icon icon-star"></span>
+        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+    </div>
+
+    <div class="commenter-name">{{commenter.name}}</div>
+
+    <div class="commenter-country-and-age">
+        {{commenter.country}}
+    </div>
+    <div class="commenter-comment">
+        {{commenter.review}}
+    </div>
+</div>

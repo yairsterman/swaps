@@ -1,0 +1,12 @@
+<div class="checkbox-wrapper">
+    <div class="single-checkbox {{readonly && !isChecked(item.id)?'not-included':''}}" ng-repeat="item in items">
+        <div class="icon {{item.icon}}">
+        </div>
+        <div class="text">
+            {{item.displayName}}
+        </div>
+        <div class="things-checkbox {{readonly?'no-border':''}}" ng-click="addItem(item.id, $event)">
+            <div class="check icon icon-check {{isChecked(item.id)?'checked':''}}"></div>
+        </div>
+    </div>
+</div>

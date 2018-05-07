@@ -1,62 +1,243 @@
-
 <div class="home-page">
-  <!-- <div class="slider">
-    <div uib-carousel active="active" interval="5000" no-wrap="noWrapSlides">
-      <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-        <img ng-src="{{slide.image}}" style="margin:auto;">
-
-      </div>
+    <div class="section main-section" id="findSwap">
+        <div class="title-container">
+            <div class="title-swaps" style="background-image: url('../images/logotype.svg')"></div>
+            <div class="points-container">
+                Home is Wherever<div></div>
+                <div class="points-container-border"></div>
+            </div>
+        </div>
+        <!--<div class="button-div container" scroll-to-top>-->
+            <!--<span class="icon icon-brownerrow"-->
+                  <!--style="cursor: pointer"></span>-->
+        <!--</div>-->
+        <div class="find-swap">
+            <!--<div class="start-swapping">Start Swapping</div>-->
+            <div class="row search-area">
+                <div class="search-field left col-sm-4 col-xs-12">
+                    <label for="searchCity">Where</label>
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
+                    <div class="icon icon-infocenter"></div>
+                </div>
+                <div class="search-field col-sm-4 col-xs-12">
+                    <label for="searchDate">When</label>
+                    <!--<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">-->
+                    <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+                    <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
+                    <div class="icon icon-calender"></div>
+                </div>
+                <div class="search-field right col-sm-4 col-xs-12 ">
+                    <label for="guests">Travelers</label>
+                    <div class="guests-search">
+                        <input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">
+                    </div>
+                    <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
+                        <button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>
+                    </a>
+                    <div class="icon icon-man-small"></div>
+                </div>
+                <div class="no-padding col-sm-4 col-xs-12 visible-xs">
+                    <button class="search" ng-click="searchSwap($event)">Search</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div> -->
-  <!-- <div class="map-background" style="background-image:url('{{mapBackground}}')"> -->
-      <div class="gradient">
-          <div class="info {{info?'open':''}}">
-              <div class="user-city" ng-if="info">
-                  <div class="city">
-                      {{info.title}}
-                  </div>
-                  <div class="traveler">
-                      <div class="profile-pic" style="background-image:url('{{info.icon.url}}')">
-                      </div>
-                      <div class="name">
-                          {{info.content}}
-                      </div>
-                  </div>
-                  <div class="amount">
-                      and {{info.amount}} others are looking to swap in {{userCity}}
-                  </div>
-                  <div class="search-city">
-                      <button type="button" class="btn btn-default search-button" ng-click="go(info.url)"></i>Search City</button>
-                  </div>
-              </div>
-              <div class="user-city" ng-if="!info">
-                  See who is traveling to {{userCity}}
-              </div>
-          </div>
-          <div class="map" id="map"></div>
-      </div>
-  <!-- </div> -->
-  <!-- <div class="fly-now" style="">
-      <div class="fly-now-form">
-          <div class="swap-now">
-              SWAP NOW
-          </div>
-          <div class="form-group">
-              <input type="text" class="form-control" id="where" placeholder="Where to" ng-model="swap.where">
-          </div>
-          <div class="form-group">
-              <div class="form-control" style="padding:0;">
-                  <md-datepicker ng-model="swap.departure" md-placeholder="Departure"></md-datepicker>
-              </div>
-          </div>
-          <div class="form-group">
-              <div class="form-control" style="padding:0;">
-                  <md-datepicker ng-model="swap.return" md-placeholder="Return"></md-datepicker>
-              </div>
-          </div>
-          <div class="form-group">
-              <button type="button" class="btn btn-default go" ng-click="submit()"></i>GO!</button>
-          </div>
-      </div>
-  </div> -->
+    <div class="section featured-homes" id="featuredHomes">
+        <div class="title swappers">
+            <span scroll-on-click ng-if="swapperTitle == 'city'">Swappers looking for a place in {{userCity}}</span>
+            <span scroll-on-click ng-if="swapperTitle == 'featured'">Meet our top rated Swappers</span>
+            <span scroll-on-click ng-if="swapperTitle == 'new'">Meet some new Swappers</span>
+            <div class="swappers-border"></div>
+        </div>
+        <div class="travelers-list">
+            <div class="mg-0 row">
+                <div class= "traveler-col col-sm-4 col-xs-12" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}">
+                    <!--<div class="push-pin icon {{$index==0?'icon-pin-green':$index==1?'icon-pin-blue':$index==2?'icon-pin-red':''}}"></div>-->
+                    <swapper-home traveler="traveler"></swapper-home>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="how-it-works">
+        <div class="inner-section row">
+            <div class="title">How Does it work?</div>
+            <div class="sub-title">Swapping homes is easy, secure, and cheap</div>
+            <div class="how-inner-ticket col-sm-4 col-xs-12">
+                <div class="join">
+                    <div class="description-icon icon icon-house"></div>
+                </div>
+                <div class="ticket-title">It's Easy!</div>
+                <div class="how-inner-sentences">
+                    List details about your home and travel plans, find other Swappers, and set up a perfect home swap.
+                </div>
+            </div>
+            <div class="how-inner-ticket col-sm-4 col-xs-12">
+                <div class="join">
+                    <div class="description-icon icon icon-keys"></div>
+                </div>
+                <div class="ticket-title">It's Secure!</div>
+                <div class="how-inner-sentences">
+                    Swappers set aside a security deposit for safety.
+                    <strong> The entire security deposit is returned to you after your trip</strong>
+                </div>
+            </div>
+            <div class="how-inner-ticket col-sm-4 col-xs-12">
+                <div class="join">
+                    <div class="description-icon icon icon-money"></div>
+                </div>
+                <div class="ticket-title">It's Cheap!</div>
+                <div class="how-inner-sentences">Save a ton of money and find a home wherever you go! </div>
+            </div>
+            <div class="col-xs-12" >
+                <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
+                <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
+            </div>
+        </div>
+    </div>
+    <div class="title swappers" id="featuredDestinations">
+        <span scroll-on-click>Featured Destinations</span>
+        <div class="swappers-border"></div>
+    </div>
+    <div class="section featured-destinations" ng-click="searchSwap($event)">
+        <div class="columns col-30">
+            <div class="city he-60"
+                 ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
+
+                <div class="city-text">{{cities[0].name}}</div>
+            </div>
+            <div class="city he-40"
+                 ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
+                <div class="city-text">{{cities[1].name}}</div>
+            </div>
+        </div>
+        <div class="columns col-70">
+            <div class="city he-40"
+                 ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
+                <div class="city-text">{{cities[2].name}}</div>
+            </div>
+            <div class="city he-60 width-60 "
+                 ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
+                <div class="city-text">{{cities[3].name}}</div>
+            </div>
+            <div class="city he-60 width-40"
+                 ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
+                <div class="city-text">{{cities[4].name}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="join-now" ng-if="false">
+        <div class="bg-image">
+            <div class="bottom-title">What are you waiting for? Start Swapping today!</div>
+            <div class="join-buttons">
+                <div class="row social-join">
+                    <div class="col-sm-4 col-sx-3">
+
+                    </div>
+                    <div class="col-sm-4 col-sx-6">
+                        <div class="facebook-signin" ng-click="openLogin(true)">
+                            <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
+                        </div>
+                        <div class="google">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-sx-3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="title swappers">
+        <span>Payment Plans</span>
+        <div class="swappers-border"></div>
+    </div>
+    <div class="payment-plan">
+        <div class="row all-plans">
+            <div class="col-sm-4">
+                <div class="single-plan nomad" ng-click="choosePlan(0)">
+                    <div class="plan-top">
+                        <div class="plan-title">
+                            {{data.securityDeposit[0].displayName}}
+                            <br>
+                            Payment Plan
+                        </div>
+                        <div class="plan-image">
+
+                        </div>
+                    </div>
+                    <div class="plan-bottom">
+                        <div class="small-text">
+                            Per night
+                        </div>
+                        <div class="price">
+                            {{data.securityDeposit[0].night}}$
+                        </div>
+                        <div class="covers">
+                            This plan covers up to <br> {{data.securityDeposit[0].damage}}$
+                        </div>
+                        <div class="small-text">
+                            in damages or cancellations
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="single-plan globetrotter" ng-click="choosePlan(1)">
+                    <div class="plan-top">
+                        <div class="plan-title">
+                            {{data.securityDeposit[1].displayName}}
+                            <br>
+                            Payment Plan
+                        </div>
+                        <div class="plan-image">
+
+                        </div>
+                    </div>
+                    <div class="plan-bottom">
+                        <div class="small-text">
+                            Per night
+                        </div>
+                        <div class="price">
+                            {{data.securityDeposit[1].night}}$
+                        </div>
+                        <div class="covers">
+                            This plan covers up to <br> {{data.securityDeposit[1].damage}}$
+                        </div>
+                        <div class="small-text">
+                            in damages or cancellations
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="single-plan cosmopolite" ng-click="choosePlan(2)">
+                    <div class="plan-top">
+                        <div class="plan-title">
+                            {{data.securityDeposit[2].displayName}}
+                            <br>
+                            Payment Plan
+                        </div>
+                        <div class="plan-image">
+
+                        </div>
+                    </div>
+                    <div class="plan-bottom">
+                        <div class="small-text">
+                            Per night
+                        </div>
+                        <div class="price">
+                            {{data.securityDeposit[2].night}}$
+                        </div>
+                        <div class="covers">
+                            This plan covers up to <br> {{data.securityDeposit[2].damage}}$
+                        </div>
+                        <div class="small-text">
+                            in damages or cancellations
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

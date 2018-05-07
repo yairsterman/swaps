@@ -1,0 +1,20 @@
+<div class="login-model">
+    <div class="icon icon-delete top-corner" ng-click="close()"></div>
+    <div class="title">
+        {{title}}
+        <div class="underline"></div>
+    </div>
+    <div class="sub-title">
+        {{subTitle}}
+    </div>
+    <div class="facebook-signin">
+        <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>{{signin?'Join with Facebook':'Log in with Facebook'}}</button>
+    </div>
+    <div class="bottom" ng-if="signin">
+        By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
+        and <span class="link" ng-click="policy()">Privacy Policy</span>
+    </div>
+    <div class="bottom" ng-if="!signin">
+       Don't have an account? <span class="link" ng-click="goToSignin()">Join</span>
+    </div>
+</div>

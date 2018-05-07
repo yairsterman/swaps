@@ -1,346 +1,261 @@
 var ho = null;
-swapsApp.controller('homeController', function($scope, $rootScope, $location, $window, $document,$timeout, $interval, UsersService) {
+swapsApp.controller('homeController', function($scope, $rootScope, $location, $window, $document,$timeout, $interval, $uibModal, UsersService) {
     ho = $scope;
     $scope.user = $rootScope.user;
     $scope.map = null;
     $scope.slideIndex = 0;
+    $scope.featured = [];
+    $scope.options = ['cities'];
 
-    // $scope.slides = [
-    //   {id: '0', image:'/images/static/slide1.jpg'},
-    //   {id: '1', image:'/images/static/slide2.jpg'}
-    // ];
-    $scope.slides = [
-        '/images/static/slide3.jpg',
-        '/images/static/slide4.jpg',
-        '/images/static/slide5.jpg',
-        '/images/static/slide1.jpg',
-    ];
-    $scope.mapBackground = $scope.slides[$scope.slideIndex];
+    $rootScope.homepage = true;
+    $scope.localeFormat = 'MMM DD';
+    $scope.modelFormat = 'MM/DD/YYYY';
 
-   $scope.go = function(path){
-       deleteMarkers();
-       $scope.map = null;
-       $interval.cancel($scope.showTravelers);
-       $location.url('/' + path);
-   }
-
-    //Get the latitude and the longitude;
-    function successFunction(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        codeLatLng(lat, lng);
-    }
-
-    function errorFunction(){
-        alert("Geocoder failed");
-    }
-
-
-    //Angular App Module and Controller
-    var geocoder =  new google.maps.Geocoder();
-
-    var mapOptions = {
-        zoom: 2,
-        center: new google.maps.LatLng(18.0000, 5.0000),
-        // mapTypeId: google.maps.MapTypeId.SATELLITE,
-        disableDefaultUI: true,
-        panControl: false,
-        zoomControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false,
-        scrollwheel: false,
-        styles: [
-            {
-                "elementType": "labels",
-                "stylers": [
-                  {
-                    "visibility": "off"
-                  }
-                ]
-            },
-          {
-            "featureType": "administrative",
-            "elementType": "geometry",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "administrative.land_parcel",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "administrative.land_parcel",
-            "elementType": "geometry.fill",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "administrative.neighborhood",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "landscape.natural",
-            "elementType": "geometry.fill",
-            "stylers": [
-              {
-                "color": "#008500"
-              },
-              {
-                "visibility": "on"
-              }
-            ]
-          },
-          {
-            "featureType": "poi",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "poi",
-            "elementType": "labels.text",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "road",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "road",
-            "elementType": "labels",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "road",
-            "elementType": "labels.icon",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "transit",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "water",
-            "elementType": "labels.text",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
+    $scope.cities = [
+        {
+            "name": "Venice",
+            "normal": "../images/cities/updated/venice.jpg",
+            "faded": "../images/cities/updated/venice2.jpg"
         },
         {
-            "featureType": "water",
-            "elementType": "all",
-            "stylers": [
-                {
-                    "visibility": "on"
-                },
-                {
-                    "color": "#12214c"
-                }
-            ]
+            "name": "Miami",
+            "normal": "../images/cities/updated/miami.jpg",
+            "faded": "../images/cities/updated/miami2.jpg"
+        },
+        {
+            "name": "London",
+            "normal": "../images/cities/updated/london.jpg",
+            "faded": "../images/cities/updated/london2.jpg"
+        },
+        {
+            "name": "Sydney",
+            "normal": "../images/cities/updated/sydney.jpg",
+            "faded": "../images/cities/updated/sydney2.jpg"
+        },
+        {
+            "name": "Paris",
+            "normal": "../images/cities/updated/paris.jpg",
+            "faded": "../images/cities/updated/paris2.jpg"
+        },
+    ];
+
+    init();
+
+    $scope.searchSwap = function(e){
+        e.preventDefault();
+        var where = $rootScope.search.where;
+        if(!where || where == ''){
+            where	= 'Anywhere';
         }
-        ]
+        else{
+            where = where.split(',')[0]
+        }
+        $scope.go('/travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
     }
 
-    $scope.markers = [];
-    deleteMarkers();
-    $interval.cancel($scope.showTravelers);
-    $scope.map = new google.maps.Map($document[0].getElementById('map'), mapOptions);
-
-
-    $timeout(function(){
-        $('#markerLayer>div>img').css("transform","scale(0)");
-        deleteMarkers();
-        getUsers();
-        startInterval();
-    },3000);
-
-    var infoWindow = new google.maps.InfoWindow();
-
-    var createMarker = function (info){
-      var shape ={coords:[17,17,18],type:'circle'};
-
-        var marker = new google.maps.Marker({
-            map: $scope.map,
-            position: new google.maps.LatLng(info.lat, info.long),
-            // animation: google.maps.Animation.DROP,
-            icon: {url:info.image, size:new google.maps.Size(30,30)},
-            title: info.city,
-            url: 'travelers/'+info.city,
-            optimized: false
-        });
-
-        // marker.content = '<div class="infoWindowContent">' + info.desc + ' and 208 more </br>are traveling to Tel Aviv</div>';
-        marker.content = info.desc;
-        marker.amount = info.amount;
-
-        google.maps.event.addListener(marker, 'mouseover', function(){
-            // infoWindow.setContent('<div class="travelers">' + marker.title + '</div>' + marker.content);
-            $interval.cancel($scope.showTravelers);
-            // infoWindow.open($scope.map, marker);
-            $scope.info = marker;
-            $scope.$apply();
-        });
-
-        google.maps.event.addListener(marker, 'mouseout', function(){
-            startInterval();
-            // infoWindow.close($scope.map, marker);
-        });
-
-        google.maps.event.addListener(marker, 'click', function(){
-          var a = document.createElement("a");
-          $interval.cancel($scope.showTravelers);
-          $location.url('/' + marker.url);
-        //   a.id = "tempA";
-        //   a.target = "_self";
-        //   console.log(encodeURI("http://localhost:3000/#!/" + marker.url));
-        //   a.href = "" + encodeURI("http://localhost:3000/#!/" + marker.url); // change to actual url
-        //   a.click();
-        });
-        $scope.markers.push(marker);
+    $scope.go = function(path){
+        $(window).unbind('scroll');
+        $('.navbar').removeClass('sticky');
+        $rootScope.homepage = false;
+        $location.url(path);
     }
 
-
-     var myoverlay = new google.maps.OverlayView();
-      myoverlay.draw = function () {
-        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
-        this.getPanes().markerLayer.id='markerLayer';
-      };
-      myoverlay.setMap($scope.map);
-
-
-    // Sets the map on all markers in the array.
-    function setMapOnAll(map) {
-      for (var i = 0; i < $scope.markers.length; i++) {
-        $scope.markers[i].setMap(map);
-      }
+    $scope.changeImage = function(index){
+        $scope.featured[index] = $scope.cities[index].faded;
     };
 
-    // Removes the markers from the map, but keeps them in the array.
-    function clearMarkers() {
-      setMapOnAll(null);
+    $scope.changeImageBack = function(index){
+        $scope.featured[index] = $scope.cities[index].normal;
     };
 
-    // Deletes all markers in the array by removing references to them.
-    function deleteMarkers() {
-        clearMarkers();
-        $scope.markers = [];
-    };
-
-    function codeLatLng(lat, lng) {
-        var latlng = new google.maps.LatLng(lat, lng);
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                if (results[1]) {
-                    var flag = false;
-                    //find country name
-                    for (var i=0; i<results[0].address_components.length; i++) {
-                        for (var b=0;b<results[0].address_components[i].types.length;b++) {
-                            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-                            if (results[0].address_components[i].types[b] == 'locality' || results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                                //this is the object you are looking for
-                                $scope.userCity = results[0].address_components[i].short_name;
-                                flag = true;
-                                break;
-                            }
-                        }
-                        if(flag){
-                            break;
-                        }
-                    }
-                }
+    $scope.openDate = function(){
+        $('input[name="searchDate"]').daterangepicker({
+            autoApply: true,
+            opens: 'center',
+            locale: {
+                format: 'MMM DD'
             }
         });
+        $('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
+            $rootScope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+        });
     }
 
-    function getUsers(){
-        UsersService.getUserByTravelingDest("Tel Aviv").then(function(data){
-            var travelingTo = data.data;
-            angular.forEach(travelingTo, function(value, key) {
-              var location;
-              var city = value.city;
-              var image = value.image;
-              var name = value.firstName;
-              geocoder.geocode( { 'address': city}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                  location = results[0].geometry.location;
-                  var marker = {
-                    city : city,
-                    desc : name,
-                    image : image,
-                    amount: Math.floor(Math.random() * 1000),
-                    lat : location.lat(),
-                    long : location.lng()
-                  };
-                  createMarker(marker);
-                }
-              });
-            });
-            $timeout(function(){
-                $('#markerLayer>div>img').css("transform","scale(1)");
-            },600);
-        });
+    $scope.choosePlan = function(plan){
+        if(!$scope.user || !$scope.user._id){
+            $scope.go('/faq#securityDeposit');
+        }
+        else{
+            $scope.go('/account/listing?plan='+plan);
+        }
     };
 
-    // $timeout(function(){
-    //     $('#markerLayer>div>img').css("transform","scale(0)");
-    //     deleteMarkers();
-    //     getUsers();
-    //     startInterval();
-    // },2000);
+    function init(){
+        angular.forEach($scope.cities, function(value, key) {
+            $scope.featured[key] = value.faded;
+            $scope.featured[key] = value.normal;
+        });
 
-    function startInterval(){
-        $scope.showTravelers = $interval(function() {
-          $('#markerLayer>div>img').css("transform","scale(0)");
-          $timeout(function(){
-              deleteMarkers();
-              getUsers();
-          },600);
-          $scope.slideIndex++;
-          if($scope.slideIndex == $scope.slides.length){
-              $scope.slideIndex = 0;
-          }
-          $scope.mapBackground = $scope.slides[$scope.slideIndex];
-      }, 10000);
-  }
+        if($rootScope.geolocationComplete || $rootScope.userCity){
+            if($rootScope.geolocationComplete && $rootScope.geolocationComplete.failed){
+                UsersService.getFeaturedUsers().then(function(data) {
+                    if(data.data.error){
+                        console.log("error");
+                        return;
+                    }
+                    $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'featured';
+                    if($scope.travelers.length < 3){
+                        UsersService.getNewUsers().then(function(data) {
+                            if(data.data.error){
+                                console.log("error");
+                            }
+                            else{
+                                $scope.travelers = data.data.users;
+                                $scope.swapperTitle = 'new';
+                            }
+                        });
+                    }
+                });
+            }
+            else{
+                UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
+                    if(data.error){
+                        console.log("error");
+                        return;
+                    }
+                    $scope.travelers = data.users;
+                    $scope.swapperTitle = 'city';
+                });
+            }
+        }
+        else{
+            UsersService.getNewUsers().then(function(data) {
+                if(data.data.error){
+                    console.log("error");
+                }
+                else{
+                    $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'new';
+                }
+            });
+        }
+    }
 
+    $rootScope.$on('geolocation-complete', function(event, args) {
+        if($rootScope.geolocationComplete){
+            return;
+        }
+        $rootScope.geolocationComplete = {failed: args.failed};
+        if(args.failed){
+            UsersService.getFeaturedUsers().then(function(data) {
+                if(data.data.error){
+                    console.log("error");
+                    return;
+                }
+                $scope.travelers = data.data.users;
+                if($scope.travelers.length < 3){
+                    $scope.swapperTitle = 'featured';
+                    UsersService.getNewUsers().then(function(data) {
+                        if(data.data.error){
+                            console.log("error");
+                            return;
+                        }
+                        $scope.travelers = data.data.users;
+                        $scope.swapperTitle = 'new';
+                    });
+                }
+            });
+        }
+        else{
+            UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
+                if(data.error){
+                    console.log("error");
+                    return;
+                }
+                $scope.travelers = data.users;
+                $scope.swapperTitle = 'city';
+            });
+        }
+    });
+
+    $.fn.scrollBottom = function() {
+        return $document.height() - this.scrollTop() - this.height();
+    };
+
+
+    $scope.removeDates = function(){
+        $rootScope.search.when = undefined;
+        $rootScope.search.date = undefined;
+    }
+
+    $scope.openLogin = function(signin){
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/login/login.html',
+            size: 'sm',
+            controller: 'loginController',
+            resolve: {
+                signin: function () {
+                    return signin;
+                }
+            },
+            scope:$scope
+        });
+    }
+
+    var fixmeTop;     // get initial position of the element
+
+    var elementsReady = $interval(function() {
+        var input = $('.navbar');
+        if (input.length > 0) {
+            fixmeTop = $('.search-area').offset().top + 80;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeTop) {
+                    if(!$('.navbar').hasClass('navbar-other')){
+                        $('.navbar').addClass('navbar-other').addClass('no-opacity');
+                        $timeout(function(){
+                            if(!$('.navbar').hasClass('navbar-other')){
+                                $('.navbar').addClass('navbar-other');
+                            }
+                            $('.navbar').addClass('sticky');
+                            $('.navbar').addClass('opacity');
+                            $('.navbar').removeClass('no-opacity');
+                        },500)
+                    }
+                } else {
+                    $('.navbar').removeClass('opacity');
+                    $timeout(function(){
+                        if($('.navbar').hasClass('opacity')){
+                            $('.navbar').removeClass('opacity');
+                        }
+                        $('.navbar').removeClass('navbar-other');
+                        $('.navbar').removeClass('sticky');
+                    },500);
+                }
+            });
+            var fixmeHomes = $('#featuredHomes').offset().top;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeHomes) {
+                    $('.description-icon').css({'animation': 'bounce 1s'});
+                    $('.description-icon').css({'transform': 'scale(0.8)'});
+                }
+            });
+            var fixmeborder = $('.points-container-border').offset().top + 20;
+            $(window).scroll(function() {                  // assign scroll event listener
+                var currentScroll = $(window).scrollTop(); // get current position
+                if (currentScroll >= fixmeborder) {
+                    $('.swappers-border').css({'width': '12%'});
+                }
+            });
+            $interval.cancel(elementsReady);
+        }
+    }, 100);
+
+    $scope.$on('login-success', function(event, args) {
+        $scope.user = $rootScope.user;
+    });
 });
+

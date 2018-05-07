@@ -1,0 +1,70 @@
+swaps{
+  .swaps-wrapper{
+    padding: 0 0 30px 0;
+    font-size: 20px;
+    .title{
+      color: #848a91;
+      text-align: left;
+      padding: 0 5px 5px 5px;
+      font-weight: 300;
+    }
+    .sub-title{
+      color: #484848;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 400;
+      padding: 0 5px 10px 5px;
+    }
+    .underline{
+      border-bottom: 2px solid rgba(14,93,124,0.5);
+      padding-top: 8px;
+      width: 12%;
+    }
+    .edit-swaps{
+      &.overflow{
+        max-height: 300px;
+        overflow-y: scroll;
+      }
+    }
+    .single-swap{
+      display: flex;
+      &.add-swap{
+        margin-right: 12px;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 2px solid rgba(14,93,124,0.5);
+      }
+      .search-area{
+        margin: 0;
+        width: 75%;
+        margin-bottom: 15px;
+        .search-field{
+          padding:0 5px;
+          position: relative;
+          .glyphicon{
+            position: absolute;
+            right: 10px;
+            top: 4px;
+            padding: 6px;
+            font-size: 14px;
+            color: #c7a768;
+            &:focus{
+              outline: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .action{
+    .btn-cancel{
+      background-color: #c7a768;
+      border-color: #c7a768;
+      color: white;
+      &:hover, &:focus, &:active{
+        background-color: #a3854b;
+        border-color: #a3854b;
+      }
+    }
+  }
+}

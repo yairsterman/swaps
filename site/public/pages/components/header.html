@@ -1,47 +1,60 @@
 <div class="header">
-  	<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-	  <a class="navbar-brand" href="" ng-click ="go('')">
-		  <div class="logo" style="background-image:url('http://localhost:3000/images/logo/logo.png')">
+  	<nav class="navbar navbar-default navbar-toggleable-md navbar-light {{$root.homepage?'':'navbar-other'}} {{$root.searchPage?'no-shadow':''}} bg-faded">
+	  <a class="navbar-brand hidden-xs" href="" ng-click ="go('')">
+		  <div class="logo" style="background-image:url('../../images/logo/logo.svg')">
 		  </div>
 	  </a>
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-
-	      <li class="nav-item">
-              <div class="swap-now-form">
-                  <div class="">
-                      <label class="control-label">Where</label>
-                      <div class="where input-field">
-                          <input class="form-control" type="text" id="searchCity" ng-focus="autocompleteCities()" placeholder="Anywhere" ng-model="search.where">
-                      </div>
+	  <div class="hidden-xs navbar-collapse" id="navbarSupportedContent">
+          <div class="find-swap">
+              <!--<div class="start-swapping">Start Swapping</div>-->
+              <div class="row header-search-area">
+                  <div class="search-field left col-sm-4 col-xs-12">
+                      <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeader" ng-model="search.where" autocomplete city="true">
+                      <div class="icon icon-infocenter"></div>
                   </div>
-                  <div class="">
-                      <label class="control-label">When</label>
-                      <div class="dates input-field">
-                          <input class="form-control" type="text" name="searchDate" ng-focus="openDate()" placeholder="Anytime" ng-model="search.date"/>
-                          <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                      </div>
+                  <div class="search-field col-sm-4 col-xs-12">
+                      <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+                      <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
+                      <div class="icon icon-calender"></div>
                   </div>
-                  <div class="">
-                      <label class="control-label">Guests</label>
-                      <div class="guests input-field">
-                          <input class="form-control" type="number" placeholder="1" min="1" max="8" ng-model="search.guests">
+                  <div class="search-field right col-sm-4 col-xs-12 ">
+                      <div class="guests-search">
+                          <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
                       </div>
-                  </div>
-                  <div class="swap-now">
-                      <button type="button" class="btn btn-default go" ng-click="searchSwap()"></i>SWAP NOW!</button>
+                      <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
+                        <button class="search icon icon-search" ng-click="searchSwap($event)"></button>
+                      </a>
+                      <div class="icon icon-man-small"></div>
                   </div>
               </div>
-	      </li>
-	    </ul>
+          </div>
 	    <div class="login-area">
 		    <!-- <form class="form-inline my-2 my-lg-0">
 		      <input class="form-control mr-sm-2" type="text" id="search" placeholder="Search">
 		    </form> -->
-		    <div class="login" data-toggle="modal" data-target="#loginModal" ng-hide="user._id">
-		    	LOGIN
-		    </div>
+            <div class="login sign-up" ng-click="go('how-it-works')">
+                <a href="/how-it-works">
+                    How it Works
+                    <div class="underlined"></div>
+                </a>
+            </div>
+            <div class="login sign-up" data-toggle="modal" data-target="#swapModel" ng-if="user._id">
+                Set Swap Date
+                <div class="underlined"></div>
+            </div>
+            <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
+                Join
+                <div class="underlined"></div>
+            </div>
+		    <div class="login" ng-click="openLogin()" ng-hide="user._id">
+		    	Log In
+                <div class="underlined"></div>
+            </div>
+            <div class="login sign-up mail" ng-if="user._id" ng-click="go('account/messages')">
+                <div class="unread-messages" ng-if="unread > 0">{{unread}}</div>
+                <div class="icon icon-mail"></div>
+            </div>
 			 <div class="user-area" ng-if="user._id">
 			    <div class="profile-pic" style="background-image:url('{{user.image}}')">
 
@@ -53,14 +66,55 @@
 				    <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
 				    <span class="caret"></span></div>
 					    <ul class="dropdown-menu">
-					      <li><a href="" ng-click ="go('account/edit')">My Account</a></li>
-                          <li><a class="nav-link" href="" ng-click ="openFlyNow()">Plan Trip</a></li>
-					      <li><a href="" ng-click ="logout()">LOGOUT</a></li>
+					      <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                            <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
+                          <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
+                          <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
+					      <li><a href="" ng-click ="logout()">Log out</a></li>
 				    </ul>
 			  </div>
 			 </div>
 		 </div>
 	  </div>
+        <div class="visible-xs">
+            <div class="mobile-header">
+                <a class="navbar-brand" href="" ng-click ="go('')">
+                    <div class="logo" style="background-image:url('../../images/logo/logo.svg')">
+                    </div>
+                </a>
+                <div class="search-field left">
+                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCityHeaderMobile" ng-model="search.where" autocomplete city="true">
+                    <button class="search icon icon-search" ng-click="searchSwap($event)"></button>
+                </div>
+                <div class="mobile-login login-area" ng-if="!user._id">
+                    <div class="login sign-up" ng-click="openLogin(true)" ng-hide="user._id">
+                        Join
+                        <div class="underlined"></div>
+                    </div>
+                    <div class="login" ng-click="openLogin()" ng-hide="user._id">
+                        Log In
+                        <div class="underlined"></div>
+                    </div>
+                </div>
+                <div class="dropdown" ng-if="user._id">
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                        <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
+                        <li><a href="" ng-click ="go('account/messages')">Messages</a></li>
+                        <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id">Set Swap Date</div></a></li>
+                        <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
+                        <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
+                        <li><a href="" ng-click ="logout()">Log out</a></li>
+                    </ul>
+                    <div class="dropdown-toggle" data-toggle="dropdown">
+                        <div class="profile-pic" style="background-image:url('{{user.image}}')">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 	</nav>
 </div>
 
@@ -69,8 +123,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="facebook-signin">
-      	<button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
-      </div>
+        <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Log in with Facebook</button>
+    </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -78,36 +132,12 @@
 
   </div>
 </div>
-<div id="flyNowModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+
+<div id="swapModel" class="modal fade" role="dialog" ng-if="user._id">
+    <div class="modal-dialog large-model">
         <div class="modal-content">
-            <div class="fly-now-model">
-                <div class="title">
-                    Enter your travel information
-                </div>
-                <div class="travel-info">
-                    <label class="control-label">Where</label>
-                    <div class="where input-field">
-                        <input class="form-control" type="text" id="where" placeholder="Anywhere" ng-model="fly.where">
-                    </div>
-                    <label class="control-label">When</label>
-                    <div class="dates input-field">
-                        <input class="form-control" type="text" name="datefilter" placeholder="Anytime" ng-model="fly.date"/>
-                        <span class="date-calendar"><i class="fa fa-calendar glyphicon glyphicon-calendar"></i></span>
-                    </div>
-                    <label class="control-label">Guests</label>
-                    <div class="guests input-field">
-                        <input class="form-control" type="number" placeholder="1" min="1" max="8" ng-model="fly.guests">
-                    </div>
-                    <div class="advanced" ng-click="go('account/swap')">
-                        Advanced
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-fly" data-dismiss="modal" ng-click="saveTravelInfo()">Go!</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
+            <div class="icon icon-delete top-corner" data-dismiss="modal"></div>
+            <swaps swaps="user.travelingInfo" popup="true"></swaps>
         </div>
     </div>
 </div>

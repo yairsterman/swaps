@@ -1,5 +1,4 @@
 var express = require('express');
-// var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,14 +6,17 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport       = require("passport");
-var twitchStrategy = require("passport-facebook").Strategy;
 var less = require('less');
 var fs = require('fs');
+
+var emailService = require('./services/email');
 
 var index = require('./routes/index');
 var users = require('./routes/user');
 var account = require('./routes/account');
 var message = require('./routes/message');
+var utils = require('./routes/utils');
+var transactions = require('./routes/transactions');
 
 var app = express();
 
@@ -24,7 +26,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -33,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ 
     secret: '1234567890',
-    cookie: { maxAge: 600000 },
+    cookie: { maxAge: 3600000*24*365 },
     resave: true,
     saveUninitialized: false}));
 app.use(passport.initialize());
@@ -43,14 +45,21 @@ var mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 // connect to MongoDB
-mongoose.connect('mongodb://localhost/site')
+// mongoose.connect('mongodb://18.221.167.219/test')
+mongoose.connect('mongodb://127.0.0.1/test')
     .then(() =>  console.log('connection succesful'))
 .catch((err) => console.error(err));
-
-app.use('/', index);
+//app.use(function(req, res, next) {  
+//      res.header('Access-Control-Allow-Origin', req.headers.origin);
+//      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//      next();
+// }); 
 app.use('/user', users);
 app.use('/account', account);
 app.use('/message', message);
+app.use('/utils', utils);
+app.use('/transactions', transactions);
+app.use('/', index);
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -66,11 +75,15 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  console.log(err)
   // render the error page
   res.status(err.status || 500);
   res.render('error.html');
 });
+
+emailService.init();
+
+app.listen(3000);
 
 //compile less files
 
