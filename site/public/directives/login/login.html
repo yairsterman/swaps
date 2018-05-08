@@ -10,6 +10,11 @@
     <div class="facebook-signin">
         <button type="button" class="btn btn-default login-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>{{signin?'Join with Facebook':'Log in with Facebook'}}</button>
     </div>
+    <!--eran-->
+    <div class="google-signin">
+        <button type="button" class="btn btn-danger" ng-click="GoogleLogin()"><i class="fa fa-google"></i>{{signin?'Join with Google':' Log in with Google'}}</button>
+    </div>
+    <!--eran-->
     <div class="bottom" ng-if="signin">
         By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
         and <span class="link" ng-click="policy()">Privacy Policy</span>

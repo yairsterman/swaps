@@ -45,10 +45,10 @@ var mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 // connect to MongoDB
-// mongoose.connect('mongodb://18.221.167.219/test')
-mongoose.connect('mongodb://127.0.0.1/test')
-    .then(() =>  console.log('connection succesful'))
-.catch((err) => console.error(err));
+mongoose.connect('mongodb://18.221.167.219/test')
+// mongoose.connect('mongodb://127.0.0.1/test')
+//     .then(() =>  console.log('connection succesful'))
+// .catch((err) => console.error(err));
 //app.use(function(req, res, next) {  
 //      res.header('Access-Control-Allow-Origin', req.headers.origin);
 //      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -88,11 +88,11 @@ app.listen(3000);
 //compile less files
 
 // Load the file, convert to string
-fs.readFile( './public/stylesheets/less/main.less', function (error, data) {
+fs.readFile( path.join(__dirname, './public/stylesheets/less/main.less'), function (error, data) {
   var dataString = data.toString();
   var options = {
-    paths         : ["./public/stylesheets/less"],      // .less file search paths
-    outputDir     : "./public/stylesheets/css",   // output directory, note the '/'
+    paths         : [(path.join(__dirname, './public/stylesheets/less'))],      // .less file search paths
+    outputDir     : (path.join(__dirname, './public/stylesheets/css')),   // output directory, note the '/'
     optimization  : 1,                // optimization level, higher is better but more volatile - 1 is a good value
     filename      : "main.less",       // root .less file
     compress      : true,             // compress?
