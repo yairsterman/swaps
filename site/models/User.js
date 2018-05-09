@@ -10,6 +10,9 @@ var UserSchema = new Schema({
     occupation: String,
     aboutMe: String,
     facebookId: String,
+    // eran
+    googleId: String,
+    // eran
     image: String,
     country: String,
     city: String,

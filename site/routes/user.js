@@ -127,12 +127,12 @@ router.get('/get-new-users', function(req, res, next) {
 });
 
 router.get('/get-user', function(req, res, next) {
-    var id = req.user._id;
     if(!req.user){
         error.message = "No Access";
         res.json(error);
         return;
     }
+    let id = req.user._id;
     User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
         if (err) return next(err);
         res.json(user);
