@@ -91,38 +91,36 @@
             </div>
         </div>
         <div class="user-info address" ng-if="phase == 'about'">
-            <div class="row">
-                <div class="">
-                    <div class="form-group">
-                        <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
-                            <span class="explanation "></span>
-                        </label>
-                        <input class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')" ng-focus-lost="isInFocus = 'aboutMe'" ng-model="user.occupation">
+            <div class="">
+                <div class="form-group">
+                    <label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
+                        <span class="explanation "></span>
+                    </label>
+                    <input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')" ng-focus-lost="isInFocus = 'aboutMe'" ng-model="user.occupation">
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
+                        <span class="explanation "></span>
+                    </label>
+                    <div class="">
+                        <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
-                            <span class="explanation "></span>
-                        </label>
-                        <div class="">
-                            <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="deposit">Payment Plan:<br>
+                        <span class="explanation"></span>
+                    </label>
+                    <div class="" tooltip-placement="top-left" uib-tooltip-template="'../../pages/components/payment-plans.html'">
+                        <select class="form-control" id="deposit" ng-model="user.deposit"
+                                ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
+                            {{plan.displayName}} - ${{plan.value}} per night
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label listing-label" for="deposit">Payment Plan:<br>
-                            <span class="explanation"></span>
-                        </label>
-                        <div class="" tooltip-placement="top-left" uib-tooltip-template="'../../pages/components/payment-plans.html'">
-                            <select class="form-control" id="deposit" ng-model="user.deposit"
-                                    ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
-                                {{plan.displayName}} - ${{plan.value}} per night
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="plan-explanation">
-                            This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
-                            damages and cancellations.
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="plan-explanation">
+                        This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
+                        damages and cancellations.
                     </div>
                 </div>
             </div>
@@ -242,8 +240,8 @@
                 </div>
                 <div class="uploaded-photos row">
                     <div class="col-sm-12 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
-                    <div class="col-sm-6 col-xs-12 photo" style="background-image: url({{user.photos[1]}})"></div>
-                    <div class="col-sm-6 col-xs-12 photo" style="background-image: url({{user.photos[2]}})"></div>
+                    <div class="col-sm-6 col-xs-6 photo" style="background-image: url({{user.photos[1]}})"></div>
+                    <div class="col-sm-6 col-xs-6 photo" style="background-image: url({{user.photos[2]}})"></div>
                 </div>
             </div>
         </div>
