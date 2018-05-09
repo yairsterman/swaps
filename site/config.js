@@ -10,7 +10,10 @@ let config = {
     googleClientSecret: 'mJXTYyWlF-QeizGN6gWGIlF2',
 
     FACEBOOK_APP_ID : '1628077027210389',
-    FACEBOOK_APP_SECRET : '5a927f2caa3f5eb9a2eeaad0eaf1b225'
+    FACEBOOK_APP_SECRET : '5a927f2caa3f5eb9a2eeaad0eaf1b225',
+
+    // baseUrl: 'https://swapshome.com'
+    baseUrl: 'http://localhost:3000'
 };
 
 module.exports = config;
