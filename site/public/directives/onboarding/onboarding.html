@@ -78,13 +78,13 @@
     </div>
     <div class="info-area">
         <div class="user-info address" ng-if="phase == 'onSignup'">
-            <div class="address-title">
+            <div class="main-title">
                 You are almost ready to start swapping!
             </div>
             <div class="sub-title">
                 Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
             </div>
-            <div class="start-button" ng-if="user.photos.length >= 3">
+            <div class="start-button">
                 <div class="complete-btn btn btn-primary" ng-click="next()">
                     Start!
                 </div>
@@ -97,14 +97,14 @@
                         <label class="control-label listing-label" for="address" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
                             <span class="explanation "></span>
                         </label>
-                        <input class="form-control" type="text" ng-model="user.occupation">
+                        <input class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')" ng-focus-lost="isInFocus = 'aboutMe'" ng-model="user.occupation">
                     </div>
                     <div class="form-group">
                         <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
                             <span class="explanation "></span>
                         </label>
                         <div class="">
-                            <textarea id="aboutMe" rows="4" cols="20" class="form-control" ng-model="user.aboutMe"></textarea>
+                            <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -133,14 +133,14 @@
                 <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
                     <span class="explanation"></span>
                 </label>
-                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" ng-model="user.address" autocomplete>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" is-focused="!isInFocus && (!user.address || user.address == '')"  ng-focus-lost="isInFocus = 'title'" ng-model="user.address" autocomplete>
             </div>
             <div class="form-group">
                 <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
                     <span class="explanation"></span>
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home" ng-model="user.apptInfo.title">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')"  ng-focus-lost="isInFocus = 'aboutMyHome'" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="form-group">
@@ -154,7 +154,12 @@
                     </select>
                 </div>
             </div>
-
+            <div class="form-group">
+                <label class="control-label listing-label " for="aboutMyHome" data-toggle="tooltip" title="What makes your home special" data-placement="right" tooltip>About My Home:</label>
+                <div class="">
+                    <textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMyHome' && (!user.apptInfo.about || user.apptInfo.about == '')" ng-focus-lost="loseFocus()" ng-model="user.apptInfo.about"></textarea>
+                </div>
+            </div>
         </div>
         <div class="basic" ng-if="phase == 'basic'">
             <div class="form-group">
@@ -243,24 +248,50 @@
             </div>
         </div>
         <div ng-if="phase == 'completedOnboarding'">
-            <div class="address-title">
-                Congratulations! <br>
-                You've completed you're profile.
-            </div>
-            <div class="sub-title">
-                What would you like to do next?
-            </div>
-            <div class="start-button">
-                <div class="complete-btn btn btn-primary">
-                    Search for Swap!
+            <div ng-if="profileComplete()">
+                <div class="main-title">
+                    Congratulations! <br>
+                    You've completed you're profile.
+                </div>
+                <div class="sub-title">
+                    What would you like to do next?
+                </div>
+                <div class="start-button end">
+                    <div class="complete-btn btn btn-primary" ng-click="go('travelers/Anywhere')">
+                        Search for Swap!
+                    </div>
+                    <div class="sub-title">
+                        How about?
+                    </div>
+                    <div class="complete-btn btn btn-primary btn-close" ng-click="go('profile/'+user._id)">
+                        View Profile
+                    </div>
+                    <div class="sub-title">
+                        or maybe..?
+                    </div>
+                    <div class="complete-btn btn btn-primary" ng-click="go('account/set-up-swaps')">
+                        Set Swap Date
+                    </div>
                 </div>
             </div>
-            <div class="complete-buttons">
-                <div class="complete-btn btn btn-primary btn-close" ng-click="go('profile/'+user._id)">
-                    View Profile
+            <div ng-if="!profileComplete()">
+                <div class="main-title">
+                    Hold Up! <br>
+                    Your profile is not complete yet.
                 </div>
-                <div class="complete-btn btn btn-primary" ng-click="go('account/set-up-swaps')">
-                    Set Swap Date
+                <div class="sub-title">
+                    You must complete your profile in order to send and receive swap requests.
+                </div>
+                <div class="start-button end">
+                    <div class="complete-btn btn btn-primary" ng-click="go('account/edit')">
+                        Complete Profile
+                    </div>
+                    <div class="sub-title">
+                        Not now?
+                    </div>
+                    <div class="complete-btn btn btn-primary btn-close" ng-click="close()">
+                        Continue
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,7 +301,7 @@
             <div class="glyphicon glyphicon-chevron-left"></div>
             Back
         </div>
-        <div class="button next" ng-click="next()" ng-hide="phase == 'photos' || phase == 'onSignup'">
+        <div class="button next" ng-click="next()" ng-hide="phase == 'photos' || phase == 'onSignup' || phase == 'completedOnboarding'">
             Next
             <div class="glyphicon glyphicon-chevron-right"></div>
         </div>
@@ -278,7 +309,7 @@
             Finish
             <div class="glyphicon glyphicon-chevron-right"></div>
         </div>
-        <div class="button next" ng-click="close()" ng-if="phase == 'completedOnboarding'">
+        <div class="button next close" ng-click="close()" ng-if="phase == 'completedOnboarding'">
             Close
         </div>
     </div>

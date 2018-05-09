@@ -38,7 +38,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.next = function(){
-        if($scope.profileComplete()){
+        if($rootScope.profileComplete()){
             $scope.finish();
         }
         if($scope.phase == 'onSignup'){
@@ -240,6 +240,22 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.go = function(path){
         $location.url('/' + path);
         $scope.$dismiss();
+    }
+
+    if($scope.user.occupation){
+        $scope.isInFocus = 'aboutMe';
+    }
+    if($scope.user.occupation && $scope.user.aboutMe && $scope.user.address){
+        if($scope.user.apptInfo.title){
+            $scope.isInFocus = 'aboutMyHome';
+        }
+        else{
+            $scope.isInFocus = 'title';
+        }
+    }
+
+    $scope.loseFocus = function(){
+        $scope.isInFocus = false;
     }
 
 });

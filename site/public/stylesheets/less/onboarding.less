@@ -59,7 +59,7 @@
             font-weight: 300;
             padding-top: 10px;
             @media @mobile {
-              font-size: 14px;
+              font-size: 12px;
             }
           }
         }
@@ -130,6 +130,12 @@
       padding: 1% 0;
       width: 50%;
       margin: auto;
+      @media @mobile {
+        width: 100%;
+      }
+      @media @tablet {
+        width: 100%;
+      }
       &.photos{
         padding: 0;
       }
@@ -156,27 +162,53 @@
         padding-top: 6px;
       }
     }
-    .address-title{
+    .main-title{
       padding-bottom: 10px;
       color: #0E5D7C;
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 300;
       text-align: center;
+      @media @mobile {
+        font-size: 25px;
+      }
     }
     .sub-title{
       padding: 18px 15px;
       font-size: 18px;
       font-weight: 300;
-      width: 66%;
       text-align: center;
       margin: auto;
+      @media @mobile {
+        font-size: 16px;
+      }
     }
     .start-button{
       padding-top: 60px;
       display: flex;
+      &.end{
+        padding-top: 20px;
+        flex-direction: column;
+      }
       .complete-btn {
         font-size: 18px;
         width: 170px;
+        margin: auto;
+        transition: ease 0.3s;
+        &:hover{
+          background-color: #ffffff;
+          color: #0e5d7c;
+        }
+        &.btn-close{
+          font-size: 18px;
+          background-color: #ffffff;
+          color: #0e5d7c;
+          transition: ease 0.3s;
+          &:hover{
+            background-color: #0e5d7c;
+            border-color: #0e5d7c;
+            color: #ffffff;
+          }
+        }
         @media @mobile {
           font-size: 16px;
           width: 48%;
@@ -207,7 +239,7 @@
     .info-section{
       padding: 0 15px;
     }
-    .photos-area{
+    .photos{
       position: relative;
       .photos-title{
         font-size: 15px;
@@ -239,7 +271,7 @@
           position: absolute;
           text-align: center;
           font-size: 16px;
-          top: 50%;
+          top: 24%;
           width: 100%;
         }
       }
@@ -272,6 +304,10 @@
         @media @mobile {
           font-size: 16px;
           width: 48%;
+        }
+        &:hover{
+          background-color: #ffffff;
+          color: #0e5d7c;
         }
         &.btn-close{
           font-size: 18px;
@@ -318,6 +354,9 @@
       }
       &:active, &:focus{
         outline: none;
+      }
+      &.close{
+        margin-left: auto;
       }
     }
   }

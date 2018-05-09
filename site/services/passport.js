@@ -114,7 +114,7 @@ module.exports.init = function(){
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
                         displayName: profile.displayName,
-                        gender: 0,
+                        gender: 3,
                         email: profile.emails[0].value,
                         googleId: profile.id,
                         image: profile._json.image.url,
