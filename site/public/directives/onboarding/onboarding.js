@@ -1,13 +1,56 @@
-swapsApp.controller('onboardingController', function($scope, $rootScope, $location, AccountService, alertify) {
+swapsApp.controller('onboardingController', function($scope, $rootScope, $location, $sce,AccountService, alertify) {
     $scope.user = $rootScope.user;
-    $scope.phase = !$scope.user.apptInfo.title || $scope.user.apptInfo.title == '' ||  !$scope.user.address ||  $scope.user.address == ''?'home':'photos';
     $scope.numOfFiles = 0;
+
+    $scope.getInitialPhase = function(){
+        var initialPhase = 'onSignup';
+        $scope.phase = 'onSignup';
+        if($scope.isPhaseComplete() == 0){
+            return;
+        }
+        //find the first phase that is not fully complete
+        $scope.phase = 'photos';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            initialPhase = 'photos';
+        }
+        $scope.phase = 'basic';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            initialPhase = 'basic';
+        }
+        $scope.phase = 'home';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            initialPhase = 'home';
+        }
+        $scope.phase = 'about';
+        $scope.fillCircle();
+        if($scope.isPhaseComplete() < 3){
+            initialPhase = 'about';
+        }
+
+        $scope.phase = initialPhase;
+    }
+
     $scope.close = function(){
         $scope.$dismiss();
     }
 
     $scope.next = function(){
+        if($rootScope.profileComplete()){
+            $scope.finish();
+        }
+        if($scope.phase == 'onSignup'){
+            $scope.phase = 'about';
+            return;
+        }
         saveChanges();
+        $scope.fillCircle();
+        if($scope.phase == 'about'){
+            $scope.phase = 'home';
+            return;
+        }
         if($scope.phase == 'home'){
             $scope.phase = 'basic';
             return;
@@ -19,6 +62,10 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.back = function(){
+        if($scope.phase == 'home'){
+            $scope.phase = 'about';
+            return;
+        }
         if($scope.phase == 'basic'){
             $scope.phase = 'home';
             return;
@@ -28,6 +75,67 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             return;
         }
     }
+
+    $scope.finish = function(){
+        $scope.fillCircle();
+        $scope.phase = 'completedOnboarding' ;
+    }
+
+    $scope.fillCircle = function(){
+        var complete = 0;
+        if($scope.phase == 'about'){
+            complete = $scope.isPhaseComplete();
+            $scope.aboutCircle = getFill(complete);
+        }
+        if($scope.phase == 'home'){
+            complete = $scope.isPhaseComplete();
+            $scope.homeCircle = getFill(complete);
+        }
+        if($scope.phase == 'basic'){
+            complete = $scope.isPhaseComplete();
+            $scope.basicCircle = getFill(complete);
+        }
+        if($scope.phase == 'photos'){
+            complete = $scope.isPhaseComplete();
+            $scope.photosCircle = getFill(complete);
+        }
+    };
+
+    function getFill(complete){
+        return complete == 1?'first':complete==2?'second':complete==3?'done':'';
+    }
+
+    // returns how much of the phase is complete 1,2, or 3
+    $scope.isPhaseComplete = function(){
+        var complete = 0;
+        if($scope.phase == 'onSignup'){
+            if(!$scope.user.occupation && !$scope.user.aboutMe
+                && !$scope.user.address && !$scope.user.apptInfo.title
+                && $scope.user.photos.length == 0 && $scope.user.apptInfo.amenities.length == 0)
+                return 0;
+            else return 1;
+        }
+        if($scope.phase == 'about'){
+            $scope.user.occupation?complete++:null;
+            $scope.user.aboutMe?complete++:null;
+            typeof $scope.user.deposit != 'undefined'?complete++:null;
+        }
+        if($scope.phase == 'home'){
+            $scope.user.address?complete++:null;
+            $scope.user.apptInfo.title?complete++:null;
+            typeof $scope.user.apptInfo.roomType != 'undefined'?complete++:null;
+       }
+        if($scope.phase == 'basic'){
+            complete = $scope.user.apptInfo.amenities.length > 0?3:2;
+        }
+        if($scope.phase == 'photos'){
+            complete = $scope.user.photos.length;
+        }
+        return complete;
+    };
+
+    $scope.getInitialPhase();
+    $scope.fillCircle();
 
     function add_uploadButton(e, data){
         if(data.files[0].type.indexOf('image') === -1){
@@ -62,6 +170,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             $scope.numOfFiles--;
             if($scope.numOfFiles === 0){//uploaded all photos
                 showAlert('Photos Uploaded Successfully', false);
+                $scope.fillCircle();
                 $scope.saving = false;
             }
         });
@@ -102,7 +211,25 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     function saveChanges(){
+        if($scope.phase == 'about'){
+            saveProfileChanges();
+        }
+        else{
+            saveListingChanges();
+        }
+    }
+
+    function saveListingChanges(){
         AccountService.editListing($scope.user).then(function(data){
+            $rootScope.user = data;
+            $scope.user = $rootScope.user;
+        },function(err){
+            showAlert('Error saving changes', true);
+        });
+    }
+
+    function saveProfileChanges(){
+        AccountService.editProfile($scope.user).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
         },function(err){
@@ -113,6 +240,22 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.go = function(path){
         $location.url('/' + path);
         $scope.$dismiss();
+    }
+
+    if($scope.user.occupation){
+        $scope.isInFocus = 'aboutMe';
+    }
+    if($scope.user.occupation && $scope.user.aboutMe && $scope.user.address){
+        if($scope.user.apptInfo.title){
+            $scope.isInFocus = 'aboutMyHome';
+        }
+        else{
+            $scope.isInFocus = 'title';
+        }
+    }
+
+    $scope.loseFocus = function(){
+        $scope.isInFocus = false;
     }
 
 });

@@ -1,22 +1,25 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var passport       = require("passport");
-var less = require('less');
-var fs = require('fs');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
+let session = require('express-session');
+let passport       = require("passport");
+let less = require('less');
+let fs = require('fs');
 
-var emailService = require('./services/email');
+let passportService = require('./services/passport');
+let emailService = require('./services/email');
+let config = require('./config');
 
-var index = require('./routes/index');
-var users = require('./routes/user');
-var account = require('./routes/account');
-var message = require('./routes/message');
-var utils = require('./routes/utils');
-var transactions = require('./routes/transactions');
+let index = require('./routes/index');
+let users = require('./routes/user');
+let account = require('./routes/account');
+let message = require('./routes/message');
+let utils = require('./routes/utils');
+let transactions = require('./routes/transactions');
+let login = require('./routes/login');
 
 var app = express();
 
@@ -45,21 +48,26 @@ var mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 // connect to MongoDB
-mongoose.connect('mongodb://18.221.167.219/test')
-// mongoose.connect('mongodb://127.0.0.1/test')
-//     .then(() =>  console.log('connection succesful'))
-// .catch((err) => console.error(err));
-//app.use(function(req, res, next) {  
-//      res.header('Access-Control-Allow-Origin', req.headers.origin);
-//      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//      next();
-// }); 
+mongoose.connect(config.mongoUrl)
+    .then(() =>  console.log('connection succesful'))
+.catch((err) => console.error(err));
+
+app.use(function(req, res, next) {
+     res.header('Access-Control-Allow-Origin', req.headers.origin);
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     next();
+});
+
 app.use('/user', users);
 app.use('/account', account);
 app.use('/message', message);
 app.use('/utils', utils);
 app.use('/transactions', transactions);
+app.use('/auth', login);
 app.use('/', index);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -82,6 +90,7 @@ app.use(function(err, req, res, next) {
 });
 
 emailService.init();
+passportService.init();
 
 app.listen(3000);
 

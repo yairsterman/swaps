@@ -25,8 +25,8 @@ swapsApp.controller('loginController', function($scope, signin, $rootScope, $win
                 $scope.modelInstance = $uibModal.open({
                     animation: true,
                     templateUrl: '../../directives/onboarding/onboarding.html',
-                    size: 'md',
-                    controller: 'onboardingController'
+                    size: 'lg',
+                    controller: 'onboardingController',
                 });
             }
         });
@@ -40,16 +40,14 @@ swapsApp.controller('loginController', function($scope, signin, $rootScope, $win
     };
 
     $scope.FBLogin = function(){
-        window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
 
-    //eran
     $scope.GoogleLogin = function(){
-        window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
-        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
     };
-    //eran
 
     $scope.terms = function(){
         $window.open('https://swapshome.com/terms-and-conditions' , '_blank');
