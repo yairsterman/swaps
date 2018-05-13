@@ -2,12 +2,19 @@ let passport = require('passport');
 let FacebookStrategy = require('passport-facebook').Strategy;
 let GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 let User = require('../models/User.js');
-let Data = require('../user_data/data.js');
 let email = require('./email.js');
 let emailMessages = require('./email-messages.js');
 let config = require('../config.js');
 
-module.exports.init = function(){
+const cloudinary = require('cloudinary');
+
+cloudinary.config({
+    cloud_name: 'swaps',
+    api_key: '141879543552186',
+    api_secret: 'DzracCkoJ12usH_8xCe2sG8of3I'
+});
+
+module.exports.init = function () {
 
     passport.serializeUser(function (user, done) {
         done(null, user.id);
@@ -27,97 +34,49 @@ module.exports.init = function(){
         },
         function (accessToken, refreshToken, profile, done) {
             console.log(profile);
-            if(profile._json.email) {
-                User.findOne({$or:[{facebookId: profile.id}, {email: profile._json.email}]}, function (err, user) {
-                    if (err) return done(err);
-                    if (user) {
-                        if(!user.facebookId){
-                            user.facebookId = profile.id;
-                            user.save(function (err, user) {
-                                if (err) return next(err);
-                                return done(null, user);
-                            });
-                        }
-                        else{
-                            return done(null, user);
-                        }
-                    }
-                    else{
-                        var gender = getGender(profile.gender);
-                        user = new User({
-                            firstName: profile.name.givenName,
-                            lastName: profile.name.familyName,
-                            displayName: profile.displayName,
-                            gender: gender,
-                            birthday: profile._json.birthday,
-                            email: profile._json.email,
-                            facebookId: profile.id,
-                            image: profile._json.picture.data.url,
-                            occupation: '',
-                            aboutMe: '',
-                            country: '',
-                            city: '',
-                            address: '',
-                            swaps: 0,
-                            allowViewHome: true,
-                            traveling: false,
-                            travelingDates: {},
-                            apptInfo: {
-                                roomType: 0,
-                                propertyType: 0,
-                                beds: 1,
-                                baths: 1,
-                                guests: 2,
-                                rooms: 1,
-                                bedType: 1
-                            },
-                            deposit: 1,
-                            paymentInfo: {}
-                        });
-                        user.save(function (err, user) {
-                            if (err) return next(err);
-                            console.log("new user saved");
-                            if(user.email) {
-                                email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
-                            }
-                            return done(null, user);
-                        });
-                    }
-                });
+            let query = {};
+            query['facebookId'] = profile.id;
+            // profile._json.email = 'stermaneran@gmail.com';
+            if (profile._json.email) {
+                query = {};
+                query ["$or"] = [];
+                let a = {};
+                a['facebookId'] = profile.id;
+                let b = {};
+                b['email'] = profile._json.email;
+                query ["$or"].push(a);
+                query ["$or"].push(b);
             }
-        }
-    ));
-
-    passport.use(new GoogleStrategy({
-            clientID: config.googleClientId,
-            clientSecret: config.googleClientSecret,
-            callbackURL: config.baseUrl + "/auth/google/callback"
-        },
-        function (accessToken, refreshToken, profile, done) {
-            console.log(profile);
-            User.findOne({$or:[{googleId: profile.id}, {email: profile.emails[0].value}]}, function (err, user) {
+            User.findOne(query, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    if(!user.googleId){
-                        user.googleId = profile.id;
-                        user.save(function (err, user) {
-                            if (err) return next(err);
-                            return done(null, user);
+                    cloudinary.uploader.destroy(user.image).then(function () {
+                        cloudinary.v2.uploader.upload(profile._json.picture.data.url).then(function (result) {
+                            user.image = result.url;
+                            user.facebookId = profile.id;
+                            if (profile._json.email && !user.email) {
+                                user.email = profile._json.email;
+                                user.save(function (err, user) {
+                                    if (err) return next(err);
+                                    return done(null, user);
+                                });
+                            }
+                            else {
+                                return done(null, user);
+                            }
                         });
-                    }
-                    else{
-                        return done(null, user);
-                    }
+                    });
                 }
                 else {
+                    const gender = getGender(profile.gender);
                     user = new User({
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
                         displayName: profile.displayName,
-                        gender: 3,
-                        email: profile.emails[0].value,
-                        googleId: profile.id,
-                        image: profile._json.image.url,
+                        gender: gender,
+                        birthday: profile._json.birthday,
+                        email: profile._json.email,
+                        facebookId: profile.id,
                         occupation: '',
                         aboutMe: '',
                         country: '',
@@ -139,17 +98,86 @@ module.exports.init = function(){
                         deposit: 1,
                         paymentInfo: {}
                     });
-                    user.save(function (err, user) {
-                        if (err) return next(err);
-                        console.log("new user saved");
-                        email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
-                        return done(null, user);
+                    cloudinary.v2.uploader.upload(profile._json.picture.data.url).then(function (result) {
+                        user.image = result.url;
+                        user.save(function (err, user) {
+                            if (err) return next(err);
+                            console.log("new user saved");
+                            if (user.email) {
+                                email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                            }
+                            return done(null, user);
+                        });
                     });
                 }
             });
         }
     ));
-}
+
+    passport.use(new GoogleStrategy({
+            clientID: config.googleClientId,
+            clientSecret: config.googleClientSecret,
+            callbackURL: config.baseUrl + "/auth/google/callback"
+        },
+        function (accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            User.findOne({$or: [{googleId: profile.id}, {email: profile.emails[0].value}]}, function (err, user) {
+                if (err) return done(err);
+                if (user) {
+                    if (!user.googleId) {
+                        user.googleId = profile.id;
+                        user.save(function (err, user) {
+                            if (err) return next(err);
+                            return done(null, user);
+                        });
+                    }
+                    else {
+                        return done(null, user);
+                    }
+                }
+                else {
+                    user = new User({
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
+                        displayName: profile.displayName,
+                        gender: 3,
+                        email: profile.emails[0].value,
+                        googleId: profile.id,
+                        occupation: '',
+                        aboutMe: '',
+                        country: '',
+                        city: '',
+                        address: '',
+                        swaps: 0,
+                        allowViewHome: true,
+                        traveling: false,
+                        travelingDates: {},
+                        apptInfo: {
+                            roomType: 0,
+                            propertyType: 0,
+                            beds: 1,
+                            baths: 1,
+                            guests: 2,
+                            rooms: 1,
+                            bedType: 1
+                        },
+                        deposit: 1,
+                        paymentInfo: {}
+                    });
+                    cloudinary.v2.uploader.upload(profile._json.image.url).then(function (result) {
+                        user.image = result.url;
+                        user.save(function (err, user) {
+                            if (err) return next(err);
+                            console.log("new user saved");
+                            email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                            return done(null, user);
+                        });
+                    });
+                }
+            });
+        }
+    ));
+};
 
 function getGender(gender) {
     if (gender) {

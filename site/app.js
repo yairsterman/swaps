@@ -21,7 +21,7 @@ let utils = require('./routes/utils');
 let transactions = require('./routes/transactions');
 let login = require('./routes/login');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', __dirname + '/views');
@@ -44,13 +44,20 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 // load mongoose package
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 // connect to MongoDB
-mongoose.connect(config.mongoUrl)
-    .then(() =>  console.log('connection succesful'))
-.catch((err) => console.error(err));
+
+// mongoose.connect(config.mongoUrl)
+//     .then(() =>  console.log('connection succesful'))
+// .catch((err) => console.error(err));
+
+mongoose.connect(config.mongoUrl).then(function () {
+    console.log('connection successful');
+}).catch(function (err) {
+    console.error(err);
+});
 
 app.use(function(req, res, next) {
      res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -73,7 +80,7 @@ app.use(passport.session());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err); 
 });
@@ -83,7 +90,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.log(err)
+  console.log(err);
   // render the error page
   res.status(err.status || 500);
   res.render('error.html');
@@ -92,14 +99,16 @@ app.use(function(err, req, res, next) {
 emailService.init();
 passportService.init();
 
-app.listen(3000);
+app.listen(3000,function () {
+    console.log("listening on 3000");
+});
 
 //compile less files
 
 // Load the file, convert to string
 fs.readFile( path.join(__dirname, './public/stylesheets/less/main.less'), function (error, data) {
-  var dataString = data.toString();
-  var options = {
+  const dataString = data.toString();
+  const options = {
     paths         : [(path.join(__dirname, './public/stylesheets/less'))],      // .less file search paths
     outputDir     : (path.join(__dirname, './public/stylesheets/css')),   // output directory, note the '/'
     optimization  : 1,                // optimization level, higher is better but more volatile - 1 is a good value
@@ -118,7 +127,7 @@ fs.readFile( path.join(__dirname, './public/stylesheets/less/main.less'), functi
  
   // Create a parser with options, filename is passed even though its loaded
   // to allow less to give us better errors
-  var parser = new less.Parser(options);
+    const parser = new less.Parser(options);
   parser.parse( dataString, function ( error, cssTree ) {
       if ( error ) {
         less.writeError( error, options );
@@ -126,7 +135,7 @@ fs.readFile( path.join(__dirname, './public/stylesheets/less/main.less'), functi
       }
  
     // Create the CSS from the cssTree
-    var cssString = cssTree.toCSS( {
+      const cssString = cssTree.toCSS( {
       compress   : options.compress,
       yuicompress: options.yuicompress
     } );
@@ -138,9 +147,9 @@ fs.readFile( path.join(__dirname, './public/stylesheets/less/main.less'), functi
 });
  
 //
-var ensureDirectory = function (filepath) {
-  var dir = path.dirname(filepath);
-  var existsSync = fs.existsSync || path.existsSync;
+const ensureDirectory = function (filepath) {
+    const dir = path.dirname(filepath);
+    const existsSync = fs.existsSync || path.existsSync;
   if (!existsSync(dir)) { fs.mkdirSync(dir); }
 };
 
