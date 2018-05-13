@@ -50,20 +50,17 @@ module.exports.init = function () {
             User.findOne(query, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    cloudinary.uploader.destroy(user.image).then(function () {
-                        cloudinary.v2.uploader.upload(profile._json.picture.data.url).then(function (result) {
-                            user.image = result.url;
-                            user.facebookId = profile.id;
-                            if (profile._json.email && !user.email) {
-                                user.email = profile._json.email;
-                                user.save(function (err, user) {
-                                    if (err) return next(err);
-                                    return done(null, user);
-                                });
-                            }
-                            else {
-                                return done(null, user);
-                            }
+                    const toDel = user.image;
+                    cloudinary.v2.uploader.upload(profile._json.picture.data.url).then(function (result) {
+                        user.image = result.url;
+                        user.facebookId = profile.id;
+                        if (profile._json.email && !user.email) {
+                            user.email = profile._json.email;
+                        }
+                        user.save(function (err, user) {
+                            if (err) return next(err);
+                            cloudinary.uploader.destroy(toDel);
+                            return done(null, user);
                         });
                     });
                 }
