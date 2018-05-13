@@ -51,19 +51,17 @@ module.exports.init = function () {
             User.findOne(query, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    const toDel = user.image;
-                    cloudinary.v2.uploader.upload(profile._json.picture.data.url).then(function (result) {
-                        user.image = result.url;
-                        user.facebookId = profile.id;
-                        if (profile._json.email && !user.email) {
-                            user.email = profile._json.email;
-                        }
-                        user.save(function (err, user) {
-                            if (err) return next(err);
-                            cloudinary.uploader.destroy(toDel);
-                            return done(null, user);
+                    uploadProfileImage(profile._json.picture.data.url, user.image).then(function (result) {
+                            user.image = result.url;
+                            user.facebookId = profile.id;
+                            if (profile._json.email && !user.email) {
+                                user.email = profile._json.email;
+                            }
+                            user.save(function (err, user) {
+                                if (err) return next(err);
+                                return done(null, user);
+                            });
                         });
-                    });
                 }
                 else {
                     const gender = getGender(profile.gender);
@@ -190,15 +188,24 @@ function getGender(gender) {
 function uploadProfileImage(newImage, oldImage){
     let dfr = Q.defer();
 
-    cloudinary.v2.uploader.upload(newImage).then(function (error, result) {
-        if(error){
-           return dfr.reject(error);
-        }
-        if(oldImage){
-            cloudinary.uploader.destroy(oldImage);
-        }
-        dfr.resolve(result);
-    });
 
+    cloudinary.v2.uploader.upload(newImage,function (err,result) {
+        if (err) {
+            return dfr.reject(err);
+        }
+        if (oldImage) {
+            console.log("start deleted");
+            cloudinary.uploader.destroy(oldImage).then(function () {
+                const sleep = require('sleep');
+                sleep.sleep(10);
+                console.log("end deleted");
+            });
+        }
+        console.log("resolving");
+        dfr.resolve(result);
+        console.log("after resolve");
+
+    });
+    console.log("returning");
     return dfr.promise;
 }

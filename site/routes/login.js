@@ -8,10 +8,9 @@ router.get('/facebook',
 
 router.get('/facebook/callback',
     passport.authenticate('facebook', {failureRedirect: '/'}), function (req, res) {
-        // Successful authentication, redirect home.
         res.render('close-auth.html', {userId: req.session.passport.user});
-    }
-);
+        console.log("here");
+    });
 
 router.get('/google',
     //remove comment for birthday access
