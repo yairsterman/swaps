@@ -94,7 +94,7 @@ module.exports.init = function () {
                         deposit: 1,
                         paymentInfo: {}
                     });
-                    cloudinary.v2.uploader.upload(profile._json.picture.data.url).then(function (result) {
+                    uploadProfileImage(profile._json.picture.data.url).then(function (result) {
                         user.image = result.url;
                         user.save(function (err, user) {
                             if (err) return next(err);
@@ -160,7 +160,7 @@ module.exports.init = function () {
                         deposit: 1,
                         paymentInfo: {}
                     });
-                    cloudinary.v2.uploader.upload(profile._json.image.url).then(function (result) {
+                    uploadProfileImage(profile._json.image.url).then(function (result) {
                         user.image = result.url;
                         user.save(function (err, user) {
                             if (err) return next(err);
@@ -194,18 +194,14 @@ function uploadProfileImage(newImage, oldImage){
             return dfr.reject(err);
         }
         if (oldImage) {
-            console.log("start deleted");
-            cloudinary.uploader.destroy(oldImage).then(function () {
-                const sleep = require('sleep');
-                sleep.sleep(10);
-                console.log("end deleted");
+            cloudinary.v2.uploader.destroy(oldImage).then(function () {
+                console.log('image deleted');
+            },function(){
+                console.log('error deleting image');
             });
         }
-        console.log("resolving");
         dfr.resolve(result);
-        console.log("after resolve");
 
     });
-    console.log("returning");
     return dfr.promise;
 }
