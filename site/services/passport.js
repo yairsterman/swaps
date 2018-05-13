@@ -5,6 +5,7 @@ let User = require('../models/User.js');
 let email = require('./email.js');
 let emailMessages = require('./email-messages.js');
 let config = require('../config.js');
+let Q = require('q');
 
 const cloudinary = require('cloudinary');
 
@@ -184,4 +185,20 @@ function getGender(gender) {
             return 2;
     }
     return 3;
+}
+
+function uploadProfileImage(newImage, oldImage){
+    let dfr = Q.defer();
+
+    cloudinary.v2.uploader.upload(newImage).then(function (error, result) {
+        if(error){
+           return dfr.reject(error);
+        }
+        if(oldImage){
+            cloudinary.uploader.destroy(oldImage);
+        }
+        dfr.resolve(result);
+    });
+
+    return dfr.promise;
 }
