@@ -51,7 +51,7 @@ module.exports.init = function () {
             User.findOne(query, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    uploadProfileImage(profile._json.picture.data.url, user.image).then(function (result) {
+                    uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                             user.image = result.url;
                             user.facebookId = profile.id;
                             if (profile._json.email && !user.email) {
@@ -61,6 +61,8 @@ module.exports.init = function () {
                                 if (err) return next(err);
                                 return done(null, user);
                             });
+                        },function(err){
+                            return next(err);
                         });
                 }
                 else {
@@ -94,7 +96,7 @@ module.exports.init = function () {
                         deposit: 1,
                         paymentInfo: {}
                     });
-                    uploadProfileImage(profile._json.picture.data.url).then(function (result) {
+                    uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                         user.image = result.url;
                         user.save(function (err, user) {
                             if (err) return next(err);
@@ -104,6 +106,8 @@ module.exports.init = function () {
                             }
                             return done(null, user);
                         });
+                    },function(err){
+                        return next(err);
                     });
                 }
             });
@@ -160,7 +164,7 @@ module.exports.init = function () {
                         deposit: 1,
                         paymentInfo: {}
                     });
-                    uploadProfileImage(profile._json.image.url).then(function (result) {
+                    uploadProfileImage(user._id, profile._json.image.url).then(function (result) {
                         user.image = result.url;
                         user.save(function (err, user) {
                             if (err) return next(err);
@@ -168,6 +172,8 @@ module.exports.init = function () {
                             email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
                             return done(null, user);
                         });
+                    },function(err){
+                        return next(err);
                     });
                 }
             });
@@ -185,20 +191,13 @@ function getGender(gender) {
     return 3;
 }
 
-function uploadProfileImage(newImage, oldImage){
+function uploadProfileImage(userId, newImage, oldImage){
     let dfr = Q.defer();
 
 
-    cloudinary.v2.uploader.upload(newImage,function (err,result) {
+    cloudinary.v2.uploader.upload(newImage,{public_id: `${userId}/profile`}, function (err,result) {
         if (err) {
             return dfr.reject(err);
-        }
-        if (oldImage) {
-            cloudinary.v2.uploader.destroy(oldImage).then(function () {
-                console.log('image deleted');
-            },function(){
-                console.log('error deleting image');
-            });
         }
         dfr.resolve(result);
 
