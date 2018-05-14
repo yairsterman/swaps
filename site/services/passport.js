@@ -6,6 +6,7 @@ let email = require('./email.js');
 let emailMessages = require('./email-messages.js');
 let config = require('../config.js');
 let Q = require('q');
+let moment = require('moment');
 
 const cloudinary = require('cloudinary');
 
@@ -143,6 +144,7 @@ module.exports.init = function () {
                         gender: 3,
                         email: profile.emails[0].value,
                         googleId: profile.id,
+                        birthday: '01/01/1999',
                         occupation: '',
                         aboutMe: '',
                         country: '',
