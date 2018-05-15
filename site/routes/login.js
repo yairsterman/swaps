@@ -9,7 +9,6 @@ router.get('/facebook',
 router.get('/facebook/callback',
     passport.authenticate('facebook', {failureRedirect: '/'}), function (req, res) {
         res.render('close-auth.html', {userId: req.session.passport.user});
-        console.log("here");
     });
 
 router.get('/google',

@@ -3,6 +3,8 @@ const Requests = require('./../models/Request');
 const Transaction = require('./../models/Transaction');
 const User = require('./../models/User');
 const mongoose = require('mongoose');
+const email = require('./../services/email');
+const emailMessages = require('./../services/email-messages');
 mongoose.Promise = global.Promise;
 
 mongoose.connect(config.mongoUrl).then(function () {
@@ -26,28 +28,28 @@ var schedule = require('node-schedule');
 //  # * * * * * *
 
 
-schedule.scheduleJob('* 13 * * *', function () {
-    //this should not be findOne but find!!!
-    User.findOne({}, function (err, user) {
-        if (err) return err;
-        // users.forEach(function(user) {
-        var i = user.travelingInfo.length - 1;
-        while (i >= 0) {
-            if (new Date(user.travelingInfo[i].returnDate) < Date.now()) {
-                user.travelingInfo.splice(i, 1);
-            }
-            else if (new Date(user.travelingInfo[i].departure) < Date.now()) {
-                user.travelingInfo[i].departure = Date.now();
-                var part2 = user.travelingInfo[i].dates.substring(user.travelingInfo[i].dates.indexOf("-"));
-                var part1 = getMonthAndDayNow();
-                user.travelingInfo[i].dates = part1 + part2;
-            }
-            i -= 1;
-        }
-        user.save();
-        // });
-    });
-});
+// schedule.scheduleJob('* 13 * * *', function () {
+//     //this should not be findOne but find!!!
+//     User.findOne({}, function (err, user) {
+//         if (err) return err;
+//         // users.forEach(function(user) {
+//         var i = user.travelingInfo.length - 1;
+//         while (i >= 0) {
+//             if (new Date(user.travelingInfo[i].returnDate) < Date.now()) {
+//                 user.travelingInfo.splice(i, 1);
+//             }
+//             else if (new Date(user.travelingInfo[i].departure) < Date.now()) {
+//                 user.travelingInfo[i].departure = Date.now();
+//                 var part2 = user.travelingInfo[i].dates.substring(user.travelingInfo[i].dates.indexOf("-"));
+//                 var part1 = getMonthAndDayNow();
+//                 user.travelingInfo[i].dates = part1 + part2;
+//             }
+//             i -= 1;
+//         }
+//         user.save();
+//         // });
+//     });
+// });
 
 
 const requestStatus = {
@@ -57,16 +59,23 @@ const requestStatus = {
 };
 
 
-schedule.scheduleJob('* 13 * * *', function () {
-    Requests.findOne({status: requestStatus.pending},function (err, requests) {
+// schedule.scheduleJob('* 13 * * *', function () {
+    Requests.find({status: requestStatus.pending},function (err, requests) {
         if(err) return err;
         requests.forEach(function (request) {
-            if(request.checkin < Date.now()){
-                
-            }
+            // if(new Date(request.checkin) < Date.now()){
+                request.status = requestStatus.canceled;
+                User.findOne({_id:request.user1},function (err,user) {
+                    if(err) return err;
+                    if(user.email){
+                        // email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                        email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+                    }
+                });
+            // }
         })
-    })
-});
+    });
+// });
 
 
 const monthNames = ["Jan", "Feb", "Mar", "April", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
