@@ -26,27 +26,46 @@ var schedule = require('node-schedule');
 //  # * * * * * *
 
 
-schedule.scheduleJob('* 13 * * *', function(){
-   //this should not be findOne but find!!!
-    User.findOne({},function(err, user){
-       if (err) return err;
+schedule.scheduleJob('* 13 * * *', function () {
+    //this should not be findOne but find!!!
+    User.findOne({}, function (err, user) {
+        if (err) return err;
         // users.forEach(function(user) {
         var i = user.travelingInfo.length - 1;
         while (i >= 0) {
             if (new Date(user.travelingInfo[i].returnDate) < Date.now()) {
                 user.travelingInfo.splice(i, 1);
             }
-            else if(new Date(user.travelingInfo[i].departure) < Date.now()){
+            else if (new Date(user.travelingInfo[i].departure) < Date.now()) {
                 user.travelingInfo[i].departure = Date.now();
                 var part2 = user.travelingInfo[i].dates.substring(user.travelingInfo[i].dates.indexOf("-"));
-                var part1= getMonthAndDayNow();
-                user.travelingInfo[i].dates= part1+part2;
+                var part1 = getMonthAndDayNow();
+                user.travelingInfo[i].dates = part1 + part2;
             }
             i -= 1;
         }
         user.save();
         // });
     });
+});
+
+
+const requestStatus = {
+    pending: 0,
+    confirmed: 1,
+    canceled: 2
+};
+
+
+schedule.scheduleJob('* 13 * * *', function () {
+    Requests.findOne({status: requestStatus.pending},function (err, requests) {
+        if(err) return err;
+        requests.forEach(function (request) {
+            if(request.checkin < Date.now()){
+                
+            }
+        })
+    })
 });
 
 
