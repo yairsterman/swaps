@@ -188,10 +188,56 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.initUploadButton =function(){
 
         $.cloudinary.config({ cloud_name: 'swaps', secure: true});
-        $('input.cloudinary-fileupload[type=file]').fileupload({
+        $('input.cloudinary-fileupload[name=file]').fileupload({
             add: add_uploadButton,
             change: change_uploadbutton,
             done: fileuploaddone_uploadbutton,
+            fail: uploadFail,
+            maxFileSize: 20000000,                        // 20MB is an example value
+            loadImageMaxFileSize: 20000000,               // default is 10MB
+            acceptFileTypes: /(\.|\/)(jpe?g|png)$/i
+        });
+        // $('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
+        // $('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
+    }
+
+    function add_profileUploadButton(e, data){
+        if(data.files[0].type.indexOf('image') === -1){
+            showAlert('Wrong file type, only images are allowed', true);
+            return;
+        }
+        $scope.saving = true;
+        AccountService.getProfileUploadToken().then(function( token ) {
+            $scope.numOfFiles++;
+            data.formData = token;
+            data.submit();
+        },function(){
+            $scope.saving = false;
+        });
+    }
+
+    function doneUploadingProfilePhoto(e, data){
+        AccountService.profileUploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
+            $rootScope.user = result;
+            $scope.user = $rootScope.user;
+        },function(err){
+            showAlert('Failed to upload photo, please try again later', true);
+        })
+        .finally(function(){
+            $scope.numOfFiles--;
+            if($scope.numOfFiles === 0){//uploaded all photos
+                showAlert('Photo Uploaded Successfully', false);
+                $scope.saving = false;
+            }
+        });
+    }
+
+    $scope.initUploadProfileButton =function(){
+
+        $.cloudinary.config({ cloud_name: 'swaps', secure: true});
+        $('input.cloudinary-fileupload[name=profile]').fileupload({
+            add: add_profileUploadButton,
+            done: doneUploadingProfilePhoto,
             fail: uploadFail,
             maxFileSize: 20000000,                        // 20MB is an example value
             loadImageMaxFileSize: 20000000,               // default is 10MB

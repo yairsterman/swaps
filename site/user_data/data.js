@@ -75,7 +75,9 @@ const visibleUserData = {
         radius:true,
         location:true,
         messages: true,
-        requests: true
+        requests: true,
+        googleId: true,
+        facebookId: true,
     }
 };
 

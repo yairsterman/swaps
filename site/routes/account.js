@@ -12,6 +12,7 @@ var path = require('path');
 var fs = require('fs');
 var Q = require('q');
 var Data = require('../user_data/data.js');
+var config = require('../config');
 
 var multer = require('multer');
 var upload = multer({dest: 'uploads/', limits: {files: 8}});
@@ -442,6 +443,41 @@ router.post('/uploadCompleted', function (req, res, next) {
 	});
 });
 
+router.post('/profileUploadCompleted', function (req, res, next) {
+    let user = req.user;
+    let id = req.user.id;
+
+    cloudinary.v2.api.resources_by_ids([req.body.public_id], function(err, result) {
+        if(err)
+        {
+            error.message = 'could not verify picture in the server';
+            res.json(error);
+            return
+        }
+        if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
+        {
+            User.update({_id: id}, {image: result.resources[0].secure_url})
+                .then(function (updated) {
+                    if (!updated.ok) {
+                        error.message = 'Failed to update photo';
+                        throw (error);
+                    } else {
+                        return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
+                    }
+                }).then(function(user) {
+                res.json(user);
+            },function(err){
+                res.json(error);
+            });
+        }
+        else
+        {
+            error.message = 'picture does not exist on the server';
+            res.json(error);
+        }
+    });
+});
+
 router.get('/get-upload-token', function (req, res, next) {
 	
     if(req.user.photos.length >= 8) {
@@ -461,7 +497,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		else
 			server_path = 'qwe/' + URLSafeBase64.encode(sha1(timestamp));
 		let public_id = "public_id=" + server_path;
-		secret = "DzracCkoJ12usH_8xCe2sG8of3I";
+		let secret = config.cloudinarySecret;
 		//the token is valid for 1 hour from <timestamp> if we want to decrease this time
 		// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
 		// before put it in <ts> 
@@ -477,9 +513,31 @@ router.get('/get-upload-token', function (req, res, next) {
 			timestamp: timestamp,
 			eager: "w_1080,h_720,c_crop",
 			signature: token,
-			api_key: "141879543552186",
+			api_key: config.cloudinaryKey,
 		});
 	}
+});
+
+router.get('/get-profile-upload-token', function (req, res, next) {
+
+    // public id is in the folder named <userID> and file name profile
+    let timestamp = Math.floor(Date.now() * Math.random());
+    let server_path = '' + req.user.id + '/profile';
+    let public_id = "public_id=" + server_path;
+    let secret = config.cloudinarySecret;
+    //the token is valid for 1 hour from <timestamp> if we want to decrease this time
+    // we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
+    // before put it in <ts>
+    let ts = "timestamp=" + timestamp;
+    let to_sign = ([public_id, ts]).join("&");
+    let token = URLSafeBase64.encode(sha1(to_sign + secret));
+
+    res.send( {
+        public_id: server_path,
+        timestamp: timestamp,
+        signature: token,
+        api_key: config.cloudinaryKey,
+    });
 });
 
 router.post('/upload', upload.array('photos', 8), function (req, res) {
