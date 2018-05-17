@@ -210,6 +210,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         AccountService.getProfileUploadToken().then(function( token ) {
             $scope.numOfFiles++;
             data.formData = token;
+            data.paramName = 'file';
             data.submit();
         },function(){
             $scope.saving = false;

@@ -446,13 +446,18 @@ router.post('/uploadCompleted', function (req, res, next) {
 router.post('/profileUploadCompleted', function (req, res, next) {
     let user = req.user;
     let id = req.user.id;
-
+    // only google user's can change profile pic
+    if(req.user.googleId && !req.user.facebookId){
+        error.message = 'Not Authorized to change profile picture';
+        res.json(error);
+        return;
+    }
     cloudinary.v2.api.resources_by_ids([req.body.public_id], function(err, result) {
         if(err)
         {
             error.message = 'could not verify picture in the server';
             res.json(error);
-            return
+            return;
         }
         if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
         {

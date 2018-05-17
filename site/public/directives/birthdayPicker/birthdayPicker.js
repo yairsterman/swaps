@@ -13,6 +13,7 @@ swapsApp.directive('birthdayPicker', function() {
                 },
                 singleDatePicker: true,
                 showDropdowns: true,
+                startDate: scope.birthday
             });
             element.on('apply.daterangepicker', function(ev, picker) {
                 scope.birthday = picker.startDate.format('MM/DD/YYYY');
