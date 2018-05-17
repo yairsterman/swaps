@@ -447,7 +447,7 @@ router.post('/profileUploadCompleted', function (req, res, next) {
     let user = req.user;
     let id = req.user.id;
     // only google user's can change profile pic
-    if(req.user.googleId && !req.user.facebookId){
+    if(req.user.facebookId){
         error.message = 'Not Authorized to change profile picture';
         res.json(error);
         return;
