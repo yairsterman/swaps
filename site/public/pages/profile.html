@@ -219,17 +219,6 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row comments-show" ng-if="profile.reviews.length > 0">
-                        <div class="col-sm-2 col-xs-12  left-side-description">
-                            Reviews
-                        </div>
-                        <div class="col-sm-8 col-xs-12">
-                            <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
-                                <review-elm is-profile="true" commenter="commenter"></review-elm>
-                                <hr style="clear: both;">
-                            </div>
-                        </div>
-                    </div>
 
                     <!--</div>-->
                     <div class="map-section">
@@ -249,6 +238,39 @@
                             </div>
                         </div>
                         <!--END OF MAP SECTION-->
+                    </div>
+
+                    <div ng-if="profile.apptInfo.rules.length > 0">
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-12 left-side-description">House Rules</div>
+                            <div class="col-sm-8 col-xs-12 right-side-elaboration">
+                                <checkbox items="data.houseRules" model="profile.apptInfo.rules"
+                                          readonly="true" hide-not-included="true"></checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="profile.apptInfo.moreInfo && profile.apptInfo.moreInfo != ''">
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-22 left-side-description">More Information</div>
+                            <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">{{profile.apptInfo.moreInfo}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row comments-show" ng-if="profile.reviews.length > 0">
+                        <hr>
+                        <div class="col-sm-2 col-xs-12  left-side-description">
+                            Reviews
+                        </div>
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
+                                <review-elm is-profile="true" commenter="commenter"></review-elm>
+                                <hr style="clear: both;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
