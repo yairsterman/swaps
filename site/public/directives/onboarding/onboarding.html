@@ -92,9 +92,9 @@
         </div>
         <div class="user-info address" ng-if="phase == 'about'">
             <div class="">
-                <div class="form-group" ng-if="user.googleId && !user.facebookId">
+                <div  ng-if="user.googleId && !user.facebookId">
                     <div class="row">
-                        <div class="col-sm-4 col-xs-12">
+                        <div class="col-sm-4 col-xs-12 form-group">
                             <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="Choose a picture of yourself" data-placement="bottom" tooltip>Profile Picture:
                             </label>
                             <div class="upload-profile-image" style="background-image: url({{user.image}})">
@@ -104,7 +104,7 @@
                                 <label for="file" class="choose-file"></label>
                             </div>
                         </div>
-                        <div class="col-sm-8 col-xs-12">
+                        <div class="col-sm-8 col-xs-12 form-group">
                             <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="This will be used to show your age" data-placement="right" tooltip>Birthday:
                             </label>
                             <input class="datepicker form-control" name="birthday" ng-model="user.birthday" birthday="user.birthday" birthday-picker>
