@@ -10,9 +10,7 @@ var UserSchema = new Schema({
     occupation: String,
     aboutMe: String,
     facebookId: String,
-    // eran
     googleId: String,
-    // eran
     image: String,
     country: String,
     city: String,
@@ -20,7 +18,13 @@ var UserSchema = new Schema({
     swaps: Number,
     allowViewHome: Boolean,
     traveling: Boolean,
-    travelingDest: Array,
+    travelingDest: [{
+        dates: String,
+        departure: Number,
+        returnDate: Number,
+        guests: Number,
+        destination: String,
+    }],
     travelingInfo: Array,
     departure: Date,
     returnDate: Date,

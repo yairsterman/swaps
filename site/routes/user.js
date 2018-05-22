@@ -12,66 +12,43 @@ var error = {
 const USERS_PER_PAGE = 10;
 const ADMIN_PASSWORD = 'q3e5t7u';
 
-/* GET /Users listing. */
-router.get('/', function(req, res, next) {
-    User.find(function (err, Users) {
-        if (err) return next(err);
-        res.json(Users);
-    });
-});
-
-
-router.get('/get-user-by-travelingDest', function(req, res, next) {
-	var destination = req.query.dest.split('-')[0];
-	var from = req.query.from;
-	var guests = req.query.guests?parseInt(req.query.guests):null;
-	var page = parseInt(req.query.page);
+router.get('/getUsers', function(req, res, next) {
+	let destination = req.user?req.user.city:null;
+    let from = req.query.from.split(',');
+    let city = from[0];
+    let guests = req.query.guests?parseInt(req.query.guests):null;
+    let page = req.query.page?parseInt(req.query.page):0;
+    let params = {};
+    setRequiredParams(params);
+    if(guests){
+        params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
+    }
+    // if destination was specified, find only users traveling to that destination
+    if(destination){
+        params["travelingInfo.destination"] = {$regex: destination, $options: 'i'};
+    }
     if(from){
-		var params = {};
-        setRequiredParams(params);
-        if(req.query.guests){
-            params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
-        }
-		if(req.query.dest && req.query.dest != 'undefined'){
-			params.travelingDest = {$regex: destination, $options: 'i'};
-		}
-		if(from.toLowerCase() != 'anywhere'){
-			params.city = {$regex: from, $options: 'i'};
-		}
-		if(req.user){
-		    if(req.user.facebookId){
-                params.facebookId = {"$ne": req.user.facebookId};
-            }
-            if(req.user.googleId){
-                params.googleId = {"$ne": req.user.googleId};
-            }
-        }
+        params.city = {$regex: city, $options: 'i'};
+    }
+    if(req.user){
+        params._id = {"$not": req.userId};
+    }
 
-		User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
-			if (err){
-				error.message = "error finding users";
-				res.json(error);
-			}
-			else{
-                var filterdUsers = filterUsers(req, users, req.query);
-                var length = filterdUsers.length;
-                // return the users according to the given page number
-                console.log((page + 1) * USERS_PER_PAGE);
-                filterdUsers.splice((page + 1) * USERS_PER_PAGE);
-                filterdUsers.splice(0, page * USERS_PER_PAGE);
-                res.json({users: filterdUsers, total: length, page: page});
-            }
-		});
-    }
-    else{
-        User.find({travelingDest: {$regex: destination, $options: 'i'}}, Data.getVisibleUserData().accessible, function (err, users) {
-            if (err){
-                error.message = "error finding users";
-                res.json(error);
-            }
-            res.json(getRandomUsers(users));
-        });
-    }
+    User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
+        if (err){
+            error.message = "error finding users";
+            res.json(error);
+        }
+        else{
+            var filterdUsers = filterUsers(req, users, req.query);
+            var length = filterdUsers.length;
+            // return the users according to the given page number
+            console.log((page + 1) * USERS_PER_PAGE);
+            filterdUsers.splice((page + 1) * USERS_PER_PAGE);
+            filterdUsers.splice(0, page * USERS_PER_PAGE);
+            res.json({users: filterdUsers, total: length, page: page});
+        }
+    });
 });
 
 router.get('/get-all-users', function(req, res, next) {

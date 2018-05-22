@@ -52,13 +52,13 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     $scope.searchSwap = function(e){
         e.preventDefault();
         var where = $rootScope.search.where;
-        if(!where || where == ''){
-            where	= 'Anywhere';
-        }
-        else{
-            where = where.split(',')[0]
-        }
-        $scope.go('travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
+        // if(!where || where == ''){
+        //     where	= 'Anywhere';
+        // }
+        // else{
+        //     where = where.split(',')[0]
+        // }
+        $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
     }
 
 	$scope.openDate = function(){

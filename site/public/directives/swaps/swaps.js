@@ -116,11 +116,11 @@ function swapsController($scope, $rootScope, $filter, AccountService){
     };
 
     $scope.close = function(){
-        $dismiss;
+        $scope.$dismiss();
     };
 
     $scope.orderByDeparture = function(swap){
-        return -(swap.departure);
+        return (swap.departure);
     };
 
     function updateUser(){

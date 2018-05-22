@@ -4,7 +4,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     tr = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = true;
-    $scope.city = $routeParams.city && $routeParams.city !== ''?$routeParams.city:'Anywhere';
+    $scope.city = $routeParams.city;
     $scope.user = $rootScope.user;
     $scope.yourCity = $rootScope.userCity;
     $scope.search = {};
@@ -128,11 +128,13 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
     $scope.scaleImage = function(imageSrc){
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("border","1px solid rgba(13, 134, 234, 0.8)");
+        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","500");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("transform","scale(1.0)");
     }
 
     $scope.shrinkImage = function(imageSrc){
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("border","1px solid rgba(13, 134, 234, 0)");
+        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","100");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("transform","scale(0.75)");
     }
 
@@ -210,7 +212,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     function init(){
         var zoom = 13;
         var center = $scope.city;
-        if($scope.city == 'Anywhere'){
+        if(!$scope.city){
             zoom = 2;
             center = 'Madrid';
         }
@@ -271,7 +273,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         deleteMarkers();
         $scope.filter.amenities = $scope.checkedAmenities;
         $scope.filter.room = $scope.checkedRoomTypes;
-        UsersService.getUserByTravelingDest($rootScope.userCity, $scope.city, page, $scope.filter).then(function(data){
+        $scope.filter.from = $scope.city;
+        $scope.filter.page = page;
+        UsersService.getUserByTravelingDest($scope.filter).then(function(data){
             $scope.currentPage = page + 1;
             var travelers = data.users;
             $scope.totalUsers = data.total;

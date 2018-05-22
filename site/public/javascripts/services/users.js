@@ -18,40 +18,25 @@ swapsApp.service('UsersService', function($http, $q){
         });
    };
 
-   this.getUserByTravelingDest = function(dest, from, page, filters) {
+    this.getUserByTravelingDest = function(filters) {
         var fromCity = '';
         var requestFilters = '';
-        if(from){
-          fromCity = '&from=' + from;
-        }
-        if(filters.amenities){
-          requestFilters += '&amenities=' + filters.amenities;
-        }
-       if(filters.room){
-           requestFilters += '&room=' + filters.room;
-       }
-       if(filters.guests){
-           requestFilters += '&guests=' + filters.guests;
-       }
-       if(filters.when){
-           requestFilters += '&dates=' + filters.when;
-       }
+        var query = createQuery(filters);
 
-       var dfr = $q.defer();
-      var query ='?dest=' + dest + fromCity + requestFilters + '&page=' + page;
-      $http.get('user/get-user-by-travelingDest' + query).then(function(data){
-          if(data.data && data.data.err){
+        var dfr = $q.defer();
+        $http.get('user/getUsers' + query).then(function(data){
+            if(data.data && data.data.err){
               dfr.reject({error: true, msg: data.data.err});
-          }
-          else{
+            }
+            else{
               dfr.resolve(data.data);
-          }
+            }
         },
         function(err){
             dfr.reject({error: true, msg: err});
         });
-      return dfr.promise;
-   };
+        return dfr.promise;
+    };
 
     this.getFeaturedUsers = function() {
         return $http.get('user/get-featured-users').then(function(data){
@@ -79,6 +64,17 @@ swapsApp.service('UsersService', function($http, $q){
                 return {error: true, msg: err};
             });
     };
+
+    function createQuery(params){
+        let query = '?';
+
+        angular.forEach(params,function(value,key){
+            if(value || value == 0){
+                query += key + '=' + value + '&';
+            }
+        });
+        return query;
+    }
 
 
 });

@@ -20,21 +20,12 @@ var upload = multer({dest: 'uploads/', limits: {files: 8}});
 var NodeGeocoder = require('node-geocoder');
 
 cloudinary.config({ 
-  cloud_name: 'swaps', 
-  api_key: '141879543552186', 
-  api_secret: 'DzracCkoJ12usH_8xCe2sG8of3I' 
+  cloud_name: config.cloudinaryName,
+  api_key: config.cloudinaryKey,
+  api_secret: config.cloudinarySecret
 });
 
-var options = {
-    provider: 'google',
-
-    // Optional depending on the providers
-    httpAdapter: 'https', // Default
-    apiKey: 'AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw', // for Mapquest, OpenCage, Google Premier
-    formatter: null         // 'gpx', 'string', ...
-};
-
-var geocoder = NodeGeocoder(options);
+var geocoder = NodeGeocoder(config.geoCoderOptions);
 
 
 // const siteUrl = "https://swapshome.com/";
