@@ -31,6 +31,7 @@
     "serve-favicon": "~2.4.2",
     "sha1": "^1.1.1",
     "style-loader": "^0.16.1",
+    "uniqid": "^4.1.1",
     "urlsafe-base64": "^1.0.0",
     "webpack": "^2.2.0"
   }

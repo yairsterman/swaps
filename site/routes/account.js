@@ -1,23 +1,25 @@
-var URLSafeBase64 = require('urlsafe-base64');
-var sha1 = require('sha1');
+let URLSafeBase64 = require('urlsafe-base64');
+let sha1 = require('sha1');
 //use to delete photos from cloudinary
-var cloudinary = require('cloudinary');
+let cloudinary = require('cloudinary');
 
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var User = require('../models/User.js');
-var Request = require('../models/Request.js');
-var path = require('path');
-var fs = require('fs');
-var Q = require('q');
-var Data = require('../user_data/data.js');
-var config = require('../config');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let User = require('../models/User.js');
+let Request = require('../models/Request.js');
+let path = require('path');
+let fs = require('fs');
+let Q = require('q');
+let Data = require('../user_data/data.js');
+let config = require('../config');
 
-var multer = require('multer');
-var upload = multer({dest: 'uploads/', limits: {files: 8}});
+let multer = require('multer');
+let upload = multer({dest: 'uploads/', limits: {files: 8}});
 
-var NodeGeocoder = require('node-geocoder');
+let geocoder = require('../services/geocoderService');
+let uniqid = require('uniqid');
+let moment = require('moment');
 
 cloudinary.config({ 
   cloud_name: config.cloudinaryName,
@@ -25,7 +27,6 @@ cloudinary.config({
   api_secret: config.cloudinarySecret
 });
 
-var geocoder = NodeGeocoder(config.geoCoderOptions);
 
 
 // const siteUrl = "https://swapshome.com/";
@@ -75,11 +76,11 @@ router.post('/edit-profile', function (req, res, next) {
 });
 
 router.post('/edit-listing', function (req, res, next) {
-    var id = req.user._id;
-    var address = req.body.address;
-    var apptInfo = req.body.apptInfo;
-    var deposit = req.body.deposit;
-    var location = {};
+    let id = req.user._id;
+    let address = req.body.address;
+    let apptInfo = req.body.apptInfo;
+    let deposit = req.body.deposit;
+    let location = {};
 
     if (!address) {
         User.update({_id: id}, {$set: {apptInfo: apptInfo, deposit: deposit}},
@@ -103,19 +104,22 @@ router.post('/edit-listing', function (req, res, next) {
     }
     else {
         geocoder.geocode(address)
-            .then(function (geo) {
-                location.lat = geo[0].latitude.toFixed(3);
-                location.long = geo[0].longitude.toFixed(3);
-                var country = geo[0].country;
-                var city = geo[0].city;
+            .then(function (_geo) {
+                let geo = _geo[0];
+                location.lat = geo.latitude.toFixed(3);
+                location.long = geo.longitude.toFixed(3);
+                let country = geo.country;
+                let city = geo.city;
+                let region = geo.administrativeLevels.level1long;
                 if (!city) {
-                    city = geo[0].administrativeLevels.level1long;
+                    city = geo.administrativeLevels.level1long;
                 }
                 User.update({_id: id}, {
                         $set: {
                             location: location,
                             country: country,
                             city: city,
+                            region: region,
                             address: address,
                             apptInfo: apptInfo,
                             deposit: deposit
@@ -147,138 +151,75 @@ router.post('/edit-listing', function (req, res, next) {
 });
 
 router.post('/add-travel-info', function (req, res, next) {
-    var id = req.user._id;
-    var info = req.body.info;
-    var where = info.destination ? info.destination.split(',')[0] : null;
-    var guests = info.guests;
-    var dates = info.when ? info.when.split('-') : null;
-    var departure = dates ? Date.parse(dates[0].trim()) : null;
-    var returnDate = dates ? Date.parse(dates[1].trim()) : null;
-    var newInfo = {
-        destination: where,
-        departure: departure,
-        returnDate: returnDate,
-        dates: info.dates,
-        guests: guests
-    };
-    console.log(newInfo);
-    User.findOne({_id: req.user._id}, function (err, user) {
-        if (err) {
-            error.message = err;
-            res.json(error);
-        }
-        else {
-            var travelingInfo = user.travelingInfo;
-            var travelingDest = user.travelingDest;
-            if (travelingInfo.length == 0) {
-                newInfo._id = 1;
-            }
-            else {
-                newInfo._id = travelingInfo[travelingInfo.length - 1]._id + 1;
-            }
-            travelingInfo.push(newInfo);
-            travelingDest.push(where);
-            User.update({_id: id}, {
-                $set: {
-                    travelingInfo: travelingInfo,
-                    travelingDest: travelingDest,
-                    traveling: true
+    let id = req.user._id;
+    let info = req.body.info;
+    let where = info.fullDestination;
+    let guests = info.guests;
+    let dates = info.when ? info.when.split('-') : null;
+    let departure = dates ? moment(dates[0].trim()).utc().valueOf() : null;
+    let returnDate = dates ? moment(dates[1].trim()).utc().valueOf() : null;
+
+    geocoder.geocode(where).then(function (geo) {
+        let newInfo = {
+            fullDestination: where,
+            destination: geo? geo: null,
+            departure: departure,
+            returnDate: returnDate,
+            dates: info.dates,
+            guests: guests,
+        };
+        User.findOneAndUpdate({_id: id}, {$push: {travelingInformation: newInfo}}, {new: true, projection: Data.getVisibleUserData().restricted})
+            .then(function (user) {
+                if (!user) {
+                    error.message = 'No user found';
+                    return res.json(error);
                 }
-            }, function (err, updated) {
-                if (err) {
-                    error.message = err;
-                    res.json(error);
-                }
-                else {
-                    User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                        if (err) {
-                            error.message = err;
-                            res.json(error);
-                        }
-                        else {
-                            res.json(user);
-                        }
-                    });
-                }
+                res.json(user);
             });
-        }
     });
 });
 
 router.post('/update-travel-info', function (req, res, next) {
     if (!req.user.id || !req.body.info) {
         error.message = 'No travel information found';
-        res.json(error);
+        return res.json(error);
     }
-    var id = req.user.id;
-    var info = req.body.info;
-    var travelId = info._id;
-    var where = info.destination ? info.destination.split(',')[0] : null;
-    var guests = info.guests;
-    var dates = info.when ? info.when.split('-') : info.dates ? info.dates : undefined;
-    var departure = dates ? Date.parse(dates[0].trim()) : undefined;
-    var returnDate = dates ? Date.parse(dates[1].trim()) : undefined;
-    var newInfo = {
-        destination: where,
-        departure: departure,
-        returnDate: returnDate,
-        dates: dates ? info.dates : undefined,
-        guests: guests,
-        _id: travelId
-    };
-    console.log(newInfo);
-    User.findOne({_id: id}, function (err, user) {
-        if (err) {
-            error.message = err;
-            res.json(error);
+    let id = req.user.id;
+    let info = req.body.info;
+    let travelId = info._id;
+    let where = info.fullDestination;
+    let guests = info.guests;
+    let removeDates = info.removeDates;
+    let dates = info.when ? info.when.split('-') : null;
+    let departure = dates ? moment(dates[0].trim()).utc().valueOf() : null;
+    let returnDate = dates ? moment(dates[1].trim()).utc().valueOf() : null;
+
+    geocoder.geocode(where).then(function (geo) {
+        let updatedInfo = {};
+        if(where && where != ''){
+            updatedInfo['travelingInformation.$.fullDestination'] = where;
+            updatedInfo['travelingInformation.$.destination'] = geo;
         }
-        else {
-            var travelingInfo = user.travelingInfo;
-            var travelingDest = user.travelingDest;
-            var index;
-            for (var i = 0; i < travelingInfo.length; i++) {
-                if (travelingInfo[i]._id == travelId) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1) {
-                error.message = 'No travel information found';
-                res.json(error);
-            }
-            else {
-                if (travelingInfo[index].destination != where) {
-                    if (travelingDest.indexOf(travelingInfo[index].destination) != -1) {
-                        travelingDest.splice(travelingDest.indexOf(travelingInfo[index].destination), 1);
-                        travelingDest.push(where);
-                    }
-                }
-                travelingInfo[index] = newInfo;
-                User.update({_id: id}, {
-                    $set: {
-                        travelingInfo: travelingInfo,
-                        travelingDest: travelingDest,
-                        traveling: true
-                    }
-                }, function (err, updated) {
-                    if (err) {
-                        error.message = err;
-                        res.json(error);
-                    }
-                    else {
-                        User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                            if (err) {
-                                error.message = err;
-                                res.json(error);
-                            }
-                            else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                });
-            }
+        if(guests)
+            updatedInfo['travelingInformation.$.guests'] = guests;
+        if(dates){
+            updatedInfo['travelingInformation.$.dates'] = info.dates;
+            updatedInfo['travelingInformation.$.departure'] = departure;
+            updatedInfo['travelingInformation.$.returnDate'] = returnDate;
         }
+        if(removeDates){
+            updatedInfo['travelingInformation.$.dates'] = null;
+            updatedInfo['travelingInformation.$.departure'] = null;
+            updatedInfo['travelingInformation.$.returnDate'] = null;
+        }
+        User.findOneAndUpdate({'travelingInformation._id': travelId}, {$set: updatedInfo}, {new: true, projection: Data.getVisibleUserData().restricted})
+            .then(function (user) {
+                if (!user) {
+                    error.message = 'No user found';
+                    return res.json(error);
+                }
+                res.json(user);
+            });
     });
 });
 
