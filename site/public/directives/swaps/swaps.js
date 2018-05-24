@@ -90,7 +90,7 @@ function swapsController($scope, $rootScope, $filter, AccountService){
 
     $scope.removeTravelInfo = function(swap){
         $scope.saving = true;
-        AccountService.removeTravelInfo(swap).then(function(data){
+        AccountService.removeTravelInfo(swap._id).then(function(data){
             $rootScope.user = data;
             updateUser();
             // showAlert(SUCCESS, false);

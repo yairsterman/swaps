@@ -60,9 +60,9 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     };
 
-    this.removeTravelInfo = function(info) {
+    this.removeTravelInfo = function(id) {
         var defer = $q.defer();
-        $http.post('account/remove-travel-info', {info: info}).then(function(data){
+        $http.post('account/remove-travel-info', {id: id}).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }
