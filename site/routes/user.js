@@ -1,10 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var User = require('../models/User.js');
-var Data = require('../user_data/data.js');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let User = require('../models/User.js');
+let Data = require('../user_data/data.js');
+let geocoder = require('../services/geocoderService');
 
-var error = {
+
+let error = {
 	error: true,
 	message: ''
 };
@@ -14,18 +16,28 @@ const ADMIN_PASSWORD = 'q3e5t7u';
 
 router.get('/getUsers', function(req, res, next) {
 	let destination = req.user?req.user.city:null;
-    let from = req.query.from.split(',');
-    let city = from[0];
+    let from = req.query.from;
+    let city = from[0];// TODO get geocode
     let guests = req.query.guests?parseInt(req.query.guests):null;
     let page = req.query.page?parseInt(req.query.page):0;
     let params = {};
+    let or = [];
     setRequiredParams(params);
     if(guests){
         params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
     }
-    // if destination was specified, find only users traveling to that destination
+    // if users' country was specified, find only users traveling to the same country
     if(destination){
-        params["travelingInfo.destination"] = {$regex: destination, $options: 'i'};
+        or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
+        or.push({allowViewHome: true}); // or user who allowed to view home even when not traveling
+        params["$or"] = or;
+    }
+    // if no user is logged in or country is not filled, find all users traveling
+    // or who allowed to view home
+    else{
+        or.push({"travelingInformation.0": {$exists:true}});
+        or.push({allowViewHome: true});
+        params["$or"] = or;
     }
     if(from){
         params.city = {$regex: city, $options: 'i'};
@@ -269,7 +281,7 @@ function compareDestinations(userDestination, destination){
 function setRequiredParams(params){
     //required for all users to appear in search
     params.address = {$ne: ''}; // address is set
-    params['photos.2'] = {$exists: true};// at least 3 photos
+    params['photos.0'] = {$exists: true};// at least 1 photo
     params['apptInfo.rooms'] = {$exists: true}; // number of rooms set
     params['apptInfo.beds'] = {$exists: true};// number of beds set
     params['apptInfo.baths'] = {$exists: true};// number of baths set
