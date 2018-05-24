@@ -1,4 +1,4 @@
-const config = require('./../config');
+npmi const config = require('./../config');
 const Requests = require('./../models/Request');
 const Transaction = require('./../models/Transaction');
 const User = require('./../models/User');
