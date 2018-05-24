@@ -4,6 +4,7 @@ let mongoose = require('mongoose');
 let User = require('../models/User.js');
 let Data = require('../user_data/data.js');
 let geocoder = require('../services/geocoderService');
+let UserSearch = require('../services/userSearch');
 
 
 let error = {
@@ -19,6 +20,7 @@ router.get('/getUsers', function(req, res, next) {
     let from = req.query.from; // searching for users from
     let guests = req.query.guests?parseInt(req.query.guests):null;
     let page = req.query.page?parseInt(req.query.page):0;
+    let when = req.query.when;
     let params = {};
     let or = [];
 
@@ -29,16 +31,17 @@ router.get('/getUsers', function(req, res, next) {
         }
         // if users' country was specified, find only users traveling to the same country
         if(destination){
-            params["travelingInformation.destination.country"] = {$regex: destination, $options: 'i'};
+            or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
         }
         // if no user is logged in or country is not filled, find all users traveling
-        // or who allowed to view home
         else{
             or.push({"travelingInformation.0": {$exists:true}});
-            or.push({allowViewHome: true});
-            params["$or"] = or;
         }
-        if(from){
+        // or who allowed to view home
+        or.push({allowViewHome: true});
+        params["$or"] = or;
+
+        if(geo){
             params.country = {$regex: geo.country, $options: 'i'};
         }
         if(req.user){
@@ -51,9 +54,9 @@ router.get('/getUsers', function(req, res, next) {
                 res.json(error);
             }
             else{
-                let filterdUsers = filterUsers(req, users, req.query);
-                let length = filterdUsers.length;
-                res.json({users: getPage(filterdUsers, page), total: length, page: page});
+                let sortedUsers = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
+                let length = sortedUsers.length;
+                res.json({users: getPage(sortedUsers, page), total: length, page: page});
             }
         });
     });

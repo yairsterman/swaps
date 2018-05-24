@@ -16,6 +16,10 @@ module.exports.geocode = function(address){
                 city : _geo[0].city,
                 region: _geo[0].administrativeLevels.level1long,
                 country: _geo[0].country,
+                location: {
+                    lat: _geo[0].latitude.toFixed(3),
+                    long: _geo[0].longitude.toFixed(3)
+                }
             };
             dfr.resolve(geo);
         });

@@ -5,39 +5,40 @@ let Q = require('q');
 let request = require('request');
 let Data = require('../user_data/data.js');
 
-let NodeGeocoder = require('node-geocoder');
-let geocoder = NodeGeocoder(config.geoCoderOptions);
+let geocoder = require('./geocoderService');
 
 // Filter all returned users by the given filter params
-module.exports.sortUsers = function (req, users, query){
-    let dfr = Q.defer();
-    let filteredUsers = [];
-    let destination = query.dest;
-    if(!users){
-        return filteredUsers;
-    }
-    for (var i = 0; i < users.length; i++) {
-        var user = users[i];
-        if(filterDestination(user, destination) &&
-            filterDates(user, query.dates, destination) &&
-            filterGuests(req, user, destination) &&
-            filterRooms(user, query.room) &&
-            filterAmenities(user, query.amenities)) {
-            filteredUsers.push(users[i]);
-        }
-    }
+module.exports.sortUsers = function (req, users, options){
 
-    getGeocodeInformation().then((geo) =>{
-        users.forEach((user) => {
-            filterDestination(user, geo);
-            filterDates(user, query.dates, destination);
-            filterGuests(req, user, destination);
-            filterRooms(user, query.room);
-            filterAmenities(user, query.amenities);
+    let placesRelevance = 60;
+    users.forEach((user) => {
+        user.relevance = matchPlaces(user, options.geo) * placesRelevance;
+        // filterDestination(user, geo);
+        // filterDates(user, query.dates, destination);
+        // filterGuests(req, user, destination);
+        // filterRooms(user, query.room);
+        // filterAmenities(user, query.amenities);
 
-        });
     });
-    return dfr.promise;
+    return users.sort(function(a, b){
+        return b.relevance - a.relevance;
+    });
+}
+
+function matchPlaces(user, geo){
+    if(!geo){
+        return 1;
+    }
+    if(user.city && geo.city && user.city.toLowerCase() == geo.city.toLowerCase()){
+        return 1 // 100% match
+    }
+    if(user.region && geo.region && user.region.toLowerCase() == geo.region.toLowerCase()){
+        return 0.5 // 50% match
+    }
+    if(user.country && geo.country && user.country.toLowerCase() == geo.country.toLowerCase()){
+        return 0.3 // 30% match
+    }
+    return 0;
 }
 
 function filterGuests(req, user, destination){

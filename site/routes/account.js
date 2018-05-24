@@ -104,15 +104,13 @@ router.post('/edit-listing', function (req, res, next) {
     }
     else {
         geocoder.geocode(address)
-            .then(function (_geo) {
-                let geo = _geo[0];
-                location.lat = geo.latitude.toFixed(3);
-                location.long = geo.longitude.toFixed(3);
+            .then(function (geo) {
+                location = geo.location;
                 let country = geo.country;
                 let city = geo.city;
-                let region = geo.administrativeLevels.level1long;
+                let region = geo.region;
                 if (!city) {
-                    city = geo.administrativeLevels.level1long;
+                    city = geo.region;
                 }
                 User.update({_id: id}, {
                         $set: {
