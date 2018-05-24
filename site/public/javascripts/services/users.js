@@ -18,9 +18,7 @@ swapsApp.service('UsersService', function($http, $q){
         });
    };
 
-    this.getUserByTravelingDest = function(filters) {
-        var fromCity = '';
-        var requestFilters = '';
+    this.getUsers = function(filters) {
         var query = createQuery(filters);
 
         var dfr = $q.defer();

@@ -119,7 +119,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                 });
             }
             else{
-                UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
+                UsersService.getUsers($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
                     if(data.error){
                         console.log("error");
                         return;
@@ -168,7 +168,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             });
         }
         else{
-            UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
+            UsersService.getUsers().then(function(data) {
                 if(data.error){
                     console.log("error");
                     return;

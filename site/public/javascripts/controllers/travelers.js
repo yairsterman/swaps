@@ -275,7 +275,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.filter.room = $scope.checkedRoomTypes;
         $scope.filter.from = $scope.city;
         $scope.filter.page = page;
-        UsersService.getUserByTravelingDest($scope.filter).then(function(data){
+        UsersService.getUsers($scope.filter).then(function(data){
             $scope.currentPage = page + 1;
             var travelers = data.users;
             $scope.totalUsers = data.total;

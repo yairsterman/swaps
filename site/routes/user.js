@@ -15,49 +15,47 @@ const USERS_PER_PAGE = 10;
 const ADMIN_PASSWORD = 'q3e5t7u';
 
 router.get('/getUsers', function(req, res, next) {
-	let destination = req.user?req.user.city:null;
-    let from = req.query.from;
-    let city = from[0];// TODO get geocode
+	let destination = req.user?req.user.country:null; // user's country
+    let from = req.query.from; // searching for users from
     let guests = req.query.guests?parseInt(req.query.guests):null;
     let page = req.query.page?parseInt(req.query.page):0;
     let params = {};
     let or = [];
-    setRequiredParams(params);
-    if(guests){
-        params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
-    }
-    // if users' country was specified, find only users traveling to the same country
-    if(destination){
-        params["travelingInformation.destination.country"] = {$regex: destination, $options: 'i'};
-    }
-    // if no user is logged in or country is not filled, find all users traveling
-    // or who allowed to view home
-    else{
-        or.push({"travelingInformation.0": {$exists:true}});
-        or.push({allowViewHome: true});
-        params["$or"] = or;
-    }
-    if(from){
-        params.city = {$regex: city, $options: 'i'};
-    }
-    if(req.user){
-        params._id = {"$not": req.userId};
-    }
 
-    User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
-        if (err){
-            error.message = "error finding users";
-            res.json(error);
+    geocoder.geocode(from).then((geo) =>{
+        setRequiredParams(params);
+        if(guests){
+            params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
         }
+        // if users' country was specified, find only users traveling to the same country
+        if(destination){
+            params["travelingInformation.destination.country"] = {$regex: destination, $options: 'i'};
+        }
+        // if no user is logged in or country is not filled, find all users traveling
+        // or who allowed to view home
         else{
-            var filterdUsers = filterUsers(req, users, req.query);
-            var length = filterdUsers.length;
-            // return the users according to the given page number
-            console.log((page + 1) * USERS_PER_PAGE);
-            filterdUsers.splice((page + 1) * USERS_PER_PAGE);
-            filterdUsers.splice(0, page * USERS_PER_PAGE);
-            res.json({users: filterdUsers, total: length, page: page});
+            or.push({"travelingInformation.0": {$exists:true}});
+            or.push({allowViewHome: true});
+            params["$or"] = or;
         }
+        if(from){
+            params.country = {$regex: geo.country, $options: 'i'};
+        }
+        if(req.user){
+            params._id = {"$ne": req.user._id};
+        }
+
+        User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
+            if (err){
+                error.message = "error finding users";
+                res.json(error);
+            }
+            else{
+                let filterdUsers = filterUsers(req, users, req.query);
+                let length = filterdUsers.length;
+                res.json({users: getPage(filterdUsers, page), total: length, page: page});
+            }
+        });
     });
 });
 
@@ -285,7 +283,12 @@ function setRequiredParams(params){
     params['apptInfo.baths'] = {$exists: true};// number of baths set
     params['apptInfo.roomType'] = {$exists: true};// room type set
     params['apptInfo.title'] = {$ne: ''}; // home title set
-    params['$or'] = [{'travelingInfo.0':{$exists:true}},{allowViewHome:true}];// either traveling or allowed to view home
+}
+
+function getPage(users, pageNum){
+    users.splice((pageNum + 1) * USERS_PER_PAGE);
+    users.splice(0, pageNum * USERS_PER_PAGE);
+    return users;
 }
 
 module.exports = router;
