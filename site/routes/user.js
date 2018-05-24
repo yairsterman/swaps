@@ -28,9 +28,7 @@ router.get('/getUsers', function(req, res, next) {
     }
     // if users' country was specified, find only users traveling to the same country
     if(destination){
-        or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
-        or.push({allowViewHome: true}); // or user who allowed to view home even when not traveling
-        params["$or"] = or;
+        params["travelingInformation.destination.country"] = {$regex: destination, $options: 'i'};
     }
     // if no user is logged in or country is not filled, find all users traveling
     // or who allowed to view home
