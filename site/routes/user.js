@@ -32,6 +32,7 @@ router.get('/getUsers', function(req, res, next) {
         // if users' country was specified, find only users traveling to the same country
         if(destination){
             or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
+            or.push({"travelingInformation.destination": null});
         }
         // if no user is logged in or country is not filled, find all users traveling
         else{
@@ -90,9 +91,9 @@ router.get('/get-all-users-admin', function(req, res, next) {
 router.get('/get-featured-users', function(req, res, next) {
     var params = {};
     setRequiredParams(params);
-    params = {rating: {$gt: 4}, traveling:true};
+    params = {featured: true};
     if(req.user){
-        params._id = {"$not": req.userId};
+        params._id = {"$ne": req.user._id};
     }
     User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
         .exec(function (err, users) {

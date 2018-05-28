@@ -104,17 +104,17 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                         return;
                     }
                     $scope.travelers = data.data.users;
-                    $scope.swapperTitle = 'featured';
+                    $scope.swapperTitle = 'new';
                     if($scope.travelers.length < 3){
-                        UsersService.getNewUsers().then(function(data) {
-                            if(data.data.error){
-                                console.log("error");
-                            }
-                            else{
-                                $scope.travelers = data.data.users;
-                                $scope.swapperTitle = 'new';
-                            }
-                        });
+                        // UsersService.getNewUsers().then(function(data) {
+                        //     if(data.data.error){
+                        //         console.log("error");
+                        //     }
+                        //     else{
+                        //         $scope.travelers = data.data.users;
+                        //         $scope.swapperTitle = 'new';
+                        //     }
+                        // });
                     }
                 });
             }
@@ -126,18 +126,27 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                     }
                     $scope.travelers = data.users;
                     $scope.swapperTitle = 'city';
+                    if($scope.travelers.length < 3){
+                        UsersService.getFeaturedUsers().then(function(data) {
+                            if (data.data.error) {
+                                console.log("error");
+                                return;
+                            }
+                            $scope.travelers = data.data.users;
+                            $scope.swapperTitle = 'new';
+                        });
+                    }
                 });
             }
         }
         else{
-            UsersService.getNewUsers().then(function(data) {
-                if(data.data.error){
+            UsersService.getFeaturedUsers().then(function(data) {
+                if (data.data.error) {
                     console.log("error");
+                    return;
                 }
-                else{
-                    $scope.travelers = data.data.users;
-                    $scope.swapperTitle = 'new';
-                }
+                $scope.travelers = data.data.users;
+                $scope.swapperTitle = 'new';
             });
         }
     }
@@ -175,6 +184,16 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                 }
                 $scope.travelers = data.users;
                 $scope.swapperTitle = 'city';
+                if($scope.travelers.length < 3){
+                    UsersService.getFeaturedUsers().then(function(data) {
+                        if (data.data.error) {
+                            console.log("error");
+                            return;
+                        }
+                        $scope.travelers = data.data.users;
+                        $scope.swapperTitle = 'new';
+                    });
+                }
             });
         }
     });

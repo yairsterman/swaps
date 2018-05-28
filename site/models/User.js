@@ -60,6 +60,7 @@ var UserSchema = new Schema({
     paymentInfo: {},
     transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
     deposit: Number,
+    featured: Boolean,
     updated_at: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model('User', UserSchema);
