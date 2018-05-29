@@ -154,8 +154,8 @@ router.post('/add-travel-info', function (req, res, next) {
     let where = info.fullDestination;
     let guests = info.guests;
     let dates = info.when ? info.when.split('-') : null;
-    let departure = dates ? moment(dates[0].trim()).utc().valueOf() : null;
-    let returnDate = dates ? moment(dates[1].trim()).utc().valueOf() : null;
+    let departure = dates ? moment.utc(dates[0].trim()).valueOf() : null;
+    let returnDate = dates ? moment.utc(dates[1].trim()).valueOf() : null;
 
     geocoder.geocode(where).then(function (geo) {
         let newInfo = {
@@ -163,7 +163,7 @@ router.post('/add-travel-info', function (req, res, next) {
             destination: geo? geo: null,
             departure: departure,
             returnDate: returnDate,
-            dates: departure && returnDate?`${moment(departure).utc().format('MMM DD')} - ${moment(returnDate).utc().format('MMM DD')}`: null,
+            dates: departure && returnDate?`${moment.utc(departure).format('MMM DD')} - ${moment.utc(returnDate).format('MMM DD')}`: null,
             guests: guests,
         };
         User.findOneAndUpdate({_id: id}, {$push: {travelingInformation: newInfo}}, {new: true, projection: Data.getVisibleUserData().restricted})
@@ -189,8 +189,8 @@ router.post('/update-travel-info', function (req, res, next) {
     let guests = info.guests;
     let removeDates = info.removeDates;
     let dates = info.when ? info.when.split('-') : null;
-    let departure = dates ? moment(dates[0].trim()).utc().valueOf() : null;
-    let returnDate = dates ? moment(dates[1].trim()).utc().valueOf() : null;
+    let departure = dates ? moment.utc(dates[0].trim()).valueOf() : null;
+    let returnDate = dates ? moment.utc(dates[1].trim()).valueOf() : null;
 
     geocoder.geocode(where).then(function (geo) {
         let updatedInfo = {};

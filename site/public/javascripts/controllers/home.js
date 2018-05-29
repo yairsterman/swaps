@@ -96,48 +96,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $scope.featured[key] = value.normal;
         });
 
-        if($rootScope.geolocationComplete || $rootScope.userCity){
-            if($rootScope.geolocationComplete && $rootScope.geolocationComplete.failed){
-                UsersService.getFeaturedUsers().then(function(data) {
-                    if(data.data.error){
-                        console.log("error");
-                        return;
-                    }
-                    $scope.travelers = data.data.users;
-                    $scope.swapperTitle = 'new';
-                    if($scope.travelers.length < 3){
-                        // UsersService.getNewUsers().then(function(data) {
-                        //     if(data.data.error){
-                        //         console.log("error");
-                        //     }
-                        //     else{
-                        //         $scope.travelers = data.data.users;
-                        //         $scope.swapperTitle = 'new';
-                        //     }
-                        // });
-                    }
-                });
-            }
-            else{
-                UsersService.getUsers($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
-                    if(data.error){
-                        console.log("error");
-                        return;
-                    }
-                    $scope.travelers = data.users;
-                    $scope.swapperTitle = 'city';
-                    if($scope.travelers.length < 3){
-                        UsersService.getFeaturedUsers().then(function(data) {
-                            if (data.data.error) {
-                                console.log("error");
-                                return;
-                            }
-                            $scope.travelers = data.data.users;
-                            $scope.swapperTitle = 'new';
-                        });
-                    }
-                });
-            }
+        if(($rootScope.geolocationComplete && !$rootScope.geolocationComplete.failed) || $rootScope.userCity){
+            getUsers();
         }
         else{
             UsersService.getFeaturedUsers().then(function(data) {
@@ -163,38 +123,10 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                     return;
                 }
                 $scope.travelers = data.data.users;
-                if($scope.travelers.length < 3){
-                    $scope.swapperTitle = 'featured';
-                    UsersService.getNewUsers().then(function(data) {
-                        if(data.data.error){
-                            console.log("error");
-                            return;
-                        }
-                        $scope.travelers = data.data.users;
-                        $scope.swapperTitle = 'new';
-                    });
-                }
             });
         }
         else{
-            UsersService.getUsers().then(function(data) {
-                if(data.error){
-                    console.log("error");
-                    return;
-                }
-                $scope.travelers = data.users;
-                $scope.swapperTitle = 'city';
-                if($scope.travelers.length < 3){
-                    UsersService.getFeaturedUsers().then(function(data) {
-                        if (data.data.error) {
-                            console.log("error");
-                            return;
-                        }
-                        $scope.travelers = data.data.users;
-                        $scope.swapperTitle = 'new';
-                    });
-                }
-            });
+            getUsers();
         }
     });
 
@@ -220,6 +152,27 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                 }
             },
             scope:$scope
+        });
+    }
+
+    function getUsers(){
+        UsersService.getUsers({page:0, destination:$rootScope.userCity}).then(function(data) {
+            if(data.error){
+                console.log("error");
+                return;
+            }
+            $scope.travelers = data.users;
+            $scope.swapperTitle = 'city';
+            if($scope.travelers.length < 3){
+                UsersService.getFeaturedUsers().then(function(data) {
+                    if (data.data.error) {
+                        console.log("error");
+                        return;
+                    }
+                    $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'new';
+                });
+            }
         });
     }
 

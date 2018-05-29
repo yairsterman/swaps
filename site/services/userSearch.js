@@ -4,15 +4,21 @@ let User = require('../models/User.js');
 let Q = require('q');
 let request = require('request');
 let Data = require('../user_data/data.js');
+let moment = require('moment');
 
 let geocoder = require('./geocoderService');
 
 // Filter all returned users by the given filter params
 module.exports.sortUsers = function (req, users, options){
 
-    let placesRelevance = 60;
+    let dates = {};
+    let when = req.query.when ? req.query.when.split('-') : null;
+    dates.departure = when ? moment.utc(when[0].trim()).valueOf() : null;
+    dates.returnDate = when ? moment.utc(when[1].trim()).valueOf() : null;
+
     users.forEach((user) => {
-        user.relevance = matchPlaces(user, options.geo) * placesRelevance;
+        user.relevance = getHighestTravelScore(user, options.geo, dates, req);
+
         // filterDestination(user, geo);
         // filterDates(user, query.dates, destination);
         // filterGuests(req, user, destination);
@@ -27,7 +33,7 @@ module.exports.sortUsers = function (req, users, options){
 
 function matchPlaces(user, geo){
     if(!geo){
-        return 1;
+        return 0.4;
     }
     if(user.city && geo.city && user.city.toLowerCase() == geo.city.toLowerCase()){
         return 1 // 100% match
@@ -39,6 +45,93 @@ function matchPlaces(user, geo){
         return 0.3 // 30% match
     }
     return 0;
+}
+
+function getHighestTravelScore(user, geo, searchDates, req){
+    let score = 0;
+    let placesRelevancePercent = 60;
+    let datesRelevancePercent = 40;
+    let placesAndDatesRelevance = 60;
+
+    // match search address and user address
+    let from = matchPlaces(user, geo);
+
+    // if user not logged in and search is only by user's location,
+    // return higher score for users who are currently traveling
+    if(!req.user){
+        let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.8;
+        placesAndDatesRelevance = ((from / 2) * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
+        return (user.travelingInformation && user.travelingInformation.length > 0)?30:20;
+    }
+
+    // if the user has no traveling information then return only
+    // the places relevance percent of total places and dates relevance
+    if(!user.travelingInformation || user.travelingInformation.length == 0){
+        return ((from / 2) * placesRelevancePercent) / 100  * placesAndDatesRelevance;
+    }
+    user.travelingInformation.forEach(travel => {
+
+        // match travel destinations to the searching user's address
+        let to = matchPlaces(req.user, travel.destination.country?travel.destination:null);
+
+        let travelDates = {
+            departure: travel.departure,
+            returnDate: travel.returnDate,
+        };
+
+        let totalDatesRelevance;
+        // if user has not specified dates (set date for 'Anytime')
+        // then the date is a match but not full score
+        if(!travelDates.departure || !travelDates.returnDate){
+            totalDatesRelevance = 0.5;
+        }
+        else{
+            let overlappingDays = getOverlappingDays(travelDates, searchDates);
+            totalDatesRelevance = !overlappingDays?0:overlappingDays / getDaysBetween(searchDates.returnDate, searchDates.departure);
+        }
+
+        // if places and travel search were a match and dates match too,
+        // then the total places and dates relevance increases
+        if(from > 0 && to > 0 && totalDatesRelevance > 0){
+            placesAndDatesRelevance = 90;
+        }
+        let totalPlaceRelevance = (from + to) / 2 * placesRelevancePercent;
+        totalDatesRelevance = totalDatesRelevance * datesRelevancePercent;
+
+        let finalTravelRelevance = (totalPlaceRelevance + totalDatesRelevance) / 100 * placesAndDatesRelevance;
+        if (finalTravelRelevance > score){
+            score = finalTravelRelevance;
+        }
+    });
+
+    return score;
+}
+
+/**
+ * Find the number of overlapping days between two date ranges.
+ *
+ * @param dateRange1 - the departure and returnDate of first date range
+ * @param dateRange2 - the departure and returnDate of second date range
+ * @return {number} - number of overlapping days
+ */
+function getOverlappingDays(dateRange1, dateRange2){
+    if(!dateRange1.departure || !dateRange2.departure || !dateRange1.returnDate || !dateRange2.returnDate){
+        return 0;
+    }
+    let max = Math.max(dateRange2.departure, dateRange1.departure);
+    let min = Math.min(dateRange2.returnDate, dateRange1.returnDate);
+    return getDaysBetween(min, max);
+}
+
+/**
+ * Get number of days between two dates
+ * @param first
+ * @param second
+ */
+function getDaysBetween(first, second){
+    if(first - second < 0)
+        return 0;
+    return Math.floor(( first - second ) / 86400000); // devide by days 24 * 60 * 60 * 1000
 }
 
 function filterGuests(req, user, destination){
