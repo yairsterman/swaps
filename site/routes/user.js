@@ -16,7 +16,8 @@ const USERS_PER_PAGE = 10;
 const ADMIN_PASSWORD = 'q3e5t7u';
 
 router.get('/getUsers', function(req, res, next) {
-	let destination = req.user?req.user.country:null; // user's country
+    // user's country or user's current location city
+	let destination = req.user?req.user.country:req.query.destination?req.query.destination:null;
     let from = req.query.from; // searching for users from
     let guests = req.query.guests?parseInt(req.query.guests):null;
     let page = req.query.page?parseInt(req.query.page):0;
@@ -31,7 +32,13 @@ router.get('/getUsers', function(req, res, next) {
         }
         // if users' country was specified, find only users traveling to the same country
         if(destination){
-            or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
+            // if searching by user's current location then find user's by city
+            if(req.query.destination){
+                or.push({"travelingInformation.destination.city": {$regex: destination, $options: 'i'}});
+            }
+            else{
+                or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
+            }
             or.push({"travelingInformation.destination": null});
         }
         // if no user is logged in or country is not filled, find all users traveling
