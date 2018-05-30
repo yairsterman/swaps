@@ -27,7 +27,7 @@ cloudinary.config({
   api_secret: config.cloudinarySecret
 });
 
-
+const TRANSFORMATION = "w_1080,h_720,c_limit";
 
 // const siteUrl = "https://swapshome.com/";
 const siteUrl = "http://localhost:3000/";
@@ -384,7 +384,7 @@ router.get('/get-upload-token', function (req, res, next) {
         res.json(error);
 	}
 	else {
-		let eager = "eager=w_1080,h_720,c_limit";// should be changed to whatever resolution we want
+		let transformation = `transformation=${TRANSFORMATION}`;// should be changed to whatever resolution we want
 		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
 		// (just using it to generate a random name for each photo
 		let timestamp = Math.floor(Date.now() * Math.random());
@@ -399,7 +399,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
 		// before put it in <ts> 
 		let ts = "timestamp=" + timestamp;
-		let to_sign = ([eager, public_id, ts]).join("&");
+		let to_sign = ([public_id, ts, transformation]).join("&");
 		let token = URLSafeBase64.encode(sha1(to_sign + secret));
 		if(req.user)
 			console.log('generate token for user: ' + req.user.id + ' token: ' + token) 
@@ -408,7 +408,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		res.send( {
 			public_id: server_path,
 			timestamp: timestamp,
-            transformation: "w_1080,h_720,c_limit",
+            transformation: TRANSFORMATION,
 			signature: token,
 			api_key: config.cloudinaryKey,
 		});
