@@ -384,7 +384,7 @@ router.get('/get-upload-token', function (req, res, next) {
         res.json(error);
 	}
 	else {
-		let eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
+		let eager = "eager=w_1080,h_720,c_limit";// should be changed to whatever resolution we want
 		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
 		// (just using it to generate a random name for each photo
 		let timestamp = Math.floor(Date.now() * Math.random());
@@ -408,7 +408,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		res.send( {
 			public_id: server_path,
 			timestamp: timestamp,
-			eager: "w_1080,h_720,c_crop",
+            transformation: "w_1080,h_720,c_limit",
 			signature: token,
 			api_key: config.cloudinaryKey,
 		});
