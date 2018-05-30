@@ -13,8 +13,8 @@ module.exports.sortUsers = function (req, users, options){
 
     let dates = {};
     let when = req.query.when ? req.query.when.split('-') : null;
-    dates.departure = when ? moment.utc(when[0].trim()).valueOf() : null;
-    dates.returnDate = when ? moment.utc(when[1].trim()).valueOf() : null;
+    dates.departure = when ? moment.utc(when[0].trim(), "MM/DD/YYYY").valueOf() : null;
+    dates.returnDate = when ? moment.utc(when[1].trim(), "MM/DD/YYYY").valueOf() : null;
 
     users.forEach((user) => {
         user.relevance = getHighestTravelScore(user, options.geo, dates, req);

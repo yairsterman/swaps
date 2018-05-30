@@ -8,7 +8,7 @@ let MessageService = require('../services/messageService.js');
 let transactionService = require('../services/transactionsService.js');
 let Data = require('../user_data/data.js');
 let util = require('../utils/util.js');
-
+let moment = require('moment');
 
 const DAY = 1000*60*60*24;
 
@@ -40,8 +40,8 @@ module.exports.sendRequest = function(params) {
     let dfr = Q.defer();
     if(params.dates){
         dates = params.dates.split('-'); // dates are in format '11/11/2011-12/12/2012'
-        departure = Date.parse(dates[0].trim());
-        returnDate = Date.parse(dates[1].trim());
+        departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
+        returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
         nights = util.calculateNightsBetween(departure, returnDate);
     }
     else{
@@ -144,26 +144,16 @@ module.exports.confirm = function(params) {
 function saveRequest(requestDetails){
     let defferd = Q.defer();
 
-    let senderId = requestDetails.senderId;
-    let recipientId = requestDetails.recipientId;
-    let departure = requestDetails.departure;
-    let returnDate = requestDetails.returnDate - DAY; // book only the nights, without checkout date
-    let transaction = requestDetails.transactionId;
-    let guests = requestDetails.guests;
-    let nights = requestDetails.nights;
-    let plan =requestDetails.plan;
-    let status = requestDetails.status;
-
     let request = new Request({
-        user1: senderId,
-        user2: recipientId,
-        checkin: departure,
-        checkout : returnDate,
-        verifyTransactionUser1: transaction,
-        guests1: guests,
-        nights: nights,
-        plan: plan,
-        status: status
+        user1: requestDetails.senderId,
+        user2: requestDetails.recipientId,
+        checkin: requestDetails.departure,
+        checkout : requestDetails.returnDate,
+        verifyTransactionUser1: requestDetails.transactionId,
+        guests1: requestDetails.guests,
+        nights: requestDetails.nights,
+        plan: requestDetails.plan,
+        status: requestDetails.status
     });
     let sender = {};
     let recipient = {};
@@ -460,6 +450,7 @@ function getRequest(id){
         .populate({
             path: 'verifyTransactionUser1',
         })
+        // TODO: populate user and user requests in order to check availability
         .exec(function (err, request) {
             if (err || !request) {
                 let msg = err;
@@ -491,7 +482,7 @@ function getConfirmedRequest(id){
             path: 'transactionUser2',
         })
         .populate({
-            path: 'user1',
+            path: 'user1',// TODO: populate user requests in order to check availability
         })
         .populate({
             path: 'user2',
@@ -554,6 +545,7 @@ function checkAvailability(senderId, recipientId, departure, returnDate){
  * @return {boolean} - true if dates are available
  */
 function checkConfirmationDates(requests, departure, returnDate){
+    // TODO: This needs updating because returnDate is the checkout date, meaning it is an available date
     let confirmations = requests.filter(function(request){
         return request.status == Data.getRequestStatus().confirmed;
     });
@@ -573,6 +565,7 @@ function checkConfirmationDates(requests, departure, returnDate){
 }
 
 function updateDates(travelingInfo, travelingDest, departure, returnDate){
+    // TODO: FIX THIS!! update to new travelingInformation structure and use moment
     var _travelingInfo = travelingInfo;
     _travelingInfo.forEach(function(info, index){
         if(departure <= info.departure && info.returnDate <= returnDate){
