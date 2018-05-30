@@ -27,7 +27,8 @@ cloudinary.config({
   api_secret: config.cloudinarySecret
 });
 
-const TRANSFORMATION = "w_1080,h_720,c_limit";
+const TRANSFORMATION = "w_1200,h_720,c_limit";
+const PROFILE_TRANSFORMATION = 'w_200,h_200,c_limit';
 
 // const siteUrl = "https://swapshome.com/";
 const siteUrl = "http://localhost:3000/";
@@ -420,19 +421,22 @@ router.get('/get-profile-upload-token', function (req, res, next) {
     // public id is in the folder named <userID> and file name profile
     let timestamp = Math.floor(Date.now() * Math.random());
     let server_path = '' + req.user.id + '/profile';
+    let transformation = `transformation=${PROFILE_TRANSFORMATION}`;// should be changed to whatever resolution we want
+
     let public_id = "public_id=" + server_path;
     let secret = config.cloudinarySecret;
     //the token is valid for 1 hour from <timestamp> if we want to decrease this time
     // we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
     // before put it in <ts>
     let ts = "timestamp=" + timestamp;
-    let to_sign = ([public_id, ts]).join("&");
+    let to_sign = ([public_id, ts, transformation]).join("&");
     let token = URLSafeBase64.encode(sha1(to_sign + secret));
 
     res.send( {
         public_id: server_path,
         timestamp: timestamp,
         signature: token,
+        transformation: PROFILE_TRANSFORMATION,
         api_key: config.cloudinaryKey,
     });
 });
