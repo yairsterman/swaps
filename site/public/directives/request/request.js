@@ -13,9 +13,11 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.payment = false;
     $scope.isMatch = $scope.$parent.isMatch;
     $scope.localeFormat = 'MMM DD';
-    $scope.modelFormat = 'MMMM DD, YYYY';
+    $scope.modelFormat = 'MM/DD/YYYY';
     $scope.recipientId = $scope.profile._id;
     $scope.userId = $scope.user._id;
+    $scope.from = new Date($scope.swap.from).getTime();
+    $scope.to = new Date($scope.swap.to).getTime();
 
     $scope.showPayment = function(){
         if(!validateRequest()){

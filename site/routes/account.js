@@ -27,7 +27,8 @@ cloudinary.config({
   api_secret: config.cloudinarySecret
 });
 
-
+const TRANSFORMATION = "w_1200,h_720,c_limit";
+const PROFILE_TRANSFORMATION = 'w_200,h_200,c_limit';
 
 // const siteUrl = "https://swapshome.com/";
 const siteUrl = "http://localhost:3000/";
@@ -154,8 +155,8 @@ router.post('/add-travel-info', function (req, res, next) {
     let where = info.fullDestination;
     let guests = info.guests;
     let dates = info.when ? info.when.split('-') : null;
-    let departure = dates ? moment.utc(dates[0].trim()).valueOf() : null;
-    let returnDate = dates ? moment.utc(dates[1].trim()).valueOf() : null;
+    let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
+    let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
 
     geocoder.geocode(where).then(function (geo) {
         let newInfo = {
@@ -189,8 +190,8 @@ router.post('/update-travel-info', function (req, res, next) {
     let guests = info.guests;
     let removeDates = info.removeDates;
     let dates = info.when ? info.when.split('-') : null;
-    let departure = dates ? moment.utc(dates[0].trim()).valueOf() : null;
-    let returnDate = dates ? moment.utc(dates[1].trim()).valueOf() : null;
+    let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
+    let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
 
     geocoder.geocode(where).then(function (geo) {
         let updatedInfo = {};
@@ -384,7 +385,7 @@ router.get('/get-upload-token', function (req, res, next) {
         res.json(error);
 	}
 	else {
-		let eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
+		let transformation = `transformation=${TRANSFORMATION}`;// should be changed to whatever resolution we want
 		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
 		// (just using it to generate a random name for each photo
 		let timestamp = Math.floor(Date.now() * Math.random());
@@ -399,7 +400,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
 		// before put it in <ts> 
 		let ts = "timestamp=" + timestamp;
-		let to_sign = ([eager, public_id, ts]).join("&");
+		let to_sign = ([public_id, ts, transformation]).join("&");
 		let token = URLSafeBase64.encode(sha1(to_sign + secret));
 		if(req.user)
 			console.log('generate token for user: ' + req.user.id + ' token: ' + token) 
@@ -408,7 +409,7 @@ router.get('/get-upload-token', function (req, res, next) {
 		res.send( {
 			public_id: server_path,
 			timestamp: timestamp,
-			eager: "w_1080,h_720,c_crop",
+            transformation: TRANSFORMATION,
 			signature: token,
 			api_key: config.cloudinaryKey,
 		});
@@ -420,19 +421,22 @@ router.get('/get-profile-upload-token', function (req, res, next) {
     // public id is in the folder named <userID> and file name profile
     let timestamp = Math.floor(Date.now() * Math.random());
     let server_path = '' + req.user.id + '/profile';
+    let transformation = `transformation=${PROFILE_TRANSFORMATION}`;// should be changed to whatever resolution we want
+
     let public_id = "public_id=" + server_path;
     let secret = config.cloudinarySecret;
     //the token is valid for 1 hour from <timestamp> if we want to decrease this time
     // we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
     // before put it in <ts>
     let ts = "timestamp=" + timestamp;
-    let to_sign = ([public_id, ts]).join("&");
+    let to_sign = ([public_id, ts, transformation]).join("&");
     let token = URLSafeBase64.encode(sha1(to_sign + secret));
 
     res.send( {
         public_id: server_path,
         timestamp: timestamp,
         signature: token,
+        transformation: PROFILE_TRANSFORMATION,
         api_key: config.cloudinaryKey,
     });
 });

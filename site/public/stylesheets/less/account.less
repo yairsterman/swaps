@@ -76,6 +76,13 @@
 					height: 10vw;
 					width: 10vw;
 					margin: auto;
+					.profile-upload{
+						display: block;
+						opacity: 0;
+						cursor: pointer;
+						width: 100%;
+						height: 100%;
+					}
 	    		}
 	    		.name{
 	    			font-size: 24px;
@@ -850,5 +857,17 @@
 	}
 	::-webkit-scrollbar-corner       { display: none;}
 	::-webkit-resizer                {display: none; }
+}
+.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+	border-left-color: #0E5D7C !important;
+}
+.tooltip{
+	.tooltip-arrow{
+		border-color: #0E5D7C !important;
+	}
+}
+.tooltip-inner {
+	background-color: #0E5D7C !important;
+	color: white !important;
 }
 
