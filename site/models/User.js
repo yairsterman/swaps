@@ -10,27 +10,36 @@ var UserSchema = new Schema({
     occupation: String,
     aboutMe: String,
     facebookId: String,
-    // eran
     googleId: String,
-    // eran
     image: String,
     country: String,
     city: String,
+    region: String,
     address: String,
     swaps: Number,
     allowViewHome: Boolean,
     traveling: Boolean,
     travelingDest: Array,
+    travelingInformation: [{
+        dates: String,
+        departure: Number,
+        returnDate: Number,
+        guests: Number,
+        fullDestination: String,
+        destination: {
+            city: String,
+            region: String,
+            country: String
+        }
+    }],
     travelingInfo: Array,
-    departure: Date,
-    returnDate: Date,
     rating: Number,
     requests: [{ type: Schema.Types.ObjectId, ref: 'Request' }],
     notifications: Array,
     messages: Array,
     reviews: Array,
     photos: Array,
-    favorites: Array,
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     thingsToDo: Array,
     radius: {},
     location: {},
@@ -51,6 +60,7 @@ var UserSchema = new Schema({
     paymentInfo: {},
     transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
     deposit: Number,
+    featured: Boolean,
     updated_at: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model('User', UserSchema);

@@ -1,10 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var User = require('../models/User.js');
-var Data = require('../user_data/data.js');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let User = require('../models/User.js');
+let Data = require('../user_data/data.js');
+let geocoder = require('../services/geocoderService');
+let UserSearch = require('../services/userSearch');
 
-var error = {
+
+let error = {
 	error: true,
 	message: ''
 };
@@ -12,66 +15,59 @@ var error = {
 const USERS_PER_PAGE = 10;
 const ADMIN_PASSWORD = 'q3e5t7u';
 
-/* GET /Users listing. */
-router.get('/', function(req, res, next) {
-    User.find(function (err, Users) {
-        if (err) return next(err);
-        res.json(Users);
-    });
-});
+router.get('/getUsers', function(req, res, next) {
+    // user's country or user's current location city
+	let destination = req.user?req.user.country:req.query.destination?req.query.destination:null;
+    let from = req.query.from; // searching for users from
+    let guests = req.query.guests?parseInt(req.query.guests):null;
+    let page = req.query.page?parseInt(req.query.page):0;
+    let when = req.query.when;
+    let params = {};
+    let or = [];
 
-
-router.get('/get-user-by-travelingDest', function(req, res, next) {
-	var destination = req.query.dest.split('-')[0];
-	var from = req.query.from;
-	var guests = req.query.guests?parseInt(req.query.guests):null;
-	var page = parseInt(req.query.page);
-    if(from){
-		var params = {};
+    geocoder.geocode(from).then((geo) =>{
         setRequiredParams(params);
-        if(req.query.guests){
+        if(guests){
             params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
         }
-		if(req.query.dest && req.query.dest != 'undefined'){
-			params.travelingDest = {$regex: destination, $options: 'i'};
-		}
-		if(from.toLowerCase() != 'anywhere'){
-			params.city = {$regex: from, $options: 'i'};
-		}
-		if(req.user){
-		    if(req.user.facebookId){
-                params.facebookId = {"$ne": req.user.facebookId};
+        // if users' country was specified, find only users traveling to the same country
+        if(destination){
+            // if searching by user's current location then find user's by city
+            if(req.query.destination){
+                or.push({"travelingInformation.destination.city": {$regex: destination, $options: 'i'}});
             }
-            if(req.user.googleId){
-                params.googleId = {"$ne": req.user.googleId};
+            else{
+                or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
             }
+            or.push({"travelingInformation.destination": null});
+        }
+        // if no user is logged in or country is not filled, find all users traveling
+        else{
+            or.push({"travelingInformation.0": {$exists:true}});
+        }
+        // or who allowed to view home
+        or.push({allowViewHome: true});
+        params["$or"] = or;
+
+        if(geo){
+            params.country = {$regex: geo.country, $options: 'i'};
+        }
+        if(req.user){
+            params._id = {"$ne": req.user._id};
         }
 
-		User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
-			if (err){
-				error.message = "error finding users";
-				res.json(error);
-			}
-			else{
-                var filterdUsers = filterUsers(req, users, req.query);
-                var length = filterdUsers.length;
-                // return the users according to the given page number
-                console.log((page + 1) * USERS_PER_PAGE);
-                filterdUsers.splice((page + 1) * USERS_PER_PAGE);
-                filterdUsers.splice(0, page * USERS_PER_PAGE);
-                res.json({users: filterdUsers, total: length, page: page});
-            }
-		});
-    }
-    else{
-        User.find({travelingDest: {$regex: destination, $options: 'i'}}, Data.getVisibleUserData().accessible, function (err, users) {
+        User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
             if (err){
                 error.message = "error finding users";
                 res.json(error);
             }
-            res.json(getRandomUsers(users));
+            else{
+                let sortedUsers = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
+                let length = sortedUsers.length;
+                res.json({users: getPage(sortedUsers, page), total: length, page: page});
+            }
         });
-    }
+    });
 });
 
 router.get('/get-all-users', function(req, res, next) {
@@ -102,9 +98,9 @@ router.get('/get-all-users-admin', function(req, res, next) {
 router.get('/get-featured-users', function(req, res, next) {
     var params = {};
     setRequiredParams(params);
-    params = {rating: {$gt: 4}, traveling:true};
+    params = {featured: true};
     if(req.user){
-        params._id = {"$not": req.userId};
+        params._id = {"$ne": req.user._id};
     }
     User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
         .exec(function (err, users) {
@@ -292,13 +288,18 @@ function compareDestinations(userDestination, destination){
 function setRequiredParams(params){
     //required for all users to appear in search
     params.address = {$ne: ''}; // address is set
-    params['photos.2'] = {$exists: true};// at least 3 photos
+    params['photos.0'] = {$exists: true};// at least 1 photo
     params['apptInfo.rooms'] = {$exists: true}; // number of rooms set
     params['apptInfo.beds'] = {$exists: true};// number of beds set
     params['apptInfo.baths'] = {$exists: true};// number of baths set
     params['apptInfo.roomType'] = {$exists: true};// room type set
     params['apptInfo.title'] = {$ne: ''}; // home title set
-    params['$or'] = [{'travelingInfo.0':{$exists:true}},{allowViewHome:true}];// either traveling or allowed to view home
+}
+
+function getPage(users, pageNum){
+    users.splice((pageNum + 1) * USERS_PER_PAGE);
+    users.splice(0, pageNum * USERS_PER_PAGE);
+    return users;
 }
 
 module.exports = router;

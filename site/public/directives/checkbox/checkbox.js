@@ -5,7 +5,8 @@ swapsApp.directive('checkbox', function() {
         scope: {
             items: '=',
             model: '=',
-            readonly: '='
+            readonly: '=',
+            hideNotIncluded: '=',
         },
         templateUrl: '../../directives/checkbox/checkbox.html'
     }

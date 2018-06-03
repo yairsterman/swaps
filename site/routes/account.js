@@ -1,40 +1,34 @@
-var URLSafeBase64 = require('urlsafe-base64');
-var sha1 = require('sha1');
+let URLSafeBase64 = require('urlsafe-base64');
+let sha1 = require('sha1');
 //use to delete photos from cloudinary
-var cloudinary = require('cloudinary');
+let cloudinary = require('cloudinary');
 
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var User = require('../models/User.js');
-var Request = require('../models/Request.js');
-var path = require('path');
-var fs = require('fs');
-var Q = require('q');
-var Data = require('../user_data/data.js');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let User = require('../models/User.js');
+let Request = require('../models/Request.js');
+let path = require('path');
+let fs = require('fs');
+let Q = require('q');
+let Data = require('../user_data/data.js');
+let config = require('../config');
 
-var multer = require('multer');
-var upload = multer({dest: 'uploads/', limits: {files: 8}});
+let multer = require('multer');
+let upload = multer({dest: 'uploads/', limits: {files: 8}});
 
-var NodeGeocoder = require('node-geocoder');
+let geocoder = require('../services/geocoderService');
+let uniqid = require('uniqid');
+let moment = require('moment');
 
 cloudinary.config({ 
-  cloud_name: 'swaps', 
-  api_key: '141879543552186', 
-  api_secret: 'DzracCkoJ12usH_8xCe2sG8of3I' 
+  cloud_name: config.cloudinaryName,
+  api_key: config.cloudinaryKey,
+  api_secret: config.cloudinarySecret
 });
 
-var options = {
-    provider: 'google',
-
-    // Optional depending on the providers
-    httpAdapter: 'https', // Default
-    apiKey: 'AIzaSyBWmFeAXp3C9w8cwVHu6emXoQpmgJis9Hw', // for Mapquest, OpenCage, Google Premier
-    formatter: null         // 'gpx', 'string', ...
-};
-
-var geocoder = NodeGeocoder(options);
-
+const TRANSFORMATION = "w_1200,h_720,c_limit";
+const PROFILE_TRANSFORMATION = 'w_200,h_200,c_limit';
 
 // const siteUrl = "https://swapshome.com/";
 const siteUrl = "http://localhost:3000/";
@@ -83,11 +77,11 @@ router.post('/edit-profile', function (req, res, next) {
 });
 
 router.post('/edit-listing', function (req, res, next) {
-    var id = req.user._id;
-    var address = req.body.address;
-    var apptInfo = req.body.apptInfo;
-    var deposit = req.body.deposit;
-    var location = {};
+    let id = req.user._id;
+    let address = req.body.address;
+    let apptInfo = req.body.apptInfo;
+    let deposit = req.body.deposit;
+    let location = {};
 
     if (!address) {
         User.update({_id: id}, {$set: {apptInfo: apptInfo, deposit: deposit}},
@@ -112,18 +106,19 @@ router.post('/edit-listing', function (req, res, next) {
     else {
         geocoder.geocode(address)
             .then(function (geo) {
-                location.lat = geo[0].latitude.toFixed(3);
-                location.long = geo[0].longitude.toFixed(3);
-                var country = geo[0].country;
-                var city = geo[0].city;
+                location = geo.location;
+                let country = geo.country;
+                let city = geo.city;
+                let region = geo.region;
                 if (!city) {
-                    city = geo[0].administrativeLevels.level1long;
+                    city = geo.region;
                 }
                 User.update({_id: id}, {
                         $set: {
                             location: location,
                             country: country,
                             city: city,
+                            region: region,
                             address: address,
                             apptInfo: apptInfo,
                             deposit: deposit
@@ -155,200 +150,99 @@ router.post('/edit-listing', function (req, res, next) {
 });
 
 router.post('/add-travel-info', function (req, res, next) {
-    var id = req.user._id;
-    var info = req.body.info;
-    var where = info.destination ? info.destination.split(',')[0] : null;
-    var guests = info.guests;
-    var dates = info.when ? info.when.split('-') : null;
-    var departure = dates ? Date.parse(dates[0].trim()) : null;
-    var returnDate = dates ? Date.parse(dates[1].trim()) : null;
-    var newInfo = {
-        destination: where,
-        departure: departure,
-        returnDate: returnDate,
-        dates: info.dates,
-        guests: guests
-    };
-    console.log(newInfo);
-    User.findOne({_id: req.user._id}, function (err, user) {
-        if (err) {
-            error.message = err;
-            res.json(error);
-        }
-        else {
-            var travelingInfo = user.travelingInfo;
-            var travelingDest = user.travelingDest;
-            if (travelingInfo.length == 0) {
-                newInfo._id = 1;
-            }
-            else {
-                newInfo._id = travelingInfo[travelingInfo.length - 1]._id + 1;
-            }
-            travelingInfo.push(newInfo);
-            travelingDest.push(where);
-            User.update({_id: id}, {
-                $set: {
-                    travelingInfo: travelingInfo,
-                    travelingDest: travelingDest,
-                    traveling: true
+    let id = req.user._id;
+    let info = req.body.info;
+    let where = info.fullDestination;
+    let guests = info.guests;
+    let dates = info.when ? info.when.split('-') : null;
+    let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
+    let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
+
+    geocoder.geocode(where).then(function (geo) {
+        let newInfo = {
+            fullDestination: where,
+            destination: geo? geo: null,
+            departure: departure,
+            returnDate: returnDate,
+            dates: departure && returnDate?`${moment.utc(departure).format('MMM DD')} - ${moment.utc(returnDate).format('MMM DD')}`: null,
+            guests: guests,
+        };
+        User.findOneAndUpdate({_id: id}, {$push: {travelingInformation: newInfo}}, {new: true, projection: Data.getVisibleUserData().restricted})
+            .then(function (user) {
+                if (!user) {
+                    error.message = 'No user found';
+                    return res.json(error);
                 }
-            }, function (err, updated) {
-                if (err) {
-                    error.message = err;
-                    res.json(error);
-                }
-                else {
-                    User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                        if (err) {
-                            error.message = err;
-                            res.json(error);
-                        }
-                        else {
-                            res.json(user);
-                        }
-                    });
-                }
+                res.json(user);
             });
-        }
     });
 });
 
 router.post('/update-travel-info', function (req, res, next) {
     if (!req.user.id || !req.body.info) {
         error.message = 'No travel information found';
-        res.json(error);
+        return res.json(error);
     }
-    var id = req.user.id;
-    var info = req.body.info;
-    var travelId = info._id;
-    var where = info.destination ? info.destination.split(',')[0] : null;
-    var guests = info.guests;
-    var dates = info.when ? info.when.split('-') : info.dates ? info.dates : undefined;
-    var departure = dates ? Date.parse(dates[0].trim()) : undefined;
-    var returnDate = dates ? Date.parse(dates[1].trim()) : undefined;
-    var newInfo = {
-        destination: where,
-        departure: departure,
-        returnDate: returnDate,
-        dates: dates ? info.dates : undefined,
-        guests: guests,
-        _id: travelId
-    };
-    console.log(newInfo);
-    User.findOne({_id: id}, function (err, user) {
-        if (err) {
-            error.message = err;
-            res.json(error);
+    let id = req.user.id;
+    let info = req.body.info;
+    let travelId = info._id;
+    let where = info.fullDestination;
+    let guests = info.guests;
+    let removeDates = info.removeDates;
+    let dates = info.when ? info.when.split('-') : null;
+    let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
+    let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
+
+    geocoder.geocode(where).then(function (geo) {
+        let updatedInfo = {};
+        if(where){
+            updatedInfo['travelingInformation.$.fullDestination'] = where;
+            updatedInfo['travelingInformation.$.destination'] = geo;
         }
-        else {
-            var travelingInfo = user.travelingInfo;
-            var travelingDest = user.travelingDest;
-            var index;
-            for (var i = 0; i < travelingInfo.length; i++) {
-                if (travelingInfo[i]._id == travelId) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1) {
-                error.message = 'No travel information found';
-                res.json(error);
-            }
-            else {
-                if (travelingInfo[index].destination != where) {
-                    if (travelingDest.indexOf(travelingInfo[index].destination) != -1) {
-                        travelingDest.splice(travelingDest.indexOf(travelingInfo[index].destination), 1);
-                        travelingDest.push(where);
-                    }
-                }
-                travelingInfo[index] = newInfo;
-                User.update({_id: id}, {
-                    $set: {
-                        travelingInfo: travelingInfo,
-                        travelingDest: travelingDest,
-                        traveling: true
-                    }
-                }, function (err, updated) {
-                    if (err) {
-                        error.message = err;
-                        res.json(error);
-                    }
-                    else {
-                        User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                            if (err) {
-                                error.message = err;
-                                res.json(error);
-                            }
-                            else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                });
-            }
+        if(guests)
+            updatedInfo['travelingInformation.$.guests'] = guests;
+        if(dates){
+            updatedInfo['travelingInformation.$.departure'] = departure;
+            updatedInfo['travelingInformation.$.returnDate'] = returnDate;
+            updatedInfo['travelingInformation.$.dates'] = `${moment(departure).utc().format('MMM DD')} - ${moment(returnDate).utc().format('MMM DD')}`;
         }
+        if(removeDates){
+            updatedInfo['travelingInformation.$.dates'] = null;
+            updatedInfo['travelingInformation.$.departure'] = null;
+            updatedInfo['travelingInformation.$.returnDate'] = null;
+        }
+        if(where == ''){
+            updatedInfo['travelingInformation.$.fullDestination'] = null;
+            updatedInfo['travelingInformation.$.destination'] = null;
+        }
+        User.findOneAndUpdate({'travelingInformation._id': travelId}, {$set: updatedInfo}, {new: true, projection: Data.getVisibleUserData().restricted})
+            .then(function (user) {
+                if (!user) {
+                    error.message = 'No user found';
+                    return res.json(error);
+                }
+                res.json(user);
+            });
     });
 });
 
 router.post('/remove-travel-info', function (req, res, next) {
-    if (!req.user.id || !req.body.info) {
+    if (!req.user.id || !req.body.id) {
         error.message = 'No travel information found';
         res.json(error);
         res.end();
     }
-    var id = req.user.id;
-    var info = req.body.info;
-    var travelId = info._id;
-    User.findOne({_id: id}, function (err, user) {
-        if (err) {
-            error.message = err;
-            res.json(error);
-        }
-        else {
-            var travelingInfo = user.travelingInfo;
-            var travelingDest = user.travelingDest;
-            var index;
-            for (var i = 0; i < travelingInfo.length; i++) {
-                if (travelingInfo[i]._id == travelId) {
-                    index = i;
-                    break;
-                }
+    let id = req.user.id;
+    let travelId = req.body.id;
+
+    User.findOneAndUpdate({'_id': id}, {$pull: {travelingInformation:{_id: travelId}}}, {new: true, projection: Data.getVisibleUserData().restricted})
+        .then(function (user) {
+            if (!user) {
+                error.message = 'No user found';
+                return res.json(error);
             }
-            if (index == -1) {
-                error.message = 'No travel information found';
-                res.json(error);
-            }
-            else {
-                if (travelingDest.indexOf(travelingInfo[index].destination) != -1) {
-                    travelingDest.splice(travelingDest.indexOf(travelingInfo[index].destination), 1);
-                }
-                travelingInfo.splice(index,1);
-                User.update({_id: id}, {
-                    $set: {
-                        travelingInfo: travelingInfo,
-                        travelingDest: travelingDest,
-                        traveling: (travelingInfo.length > 0)
-                    }
-                }, function (err, updated) {
-                    if (err) {
-                        error.message = err;
-                        res.json(error);
-                    }
-                    else {
-                        User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                            if (err) {
-                                error.message = err;
-                                res.json(error);
-                            }
-                            else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                });
-            }
-        }
-    });
+            res.json(user);
+        });
 });
 
 router.post('/delete-photo', function (req, res, next) {
@@ -442,6 +336,46 @@ router.post('/uploadCompleted', function (req, res, next) {
 	});
 });
 
+router.post('/profileUploadCompleted', function (req, res, next) {
+    let user = req.user;
+    let id = req.user.id;
+    // only google user's can change profile pic
+    if(req.user.facebookId){
+        error.message = 'Not Authorized to change profile picture';
+        res.json(error);
+        return;
+    }
+    cloudinary.v2.api.resources_by_ids([req.body.public_id], function(err, result) {
+        if(err)
+        {
+            error.message = 'could not verify picture in the server';
+            res.json(error);
+            return;
+        }
+        if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
+        {
+            User.update({_id: id}, {image: result.resources[0].secure_url})
+                .then(function (updated) {
+                    if (!updated.ok) {
+                        error.message = 'Failed to update photo';
+                        throw (error);
+                    } else {
+                        return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
+                    }
+                }).then(function(user) {
+                res.json(user);
+            },function(err){
+                res.json(error);
+            });
+        }
+        else
+        {
+            error.message = 'picture does not exist on the server';
+            res.json(error);
+        }
+    });
+});
+
 router.get('/get-upload-token', function (req, res, next) {
 	
     if(req.user.photos.length >= 8) {
@@ -451,7 +385,7 @@ router.get('/get-upload-token', function (req, res, next) {
         res.json(error);
 	}
 	else {
-		let eager = "eager=w_1080,h_720,c_crop"// should be changed to whatever resolution we want
+		let transformation = `transformation=${TRANSFORMATION}`;// should be changed to whatever resolution we want
 		// public id is in the folder named <userID> and file name is SHA1 of the timestamp
 		// (just using it to generate a random name for each photo
 		let timestamp = Math.floor(Date.now() * Math.random());
@@ -461,12 +395,12 @@ router.get('/get-upload-token', function (req, res, next) {
 		else
 			server_path = 'qwe/' + URLSafeBase64.encode(sha1(timestamp));
 		let public_id = "public_id=" + server_path;
-		secret = "DzracCkoJ12usH_8xCe2sG8of3I";
+		let secret = config.cloudinarySecret;
 		//the token is valid for 1 hour from <timestamp> if we want to decrease this time
 		// we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
 		// before put it in <ts> 
 		let ts = "timestamp=" + timestamp;
-		let to_sign = ([eager, public_id, ts]).join("&");
+		let to_sign = ([public_id, ts, transformation]).join("&");
 		let token = URLSafeBase64.encode(sha1(to_sign + secret));
 		if(req.user)
 			console.log('generate token for user: ' + req.user.id + ' token: ' + token) 
@@ -475,11 +409,36 @@ router.get('/get-upload-token', function (req, res, next) {
 		res.send( {
 			public_id: server_path,
 			timestamp: timestamp,
-			eager: "w_1080,h_720,c_crop",
+            transformation: TRANSFORMATION,
 			signature: token,
-			api_key: "141879543552186",
+			api_key: config.cloudinaryKey,
 		});
 	}
+});
+
+router.get('/get-profile-upload-token', function (req, res, next) {
+
+    // public id is in the folder named <userID> and file name profile
+    let timestamp = Math.floor(Date.now() * Math.random());
+    let server_path = '' + req.user.id + '/profile';
+    let transformation = `transformation=${PROFILE_TRANSFORMATION}`;// should be changed to whatever resolution we want
+
+    let public_id = "public_id=" + server_path;
+    let secret = config.cloudinarySecret;
+    //the token is valid for 1 hour from <timestamp> if we want to decrease this time
+    // we need to subtract (60000 - <time in minutes multiply by 1000>) from <timestamp>
+    // before put it in <ts>
+    let ts = "timestamp=" + timestamp;
+    let to_sign = ([public_id, ts, transformation]).join("&");
+    let token = URLSafeBase64.encode(sha1(to_sign + secret));
+
+    res.send( {
+        public_id: server_path,
+        timestamp: timestamp,
+        signature: token,
+        transformation: PROFILE_TRANSFORMATION,
+        api_key: config.cloudinaryKey,
+    });
 });
 
 router.post('/upload', upload.array('photos', 8), function (req, res) {

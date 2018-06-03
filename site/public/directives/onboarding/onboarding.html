@@ -92,6 +92,25 @@
         </div>
         <div class="user-info address" ng-if="phase == 'about'">
             <div class="">
+                <div  ng-if="user.googleId && !user.facebookId">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-12 form-group">
+                            <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="Choose a picture of yourself" data-placement="bottom" tooltip>Profile Picture:
+                            </label>
+                            <div class="upload-profile-image" style="background-image: url({{user.image}})">
+                                <input class="cloudinary-fileupload profile-upload" id="profile-pic" data-ng-init="initUploadProfileButton()" data-cloudinary-field="image_id"
+                                       data-max-chunk-size="52428800" data-update-path="google.com"
+                                       data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" name="profile" type="file" />
+                                <label for="file" class="choose-file"></label>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-xs-12 form-group">
+                            <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="This will be used to show your age" data-placement="right" tooltip>Birthday:
+                            </label>
+                            <input class="datepicker form-control" name="birthday" ng-model="user.birthday" birthday="user.birthday" birthday-picker>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
                         <span class="explanation "></span>
@@ -110,19 +129,19 @@
                     <label class="control-label listing-label" for="deposit">Payment Plan:<br>
                         <span class="explanation"></span>
                     </label>
-                    <div class="" tooltip-placement="top-left" uib-tooltip-template="'../../pages/components/payment-plans.html'">
+                    <div class="payment-plan" tooltip-placement="top-left" uib-tooltip-template="'../../pages/components/payment-plans.html'">
                         <select class="form-control" id="deposit" ng-model="user.deposit"
                                 ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
                             {{plan.displayName}} - ${{plan.value}} per night
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="plan-explanation">
-                        This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of
-                        damages and cancellations.
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<div class="plan-explanation">-->
+                        <!--This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of-->
+                        <!--damages and cancellations.-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="user-info address" ng-if="phase == 'home'">

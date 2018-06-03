@@ -123,34 +123,26 @@ swapper-home{
         height: 28vw;
       }
       .apt-title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 500;
+        padding: 2px 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         color: #484848;
-        @media @mobile {
-          font-size: 14px;
-          height: 18px;
-        }
       }
       .apt-sub-title {
-        font-size: 12px;
+        font-size: 16px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        height: 14px;
         color: #616161;
-        @media @mobile {
-          font-size: 12px;
-          height: 16px;
-        }
       }
     }
     .rating {
       display: flex;
       align-items: center;
-      font-size: 12px;
+      font-size: 14px;
       height: 15px;
       margin-top: 2px;
       .number-reviews {
@@ -162,7 +154,8 @@ swapper-home{
     }
     .basics {
       display: flex;
-      padding-top: 0.8vw;
+      justify-content: space-between;
+      padding-top: 0.6vw;
       color: #616161;
       @media @desktop {
         padding-top: 0.4vw;
@@ -175,8 +168,8 @@ swapper-home{
 
       }
       .tiny-text {
-        padding-right: 15px;
-        font-size: 12px;
+        padding-right: 10px;
+        font-size: 14px;
         display: flex;
         align-items: center;
         .icon{
@@ -184,10 +177,12 @@ swapper-home{
           &.icon-door{
             margin-right: 0;
           }
+          @media @mobile {
+            margin-right: 5px;
+          }
         }
         @media @mobile {
           margin-top: 0;
-          font-size: 9px;
         }
       }
     }

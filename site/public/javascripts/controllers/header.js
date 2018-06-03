@@ -52,13 +52,13 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     $scope.searchSwap = function(e){
         e.preventDefault();
         var where = $rootScope.search.where;
-        if(!where || where == ''){
-            where	= 'Anywhere';
-        }
-        else{
-            where = where.split(',')[0]
-        }
-        $scope.go('travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
+        // if(!where || where == ''){
+        //     where	= 'Anywhere';
+        // }
+        // else{
+        //     where = where.split(',')[0]
+        // }
+        $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
     }
 
 	$scope.openDate = function(){
@@ -138,7 +138,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
                     //find country name
                     for (var i=0; i<results[0].address_components.length; i++) {
                         for (var b=0;b<results[0].address_components[i].types.length;b++) {
-                            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                            //there are different types that might hold a city admin_area_lvl_1 usually does in some cases looking for sublocality type will be more appropriate
                             if (results[0].address_components[i].types[b] == 'locality' || results[0].address_components[i].types[b] == "administrative_area_level_1") {
                                 //this is the object you are looking for
                                 $rootScope.userCity = results[0].address_components[i].short_name;

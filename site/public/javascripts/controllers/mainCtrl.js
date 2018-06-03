@@ -53,7 +53,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
             $scope.user.apptInfo.about && $scope.user.apptInfo.about !== '' &&
             $scope.user.occupation && $scope.user.occupation !== '' &&
             $scope.user.aboutMe && $scope.user.aboutMe !== '' &&
-            $scope.user.deposit;
+            ($scope.user.deposit || $scope.user.deposit === 0);
     }
 
     $rootScope.profileComplete = $scope.profileComplete;
