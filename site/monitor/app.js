@@ -1,10 +1,10 @@
-const config = require('./../config');
-const Requests = require('./../models/Request');
-const Transaction = require('./../models/Transaction');
-const User = require('./../models/User');
-const mongoose = require('mongoose');
-const email = require('./../services/email');
-const emailMessages = require('./../services/email-messages');
+let config = require('./../config');
+let Requests = require('./../models/Request');
+let Transaction = require('./../models/Transaction');
+let User = require('./../models/User');
+let mongoose = require('mongoose');
+let email = require('./../services/email');
+let emailMessages = require('./../services/email-messages');
 
 mongoose.Promise = global.Promise;
 
@@ -15,7 +15,7 @@ mongoose.connect(config.mongoUrl).then(function () {
 });
 
 
-var schedule = require('node-schedule');
+let schedule = require('node-schedule');
 
 
 //  # ┌────────────── second (optional)  0-59
@@ -34,15 +34,15 @@ schedule.scheduleJob('* 0 * * *', function () {
     User.find({}, function (err, users) {
         if (err) return err;
         users.forEach(function (user) {
-            var i = user.travelingInfo.length - 1;
+            let i = user.travelingInfo.length - 1;
             while (i >= 0) {
                 if (new Date(user.travelingInfo[i].returnDate) < Date.now()) {
                     user.travelingInfo.splice(i, 1);
                 }
                 else if (new Date(user.travelingInfo[i].departure) < Date.now()) {
                     user.travelingInfo[i].departure = Date.now();
-                    var part2 = user.travelingInfo[i].dates.substring(user.travelingInfo[i].dates.indexOf("-"));
-                    var part1 = getMonthAndDayNow();
+                    let part2 = user.travelingInfo[i].dates.substring(user.travelingInfo[i].dates.indexOf("-"));
+                    let part1 = getMonthAndDayNow();
                     user.travelingInfo[i].dates = part1 + part2;
                 }
                 i -= 1;
@@ -51,6 +51,15 @@ schedule.scheduleJob('* 0 * * *', function () {
         });
     });
 });
+
+//change to moment
+//correct traveling info
+//save only changed users
+//sepparate schedule and functions
+//change all dates to moment utc
+//
+
+
 
 //import what already exists
 const requestStatus = {
@@ -146,11 +155,11 @@ const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 // a and b are javascript Date objects
 function dateDiffInDays(a, b) {
-    var date1 = new Date(a);
-    var date2 = new Date(b);
+    let date1 = new Date(a);
+    let date2 = new Date(b);
     // Discard the time and time-zone information.
-    var utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    var utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    let utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    let utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
 
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
@@ -159,7 +168,7 @@ function dateDiffInDays(a, b) {
 const monthNames = ["Jan", "Feb", "Mar", "April", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function getMonthAndDayNow() {
-    var date = new Date(Date.now());
+    let date = new Date(Date.now());
     return monthNames[date.getMonth()] + " " + date.getDate() + " ";
 }
 
