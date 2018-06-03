@@ -15,10 +15,6 @@ $routeProvider
         templateUrl : '/pages/account.html',
         controller  : 'accountController'
     })
-    .when('/travelers', {
-        templateUrl : '/pages/travelers.html',
-        controller  : 'travelersController'
-    })
     .when('/privacy-policy', {
         templateUrl : '/pages/privacy.html',
         controller  : 'mainController'
@@ -39,7 +35,7 @@ $routeProvider
         templateUrl : '/pages/how-it-works.html',
         controller  : 'mainController'
     })
-    .when('/travelers/:city', {
+    .when('/travelers/:city?', {
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
     });

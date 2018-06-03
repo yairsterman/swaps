@@ -16,6 +16,7 @@ function swapsController($scope, $rootScope, $filter, AccountService){
     };
     $scope.user = $rootScope.user;
     $scope.data = $rootScope.data;
+    $scope.swaps = $rootScope.user.travelingInformation;
 
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
@@ -36,29 +37,6 @@ function swapsController($scope, $rootScope, $filter, AccountService){
         });
     }
 
-    getMinDate(new Date());
-
-    $scope.openDate = function(name, swap){
-        $('input[name=' + name + ']').daterangepicker({
-            autoApply: true,
-            opens: 'center',
-            locale: {
-                format: 'MMM DD'
-            },
-            isInvalidDate: function(arg){
-                return isInvalidDate(arg);
-            },
-            minDate: minDate,
-            startDate: minDate,
-            endDate: minDate,
-        });
-        $('input[name=' + name + ']').on('apply.daterangepicker', function(ev, picker) {
-            if(!checkClearInput(name, picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))) {
-                swap.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
-            }
-        });
-    }
-
     $scope.edit = function(index, swap){
         $scope.currentSwap = angular.copy(swap);
         $scope.editing = true;
@@ -71,7 +49,7 @@ function swapsController($scope, $rootScope, $filter, AccountService){
         swap.departure = $scope.currentSwap.departure;
         swap.returnDate = $scope.currentSwap.returnDate;
         swap.guests = $scope.currentSwap.guests;
-        swap._id = $scope.currentSwap._id;
+        $scope.editedSwap = {};
         $scope.editing = false;
         $scope.editingField = -1;
     }
@@ -93,15 +71,26 @@ function swapsController($scope, $rootScope, $filter, AccountService){
 
     $scope.update = function(swap){
         $scope.saving = true;
-        AccountService.updateTravelInfo(swap).then(function(data){
+        var toEdit = {};
+        if(swap.fullDestination != $scope.currentSwap.fullDestination){
+            toEdit.fullDestination = swap.fullDestination;
+        }
+        if(swap.guests != $scope.currentSwap.guests)
+            toEdit.guests = swap.guests;
+        if(swap.when != $scope.currentSwap.when)
+            toEdit.when = swap.when;
+        toEdit._id = swap._id;
+        toEdit.removeDates = swap.removeDates;
+        AccountService.updateTravelInfo(toEdit).then(function(data){
             $rootScope.user = data;
             updateUser();
         });
     }
 
+
     $scope.removeTravelInfo = function(swap){
         $scope.saving = true;
-        AccountService.removeTravelInfo(swap).then(function(data){
+        AccountService.removeTravelInfo(swap._id).then(function(data){
             $rootScope.user = data;
             updateUser();
             // showAlert(SUCCESS, false);
@@ -113,33 +102,23 @@ function swapsController($scope, $rootScope, $filter, AccountService){
     $scope.removeDates = function(swap){
         swap.dates = undefined;
         swap.when = undefined;
+        swap.removeDates = true;
     };
 
     $scope.close = function(){
-        $dismiss;
+        $scope.$dismiss();
     };
 
     $scope.orderByDeparture = function(swap){
-        return -(swap.departure);
+        return (swap.departure);
     };
 
     function updateUser(){
         $scope.user = $rootScope.user;
-        $scope.swaps = $scope.user.travelingInfo;
+        $scope.swaps = $scope.user.travelingInformation;
         $scope.editing = false;
         $scope.saving = false;
         $scope.editingField = -1;
-    }
-
-    function getMinDate(date){
-        date._d = date;
-        if(isInvalidDate(date)){
-            return getMinDate(addDays(date, 1));
-        }
-        else{
-            minDate = $filter('date')(date.getTime(), "MMM dd");
-            return minDate;
-        }
     }
 
     function getConfirmedDates(startDate, stopDate) {
@@ -156,45 +135,6 @@ function swapsController($scope, $rootScope, $filter, AccountService){
     function addDays(date, days) {
         date.setDate(date.getDate() + days);
         return date;
-    }
-
-    function isInvalidDate(date){
-        var thisMonth = date._d.getMonth()+1;   // Months are 0 based
-        var thisDate = date._d.getDate();
-        var thisYear = date._d.getYear()+1900;   // Years are 1900 based
-
-        var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
-        if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
-            return true;
-        }
-    }
-
-    function checkClearInput(name, startDate, endDate){
-        // Compare the dates again.
-        var clearInput = false;
-        startDate = new Date(startDate).getTime();
-        endDate = new Date(endDate).getTime();
-        for(var i = 0; i < confirmedDates.length; i++){
-            var confirmedDate = new Date(confirmedDates[i]).getTime()
-            if(startDate < confirmedDate && endDate > confirmedDate){
-                clearInput = true;
-                break;
-            }
-        }
-
-        // If a disabled date is in between the bounds, clear the range.
-        if(clearInput){
-
-            // To clear selected range (on the calendar).
-            var currentDate = new Date(startDate);
-            $('input[name=' + name + ']').data('daterangepicker').setStartDate(currentDate);
-            $('input[name=' + name + ']').data('daterangepicker').setEndDate(currentDate);
-
-            // To clear input field and keep calendar opened.
-            $('input[name=' + name + ']').focus();
-
-        }
-        return clearInput;
     }
 
 }

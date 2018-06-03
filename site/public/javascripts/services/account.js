@@ -60,9 +60,9 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     };
 
-    this.removeTravelInfo = function(info) {
+    this.removeTravelInfo = function(id) {
         var defer = $q.defer();
-        $http.post('account/remove-travel-info', {info: info}).then(function(data){
+        $http.post('account/remove-travel-info', {id: id}).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }
@@ -108,6 +108,21 @@ swapsApp.service('AccountService', function($http, $q){
 	this.getUploadToken = function() {
         var defer = $q.defer();
         $http.get('account/get-upload-token').then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
+    };
+
+    this.getProfileUploadToken = function() {
+        var defer = $q.defer();
+        $http.get('account/get-profile-upload-token').then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }
@@ -193,6 +208,21 @@ swapsApp.service('AccountService', function($http, $q){
     this.uploadCompleted = function(public_id) {
         var defer = $q.defer();
         $http.post('/account/uploadCompleted', public_id).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
+    }
+
+    this.profileUploadCompleted = function(public_id) {
+        var defer = $q.defer();
+        $http.post('/account/profileUploadCompleted', public_id).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }

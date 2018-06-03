@@ -44,13 +44,13 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.searchSwap = function(e){
         e.preventDefault();
         var where = $rootScope.search.where;
-        if(!where || where == ''){
-            where	= 'Anywhere';
-        }
-        else{
-            where = where.split(',')[0]
-        }
-        $scope.go('/travelers/' + where + '?dates=' + $rootScope.search.when + '&guests=' + $rootScope.search.guests);
+        // if(!where || where == ''){
+        //     where	= 'Anywhere';
+        // }
+        // else{
+        //     where = where.split(',')[0]
+        // }
+        $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
     }
 
     $scope.go = function(path){
@@ -96,48 +96,17 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             $scope.featured[key] = value.normal;
         });
 
-        if($rootScope.geolocationComplete || $rootScope.userCity){
-            if($rootScope.geolocationComplete && $rootScope.geolocationComplete.failed){
-                UsersService.getFeaturedUsers().then(function(data) {
-                    if(data.data.error){
-                        console.log("error");
-                        return;
-                    }
-                    $scope.travelers = data.data.users;
-                    $scope.swapperTitle = 'featured';
-                    if($scope.travelers.length < 3){
-                        UsersService.getNewUsers().then(function(data) {
-                            if(data.data.error){
-                                console.log("error");
-                            }
-                            else{
-                                $scope.travelers = data.data.users;
-                                $scope.swapperTitle = 'new';
-                            }
-                        });
-                    }
-                });
-            }
-            else{
-                UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
-                    if(data.error){
-                        console.log("error");
-                        return;
-                    }
-                    $scope.travelers = data.users;
-                    $scope.swapperTitle = 'city';
-                });
-            }
+        if(($rootScope.geolocationComplete && !$rootScope.geolocationComplete.failed) || $rootScope.userCity){
+            getUsers();
         }
         else{
-            UsersService.getNewUsers().then(function(data) {
-                if(data.data.error){
+            UsersService.getFeaturedUsers().then(function(data) {
+                if (data.data.error) {
                     console.log("error");
+                    return;
                 }
-                else{
-                    $scope.travelers = data.data.users;
-                    $scope.swapperTitle = 'new';
-                }
+                $scope.travelers = data.data.users;
+                $scope.swapperTitle = 'new';
             });
         }
     }
@@ -154,28 +123,10 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                     return;
                 }
                 $scope.travelers = data.data.users;
-                if($scope.travelers.length < 3){
-                    $scope.swapperTitle = 'featured';
-                    UsersService.getNewUsers().then(function(data) {
-                        if(data.data.error){
-                            console.log("error");
-                            return;
-                        }
-                        $scope.travelers = data.data.users;
-                        $scope.swapperTitle = 'new';
-                    });
-                }
             });
         }
         else{
-            UsersService.getUserByTravelingDest($rootScope.userCity, 'Anywhere', 0,{}).then(function(data) {
-                if(data.error){
-                    console.log("error");
-                    return;
-                }
-                $scope.travelers = data.users;
-                $scope.swapperTitle = 'city';
-            });
+            getUsers();
         }
     });
 
@@ -201,6 +152,27 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                 }
             },
             scope:$scope
+        });
+    }
+
+    function getUsers(){
+        UsersService.getUsers({page:0, destination:$rootScope.userCity}).then(function(data) {
+            if(data.error){
+                console.log("error");
+                return;
+            }
+            $scope.travelers = data.users;
+            $scope.swapperTitle = 'city';
+            if($scope.travelers.length < 3){
+                UsersService.getFeaturedUsers().then(function(data) {
+                    if (data.data.error) {
+                        console.log("error");
+                        return;
+                    }
+                    $scope.travelers = data.data.users;
+                    $scope.swapperTitle = 'new';
+                });
+            }
         });
     }
 

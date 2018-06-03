@@ -3,14 +3,14 @@ swapsApp.directive('autocomplete', function() {
         require: 'ngModel',
         link: function(scope, element, attrs, model) {
             var options = {
-                types: attrs.city?['(cities)']:['address']
+                types: attrs.city?['(regions)']:['address']
             };
             var gPlace = new google.maps.places.Autocomplete(element[0], options);
 
             google.maps.event.addListener(gPlace, 'place_changed', function() {
                 scope.$apply(function() {
                     if(attrs.city){
-                        model.$setViewValue(gPlace.getPlace().name);
+                        model.$setViewValue(gPlace.getPlace().formatted_address);
                     }
                     else{
                         if(gPlace.getPlace().formatted_address){

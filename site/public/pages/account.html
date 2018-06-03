@@ -30,7 +30,13 @@
                 <div class="edit-profile" ng-if="activeTab == 'edit'">
                     <div class="row permanent-info">
                         <div class="col-sm-3">
-                            <div class="pic" style="background-image:url('{{user.image}}')">
+                            <div class="pic" style="background-image:url('{{user.image}}')" ng-if="user.facebookId">
+                            </div>
+                            <div class="upload-profile-image pic" style="background-image: url({{user.image}})" ng-if="user.googleId && !user.facebookId" data-toggle="tooltip" title="Upload profile photo" data-placement="top" tooltip>
+                                <input class="cloudinary-fileupload profile-upload" id="profile-pic" data-ng-init="initUploadProfileButton()" data-cloudinary-field="image_id"
+                                       data-max-chunk-size="52428800" data-update-path="google.com"
+                                       data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" name="profile" type="file" />
+                                <label for="profile-pic" class="choose-file"></label>
                             </div>
                         </div>
                         <div class="col-sm-6">

@@ -16,7 +16,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     };
     $scope.canSendRequest = {};
     $scope.localeFormat = 'MMM DD';
-    $scope.modelFormat = 'MMMM DD, YYYY';
+    $scope.modelFormat = 'MM/DD/YYYY';
 
     $scope.mobileRequestOpen = false;
 

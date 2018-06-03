@@ -52,7 +52,7 @@ swapsApp.directive('datepicker', function() {
                     // so save the dates that are set and override the defaults
                     scope.currentDates = scope.swapDates.dates;
                 }
-                if(!scope.userCity || !scope.profile.travelingInfo || scope.profile.travelingInfo.length === 0){
+                if(!scope.userCity || !scope.profile.travelingInformation || scope.profile.travelingInformation.length === 0){
                     scope.notSwapping = true;
                     element.daterangepicker({
                         autoApply: true,
@@ -110,24 +110,24 @@ swapsApp.directive('datepicker', function() {
                 if(scope.user){
                     getUserConfirmedDates();
                 }
-                if(scope.userCity && scope.profile.travelingInfo && scope.profile.travelingInfo.length > 0){
-                    for(var i = 0; i < scope.profile.travelingInfo.length; i++){
-                        if(!scope.profile.travelingInfo[i].destination || scope.profile.travelingInfo[i].destination === scope.userCity){ // if cities match or user chose Anywhere as destination
-                            if(!scope.profile.travelingInfo[i].departure){ // if user has chosen anytime then open all dates
+                if(scope.userCity && scope.profile.travelingInformation && scope.profile.travelingInformation.length > 0){
+                    for(var i = 0; i < scope.profile.travelingInformation.length; i++){
+                        if(!scope.profile.travelingInformation[i].destination || (scope.profile.travelingInformation[i].destination && scope.profile.travelingInformation[i].destination.city == scope.userCity)){ // if cities match or user chose Anywhere as destination
+                            if(!scope.profile.travelingInformation[i].departure){ // if user has chosen anytime then open all dates
                                 openAllDates = true;
                                 break;
                             }
-                            if(minDate > scope.profile.travelingInfo[i].departure){ // find min date in travel info
-                                minDate = scope.profile.travelingInfo[i].departure;
+                            if(minDate > scope.profile.travelingInformation[i].departure){ // find min date in travel info
+                                minDate = scope.profile.travelingInformation[i].departure;
                                 if(minDate < today){
                                     minDate = today;
                                 }
                             }
-                            if(maxDate < scope.profile.travelingInfo[i].returnDate){// find max date in travel info
-                                maxDate = scope.profile.travelingInfo[i].returnDate
+                            if(maxDate < scope.profile.travelingInformation[i].returnDate){// find max date in travel info
+                                maxDate = scope.profile.travelingInformation[i].returnDate
                             }
                             // add all traveling dates to array
-                            travelingDates = travelingDates.concat(getDatesBetween(scope.profile.travelingInfo[i].departure, scope.profile.travelingInfo[i].returnDate));
+                            travelingDates = travelingDates.concat(getDatesBetween(scope.profile.travelingInformation[i].departure, scope.profile.travelingInformation[i].returnDate));
                         }
                     }
                 }

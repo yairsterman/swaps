@@ -28,10 +28,10 @@
                     <strong class="blue">Check in:</strong>
                 </div>
                 <div class="col-xs-8" ng-if="!confirmation">
-                    {{swap.from}}
+                    {{from | date: 'MMMM dd, yyyy '}}
                 </div>
                 <div class="col-xs-8" ng-if="confirmation">
-                    {{swap.from | date: 'MMM dd, yyyy '}}
+                    {{swap.from | date: 'MMMM dd, yyyy '}}
                 </div>
             </div>
             <div class="sub-title row">
@@ -39,10 +39,10 @@
                     <strong class="blue">Check out:</strong>
                 </div>
                 <div class="col-xs-8" ng-if="!confirmation">
-                    {{swap.to}}
+                    {{to | date: 'MMMM dd, yyyy '}}
                 </div>
                 <div class="col-xs-8" ng-if="confirmation">
-                    {{swap.to | date: 'MMM dd, yyyy '}}
+                    {{swap.to | date: 'MMMM dd, yyyy '}}
                 </div>
             </div>
             <div class="sub-title row" ng-if="!confirmation">
