@@ -87,7 +87,6 @@ router.get('/get-all-users-admin', function(req, res, next) {
         res.json(error);
         return;
     }
-    var params = {};
     User.find(params, Data.getVisibleUserData().accessible)
         .exec(function (err, users) {
             if (err) return next(err);

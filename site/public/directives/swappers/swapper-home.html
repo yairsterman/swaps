@@ -28,7 +28,11 @@
     <div class="profile-img" style="background-image: url('{{traveler.image}}')">
 
     </div>
-    <div class="favorite icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)">
+    <div class="favorite community">
+        <div class="icon icon-friends-small"></div>
+    </div>
+    <div class="favorite">
+        <div class="icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)"></div>
     </div>
     <!--CAROUSEL END-->
     <div class="user-info">

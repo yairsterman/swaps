@@ -28,7 +28,7 @@ function chargeRequest(token, userId, plan, guests, nights){
     let requestUrl = config.tranzilaRequestUrl;
     let perNight = Data.getSecurityDeposit()[plan].night; // how much to pay per night based on plan
     let amount = perNight * guests * nights; // pay for each guests per night
-
+    amount = 1;
     let tranmode = Data.getTransactionMode().regular;
 
     request.post({

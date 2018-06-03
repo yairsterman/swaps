@@ -97,15 +97,26 @@ swapper-home{
       position: absolute;
       top: 10px;
       left: 10px;
-      -webkit-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      transform: translateZ(0);
-      &:focus{
-        outline: none;
+      width: 40px;
+      height: 40px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      &.community{
+        left: initial;
+        right: 10px;
       }
-      &.pulse{
-        -webkit-animation: pulse 0.6s linear;
-        animation: pulse 0.6s linear;
+      .icon{
+        margin: 5px;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        &:focus{
+          outline: none;
+        }
+        &.pulse{
+          -webkit-animation: pulse 0.6s linear;
+          animation: pulse 0.6s linear;
+        }
       }
     }
     .user-info {
