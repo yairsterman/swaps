@@ -29,7 +29,7 @@ var schedule = require('node-schedule');
 //  # * * * * * *
 
 
-//at midnight run through all the users and if the returnDate of the travelingInfo is passed remove ut from the list
+//at midnight run through all the users and if the returnDate of the travelingInfo is passed remove it from the list
 schedule.scheduleJob('* 0 * * *', function () {
     User.find({}, function (err, users) {
         if (err) return err;
@@ -52,7 +52,7 @@ schedule.scheduleJob('* 0 * * *', function () {
     });
 });
 
-
+//import what already exists
 const requestStatus = {
     pending: 0,
     confirmed: 1,
@@ -89,11 +89,6 @@ schedule.scheduleJob('* 0 * * *', function () {
                 if (err) return err;
                 if (user.email) {
                     switch (diff) {
-                        case 26:
-                            console.log("2 6");
-                            // email.sendMail(user.email, 'fix this!!', emailMessages.confirmation(user));
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
-                            break;
                         case 7:
                             console.log("SEVEN");
                             email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
@@ -125,11 +120,6 @@ schedule.scheduleJob('* 0 * * *', function () {
                 if (err) return err;
                 if (user.email) {
                     switch (diff) {
-                        case 27:
-                            console.log("27");
-                            // email.sendMail(user.email, 'fix this!!', emailMessages.confirmation(user));
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.eran(user));
-                            break;
                         case 7:
                             console.log("SEVEN");
                             email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
