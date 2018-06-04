@@ -38,6 +38,10 @@ var error = {
     message: ''
 };
 
+router.post('/reauth', function (req, res, next) {
+    return
+});
+
 router.post('/edit-profile', function (req, res, next) {
     var id = req.user._id;
     var email = req.body.email;

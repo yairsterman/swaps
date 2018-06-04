@@ -22,13 +22,12 @@ let error = {
  * @param userId - id of user to save the transaction on
  * @param nights - nights of request in order to calculate payment
  */
-function chargeRequest(token, userId, plan, guests, nights){
+function chargeRequest(token, userId, payment){
 
     let dfr = Q.defer();
     let requestUrl = config.tranzilaRequestUrl;
-    let perNight = Data.getSecurityDeposit()[plan].night; // how much to pay per night based on plan
-    let amount = perNight * guests * nights; // pay for each guests per night
-    amount = 1;
+    let perNight = Data.getSecurityDeposit()[payment.plan].night; // how much to pay per night based on plan
+    let amount = perNight * payment.guests * payment.nights * payment.discount; // pay for each guests per night
     let tranmode = Data.getTransactionMode().regular;
 
     request.post({

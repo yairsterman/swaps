@@ -5,6 +5,7 @@ let User = require('../models/User.js');
 let Data = require('../user_data/data.js');
 let geocoder = require('../services/geocoderService');
 let UserSearch = require('../services/userSearch');
+let config = require('../config');
 
 
 let error = {
@@ -13,7 +14,6 @@ let error = {
 };
 
 const USERS_PER_PAGE = 10;
-const ADMIN_PASSWORD = 'q3e5t7u';
 
 router.get('/getUsers', function(req, res, next) {
     // user's country or user's current location city
@@ -56,7 +56,12 @@ router.get('/getUsers', function(req, res, next) {
             params._id = {"$ne": req.user._id};
         }
 
-        User.find(params, Data.getVisibleUserData().accessible, function (err, users) {
+        User.find(params, Data.getVisibleUserData().accessible)
+            .populate({
+                path: 'community',
+                select: 'name _id',
+            })
+            .exec(function (err, users) {
             if (err){
                 error.message = "error finding users";
                 res.json(error);
@@ -82,12 +87,16 @@ router.get('/get-all-users', function(req, res, next) {
 
 router.get('/get-all-users-admin', function(req, res, next) {
     var password = req.query.password;
-    if(password !== ADMIN_PASSWORD){
+    if(password !== config.ADMIN_PASSWORD){
         error.message = "No Access";
         res.json(error);
         return;
     }
     User.find(params, Data.getVisibleUserData().accessible)
+        .populate({
+            path: 'community',
+            select: 'name _id',
+        })
         .exec(function (err, users) {
             if (err) return next(err);
             res.json({users: users});
@@ -101,7 +110,12 @@ router.get('/get-featured-users', function(req, res, next) {
     if(req.user){
         params._id = {"$ne": req.user._id};
     }
-    User.find(params, Data.getVisibleUserData().accessible).limit(10).sort({rating: -1})
+    User.find(params, Data.getVisibleUserData().accessible)
+        .populate({
+            path: 'community',
+            select: 'name _id',
+        })
+        .limit(10).sort({rating: -1})
         .exec(function (err, users) {
             if (err) return next(err);
             res.json({users: users});
@@ -114,7 +128,11 @@ router.get('/get-new-users', function(req, res, next) {
     if(req.user){
         params['reviews.0'] = {$exists: false};
     }
-    User.find(params, Data.getVisibleUserData().accessible).limit(3)
+    User.find(params, Data.getVisibleUserData().accessible)
+        .populate({
+            path: 'community',
+            select: 'name _id',
+        }).limit(3)
         .exec(function (err, users) {
             if (err) return next(err);
             res.json({users: users});
@@ -128,20 +146,30 @@ router.get('/get-user', function(req, res, next) {
         return;
     }
     let id = req.user._id;
-    User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-        if (err) return next(err);
-        res.json(user);
-    });
+    User.findOne({_id: id}, Data.getVisibleUserData().restricted)
+        .populate({
+            path: 'community',
+            select: 'name _id',
+        })
+        .exec(function (err, user) {
+            if (err) return next(err);
+            res.json(user);
+        });
 });
 
 router.get('/get-profile', function(req, res, next) {
     var id = req.query.id;
 
-    User.findOne({_id:id}, Data.getVisibleUserData().accessible, function (err, user) {
-        if (err) return next(err);
-        console.log(user);
-        res.json(user);
-    });
+    User.findOne({_id:id}, Data.getVisibleUserData().accessible)
+        .populate({
+            path: 'community',
+            select: 'name _id',
+        })
+        .exec(function (err, user) {
+            if (err) return next(err);
+            console.log(user);
+            res.json(user);
+        });
 });
 
 //Get 8 random users who are currently traveling

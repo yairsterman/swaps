@@ -28,7 +28,8 @@
     <div class="profile-img" style="background-image: url('{{traveler.image}}')">
 
     </div>
-    <div class="favorite community">
+    <div class="favorite community" id="community" ng-if="$root.user.community  && $root.user.community._id && traveler.community && traveler.community._id == $root.user.community._id"
+    for="community" uib-tooltip="{{traveler.firstName}} is also a member of {{$root.user.community.name}}" tooltip-placement="top" tooltip>
         <div class="icon icon-friends-small"></div>
     </div>
     <div class="favorite">

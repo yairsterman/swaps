@@ -20,6 +20,7 @@ let message = require('./routes/message');
 let utils = require('./routes/utils');
 let transactions = require('./routes/transactions');
 let login = require('./routes/login');
+let community = require('./routes/community');
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use('/message', message);
 app.use('/utils', utils);
 app.use('/transactions', transactions);
 app.use('/auth', login);
+app.use('/community', community);
 app.use('/', index);
 
 app.use(passport.initialize());

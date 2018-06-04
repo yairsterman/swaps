@@ -415,13 +415,24 @@ function chargeUsers(params){
         let nights = request.nights;
         let plan = request.plan;
 
-        checkAvailability(user1, user2, request.checkin, request.checkout)
+        let payment = {
+            plan: plan,
+            guests: guests1,
+            nights: nights,
+        };
+
+        checkAvailability(user1.requests, user2.requests, request.checkin, request.checkout)
         .then(function() {
-            return transactionService.chargeRequest(tokenUser1, user1, plan, guests1, nights);
+            if(user1.community && user1.community.discount)
+                payment.discount = user1.community.discount;
+            return transactionService.chargeRequest(tokenUser1, user1, payment);
         })
         .then(function(transactionId){
             transactionUser1 = transactionId;
-            return transactionService.chargeRequest(tokenUser2, user2, plan, guests2, nights);
+            payment.guests = guests2;
+            if(user2.community && user2.community.discount)
+                payment.discount = user2.community.discount;
+            return transactionService.chargeRequest(tokenUser2, user2, payment);
         })
         .then(function(transactionId){
             transactionUser2 = transactionId;
@@ -449,6 +460,14 @@ function getRequest(id){
     Request.findOne({_id: id, status: Data.getRequestStatus().pending})
         .populate({
             path: 'verifyTransactionUser1',
+        })
+        .populate({
+            path: 'user1',
+            populate: 'requests',
+        })
+        .populate({
+            path: 'user2',
+            populate: 'requests',
         })
         // TODO: populate user and user requests in order to check availability
         .exec(function (err, request) {
@@ -511,27 +530,19 @@ function getConfirmedRequest(id){
  * @param departure - departure date in ms
  * @param returnDate - return date in ms
  */
-function checkAvailability(senderId, recipientId, departure, returnDate){
+function checkAvailability(senderRequests, recipientRequests, departure, returnDate){
     let dfr = Q.defer();
-    User.findOne({_id: senderId})
-        .then(function (sender){
-            if(checkConfirmationDates(sender.requests, departure, returnDate)){
-                return User.findOne({_id: recipientId})
-            }
-            else{
-                throw USER_UNAVAILABLE;
-            }
-        })
-        .then(function(recipient){
-            if(checkConfirmationDates(recipient.requests, departure, returnDate)){
-                dfr.resolve();
-            }
-            else{
-                throw REQUEST_UNAVAILABLE;
-            }
-        },function(err){
-            dfr.reject(err);
-        });
+    if(checkConfirmationDates(senderRequests, departure, returnDate)){
+        if(checkConfirmationDates(recipientRequests, departure, returnDate)){
+            dfr.resolve();
+        }
+        else{
+            dfr.reject(REQUEST_UNAVAILABLE);
+        }
+    }
+    else{
+        dfr.reject(USER_UNAVAILABLE);
+    }
     return dfr.promise;
 }
 
