@@ -16,6 +16,8 @@ var schema = new Schema({
     transactionUser2: { type: Schema.Types.ObjectId, ref: 'Transaction' },
     status: Number,
     updated_at: { type: Date, default: Date.now},
-    created_at: { type: Date, default: Date.now}
+    created_at: { type: Date, default: Date.now},
+    tokenUser1: { type: String, default: ""},
+    tokenUser2: { type: String, default: ""}
 });
 module.exports = mongoose.model('Request', schema);
