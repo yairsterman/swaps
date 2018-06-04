@@ -9,6 +9,7 @@ let jwt = require('jsonwebtoken');
 
 let now = moment.utc().valueOf();
 
+
 //at midnight run through all the users and if the returnDate of the travelingInformation is passed remove it from the list
 module.exports.updateTravelingInformation = function () {
     User.find({}, function (err, users) {
@@ -42,7 +43,7 @@ module.exports.updateTravelingInformation = function () {
 };
 
 
-//at midnight run through all requests that are pending and if the check in date passed
+//run through all requests that are pending and if the check in date passed
 //change the status to canceled and send a mail to the user
 module.exports.emailPassedPendingRequests = function () {
     Requests.find({status: data.getRequestStatus().pending}, function (err, requests) {
@@ -96,7 +97,7 @@ module.exports.PendingRequestsReminder = function () {
 };
 
 
-
+//run through all requests that are confirmed and update the 2 user (?) in 7, 3, 1 day left for swap
 module.exports.emailConfirmedRequests = function () {
     Requests.find({status: data.getRequestStatus().confirmed}, function (err, requests) {
         if (err) return err;
@@ -128,8 +129,8 @@ module.exports.emailConfirmedRequests = function () {
 };
 
 
-
-//
+//one day after the swap send email to users with token (7 days)
+//remind them in 3, 7 days if not reviewed  already
 module.exports.emailReview = function () {
     Requests.find({status: data.getRequestStatus().confirmed}, function (err, requests) {
         if (err) return err;
@@ -139,81 +140,81 @@ module.exports.emailReview = function () {
                 if (err) return err;
                 if (request.tokenUser1 === "" && diff === 1) {
                     let t1 = jwt.sign({
-                        expiresIn: '7d',
-                        data: request.id + "1"
+                        expiresIn: moment(new Date()).add(7, 'days').utc().valueOf(),
+                        reqId: request.id,
+                        user: "1"
                     }, 'swaps');
 
                     let t2 = jwt.sign({
-                        expiresIn: '7d',
-                        data: request.id + "1"
+                        expiresIn: moment(new Date()).add(7, 'days').utc().valueOf(),
+                        reqId: request.id,
+                        user: "2"
                     }, 'swaps');
 
-                    request.update({tokenUser1: t1, tokenUser2 :t2}).then(function () {
-                        User.findOne({_id: request.user1},function (err, user) {
+                    request.update({tokenUser1: t1, tokenUser2: t2}).then(function () {
+                        User.findOne({_id: request.user1}, function (err, user) {
                             if (err) return err;
-                            if(user.email){
-                                email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+                            if (user.email) {
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, t1));
+                                // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
                         });
-                        User.findOne({_id: request.user2},function (err, user) {
+                        User.findOne({_id: request.user2}, function (err, user) {
                             if (err) return err;
-                            if(user.email){
-                                email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+                            if (user.email) {
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, t2));
+                                // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t2));
                             }
                         });
-
                     });
                 }
-                else {
+                else if (request.tokenUser1 !== "") {
                     switch (diff) {
                         case 7:
                             if (request.tokenUser2 !== 'done') {
-                                //resend email to user 2
+                                User.findOne({_id: request.user2}, function (err, user) {
+                                    if (err) return err;
+                                    if (user.email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser2));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                    }
+                                });
                             }
                             if (request.tokenUser1 !== 'done') {
-                                //resend email to user 1
+                                User.findOne({_id: request.user1}, function (err, user) {
+                                    if (err) return err;
+                                    if (user.email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser1));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser1));
+                                    }
+                                });
                             }
                             break;
                         case 3:
                             if (request.tokenUser2 !== 'done') {
-                                //resend email to user 2
+                                User.findOne({_id: request.user2}, function (err, user) {
+                                    if (err) return err;
+                                    if (user.email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser2));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                    }
+                                });
                             }
                             if (request.tokenUser1 !== 'done') {
-                                //resend email to user 1
+                                User.findOne({_id: request.user1}, function (err, user) {
+                                    if (err) return err;
+                                    if (user.email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser1));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser1));
+                                    }
+                                });
                             }
                             break;
                         default:
                             break;
                     }
                 }
-        });
-    })
-});
-};
-
-
-
-
-module.exports.test = function (token) {
-    jwt.verify(token, "swaps", function (err, decoded) {
-        if (err) {
-            console.log("error");
-        }
-        let requestID = (decoded.data.substring(0, (decoded.data.length - 1)));
-        let user = (decoded.data.substring((decoded.data.length - 1), (decoded.data.length)));
-        Requests.findOne({_id: requestID},function (err, request) {
-            if(user === "1"){
-                //Review belongs to user 1
-                request.update({tokenUser1: 'done'}).then(function () {
-                    console.log('user 1 gave review')
-                })
-            }
-            else{
-                //Review belongs to user 2
-                request.update({tokenUser2: 'done'}).then(function () {
-                    console.log('user 2 gave review')
-                })
-            }
-        });
+            });
+        })
     });
 };

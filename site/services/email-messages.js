@@ -4,6 +4,8 @@ const MY_SWAPS = 'https://swapshome.com/account/upcoming-swaps';
 const SET_SWAPS = 'https://swapshome.com/account/set-up-swaps';
 const SEARCH = 'https://swapshome.com/travelers/Anywhere';
 const MESSAGES = 'https://swapshome.com/account/messages';
+const REVIEW = 'https://swapshome.com/review/get-data?token=';
+
 const SIGNITURE = '<div class="swaps-signature" style="width:60vw;margin:50px auto;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
     '<div>Tel Aviv, Israel</div></div>';
 const STYLE = '<style type="text/css">' +
@@ -99,15 +101,12 @@ var messages = {
             '</div>' + SIGNITURE + STYLE
     },
 
-    eran: function(user){
-        return '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Welcome To Swaps </div></br>' +
-            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', thanks for joining Swaps. ' +
-            'You are almost ready to start Swapping, be sure to complete your profile and add all the necessary information ' +
-            'so you can request a Swap and allow users to view your profile. </div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + ACCOUNT + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Complete Profile</div></a>' +
+    eran: function(user, token){
+        return '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">How Was Your Swap? </div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', hope you liked your swap please send a review.</div>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + REVIEW + token + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Review Swap</div></a>' +
             '</div>' + SIGNITURE + STYLE
-    },
-
-}
+    }
+};
 
 module.exports = messages;

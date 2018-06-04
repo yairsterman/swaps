@@ -12,6 +12,24 @@ mongoose.connect(config.mongoUrl).then(function () {
 });
 
 
+let emailService = require('./../services/email');
+emailService.init();
+
+
+let rev = require('./routes');
+
+let express = require('express');
+let router = express.Router();
+const app = express();
+
+app.use('/review', rev);
+
+
+app.listen(3000,function () {
+    console.log("listening on 3000");
+});
+
+
 let schedule = require('node-schedule');
 //  # ┌────────────── second (optional)  0-59
 //  # │ ┌──────────── minute             0-59
@@ -27,10 +45,7 @@ schedule.scheduleJob('0 23 * * *', functions.updateTravelingInformation);
 schedule.scheduleJob('0 23 * * *', functions.emailPassedPendingRequests);
 schedule.scheduleJob('0 23 * * *', functions.PendingRequestsReminder);
 schedule.scheduleJob('0 23 * * *', functions.emailConfirmedRequests);
-// schedule.scheduleJob('* * 14 * * *', functions.emailReview);
-functions.emailReview();
-// functions.test("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiI3ZCIsImRhdGEiOiI1YWUzODk3ZDQxNTY1MzI4ZDU2ZWJmYTExIiwiaWF0IjoxNTI4MTExOTYyfQ.XWT4YK_f6WNqTmVH9Vd5WpJZB_C-XNqIT81FujXzYTQ");
-
-
+schedule.scheduleJob('0 23 * * *', functions.emailReview);
+// functions.emailReview(); // for testing...
 
 // module.exports = monitor;
