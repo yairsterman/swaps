@@ -49,9 +49,11 @@ function matchPlaces(user, geo){
 
 function getHighestTravelScore(user, geo, searchDates, req){
     let score = 0;
-    let placesRelevancePercent = 60;
-    let datesRelevancePercent = 40;
+    let placesRelevancePercent = 80;
+    let datesRelevancePercent = 20;
     let placesAndDatesRelevance = 60;
+    let fromRelevance = 0.3;
+    let toRelevance = 0.7;
 
     // match search address and user address
     let from = matchPlaces(user, geo);
@@ -60,14 +62,14 @@ function getHighestTravelScore(user, geo, searchDates, req){
     // return higher score for users who are currently traveling
     if(!req.user){
         let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.8;
-        placesAndDatesRelevance = ((from / 2) * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
-        return (user.travelingInformation && user.travelingInformation.length > 0)?30:20;
+        placesAndDatesRelevance = (from * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
+        return placesAndDatesRelevance;
     }
 
     // if the user has no traveling information then return only
     // the places relevance percent of total places and dates relevance
     if(!user.travelingInformation || user.travelingInformation.length == 0){
-        return ((from / 2) * placesRelevancePercent) / 100  * placesAndDatesRelevance;
+        return (from * placesRelevancePercent) / 100  * placesAndDatesRelevance;
     }
     user.travelingInformation.forEach(travel => {
 
@@ -95,7 +97,7 @@ function getHighestTravelScore(user, geo, searchDates, req){
         if(from > 0 && to > 0 && totalDatesRelevance > 0){
             placesAndDatesRelevance = 90;
         }
-        let totalPlaceRelevance = (from + to) / 2 * placesRelevancePercent;
+        let totalPlaceRelevance = (from * fromRelevance) + (to * toRelevance)  * placesRelevancePercent;
         totalDatesRelevance = totalDatesRelevance * datesRelevancePercent;
 
         let finalTravelRelevance = (totalPlaceRelevance + totalDatesRelevance) / 100 * placesAndDatesRelevance;
