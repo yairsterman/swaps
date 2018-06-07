@@ -142,6 +142,19 @@
 		@media @mobile {
 			height: 100vw;
 		}
+		.loader-container{
+			padding: 100px;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(255,255,255,0.8);
+			transition: 1.5s ease;
+			z-index: 10;
+			&.disappear{
+				opacity: 0;
+				z-index: -1;
+			}
+		}
 		&.loading{
 			background-color: rgba(0,0,0,0.2);
 		}
