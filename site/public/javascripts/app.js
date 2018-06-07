@@ -58,8 +58,13 @@ swapsApp.run(function($http, $rootScope, $location, $window){
     $rootScope.isMobile = (/android|webos|iphone|ipad|ipod|blackberry|windows phone/).test(navigator.userAgent.toLowerCase()) || $window.outerWidth < 641;
 
     $http.get('/user/get-user').then(function(data){
-       $rootScope.user = data.data;
-       $rootScope.$broadcast('auth-return');
+        if(data.data.error){
+            $rootScope.user = null;
+        }
+        else{
+            $rootScope.user = data.data;
+            $rootScope.$broadcast('auth-return');
+        }
     },
     function(){
         $rootScope.user = null;

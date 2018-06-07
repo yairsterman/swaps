@@ -8,6 +8,10 @@
   @media @mobile {
     height: 400px;
   }
+  &.cancel{
+    height: auto;
+    min-height: 200px;
+  }
   .center{
     text-align: center;
   }
@@ -144,6 +148,10 @@
       margin: 10px 10px 0 20px;
       border-top: 1px solid #bababa;
     }
+    .terms{
+      text-align: center;
+      margin-top: 60px;
+    }
   }
   .payment-area{
     transition: 0.5s ease;
@@ -227,6 +235,9 @@
     font-size: 18px;
     position: absolute;
     bottom: 0;
+    &.cancel{
+      position: relative;
+    }
     &:focus{
       outline: none;
     }
@@ -235,7 +246,7 @@
     }
   }
   .send-message{
-    margin: 40px 0;
+    margin-top: 40px;
     .send-text{
       font-size: 16px;
     }
@@ -254,5 +265,11 @@
       border: 1px solid #a94442;
       box-shadow: 0px 0px 3px 3px rgba(169,68,66,0.4);
     }
+  }
+  .error{
+    font-size: 16px;
+    margin: 10px 0;
+    color: red;
+    font-weight: 300;
   }
 }

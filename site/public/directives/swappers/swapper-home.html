@@ -1,77 +1,77 @@
-<div class="traveler" ng-click="go('profile/'+traveler._id)">
+<div class="traveler">
     <div>
-    <a href="/profile/{{traveler._id}}" class="">
-        <!--CAROUSEL START-->
-        <div ng-attr-id="{{'myCarousel' + traveler._id}}"  class="carousel slide" data-ride="carousel" data-interval="false">
-            <!-- Wrapper for carousel items -->
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="#" alt="First slide">
-                    <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + traveler.photos[0] + ')'}">
+        <a href="/profile/{{traveler._id}}" target="_blank" class="">
+            <!--CAROUSEL START-->
+            <div ng-attr-id="{{'myCarousel' + traveler._id}}"  class="carousel slide" data-ride="carousel" data-interval="false">
+                <!-- Wrapper for carousel items -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="#" alt="First slide">
+                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + traveler.photos[0] + ')'}">
+                        </div>
+                    </div>
+                    <div class="item" ng-repeat="photo in traveler.photos.slice(1,entries.length)">
+                        <img src="#" alt="{{$index}} slide">
+                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')'}">
+                        </div>
                     </div>
                 </div>
-                <div class="item" ng-repeat="photo in traveler.photos.slice(1,entries.length)">
-                    <img src="#" alt="{{$index}} slide">
-                    <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + photo + ')'}">
-                    </div>
+                <!-- Carousel controls -->
+                <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
+                    <span class="carousel-control-arrow glyphicon glyphicon-menu-left"></span>
                 </div>
-            </div>
-            <!-- Carousel controls -->
-            <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
-                <span class="carousel-control-arrow glyphicon glyphicon-menu-left"></span>
-            </div>
-            <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
-                <span class="carousel-control-arrow glyphicon glyphicon-menu-right"></span>
+                <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
+                    <span class="carousel-control-arrow glyphicon glyphicon-menu-right"></span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="profile-img" style="background-image: url('{{traveler.image}}')">
+        <div class="profile-img" style="background-image: url('{{traveler.image}}')">
 
-    </div>
-    <div class="favorite community" id="community" ng-if="$root.user.community  && $root.user.community._id && traveler.community && traveler.community._id == $root.user.community._id"
-    for="community" uib-tooltip="{{traveler.firstName}} is also a member of {{$root.user.community.name}}" tooltip-placement="top" tooltip>
-        <div class="icon icon-friends-small"></div>
-    </div>
-    <div class="favorite">
-        <div class="icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)"></div>
-    </div>
-    <!--CAROUSEL END-->
-    <div class="user-info">
-        <div class="apt-sub-title">
-            <span></span>{{traveler.city}}, {{$parent.data.roomType[traveler.apptInfo.roomType].displayName}} at {{traveler.firstName}}'s Home
         </div>
-        <div class="apt-title">
-            {{traveler.apptInfo.title}}
+        <div class="favorite community" id="community" ng-if="$root.user.community  && $root.user.community._id && traveler.community && traveler.community._id == $root.user.community._id"
+        for="community" uib-tooltip="{{traveler.firstName}} is also a member of {{$root.user.community.name}}" tooltip-placement="left" tooltip>
+            <div class="icon icon-friends-small"></div>
         </div>
-        <div class="rating" ng-if="traveler.comments.length > 0">
-            <span class="icon icon-star" ></span>
-            <span class="icon {{traveler.rating > 1?traveler.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-            <span class="icon {{traveler.rating > 2?traveler.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-            <span class="icon {{traveler.rating > 3?traveler.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-            <span class="icon {{traveler.rating > 4?traveler.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-            <!--<span class="number-reviews">{{traveler.reviews.length}}</span>-->
+        <div class="favorite">
+            <div class="icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)"></div>
         </div>
-        <div class="rating" ng-if="traveler.reviews.length == 0">
-            <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
-        </div>
-        <div class="basics">
-            <div class="tiny-text">
-                <span class="icon icon-man-small"></span>
-                {{traveler.apptInfo.guests}} {{traveler.apptInfo.guests == 1?'Guest':'Guests'}}
+        <!--CAROUSEL END-->
+        <div class="user-info">
+            <div class="apt-sub-title">
+                <span></span>{{traveler.city}}, {{$parent.data.roomType[traveler.apptInfo.roomType].displayName}} at {{traveler.firstName}}'s Home
             </div>
-            <div class="tiny-text">
-                <span class="icon icon-door-small"></span>
-                {{traveler.apptInfo.rooms}} {{traveler.apptInfo.rooms == 1?'Room':'Rooms'}}
+            <div class="apt-title">
+                {{traveler.apptInfo.title}}
             </div>
-            <div class="tiny-text">
-                <span class="icon icon-bed-small"></span>
-                {{traveler.apptInfo.beds}} {{traveler.apptInfo.beds == 1?'Bed':'Beds'}}
+            <div class="rating" ng-if="traveler.comments.length > 0">
+                <span class="icon icon-star" ></span>
+                <span class="icon {{traveler.rating > 1?traveler.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+                <span class="icon {{traveler.rating > 2?traveler.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+                <span class="icon {{traveler.rating > 3?traveler.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+                <span class="icon {{traveler.rating > 4?traveler.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+                <!--<span class="number-reviews">{{traveler.reviews.length}}</span>-->
             </div>
-            <div class="tiny-text">
-                <span class="icon icon-duck-small"></span>
-                {{traveler.apptInfo.baths}} {{traveler.apptInfo.baths == 1?'Bath':'Baths'}}
+            <div class="rating" ng-if="traveler.reviews.length == 0">
+                <span class="new-appt" ng-if="traveler.reviews.length == 0">New!</span>
             </div>
-        </div>
-    </a>
+            <div class="basics">
+                <div class="tiny-text">
+                    <span class="icon icon-man-small"></span>
+                    {{traveler.apptInfo.guests}} {{traveler.apptInfo.guests == 1?'Guest':'Guests'}}
+                </div>
+                <div class="tiny-text">
+                    <span class="icon icon-door-small"></span>
+                    {{traveler.apptInfo.rooms}} {{traveler.apptInfo.rooms == 1?'Room':'Rooms'}}
+                </div>
+                <div class="tiny-text">
+                    <span class="icon icon-bed-small"></span>
+                    {{traveler.apptInfo.beds}} {{traveler.apptInfo.beds == 1?'Bed':'Beds'}}
+                </div>
+                <div class="tiny-text">
+                    <span class="icon icon-duck-small"></span>
+                    {{traveler.apptInfo.baths}} {{traveler.apptInfo.baths == 1?'Bath':'Baths'}}
+                </div>
+            </div>
+        </a>
     </div>
 </div>

@@ -38,56 +38,63 @@ module.exports.sendRequest = function(params) {
     let nights;
 
     let dfr = Q.defer();
-    if(params.dates){
-        dates = params.dates.split('-'); // dates are in format '11/11/2011-12/12/2012'
-        departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
-        returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
-        nights = util.calculateNightsBetween(departure, returnDate);
-    }
-    else{
-        error.message = "No dates specified";
-        return dfr.reject(error);
-    }
-    checkAvailability(senderId, recipientId, departure, returnDate)
-    .then(function() {
-        let requestDetails = {
-            senderId: senderId,
-            recipientId: recipientId,
-            departure: departure,
-            returnDate: returnDate,
-            status: Data.getRequestStatus().pending,
-            guests: guests,
-            nights: nights,
-            plan: params.plan,
-            transactionId: params.transactionId,
-        };
-        return saveRequest(requestDetails);
-    })
-    .then( function({sender, recipient}){
-        email.sendMail([recipient.email],'New Swap Request!', emailMessages.request(recipient, sender, {departure:departure,returnDate:returnDate}, nights, params.message));
+    try {
+        if (params.dates) {
+            dates = params.dates.split('-'); // dates are in format '11/11/2011-12/12/2012'
+            departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
+            returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
+            nights = util.calculateNightsBetween(departure, returnDate);
+        }
+        else {
+            error.message = "No dates specified";
+            return dfr.reject(error);
+        }
+        checkAvailability(senderId, recipientId, departure, returnDate)
+        .then(function () {
+            let requestDetails = {
+                senderId: senderId,
+                recipientId: recipientId,
+                departure: departure,
+                returnDate: returnDate,
+                status: Data.getRequestStatus().pending,
+                guests: guests,
+                nights: nights,
+                plan: params.plan,
+                transactionId: params.transactionId,
+            };
+            return saveRequest(requestDetails);
+        })
+        .then(function ({sender, recipient}) {
+            email.sendMail([recipient.email], 'New Swap Request!', emailMessages.request(recipient, sender, {
+                departure: departure,
+                returnDate: returnDate
+            }, nights, params.message));
 
-        email.sendMail([sender.email],'Swap Request Sent', emailMessages.requestSent(sender, recipient));
+            email.sendMail([sender.email], 'Swap Request Sent', emailMessages.requestSent(sender, recipient));
 
-        message = 'SWAP REQUEST:<br>' + sender.firstName+ ' Requested to swap for ' + nights + (nights >1?' Nights':' Night') + '<br>' +
-            'Check in: ' + dates[0] +'<br>' +
-            'Check out: ' + dates[1] +'<br>' +
-            (params.message?sender.firstName + ' Says: ' + params.message:'') + '<br>';
-        newMessage = {
-            id: sender._id,
-            date: now,
-            isRequest: true,
-            message: message
-        };
-        return MessageService.saveMessage(senderId, recipientId, senderId, newMessage, false);
-    })
-    .then( function(){
-        return MessageService.saveMessage(recipientId, senderId, senderId, newMessage, true);
-    })
-    .then(function(){
-        dfr.resolve();
-    },function(err){
-        dfr.reject(err);
-    });
+            message = 'SWAP REQUEST:<br>' + sender.firstName + ' Requested to swap for ' + nights + (nights > 1 ? ' Nights' : ' Night') + '<br>' +
+                'Check in: ' + dates[0] + '<br>' +
+                'Check out: ' + dates[1] + '<br>' +
+                (params.message ? sender.firstName + ' Says: ' + params.message : '') + '<br>';
+            newMessage = {
+                id: sender._id,
+                date: now,
+                isRequest: true,
+                message: message
+            };
+            return MessageService.saveMessage(senderId, recipientId, senderId, newMessage, false);
+        })
+        .then(function () {
+            return MessageService.saveMessage(recipientId, senderId, senderId, newMessage, true);
+        })
+        .then(function () {
+            dfr.resolve();
+        }, function (err) {
+            dfr.reject(err);
+        });
+    } catch(e){
+        dfr.reject(e);
+    }
     return dfr.promise;
 };
 
@@ -98,35 +105,39 @@ module.exports.confirm = function(params) {
     let sender = {};
     let dates = {};
 
-    let now = moment.utc().valueOf();
-    let newMessage = {
-        date: now,
-        isRequest: false,
-        message: 'Request Confirmed'
-    };
+    try {
+        let now = moment.utc().valueOf();
+        let newMessage = {
+            date: now,
+            isRequest: false,
+            message: 'Request Confirmed'
+        };
 
-    chargeUsers(params).then(function(results){
-        return confirmRequest(results);
-    }).then(function(result){
-        sender = result.sender;
-        recipient = result.recipient;
-        dates = result.dates;
-        return updateUserTravelInfo(sender, dates);
-    })
-    .then(function(){
-        return updateUserTravelInfo(recipient, dates);
-    })
-    .then(function(){
-        return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
-    })
-    .then(function(){
-        return MessageService.saveMessage(recipient._id, sender._id, sender._id, newMessage, true);
-    })
-    .then(function(){
-        dfr.resolve();
-    },function(err){
-        dfr.reject(err);
-    });
+        chargeUsers(params).then(function (results) {
+            return confirmRequest(results);
+        }).then(function (result) {
+            sender = result.sender;
+            recipient = result.recipient;
+            dates = result.dates;
+            return updateUserTravelInfo(sender, dates);
+        })
+        .then(function () {
+            return updateUserTravelInfo(recipient, dates);
+        })
+        .then(function () {
+            return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
+        })
+        .then(function () {
+            return MessageService.saveMessage(recipient._id, sender._id, sender._id, newMessage, true);
+        })
+        .then(function () {
+            dfr.resolve();
+        }, function (err) {
+            dfr.reject(err);
+        });
+    } catch(e){
+        dfr.reject(e);
+    }
 
     return dfr.promise;
 };
@@ -163,13 +174,13 @@ function saveRequest(requestDetails){
             return defferd.reject(err);
         requestId = request._id;
         // save request to first user
-        User.findOneAndUpdate({_id: senderId}, { $push: { requests: requestId}})
+        User.findOneAndUpdate({_id: requestDetails.senderId}, { $push: { requests: requestId}})
         .then(function(_sender){
             if (!_sender)
                 return defferd.reject(err);
             sender = _sender;
             // save request to second user
-            return User.findOneAndUpdate({_id: recipientId}, { $push: { requests: requestId}});
+            return User.findOneAndUpdate({_id: requestDetails.recipientId}, { $push: { requests: requestId}});
         })
         .then(function(_recipient){
             if (!_recipient)
@@ -260,16 +271,17 @@ function updateUserTravelInfo(user, dates){
  * @param requestId - requestId to remove from requests
  */
 function removeCanceledRequest(user, requestId){
-    //find index
-    // let index = -1;
-    // user.requests.forEach(function(request, i){
-    //     if(request.toString() == requestId)
-    //         index = i;
-    // });
-    // if(index != -1){
-    //     user.requests = user.requests.splice(index,1) // remove the request;
-    // }
-    return updateUser(user, {requests: user.requests});
+    let dfr = Q.defer();
+    User.update({_id: user._id}, {$pull: {requests: requestId}})
+        .then(function (updated) {
+            if (!updated.ok) {
+                dfr.reject('User not updated');
+            }
+            else {
+                dfr.resolve();
+            }
+        });
+    return dfr.promise;
 }
 
 /**
@@ -306,56 +318,60 @@ module.exports.cancelRequest = function(requestId, userId, message){
     let transaction2 = {};
     let declined = false;
 
-    getConfirmedRequest(requestId).then(function(request){
-        user1 = request.user1;
-        user2 = request.user2;
-        transaction1 = request.transactionUser1;
-        transaction2 = request.transactionUser1;
-        // if status s pending and the call came from user2 then send decline message
-        declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
+    try{
+        getConfirmedRequest(requestId).then(function(request){
+            user1 = request.user1;
+            user2 = request.user2;
+            transaction1 = request.transactionUser1;
+            transaction2 = request.transactionUser1;
+            // if status s pending and the call came from user2 then send decline message
+            declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
 
-        //refund transactions
-        return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
-    })
-    .then(function(){
-        //update request
-        return Request.update({_id: requestId}, {$set: {status: Data.getRequestStatus().canceled}});
-    })
-    .then(function(updated){
-        if (!updated.ok) {
-            defer.reject("Request not updated");
-        }
-        // update users requests
-        else {
-            return removeCanceledRequest(user1, requestId);
-        }
-    })
-    .then(function(){
-        return removeCanceledRequest(user2, requestId);
-    })
-    .then(function(){
-        defer.resolve();
-        if(declined){
-            email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
-        }
-        else{
-            let sender;
-            let recipient;
-            if((user1._id).toString() == userId.toString()){
-                sender = user1;
-                recipient = user2;
-            }
-            else{
-                sender = user2;
-                recipient = user1;
-            }
-            email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
-            email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
-        }
-    },function(err){
-        error.message = err;
-        defer.reject(error);
-    });
+            //refund transactions
+            return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
+        })
+            .then(function(){
+                //update request
+                return Request.update({_id: requestId}, {$set: {status: Data.getRequestStatus().canceled}});
+            })
+            .then(function(updated){
+                if (!updated.ok) {
+                    defer.reject("Request not updated");
+                }
+                // update users requests
+                else {
+                    return removeCanceledRequest(user1, requestId);
+                }
+            })
+            .then(function(){
+                return removeCanceledRequest(user2, requestId);
+            })
+            .then(function(){
+                defer.resolve();
+                if(declined){
+                    email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
+                }
+                else{
+                    let sender;
+                    let recipient;
+                    if((user1._id).toString() == userId.toString()){
+                        sender = user1;
+                        recipient = user2;
+                    }
+                    else{
+                        sender = user2;
+                        recipient = user1;
+                    }
+                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
+                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                }
+            },function(err){
+                error.message = err;
+                defer.reject(error);
+            });
+    } catch(e){
+        defer.reject(e);
+    }
 
     return defer.promise;
 };
@@ -375,7 +391,6 @@ function sendRefundTransactions(transaction1, transaction2, user1, user2, declin
     if(declined){
         return dfr.resolve();
     }
-    dfr.resolve();
 
     transactionService.refund(transaction1, user1._id)
     .then(function(){
@@ -400,6 +415,7 @@ function chargeUsers(params){
 
     let requestId = params.requestId;
     let tokenUser2 = params.token;
+    let expdate = params.expdate;
     let guests2 = params.guests;
     let verifyTransactionUser2 = params.transactionId;
     let transactionUser1;
@@ -409,6 +425,7 @@ function chargeUsers(params){
         let user1 = request.user1;
         let user2 = request.user2;
         let tokenUser1 = request.verifyTransactionUser1.token;
+        let index1 = request.verifyTransactionUser1.index;
         let guests1 = request.guests1;
         let nights = request.nights;
         let plan = request.plan;
@@ -423,14 +440,15 @@ function chargeUsers(params){
         .then(function() {
             if(user1.community && user1.community.discount)
                 payment.discount = user1.community.discount;
-            return transactionService.chargeRequest(tokenUser1, user1, payment);
+            return transactionService.chargeRequest(tokenUser1, index1, user1, payment, user1.email);
         })
         .then(function(transactionId){
             transactionUser1 = transactionId;
             payment.guests = guests2;
             if(user2.community && user2.community.discount)
                 payment.discount = user2.community.discount;
-            return transactionService.chargeRequest(tokenUser2, user2, payment);
+            // we still have the expiration date of the confirming user
+            return transactionService.chargeRequest(tokenUser2, null, user2, payment, user2.email, expdate);
         })
         .then(function(transactionId){
             transactionUser2 = transactionId;
@@ -461,13 +479,13 @@ function getRequest(id){
         })
         .populate({
             path: 'user1',
-            populate: 'community',
-            select: '_id community'
+            populate: {path: 'community'},
+            select: '_id community email'
         })
         .populate({
             path: 'user2',
-            populate: 'community',
-            select: '_id community'
+            populate: {path: 'community'},
+            select: '_id community email'
         })
         .exec(function (err, request) {
             if (err || !request) {

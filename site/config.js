@@ -1,10 +1,14 @@
 
 // noinspection JSAnnotator
 let config = {
-    tranzillaSupplier: 'swapshomtok',
+    tranzillaTokenSupplier: 'swapshomtok',
+    tranzillaTokenPassword: 'cyrUkT3',
+    tranzillaSupplier: 'swapshom',
+    tranzillaPassword: 'QWavKI9',
     TranzilaPW: 'FGf4ygrh',
     CreditPass: 'Gg54hth',
-    tranzilaRequestUrl: `https://secure5.tranzila.com/cgi-bin/tranzila71pme.cgi`,
+    tranzilaRequestUrl: `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi`,
+    tranzilaGetIndexUrl: `https://secure5.tranzila.com/cgi-bin/billing/tranzila_dates.cgi`,
 
     googleClientId: '678609024087-1c99lheaitodb9c8bv13ptctlj3fh2t4.apps.googleusercontent.com',
     googleClientSecret: 'mJXTYyWlF-QeizGN6gWGIlF2',

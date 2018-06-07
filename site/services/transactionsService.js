@@ -19,40 +19,55 @@ let error = {
  * of nights and guests, then save the new transaction to the DB
  *
  * @param token - user card token
+ * @param index - transaction index
  * @param userId - id of user to save the transaction on
- * @param nights - nights of request in order to calculate payment
+ * @param payment - all payment information
+ * @param userEmail - the user's email
  */
-function chargeRequest(token, userId, payment){
+function chargeRequest(token, index, userId, payment, userEmail, expdate){
 
     let dfr = Q.defer();
     let requestUrl = config.tranzilaRequestUrl;
     let perNight = Data.getSecurityDeposit()[payment.plan].night; // how much to pay per night based on plan
-    let amount = perNight * payment.guests * payment.nights * payment.discount; // pay for each guests per night
+    let amount = perNight * payment.guests * payment.nights; // pay for each guests per night
+    amount = payment.discount?amount * ((100 - payment.discount) / 100):amount; // distract discount from final amount
     let tranmode = Data.getTransactionMode().regular;
 
-    request.post({
-        headers : {"Content-Type": "application/x-www-form-urlencoded"},
-        url: requestUrl,
-        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&TranzilaTK=${token}&tranmode=${tranmode}&sum=${amount}&currency=1&cred_type=1&response_return_format=json`
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let result;
-            try{
-                result = JSON.parse(body);
-                result.type = Data.getTransactionType().regular;
-                createAndSaveToUser(result, userId).then(function({transactionId, token}){
-                    dfr.resolve(transactionId);
-                },function(err){
-                    dfr.reject(err);
-                });
+    let terminalInformation = {
+        supplier: config.tranzillaSupplier,
+        password: config.tranzillaPassword,
+    };
+
+    getExpirationDate(terminalInformation, index, expdate).then(expdate => {
+        request.post({
+            headers : {"Content-Type": "application/x-www-form-urlencoded"},
+            url: requestUrl,
+            body: `supplier=${config.tranzillaTokenSupplier}&TranzilaPW=${config.TranzilaPW}&TranzilaTK=${token}&expdate=${expdate}&tranmode=${tranmode}&sum=${amount}&email=${userEmail}&currency=2&cred_type=1&response_return_format=json`
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                let result;
+                try{
+                    result = JSON.parse(body);
+                    if(result.error_msg){
+                        return dfr.reject(result.error_msg);
+                    }
+                    result.type = Data.getTransactionType().regular;
+                    createAndSaveToUser(result, userId).then(function({transactionId, token}){
+                        dfr.resolve(transactionId);
+                    },function(err){
+                        dfr.reject(err);
+                    });
+                }
+                catch(e){
+                    dfr.reject(e);
+                }
             }
-            catch(e){
-                dfr.reject(e);
+            else{
+                dfr.reject(error);
             }
-        }
-        else{
-            dfr.reject(error);
-        }
+        });
+    },function(err){
+        dfr.reject(err);
     });
 
     return dfr.promise;
@@ -77,33 +92,40 @@ function refund(transaction, userId){
     let token = transaction.token;
 
     let tranmode = Data.getTransactionMode().refund + index;
-
-    request.post({
-        headers : {"Content-Type": "application/x-www-form-urlencoded"},
-        url: requestUrl,
-        body: `supplier=${config.tranzillaSupplier}&TranzilaPW=${config.TranzilaPW}&CreditPass=${config.CreditPass}&authnr=${confirmationCode}&TranzilaTK=${token}&tranmode=${tranmode}&sum=${amount}&currency=1&cred_type=1&response_return_format=json`
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let result;
-            try{
-                result = JSON.parse(body);
-                if(result.error_msg){
-                    return dfr.reject(result.error_msg);
+    let terminalInformation = {
+        supplier: config.tranzillaTokenSupplier,
+        password: config.tranzillaTokenPassword,
+    };
+    getExpirationDate(terminalInformation, index).then(expdate => {
+        request.post({
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            url: requestUrl,
+            body: `supplier=${config.tranzillaTokenSupplier}&TranzilaPW=${config.TranzilaPW}&expdate=${expdate}&CreditPass=${config.CreditPass}&authnr=${confirmationCode}&TranzilaTK=${token}&tranmode=${tranmode}&sum=${amount}&currency=1&cred_type=1&response_return_format=json`
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                let result;
+                try {
+                    result = JSON.parse(body);
+                    if (result.error_msg) {
+                        return dfr.reject(result.error_msg);
+                    }
+                    result.type = Data.getTransactionType().refund;
+                    createAndSaveToUser(result, userId).then(function ({transactionId, token}) {
+                        dfr.resolve(transactionId);
+                    }, function (err) {
+                        dfr.reject(err);
+                    });
                 }
-                result.type = Data.getTransactionType().refund;
-                createAndSaveToUser(result, userId).then(function({transactionId, token}){
-                    dfr.resolve(transactionId);
-                },function(err){
-                    dfr.reject(err);
-                });
+                catch (e) {
+                    dfr.reject(e);
+                }
             }
-            catch(e){
-                dfr.reject(e);
+            else {
+                dfr.reject(error);
             }
-        }
-        else{
-            dfr.reject(error);
-        }
+        });
+    },function(err){
+        dfr.reject(err);
     });
 
     return dfr.promise;
@@ -160,6 +182,50 @@ function saveTransactionId(userId, transactionId){
         }
         else {
             dfr.resolve(id);
+        }
+    });
+
+    return dfr.promise;
+}
+
+/**
+ * Sends a request to tranzila in order to get the expiration date of a CC
+ * by retrieving the index of the transaction.
+ * If expdate is sent it means this is the confirming user and we don't need to
+ * Query the transaction information, we could simply use the given expdate.
+ *
+ * @param terminalInformation - the credentials for the terminal
+ * @param index - index of the transaction
+ * @param expdate - CC expiration date
+ */
+function getExpirationDate(terminalInformation, index, expdate){
+    let dfr = Q.defer();
+
+    if(expdate){
+        //return the expiration date without querying tranzila
+        dfr.resolve(expdate);
+    }
+
+    request.post({
+        headers : {"Content-Type": "application/x-www-form-urlencoded"},
+        url: config.tranzilaGetIndexUrl,
+        body: `terminal=${terminalInformation.supplier}&passw=${terminalInformation.password}&index=${index}&response_return_format=json`
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            let result;
+            try{
+                result = JSON.parse(body);
+                if(result.error_msg){
+                    return dfr.reject(result.error_msg);
+                }
+                dfr.resolve(result.expdate);
+            }
+            catch(e){
+                dfr.reject(e);
+            }
+        }
+        else{
+            dfr.reject(error);
         }
     });
 
