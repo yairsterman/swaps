@@ -3,7 +3,7 @@ let router = express.Router();
 let Q = require('q');
 let Data = require('../user_data/data.js');
 let config = require('../config');
-let Community = require('../models/community.js');
+let Community = require('../models/Community.js');
 
 
 router.post('/createCommunity', function (req, res, next) {
