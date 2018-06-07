@@ -1,4 +1,4 @@
-<div class="request-page block">
+<div class="request-page cancel block">
     <div class="top-corner icon icon-delete" ng-click="close()"></div>
     <div class="cancel-swap" ng-hide="showMessage">
         <div class="sub-title">
@@ -9,7 +9,7 @@
             <div class="back no btn-primary" ng-click="close()">
                 No
             </div>
-            <div class="back btn-primary" ng-click="yes()">
+            <div class="back pay btn-primary" ng-click="yes()">
                 Yes
             </div>
         </div>
@@ -21,7 +21,10 @@
             <textarea rows="3" cols="20" class="form-control send-text" ng-model="send.message" placeholder="">
                           </textarea>
         </div>
-        <input type="button" class="btn btn-primary btn-swap {{send.message == ''?'disabled':''}}" value="{{decline?'Decline':'Cancel'}} Request" ng-click="cancelRequest()" ng-disabled="send.message == ''" disabled="{{send.message == ''}}">
+        <div class="error" ng-if="error">
+            {{error}}
+        </div>
+        <input type="button" class="btn btn-primary btn-swap cancel {{send.message == ''?'disabled':''}}" value="{{decline?'Decline':'Cancel'}} Request" ng-click="cancelRequest()" ng-disabled="send.message == ''" disabled="{{send.message == ''}}">
         <div class="loader-wrapper" ng-if="processing">
             <div class="loader">
 

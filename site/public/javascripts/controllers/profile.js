@@ -283,7 +283,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         var marker = new google.maps.Marker({
             map: $scope.map,
             position: info.geometry.location,
-            animation: google.maps.Animation.DROP,
+            // animation: google.maps.Animation.DROP,
             icon: {url:img, size:new google.maps.Size(35,35)},
             title: info.address,
             optimized: false

@@ -57,6 +57,7 @@ var UserSchema = new Schema({
         rooms: Number,
         bedType: Number,
     },
+    community: {type: Schema.Types.ObjectId, ref: 'Community' },
     paymentInfo: {},
     transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
     deposit: Number,

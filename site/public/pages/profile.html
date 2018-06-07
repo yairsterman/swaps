@@ -53,7 +53,7 @@
                             <label for="swapDates">When</label>
                             <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
-                                   not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" >
+                                   not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" ng-cloak>
                         </div>
                         <div class="search-field">
                             <label for="guests">Travelers</label>

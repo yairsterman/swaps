@@ -28,10 +28,6 @@ router.post('/notify', function(req, res, next) {
 });
 
 router.post('/success', function(req, res, next) {
-    let token = req.body.TranzilaTK;
-    let cred_type = req.body.cred_type;
-    let currency = req.body.currency;
-    let sum = req.body.amount; // this is the payment sum
 
     let requestDetails = {
         user1: req.body.user1,
@@ -44,6 +40,7 @@ router.post('/success', function(req, res, next) {
     };
 
     let params = req.body;
+    let expdate = params.expmonth + params.expyear; // save expiration date in case of confirmation
     params.type = Data.getTransactionType().verify;
 
     transactionsService.createAndSaveToUser(params, requestDetails.user1) // save transaction in db and save id to user.transactions
@@ -55,6 +52,7 @@ router.post('/success', function(req, res, next) {
         }
         else {
             requestDetails.token = token;
+            requestDetails.expdate = expdate;
             return requestsService.confirm(requestDetails);
         }
     })
