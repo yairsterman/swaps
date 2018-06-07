@@ -165,7 +165,7 @@ swapper-home{
     }
     .basics {
       display: flex;
-      justify-content: space-between;
+      //justify-content: space-between;
       padding-top: 0.4vw;
       color: #616161;
       @media @desktop {
@@ -179,14 +179,20 @@ swapper-home{
 
       }
       .tiny-text {
-        padding-right: 10px;
+        padding-right: 14px;
         font-size: 14px;
         display: flex;
         align-items: center;
         .icon{
-          margin-right: 8px;
+          margin-right: 0;
           &.icon-door{
-            margin-right: 0;
+            margin-right: 2px;
+          }
+          &.icon-bed-small{
+            margin-right: 6px;
+          }
+          &.icon-duck-small{
+            margin-right: 7px;
           }
           @media @mobile {
             margin-right: 5px;

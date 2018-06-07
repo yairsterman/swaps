@@ -202,13 +202,17 @@
 				height: 50px !important;
 				display: block;
 				object-fit: cover;
+				animation-name: pop;
+				animation-duration: 0.6s;
 				transform: scale(0.75);
 				border:2px solid rgba(13, 134, 234, 0);
 				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
 				box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(13, 134, 234,.6);
 				-webkit-transition: ease 1s; /* For Safari 3.1 to 6.0 */
 				transition: ease 1s;
+				position: absolute;
 				&:hover{
+					z-index: 500;
 					-ms-transform: scale(1.2); /* IE 9 */
 					-webkit-transform: scale(1.2); /* Safari */
 					transform: scale(1.2);
@@ -355,6 +359,11 @@
 			left: 46%;
 		}
 	}
+}
+
+@keyframes pop {
+	from {transform: scale(0.1);}
+	to {transform: scale(0.75);}
 }
 
 

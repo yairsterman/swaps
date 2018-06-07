@@ -128,13 +128,13 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
     $scope.scaleImage = function(imageSrc){
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("border","1px solid rgba(13, 134, 234, 0.8)");
-        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","500");
+        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","500 !important");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("transform","scale(1.0)");
     }
 
     $scope.shrinkImage = function(imageSrc){
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("border","1px solid rgba(13, 134, 234, 0)");
-        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","100");
+        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","100 !important");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("transform","scale(0.75)");
     }
 
@@ -167,7 +167,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         var marker = new google.maps.Marker({
             map: $scope.map,
             position: new google.maps.LatLng(info.lat, info.long),
-            animation: google.maps.Animation.DROP,
+            // animation: google.maps.Animation.DROP,
             icon: {url:info.image, size:new google.maps.Size(50,50)},
             title: info.address,
             url: 'profile/'+info.id,
