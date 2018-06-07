@@ -98,7 +98,7 @@ module.exports.confirm = function(params) {
     let sender = {};
     let dates = {};
 
-    let now = Date.now();
+    let now = moment.utc().valueOf();
     let newMessage = {
         date: now,
         isRequest: false,
@@ -245,11 +245,10 @@ function confirmRequest(info){
  * @param dates - confirmed dates
  */
 function updateUserTravelInfo(user, dates){
-    let updatedInfo = updateDates(user.travelingInfo, user.travelingDest, dates.departure, dates.returnDate);
+    let travelingInformation = updateDates(user.travelingInformation, dates.departure, dates.returnDate);
 
     let toUpdate = {
-        travelingInfo: updatedInfo._travelingInfo,
-        travelingDest: updatedInfo.travelingDest
+        travelingInformation: travelingInformation,
     };
     return updateUser(user, toUpdate);
 }
@@ -378,16 +377,15 @@ function sendRefundTransactions(transaction1, transaction2, user1, user2, declin
     }
     dfr.resolve();
 
-    //TODO - currently transactions arent working so can't cancel them.
-    // transactionService.refund(transaction1, user1._id)
-    // .then(function(){
-    //     return transactionService.refund(transaction2, user2._id);
-    // })
-    // .then(function(){
-    //     dfr.resolve();
-    // },function(err){
-    //     dfr.reject(err);
-    // });
+    transactionService.refund(transaction1, user1._id)
+    .then(function(){
+        return transactionService.refund(transaction2, user2._id);
+    })
+    .then(function(){
+        dfr.resolve();
+    },function(err){
+        dfr.reject(err);
+    });
 
     return dfr.promise;
 }
@@ -421,7 +419,7 @@ function chargeUsers(params){
             nights: nights,
         };
 
-        checkAvailability(user1.requests, user2.requests, request.checkin, request.checkout)
+        checkAvailability(user1._id, user2._id, request.checkin, request.checkout)
         .then(function() {
             if(user1.community && user1.community.discount)
                 payment.discount = user1.community.discount;
@@ -463,13 +461,14 @@ function getRequest(id){
         })
         .populate({
             path: 'user1',
-            populate: 'requests',
+            populate: 'community',
+            select: '_id community'
         })
         .populate({
             path: 'user2',
-            populate: 'requests',
+            populate: 'community',
+            select: '_id community'
         })
-        // TODO: populate user and user requests in order to check availability
         .exec(function (err, request) {
             if (err || !request) {
                 let msg = err;
@@ -501,7 +500,7 @@ function getConfirmedRequest(id){
             path: 'transactionUser2',
         })
         .populate({
-            path: 'user1',// TODO: populate user requests in order to check availability
+            path: 'user1',
         })
         .populate({
             path: 'user2',
@@ -530,19 +529,31 @@ function getConfirmedRequest(id){
  * @param departure - departure date in ms
  * @param returnDate - return date in ms
  */
-function checkAvailability(senderRequests, recipientRequests, departure, returnDate){
+function checkAvailability(senderId, recipientId, departure, returnDate){
     let dfr = Q.defer();
-    if(checkConfirmationDates(senderRequests, departure, returnDate)){
-        if(checkConfirmationDates(recipientRequests, departure, returnDate)){
-            dfr.resolve();
-        }
-        else{
-            dfr.reject(REQUEST_UNAVAILABLE);
-        }
-    }
-    else{
-        dfr.reject(USER_UNAVAILABLE);
-    }
+    User.find({$or: [{_id: senderId}, {_id: recipientId}]})
+        .populate({
+            path: 'requests',
+            match: { status: Data.getRequestStatus().confirmed}
+        })
+        .exec(function(err, users) {
+            if(err || users.length < 2)
+                dfr.reject(err?err:"Some of the users couldn't be found");
+            let senderRequests = users[0]._id == senderId? users[0].requests : users[1].requests;
+            let recipientRequests = users[0]._id == recipientId? users[0].requests : users[1].requests;
+            if(checkConfirmationDates(senderRequests, departure, returnDate)){
+                if(checkConfirmationDates(recipientRequests, departure, returnDate)){
+                    dfr.resolve();
+                }
+                else{
+                    dfr.reject(REQUEST_UNAVAILABLE);
+                }
+            }
+            else{
+                dfr.reject(USER_UNAVAILABLE);
+            }
+        });
+
     return dfr.promise;
 }
 
@@ -556,46 +567,43 @@ function checkAvailability(senderRequests, recipientRequests, departure, returnD
  * @return {boolean} - true if dates are available
  */
 function checkConfirmationDates(requests, departure, returnDate){
-    // TODO: This needs updating because returnDate is the checkout date, meaning it is an available date
-    let confirmations = requests.filter(function(request){
-        return request.status == Data.getRequestStatus().confirmed;
-    });
     let available = true;
-    confirmations.every(function(confirmation){
-        if((confirmation.departure >= departure && confirmation.departure <= returnDate)
-            || (confirmation.returnDate >= departure && confirmation.returnDate <= returnDate)
-            || (returnDate >= confirmation.departure && returnDate <= confirmation.returnDate)){
-            available = false;
-            return false;
+    requests.every(function(confirmation){
+        if(confirmation.checkout < departure || confirmation.checkin >= returnDate){
+            return true;
         }
         else{
-            return true;
+            available = false;
+            return false;
         }
     });
     return available;
 }
 
-function updateDates(travelingInfo, travelingDest, departure, returnDate){
-    // TODO: FIX THIS!! update to new travelingInformation structure and use moment
-    var _travelingInfo = travelingInfo;
-    _travelingInfo.forEach(function(info, index){
-        if(departure <= info.departure && info.returnDate <= returnDate){
-            travelingInfo.splice(index, 1);
-            if (travelingDest.indexOf(info.destination) != -1) {
-                travelingDest.splice(travelingDest.indexOf(info.destination), 1);
-            }
-            return;
-        }
-        if(departure <= info.departure && returnDate <= info.returnDate){
-            travelingInfo[index].departure = returnDate + 1000*60*60*24; // set the new departure date to a day after the end of the confirmed dates
-            travelingInfo[index].dates = dateFormat(travelingInfo[index].departure, 'mmm dd') + ' - ' + dateFormat(travelingInfo[index].returnDate, 'mmm dd');
+/**
+ * Update user's traveling information according to new confirmed dates
+ *
+ * @param travelingInformation
+ * @param departure
+ * @param returnDate
+ * @return {travelingInformation}
+ */
+function updateDates(travelingInformation, departure, returnDate){
+    // first filter all dates that are not relevant anymore
+    travelingInformation = travelingInformation.filter(function (info){
+        return !(departure <= info.departure && info.returnDate <= returnDate);
+    });
+    travelingInformation.forEach(function(info, index){
+        if(departure <= info.departure && returnDate > info.departure && returnDate <= info.returnDate){
+            info.departure = returnDate;
+            info.dates = `${moment(returnDate).utc().format('MMM DD')} - ${moment(info.returnDate).utc().format('MMM DD')}`;
             return;
         }
         if(departure >= info.departure && departure <= info.returnDate){
-            travelingInfo[index].returnDate = departure - 1000*60*60*24; // set the new return date to a day before the first confirmed date
-            travelingInfo[index].dates = dateFormat(travelingInfo[index].departure, 'mmm dd') + ' - ' + dateFormat(travelingInfo[index].returnDate, 'mmm dd');
+            info.returnDate = departure;
+            info.dates = `${moment(info.departure).utc().format('MMM DD')} - ${moment(departure).utc().format('MMM DD')}`;
             return;
         }
     });
-    return {_travelingInfo, travelingDest};
+    return travelingInformation;
 }

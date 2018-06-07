@@ -117,9 +117,9 @@ function refund(transaction, userId){
 function createAndSaveToUser (data, userId){
     let dfr = Q.defer();
 
-    // if(data.ConfirmationCode == '0000000'){//failed transaction
-    //     dfr.reject('transaction failed');
-    // }
+    if(data.ConfirmationCode == '0000000'){//failed transaction
+        dfr.reject('transaction failed');
+    }
 
     let token = data.TranzilaTK;
     let transaction = new Transaction({

@@ -38,7 +38,6 @@ module.exports.init = function () {
             console.log(profile);
             let query = {};
             query['facebookId'] = profile.id;
-            // profile._json.email = 'stermaneran@gmail.com';
             if (profile._json.email) {
                 query = {};
                 query ["$or"] = [];
