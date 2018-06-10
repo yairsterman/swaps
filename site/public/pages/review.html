@@ -4,11 +4,11 @@
             How was your swap with {{firstName}}?
         </div>
         <div class="review-stars">
-            <span class="icon icon-star"></span>
-            <span class="icon {{rating > 1?'icon-star':'icon-emptystar'}}" ng-click="setRating(2)"></span>
-            <span class="icon {{rating > 2?'icon-star':'icon-emptystar'}}" ng-click="setRating(3)"></span>
-            <span class="icon {{rating > 3?'icon-star':'icon-emptystar'}}" ng-click="setRating(4)"></span>
-            <span class="icon {{rating > 4?'icon-star':'icon-emptystar'}}" ng-click="setRating(5)"></span>
+            <span class="icon icon-star-large" ng-click="setRating(1)"></span>
+            <span class="icon {{rating > 1?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(2)"></span>
+            <span class="icon {{rating > 2?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(3)"></span>
+            <span class="icon {{rating > 3?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(4)"></span>
+            <span class="icon {{rating > 4?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(5)"></span>
         </div>
         <div class="title">
             Write a review of your swap with {{firstName}}
