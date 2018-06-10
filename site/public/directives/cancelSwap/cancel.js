@@ -17,6 +17,11 @@ swapsApp.controller('cancelController', function($scope, decline, requestInfo, $
     $scope.cancelRequest = function(){
         $scope.processing = true;
         MessageService.cancelRequest(requestInfo._id, $scope.send.message).then(function(data){
+            if(data.data.error){
+                $scope.processing = false;
+                $scope.error = data.data.message?data.data.message:'Something went wrong please try again';
+                return;
+            }
             $scope.processing = false;
             $scope.cancelSent = true;
             $timeout(function(){
@@ -24,7 +29,7 @@ swapsApp.controller('cancelController', function($scope, decline, requestInfo, $
             },5000);
         },function(err){
             $scope.processing = false;
-            $scope.error = err
+            $scope.error = err?err:'Something went wrong please try again'
         });
     }
 

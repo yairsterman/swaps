@@ -97,15 +97,26 @@ swapper-home{
       position: absolute;
       top: 10px;
       left: 10px;
-      -webkit-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      transform: translateZ(0);
-      &:focus{
-        outline: none;
+      width: 40px;
+      height: 40px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      &.community{
+        left: initial;
+        right: 10px;
       }
-      &.pulse{
-        -webkit-animation: pulse 0.6s linear;
-        animation: pulse 0.6s linear;
+      .icon{
+        margin: 5px;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        &:focus{
+          outline: none;
+        }
+        &.pulse{
+          -webkit-animation: pulse 0.6s linear;
+          animation: pulse 0.6s linear;
+        }
       }
     }
     .user-info {
@@ -154,8 +165,8 @@ swapper-home{
     }
     .basics {
       display: flex;
-      justify-content: space-between;
-      padding-top: 0.6vw;
+      //justify-content: space-between;
+      padding-top: 0.4vw;
       color: #616161;
       @media @desktop {
         padding-top: 0.4vw;
@@ -168,14 +179,20 @@ swapper-home{
 
       }
       .tiny-text {
-        padding-right: 10px;
+        padding-right: 14px;
         font-size: 14px;
         display: flex;
         align-items: center;
         .icon{
-          margin-right: 8px;
+          margin-right: 0;
           &.icon-door{
-            margin-right: 0;
+            margin-right: 2px;
+          }
+          &.icon-bed-small{
+            margin-right: 6px;
+          }
+          &.icon-duck-small{
+            margin-right: 7px;
           }
           @media @mobile {
             margin-right: 5px;
@@ -200,6 +217,19 @@ swapper-home{
       padding-bottom: 0;
     }
   }
+}
+
+.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-left-color: #0E5D7C !important;
+}
+.tooltip{
+  .tooltip-arrow{
+    border-color: #0E5D7C !important;
+  }
+}
+.tooltip-inner {
+  background-color: #0E5D7C !important;
+  color: white !important;
 }
 
 @-webkit-keyframes pulse {

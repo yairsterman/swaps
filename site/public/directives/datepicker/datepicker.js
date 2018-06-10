@@ -110,6 +110,9 @@ swapsApp.directive('datepicker', function() {
                 if(scope.user){
                     getUserConfirmedDates();
                 }
+                if(scope.user){
+                    scope.userCity = scope.user.city;
+                }
                 if(scope.userCity && scope.profile.travelingInformation && scope.profile.travelingInformation.length > 0){
                     for(var i = 0; i < scope.profile.travelingInformation.length; i++){
                         if(!scope.profile.travelingInformation[i].destination || (scope.profile.travelingInformation[i].destination && scope.profile.travelingInformation[i].destination.city == scope.userCity)){ // if cities match or user chose Anywhere as destination

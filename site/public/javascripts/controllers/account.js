@@ -389,7 +389,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         var userId = requestInfo._id?requestInfo.user1?requestInfo.user1._id:requestInfo.user2._id:requestInfo.id
         $scope.swap.from = request.checkin;
-        $scope.swap.to = request.checkout + DAY; // request is saved as nights so add day to checkout
+        $scope.swap.to = request.checkout;
         UsersService.getProfile(userId).then(function(data){
             $scope.profile = data.data;
             $scope.requestId = request._id;

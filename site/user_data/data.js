@@ -22,6 +22,7 @@ const visibleUserData = {
         apptInfo:true,
         allowViewHome:true,
         deposit:true,
+        community:true,
         rating:true
     },
     member: {
@@ -45,6 +46,7 @@ const visibleUserData = {
         apptInfo:true,
         allowViewHome:true,
         deposit:true,
+        community:true,
         rating:true
     },
     restricted: {
@@ -77,6 +79,7 @@ const visibleUserData = {
         messages: true,
         requests: true,
         googleId: true,
+        community:true,
         facebookId: true,
     }
 };
