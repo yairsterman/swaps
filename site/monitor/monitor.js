@@ -12,22 +12,12 @@ mongoose.connect(config.mongoUrl).then(function () {
 });
 
 
-let emailService = require('./../services/email');
-emailService.init();
+// let emailService = require('./../services/email');
+// emailService.init();
 
 
-let rev = require('./routes');
-
-let express = require('express');
-let router = express.Router();
-const app = express();
-
-app.use('/review', rev);
 
 
-app.listen(3000,function () {
-    console.log("listening on 3000");
-});
 
 
 let schedule = require('node-schedule');
@@ -46,6 +36,6 @@ schedule.scheduleJob('0 23 * * *', functions.emailPassedPendingRequests);
 schedule.scheduleJob('0 23 * * *', functions.PendingRequestsReminder);
 schedule.scheduleJob('0 23 * * *', functions.emailConfirmedRequests);
 schedule.scheduleJob('0 23 * * *', functions.emailReview);
-// functions.emailReview(); // for testing...
+functions.emailReview(); // for testing...
 
 // module.exports = monitor;

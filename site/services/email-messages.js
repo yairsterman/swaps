@@ -4,7 +4,8 @@ const MY_SWAPS = 'https://swapshome.com/account/upcoming-swaps';
 const SET_SWAPS = 'https://swapshome.com/account/set-up-swaps';
 const SEARCH = 'https://swapshome.com/travelers/Anywhere';
 const MESSAGES = 'https://swapshome.com/account/messages';
-const REVIEW = 'https://swapshome.com/review/get-data?token=';
+// const REVIEW = 'https://swapshome.com/review/get-data?token=';
+const REVIEW = 'localhost:3000/review/get-data?token=';
 
 const SIGNITURE = '<div class="swaps-signature" style="width:60vw;margin:50px auto;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
     '<div>Tel Aviv, Israel</div></div>';

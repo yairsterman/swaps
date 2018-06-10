@@ -6,6 +6,7 @@ let emailMessages = require('./../services/email-messages');
 let moment = require('moment');
 let util = require('./../utils/util');
 let jwt = require('jsonwebtoken');
+let config = require('./../config');
 
 const DAY = 1000 * 60 * 60 * 24;// one day in milliseconds
 /**
@@ -142,79 +143,115 @@ module.exports.emailReview = function () {
     Requests.find({status: data.getRequestStatus().confirmed}, function (err, requests) {
         if (err) return err;
         requests.forEach(function (request) {
+            let now = moment.utc().valueOf();
             let diff = util.calculateNightsBetween(now, request.checkout);
             User.find({$or: [{_id: request.user1}, {_id: request.user2}]}, function (err, user) {
                 if (err) return err;
-                if (request.tokenUser1 === "" && diff === 1) {
+
+                //
+                diff =7;
+                //
+
+                if (request.tokenUser1 && diff === 1) {
                     let t1 = jwt.sign({
                         expiresIn: moment(new Date()).add(7, 'days').utc().valueOf(),
                         reqId: request.id,
                         user: "1"
-                    }, 'swaps');
+                    }, config.jwtSecret);
 
                     let t2 = jwt.sign({
                         expiresIn: moment(new Date()).add(7, 'days').utc().valueOf(),
                         reqId: request.id,
                         user: "2"
-                    }, 'swaps');
+                    }, config.jwtSecret);
 
                     request.update({tokenUser1: t1, tokenUser2: t2}).then(function () {
-                        User.findOne({_id: request.user1}, function (err, user) {
-                            if (err) return err;
-                            if (user.email) {
-                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, t1));
+                        if(user[0]._id == request.user1){
+                            if (user[0].email) {
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], t1));
+                                console.log("email sent");
                                 // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
-                        });
-                        User.findOne({_id: request.user2}, function (err, user) {
-                            if (err) return err;
-                            if (user.email) {
-                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, t2));
-                                // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t2));
+                            if (user[1].email) {
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[1], t2));
+                                console.log("email sent");
+                                // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
-                        });
+                        }
+                        else{
+                            if (user[0].email) {
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], t2));
+                                console.log("email sent");
+                                // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
+                            }
+                            if (user[1].email) {
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[1], t1));
+                                console.log("email sent");
+                                // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
+                            }
+                        }
                     });
                 }
-                else if (request.tokenUser1 !== "") {
+                else {
                     switch (diff) {
                         case 7:
-                            if (request.tokenUser2 !== 'done') {
-                                User.findOne({_id: request.user2}, function (err, user) {
-                                    if (err) return err;
-                                    if (user.email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser2));
+                            if (request.tokenUser2) {
+                                if(user[0]._id == request.user2) {
+                                    if (user[0].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser2));
                                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
                                     }
-                                });
-                            }
-                            if (request.tokenUser1 !== 'done') {
-                                User.findOne({_id: request.user1}, function (err, user) {
-                                    if (err) return err;
-                                    if (user.email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser1));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser1));
+                                }
+                                else{
+                                        if (user[1].email) {
+                                            email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser2));
+                                            // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                        }
                                     }
-                                });
+                                }
+                            if (request.tokenUser1) {
+                                if(user[0]._id == request.user1) {
+                                    if (user[0].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser1));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                    }
+                                }
+                                else{
+                                    if (user[1].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser1));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                    }
+                                }
                             }
                             break;
                         case 3:
-                            if (request.tokenUser2 !== 'done') {
-                                User.findOne({_id: request.user2}, function (err, user) {
-                                    if (err) return err;
-                                    if (user.email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser2));
+                            if (request.tokenUser2) {
+                                if(user[0]._id == request.user2) {
+                                    if (user[0].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser2));
                                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
                                     }
-                                });
-                            }
-                            if (request.tokenUser1 !== 'done') {
-                                User.findOne({_id: request.user1}, function (err, user) {
-                                    if (err) return err;
-                                    if (user.email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user, request.tokenUser1));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser1));
+                                }
+                                else{
+                                    if (user[1].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser2));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
                                     }
-                                });
+                                }
+                            }
+                            if (request.tokenUser1) {
+                                if(user[0]._id == request.user1) {
+                                    if (user[0].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser1));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                    }
+                                }
+                                else{
+                                    if (user[1].email) {
+                                        email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser1));
+                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                                    }
+                                }
                             }
                             break;
                         default:
