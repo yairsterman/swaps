@@ -57,8 +57,16 @@ router.post('/postReview', function (req, res, next) {
                     request.update({tokenUser1: null}).then(function () {
                         User.findOne({id: request.user2}, function (err, user) {
                             if(err)return err;
-                            if(user) {
-                                user.reviews.push(req.body.review);
+                            if(user && req.user) {
+
+                                let rev = {
+                                    rating: req.body.rating,
+                                    name: req.user.firstName,
+                                    city: req.user.city,
+                                    review: req.body.review,
+                                };
+
+                                user.reviews.push(rev);
                                 user.save();
                             }
                         });
@@ -69,8 +77,16 @@ router.post('/postReview', function (req, res, next) {
                     request.update({tokenUser2: null}).then(function () {
                         User.findOne({_id: request.user1}, function (err, user) {
                             if(err)return err;
-                            if(user) {
-                                user.reviews.push(req.body.review);
+                            if(user && req.user) {
+
+                                let rev = {
+                                    rating: req.body.rating,
+                                    name: req.user.firstName,
+                                    city: req.user.city,
+                                    review: req.body.review,
+                                };
+
+                                user.reviews.push(rev);
                                 user.save();
                             }
                         });
