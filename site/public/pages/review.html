@@ -1,13 +1,25 @@
 <div class="review-page">
-    <div class="title">
-        Write a review of your swap with {{firstName}}
-    </div>
-    <div class="sub-title">
-        Remember this review can be seen on {{firstName}}'s profile by anyone
-    </div>
-    <div class="send-review">
-        <textarea class="form-control review" rows="6" cols="20" ng-model="review"></textarea>
-        <input type="button" class="btn btn-primary btn-swap" value="Send Review"
-               ng-click="postReview()" ng-disabled="review == ''">
+    <div class="review-area">
+        <div class="title">
+            How was your swap with {{firstName}}?
+        </div>
+        <div class="review-stars">
+            <span class="icon icon-star"></span>
+            <span class="icon {{rating > 1?'icon-star':'icon-emptystar'}}" ng-click="setRating(2)"></span>
+            <span class="icon {{rating > 2?'icon-star':'icon-emptystar'}}" ng-click="setRating(3)"></span>
+            <span class="icon {{rating > 3?'icon-star':'icon-emptystar'}}" ng-click="setRating(4)"></span>
+            <span class="icon {{rating > 4?'icon-star':'icon-emptystar'}}" ng-click="setRating(5)"></span>
+        </div>
+        <div class="title">
+            Write a review of your swap with {{firstName}}
+        </div>
+        <div class="sub-title">
+            Remember this review can be seen on {{firstName}}'s profile by anyone
+        </div>
+        <div class="send-review">
+            <textarea class="form-control review" rows="6" cols="20" ng-model="review"></textarea>
+            <input type="button" class="btn btn-primary btn-swap" value="Send Review"
+                   ng-click="postReview()" ng-disabled="review == ''">
+        </div>
     </div>
 </div>
