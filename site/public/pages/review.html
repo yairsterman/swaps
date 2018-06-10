@@ -1,0 +1,13 @@
+<div class="review-page">
+    <div class="title">
+        Write a review of your swap with {{firstName}}
+    </div>
+    <div class="sub-title">
+        Remember this review can be seen on {{firstName}}'s profile by anyone
+    </div>
+    <div class="send-review">
+        <textarea class="form-control review" rows="6" cols="20" ng-model="review"></textarea>
+        <input type="button" class="btn btn-primary btn-swap" value="Send Review"
+               ng-click="postReview()" ng-disabled="review != ''">
+    </div>
+</div>
