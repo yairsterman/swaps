@@ -7,26 +7,30 @@ let moment = require('moment');
 let util = require('./../utils/util');
 let jwt = require('jsonwebtoken');
 
-let now = moment.utc().valueOf();
-
-
-//at midnight run through all the users and if the returnDate of the travelingInformation is passed remove it from the list
+const DAY = 1000 * 60 * 60 * 24;// one day in milliseconds
+/**
+ * Updates all users traveling information.
+ * If departure date has passed then update new departure to today.
+ * If return date has passed then remove information from the array.
+ */
 module.exports.updateTravelingInformation = function () {
     User.find({}, function (err, users) {
         if (err) return err;
         let updated = false;
+        let now = moment.utc().valueOf();
         users.forEach(function (user) {
             let i = user.travelingInformation.length - 1;
             while (i >= 0) {
                 let returnDate = user.travelingInformation[i].returnDate;
                 let departureDate = user.travelingInformation[i].departure;
-                if (!returnDate || returnDate < now) {
+                if (returnDate < now) {
                     user.travelingInformation.splice(i, 1);
                     updated = true;
                 }
-                else if (!departureDate || departureDate < now) {
-                    departureDate = now;
-                    user.travelingInformation[i].dates = moment(departureDate).utc().format('MMM DD') + "-" + moment(returnDate).utc().format('MMM DD');
+                else if (departureDate < now) {
+                    departureDate = moment.utc().set({hour:0, minute:0, second:0 ,millisecond:0}).valueOf() + DAY;
+                    user.travelingInformation[i].departure = departureDate;
+                    user.travelingInformation[i].dates = moment(departureDate).utc().format('MMM DD') + " - " + moment(returnDate).utc().format('MMM DD');
                     updated = true;
                 }
                 i -= 1;
@@ -43,8 +47,10 @@ module.exports.updateTravelingInformation = function () {
 };
 
 
-//run through all requests that are pending and if the check in date passed
-//change the status to canceled and send a mail to the user
+/**
+ * run through all requests that are pending and if the check in date passed
+ * change the status to canceled and send a mail to the user
+ */
 module.exports.emailPassedPendingRequests = function () {
     Requests.find({status: data.getRequestStatus().pending}, function (err, requests) {
         if (err) return err;
@@ -129,8 +135,9 @@ module.exports.emailConfirmedRequests = function () {
 };
 
 
-//one day after the swap send email to users with token (7 days)
-//remind them in 3, 7 days if not reviewed  already
+/**
+ * Find all swaps are completed
+ */
 module.exports.emailReview = function () {
     Requests.find({status: data.getRequestStatus().confirmed}, function (err, requests) {
         if (err) return err;
