@@ -147,12 +147,7 @@ module.exports.emailReview = function () {
             let diff = util.calculateNightsBetween(now, request.checkout);
             User.find({$or: [{_id: request.user1}, {_id: request.user2}]}, function (err, user) {
                 if (err) return err;
-
-                //
-                diff =7;
-                //
-
-                if (request.tokenUser1 && diff === 1) {
+                // if (request.tokenUser1 && diff === 1) {
                     let t1 = jwt.sign({
                         expiresIn: moment(new Date()).add(7, 'days').utc().valueOf(),
                         reqId: request.id,
@@ -191,73 +186,73 @@ module.exports.emailReview = function () {
                             }
                         }
                     });
-                }
-                else {
-                    switch (diff) {
-                        case 7:
-                            if (request.tokenUser2) {
-                                if(user[0]._id == request.user2) {
-                                    if (user[0].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser2));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                                else{
-                                        if (user[1].email) {
-                                            email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser2));
-                                            // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                        }
-                                    }
-                                }
-                            if (request.tokenUser1) {
-                                if(user[0]._id == request.user1) {
-                                    if (user[0].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser1));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                                else{
-                                    if (user[1].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser1));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                            }
-                            break;
-                        case 3:
-                            if (request.tokenUser2) {
-                                if(user[0]._id == request.user2) {
-                                    if (user[0].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser2));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                                else{
-                                    if (user[1].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser2));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                            }
-                            if (request.tokenUser1) {
-                                if(user[0]._id == request.user1) {
-                                    if (user[0].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser1));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                                else{
-                                    if (user[1].email) {
-                                        email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser1));
-                                        // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
-                                    }
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                // }
+                // else {
+                //     switch (diff) {
+                //         case 7:
+                //             if (request.tokenUser2) {
+                //                 if(user[0]._id == request.user2) {
+                //                     if (user[0].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser2));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //                 else{
+                //                         if (user[1].email) {
+                //                             email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser2));
+                //                             // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                         }
+                //                     }
+                //                 }
+                //             if (request.tokenUser1) {
+                //                 if(user[0]._id == request.user1) {
+                //                     if (user[0].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser1));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //                 else{
+                //                     if (user[1].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser1));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //             }
+                //             break;
+                //         case 3:
+                //             if (request.tokenUser2) {
+                //                 if(user[0]._id == request.user2) {
+                //                     if (user[0].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser2));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //                 else{
+                //                     if (user[1].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser2));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //             }
+                //             if (request.tokenUser1) {
+                //                 if(user[0]._id == request.user1) {
+                //                     if (user[0].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], request.tokenUser1));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //                 else{
+                //                     if (user[1].email) {
+                //                         email.sendMail(['stermaneran@gmail.com'], 'Review reminder!!!', emailMessages.eran(user[1], request.tokenUser1));
+                //                         // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,request.tokenUser2));
+                //                     }
+                //                 }
+                //             }
+                //             break;
+                //         default:
+                //             break;
+                //     }
+                // }
             });
         })
     });

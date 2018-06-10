@@ -1,3 +1,17 @@
+
+
+//for eran
+//create new branch
+//add side bar to date range
+//with options
+//choose all month (this month)
+//weekends
+//flexible
+//look at kayak.com
+
+
+
+
 swapsApp.directive('datepicker', function() {
     return {
         require: 'ngModel',

@@ -12,8 +12,8 @@ mongoose.connect(config.mongoUrl).then(function () {
 });
 
 
-// let emailService = require('./../services/email');
-// emailService.init();
+let emailService = require('./../services/email');
+emailService.init();
 
 
 
