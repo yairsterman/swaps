@@ -21,7 +21,7 @@ router.get('/verifyToken', function (req, res, next) {
         else {
             Requests.findOne({_id: decoded.reqId})
                 .populate({
-                    path: 'user' + decoded.user,
+                    path: 'user' + String(3- decoded.user),
                     select: "firstName",
                 })
                 .exec(function (err, request) {
@@ -30,7 +30,7 @@ router.get('/verifyToken', function (req, res, next) {
                         res.json(error);
                     }
                     else {
-                        let user = decoded.user === "1" ? request.user1 : request.user2;
+                        let user = decoded.user === "1" ? request.user2 : request.user1;
                         res.status(200).json({verified: true, user: user});
                     }
                 });
@@ -40,7 +40,7 @@ router.get('/verifyToken', function (req, res, next) {
 
 
 router.post('/postReview', function (req, res, next) {
-    let token = req.query.token;
+    let token = req.body.token;
     jwt.verify(token, config.jwtSecret, function (err, decoded) {
         if (err) {
             console.log("error");
@@ -54,25 +54,26 @@ router.post('/postReview', function (req, res, next) {
             Requests.findOne({_id: decoded.reqId}, function (err, request) {
                 if (decoded.user === "1") {
                     //Review belongs to user 1
-                    request.update({tokenUser1: 'done'}).then(function () {
-                        console.log('user 1 gave review.js')
-                    });
-                    User.findOne({id: request.user2}, function (err, user) {
-                        if(err)return err;
-                        user.reviews.push(req.rev);
-                        user.save();
+                    request.update({tokenUser1: null}).then(function () {
+                        User.findOne({id: request.user2}, function (err, user) {
+                            if(err)return err;
+                            if(user) {
+                                user.reviews.push(req.body.review);
+                                user.save();
+                            }
+                        });
                     });
                 }
                 else {
                     //Review belongs to user 2
-                    //save review.js to user
-                    request.update({tokenUser2: 'done'}).then(function () {
-                        console.log('user 2 gave review.js')
-                    });
-                    User.findOne({id: request.user1}, function (err, user) {
-                        if(err)return err;
-                        user.reviews.push(req.rev);
-                        user.save();
+                    request.update({tokenUser2: null}).then(function () {
+                        User.findOne({_id: request.user1}, function (err, user) {
+                            if(err)return err;
+                            if(user) {
+                                user.reviews.push(req.body.review);
+                                user.save();
+                            }
+                        });
                     });
                 }
             });
