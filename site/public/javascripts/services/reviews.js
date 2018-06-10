@@ -15,9 +15,9 @@ swapsApp.service('ReviewsService', function($http, $q) {
         return defer.promise;
     };
 
-    this.postReview = function(review, token) {
+    this.postReview = function(review, rating, token) {
         var defer = $q.defer();
-        $http.post('review/postReview', {review: review, token: token}).then(function(data){
+        $http.post('review/postReview', {review: review, rating: rating, token: token}).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }

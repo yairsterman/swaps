@@ -7,8 +7,12 @@ swapsApp.controller('reviewController', function($scope, $rootScope, $routeParam
         $scope.firstName = data.user.firstName;
     });
 
+    $scope.setRating = function(rating){
+        $scope.rating = rating;
+    };
+
     $scope.postReview = function(){
-        ReviewsService.postReview($scope.review, token).then(function(data){
+        ReviewsService.postReview($scope.review, $scope.rating, token).then(function(data){
             $scope.reviewSent = true;
         },function(err){
             $scope.error = 'Something went wrong, please try sending your review again'
