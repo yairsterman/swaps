@@ -42,6 +42,9 @@ var UserSchema = new Schema({
         name: String,
         city: String,
         review: String,
+        image: String,
+        _id: String,
+        date: String
     }],
     photos: Array,
     favorites: [{ type: Schema.Types.ObjectId, ref: 'User' }],

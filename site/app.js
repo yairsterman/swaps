@@ -10,7 +10,6 @@ let less = require('less');
 let fs = require('fs');
 
 let passportService = require('./services/passport');
-let emailService = require('./services/email');
 let config = require('./config');
 
 let index = require('./routes/index');
