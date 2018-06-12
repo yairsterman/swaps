@@ -38,6 +38,10 @@ $routeProvider
     .when('/travelers/:city?', {
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
+    })
+    .when('/login', {
+        templateUrl : '/pages/login.html',
+        controller  : 'loginController'
     });
 
     $locationProvider.html5Mode(true);

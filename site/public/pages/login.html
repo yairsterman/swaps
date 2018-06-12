@@ -1,0 +1,21 @@
+<div class="login-page">
+    <div class="login-model" ng-if="!loggedIn">
+        <div class="title">
+            Join Swaps
+            <div class="underline"></div>
+        </div>
+        <div class="sub-title">
+            In just a few steps you could find your next Swap
+        </div>
+        <div class="button-signin">
+            <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
+        </div>
+        <div class="button-signin bottom">
+            <button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div>Join with Google</button>
+        </div>
+        <div class="bottom">
+            By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
+            and <span class="link" ng-click="policy()">Privacy Policy</span>
+        </div>
+    </div>
+</div>

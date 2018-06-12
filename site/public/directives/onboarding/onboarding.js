@@ -36,6 +36,10 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.closeModel = function(){
+        if($rootScope.externalLogin){
+            $rootScope.externalLogin = false;
+            $location.url('/');
+        }
         $scope.$dismiss();
     }
 
@@ -302,8 +306,8 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.go = function(path){
+        $scope.closeModel();
         $location.url('/' + path);
-        $scope.$dismiss();
     }
 
     if($scope.user.occupation){
