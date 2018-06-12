@@ -30,6 +30,21 @@ swapsApp.service('AccountService', function($http, $q){
        return defer.promise;
    };
 
+    this.setCommunity = function(code) {
+        var defer = $q.defer();
+        $http.post('account/set-community', {code:code}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+        return defer.promise;
+    };
+
    this.addTravelInfo = function(info) {
        var defer = $q.defer();
        $http.post('account/add-travel-info', {info: info}).then(function(data){

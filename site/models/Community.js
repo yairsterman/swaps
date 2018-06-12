@@ -5,6 +5,7 @@ var schema = new Schema({
     name: String,
     admin: String, // admin email
     discount: Number,
+    code: String,
     updated_at: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model('Community', schema);

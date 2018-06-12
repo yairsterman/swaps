@@ -210,9 +210,25 @@
         font-size: 16px;
       }
     }
+    .description{
+      text-align: center;
+      padding-bottom: 10px;
+      font-size: 14px;
+      font-weight: 300;
+    }
+    .community-input{
+      width: 40%;
+      margin: auto;
+      @media @mobile {
+        width: 50%;
+      }
+    }
     .start-button{
       padding-top: 60px;
       display: flex;
+      &.padding-15{
+        padding-top: 15px;
+      }
       &.end{
         padding-top: 20px;
         flex-direction: column;

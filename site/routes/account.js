@@ -8,6 +8,7 @@ let router = express.Router();
 let mongoose = require('mongoose');
 let User = require('../models/User.js');
 let Request = require('../models/Request.js');
+let Community = require('../models/Community.js');
 let path = require('path');
 let fs = require('fs');
 let Q = require('q');
@@ -51,32 +52,23 @@ router.post('/edit-profile', function (req, res, next) {
     let gender = req.body.gender;
     let thingsToDo = req.body.thingsToDo;
 
-    let toUpdate = {};
+    let update = {};
     if(email)
-        toUpdate.email = email;
+        update.email = email;
     if(aboutMe)
-        toUpdate.aboutMe = aboutMe;
+        update.aboutMe = aboutMe;
     if(occupation)
-        toUpdate.occupation = occupation;
+        update.occupation = occupation;
     if(birthday)
-        toUpdate.birthday = birthday;
+        update.birthday = birthday;
     if(gender)
-        toUpdate.gender = gender;
+        update.gender = gender;
     if(thingsToDo)
-        toUpdate.thingsToDo = thingsToDo;
+        update.thingsToDo = thingsToDo;
 
+    let toUpdate = {$set: update};
+    findOneAndUpdate(id, toUpdate, res);
 
-    User.findOneAndUpdate({_id: id}, {$set: toUpdate}, {new: true, projection: Data.getVisibleUserData().restricted})
-        .then(function (user) {
-        if (!user) {
-            error.message = 'No user found';
-            return res.json(error);
-        }
-        res.json(user);
-        },function(err){
-            error.message = err;
-            return res.json(error);
-        });
 });
 
 router.post('/edit-listing', function (req, res, next) {
@@ -86,28 +78,28 @@ router.post('/edit-listing', function (req, res, next) {
     let deposit = req.body.deposit;
     let location = {};
 
-    let toUpdate = {};
+    let update = {};
 
     if(apptInfo)
-        toUpdate.apptInfo = apptInfo;
+        update.apptInfo = apptInfo;
     if(deposit)
-        toUpdate.apptInfo = deposit;
+        update.deposit = deposit;
 
     let dfr = Q.defer();
     if(address){
         geocoder.geocode(address)
             .then(function (geo) {
-                toUpdate.location = geo.location;
+                update.location = geo.location;
                 let country = geo.country;
                 let city = geo.city;
                 let region = geo.region;
                 if (!city) {
                     city = geo.region;
                 }
-                toUpdate.country = country;
-                toUpdate.city = city;
-                toUpdate.region = region;
-                toUpdate.address = address;
+                update.country = country;
+                update.city = city;
+                update.region = region;
+                update.address = address;
                 dfr.resolve();
             })
             .catch(function (err) {
@@ -120,22 +112,30 @@ router.post('/edit-listing', function (req, res, next) {
     }
 
     dfr.promise.then(function(){
-        User.findOneAndUpdate({_id: id}, {$set: toUpdate}, {new: true, projection: Data.getVisibleUserData().restricted})
-            .then(function (user) {
-                if (!user) {
-                    error.message = 'No user found';
-                    return res.json(error);
-                }
-                res.json(user);
-            },function(err){
-                error.message = err;
-                return res.json(error);
-            });
+        let toUpdate = {$set: update};
+        findOneAndUpdate(id, toUpdate, res);
+
     },function(err){
         error.message = err;
         return res.json(error);
     });
 
+});
+
+router.post('/set-community', function (req, res, next) {
+    let code = req.body.code;
+    let id = req.user._id;
+
+    Community.findOne({code: code}).then(function (community){
+        if(!community){
+            error.message = 'No community found, please contact your community administrator';
+            return res.json(error);
+        }
+
+        let toUpdate = {$set: {community: community._id}};
+        findOneAndUpdate(id, toUpdate, res);
+
+    })
 });
 
 router.post('/add-travel-info', function (req, res, next) {
@@ -156,14 +156,10 @@ router.post('/add-travel-info', function (req, res, next) {
             dates: departure && returnDate?`${moment.utc(departure).format('MMM DD')} - ${moment.utc(returnDate).format('MMM DD')}`: null,
             guests: guests,
         };
-        User.findOneAndUpdate({_id: id}, {$push: {travelingInformation: newInfo}}, {new: true, projection: Data.getVisibleUserData().restricted})
-            .then(function (user) {
-                if (!user) {
-                    error.message = 'No user found';
-                    return res.json(error);
-                }
-                res.json(user);
-            });
+
+        let toUpdate ={$push: {travelingInformation: newInfo}};
+        findOneAndUpdate(id, toUpdate, res);
+
     });
 });
 
@@ -204,14 +200,10 @@ router.post('/update-travel-info', function (req, res, next) {
             updatedInfo['travelingInformation.$.fullDestination'] = null;
             updatedInfo['travelingInformation.$.destination'] = null;
         }
-        User.findOneAndUpdate({'travelingInformation._id': travelId}, {$set: updatedInfo}, {new: true, projection: Data.getVisibleUserData().restricted})
-            .then(function (user) {
-                if (!user) {
-                    error.message = 'No user found';
-                    return res.json(error);
-                }
-                res.json(user);
-            });
+
+        let toUpdate = {$set: updatedInfo};
+        findOneAndUpdate(id, toUpdate, res);
+
     });
 });
 
@@ -224,14 +216,9 @@ router.post('/remove-travel-info', function (req, res, next) {
     let id = req.user.id;
     let travelId = req.body.id;
 
-    User.findOneAndUpdate({'_id': id}, {$pull: {travelingInformation:{_id: travelId}}}, {new: true, projection: Data.getVisibleUserData().restricted})
-        .then(function (user) {
-            if (!user) {
-                error.message = 'No user found';
-                return res.json(error);
-            }
-            res.json(user);
-        });
+    let toUpdate = {$pull: {travelingInformation:{_id: travelId}}};
+    findOneAndUpdate(id, toUpdate, res);
+
 });
 
 router.post('/delete-photo', function (req, res, next) {
@@ -245,26 +232,35 @@ router.post('/delete-photo', function (req, res, next) {
                 var index = user.photos.indexOf(url);
                 if (index != -1) {
                     photos.splice(index, 1);
-                    User.update({_id: id}, {$set: {photos: photos}}, function (err, updated) {
-                        if (err) {
-                            error.message = "File not removed \n" + err;
-                            res.json(error);
-                        }
-                        else {
-                            var fileName = req.user.id + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.'));
-							cloudinary.v2.uploader.destroy(fileName, function(error, result){
-								if(error || result.result != 'ok'){
-									if(!error)
-										error = {}
-									error.message = "File not removed \n" + result.result;
-									res.json(error);
-								}
-								else{
-									res.json(user);
-								}
-							});
-                        }
-                    });
+                    User.update({_id: id}, {$set: {photos: photos}}, {new: true, projection: Data.getVisibleUserData().restricted})
+                        .populate({
+                            path: 'community',
+                            select: 'name _id',
+                        })
+                        .populate({
+                            path: 'requests',
+                            match: {status: {$ne: Data.getRequestStatus().canceled}}
+                        })
+                        .exec(function (err, _user) {
+                            if (err) {
+                                error.message = "File not removed \n" + err;
+                                res.json(error);
+                            }
+                            else {
+                                var fileName = req.user.id + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.'));
+                                cloudinary.v2.uploader.destroy(fileName, function(error, result){
+                                    if(error || result.result != 'ok'){
+                                        if(!error)
+                                            error = {}
+                                        error.message = "File not removed \n" + result.result;
+                                        res.json(error);
+                                    }
+                                    else{
+                                        res.json(user);
+                                    }
+                                });
+                            }
+                        });
                 }
                 else {
                     error.message = "File not found";
@@ -303,19 +299,8 @@ router.post('/uploadCompleted', function (req, res, next) {
 		}
 		if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
 		{
-			User.update({_id: id}, {"$push": {"photos": result.resources[0].secure_url}})
-			.then(function (updated) {
-				if (!updated.ok) {
-					error.message = 'Failed to update photos';
-					throw (error);
-				} else {
-					return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
-				}
-			}).then(function(user) {
-				res.json(user);
-			},function(err){
-				res.json(error);
-			});
+            let toUpdate = {image: result.resources[0].secure_url};
+            findOneAndUpdate(id, toUpdate, res);
 		}
 		else
 		{
@@ -343,19 +328,8 @@ router.post('/profileUploadCompleted', function (req, res, next) {
         }
         if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
         {
-            User.update({_id: id}, {image: result.resources[0].secure_url})
-                .then(function (updated) {
-                    if (!updated.ok) {
-                        error.message = 'Failed to update photo';
-                        throw (error);
-                    } else {
-                        return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
-                    }
-                }).then(function(user) {
-                res.json(user);
-            },function(err){
-                res.json(error);
-            });
+            let toUpdate = {image: result.resources[0].secure_url};
+            findOneAndUpdate(id, toUpdate, res);
         }
         else
         {
@@ -430,61 +404,6 @@ router.get('/get-profile-upload-token', function (req, res, next) {
     });
 });
 
-router.post('/upload', upload.array('photos', 8), function (req, res) {
-    var id = req.user.id;
-    var photos = [];
-    for (i = 0; i < req.files.length; i++) {
-        var tempPath = req.files[i].path;
-        if (path.extname(req.files[i].originalname).toLowerCase() === '.jpg' || path.extname(req.files[i].originalname).toLowerCase() === '.jpeg') {
-            var targetPath = path.resolve('public/images/' + tempPath + path.extname(req.files[i].originalname).toLowerCase());
-            try {
-                fs.renameSync(tempPath, targetPath);
-                tempPath = tempPath.replace(/\\/g, "/");
-                photos.push(siteUrl + 'images/' + tempPath + path.extname(req.files[i].originalname).toLowerCase());
-            }
-            catch (err) {
-                error.message = 'Error uploading file';
-                res.redirect('/#/account/listing');
-            }
-
-        } else {
-            try {
-                fs.unlinkSync(tempPath);
-                error.message = 'Wrong file type';
-                res.redirect('/#/account/listing');
-            }
-            catch (err) {
-                throw err;
-            }
-        }
-    }
-    console.log("upload complete");
-    User.findOne({_id: id}, function (err, user) {
-        if (err) throw err;
-        else {
-            if (user) {
-                photos = user.photos.concat(photos);
-                if (photos.length > 8) {
-                    photos.splice(8);
-                }
-                User.update({_id: id}, {$set: {photos: photos}}, function (err, user) {
-                    if (err) {
-                        error.message = err;
-                        res.redirect('/#/account/listing');
-                    }
-                    else {
-                        console.log("updated DB");
-                        res.redirect('/#/account/listing');
-                    }
-                });
-            }
-            else {
-                // res.redirect('/#/account/listing');
-            }
-        }
-    });
-});
-
 router.get('/get-requests', function (req, res, next) {
     var id = req.user._id;
     var requestIds = req.user.requests;
@@ -526,10 +445,19 @@ router.put('/add-favorite', function (req, res, next) {
             error.message = err;
             throw (error);
         } else {
-            return User.findOne({_id: id}, Data.getVisibleUserData().restricted);
+            return User.findOne({_id: id}, Data.getVisibleUserData().restricted)
+                .populate({
+                    path: 'community',
+                    select: 'name _id',
+                })
+                .populate({
+                    path: 'requests',
+                    match: {status: {$ne: Data.getRequestStatus().canceled}}
+                })
+                .exec();
         }
     })
-    .then(function(_user){
+    .then(function(err, _user){
         user = _user;
         if (!user) {
             error.message = err;
@@ -592,31 +520,32 @@ router.get('/get-favorites', function (req, res, next) {
 
 router.put('/unset-favorite', function (req, res, next) {
 
-    var id = req.user._id;
-    var toDelete = req.body.id;
+    let id = req.user._id;
+    let toDelete = req.body.id;
 
-    User.update(
-        { _id: id },
-        { $pull: { 'favorites': toDelete} }, function(err, ans) {
-            if (err) {
-                error.message = err;
-                res.json(error);
-            } else {
-                User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                    if (err) {
-                        error.message = err;
-                        res.json(error);
-                    }
-                    else {
-                        res.json(user);
-                    }
-                });
-            }
+    let toUpdate = {$pull: { 'favorites': toDelete}};
 
-
-        }
-    );
+    findOneAndUpdate(id, toUpdate, res);
 
 });
+
+function findOneAndUpdate(id, toUpdate, res){
+    User.findOneAndUpdate({_id: id}, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})
+        .populate({
+            path: 'community',
+            select: 'name _id',
+        })
+        .exec(function (err, user) {
+            if (err){
+                error.message = err;
+                return res.json(error);
+            }
+            if (!user) {
+                error.message = 'No user found';
+                return res.json(error);
+            }
+            res.json(user);
+        });
+}
 
 module.exports = router;

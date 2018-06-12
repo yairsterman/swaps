@@ -84,7 +84,24 @@
             <div class="sub-title">
                 Complete your profile so other Swappers will be able to request Swaps, you can always edit this information in your profile page.
             </div>
-            <div class="start-button">
+            <div ng-if="!user.community">
+                <div class="description">
+                    If you are joining as part of a community <br>
+                    enter the community code given by your admin here:
+                </div>
+                <div class="community-input">
+                    <input class="form-control" name="community" ng-model="community.code">
+                </div>
+                <div class="start-button padding-15">
+                    <div class="complete-btn btn btn-primary btn-close" ng-click="sendCommunityCode()" ng-disabled="!community.code || community.code ==''">
+                        Send
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Joining on your own?
+                </div>
+            </div>
+            <div class="start-button padding-15">
                 <div class="complete-btn btn btn-primary" ng-click="next()">
                     Start!
                 </div>
@@ -133,14 +150,14 @@
                 <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
                     <span class="explanation"></span>
                 </label>
-                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" is-focused="!isInFocus && (!user.address || user.address == '')"  ng-focus-lost="isInFocus = 'title'" ng-model="user.address" autocomplete>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" is-focused="!isInFocus && (!user.address || user.address == '')"  ng-model="user.address" autocomplete>
             </div>
             <div class="form-group">
                 <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
                     <span class="explanation"></span>
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')"  ng-focus-lost="isInFocus = 'aboutMyHome'" ng-model="user.apptInfo.title">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="form-group">

@@ -1,6 +1,8 @@
 swapsApp.controller('onboardingController', function($scope, $rootScope, $location, $sce,AccountService, alertify) {
     $scope.user = $rootScope.user;
     $scope.numOfFiles = 0;
+    $scope.community = {};
+    $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
 
     $scope.getInitialPhase = function(){
         var initialPhase = 'onSignup';
@@ -35,6 +37,21 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
 
     $scope.closeModel = function(){
         $scope.$dismiss();
+    }
+
+    $scope.sendCommunityCode = function(){
+        if($scope.community.code && $scope.community.code != ''){
+            AccountService.setCommunity($scope.community.code).then(function(data){
+                $rootScope.user = data;
+                $scope.user = $rootScope.user;
+                $scope.next();
+            },function(err){
+                alertify.error(err);
+            })
+        }
+        else{
+            alertify.error('You must enter a valid code');
+        }
     }
 
     $scope.next = function(){
