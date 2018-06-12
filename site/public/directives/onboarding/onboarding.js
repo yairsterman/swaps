@@ -33,20 +33,20 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         $scope.phase = initialPhase;
     }
 
-    $scope.close = function(){
+    $scope.closeModel = function(){
         $scope.$dismiss();
     }
 
     $scope.next = function(){
-        if($rootScope.profileComplete()){
-            $scope.finish();
-        }
         if($scope.phase == 'onSignup'){
             $scope.phase = 'about';
             return;
         }
         saveChanges();
         $scope.fillCircle();
+        if($rootScope.profileComplete()){
+            $scope.finish();
+        }
         if($scope.phase == 'about'){
             $scope.phase = 'home';
             return;
@@ -102,7 +102,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     };
 
     function getFill(complete){
-        return complete == 1?'first':complete==2?'second':complete==3?'done':'';
+        return complete == 1?'first':complete==2?'second':complete>=3?'done':'';
     }
 
     // returns how much of the phase is complete 1,2, or 3
@@ -116,13 +116,13 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             else return 1;
         }
         if($scope.phase == 'about'){
-            $scope.user.occupation?complete++:null;
-            $scope.user.aboutMe?complete++:null;
+            $scope.user.occupation && $scope.user.occupation != ''?complete++:null;
+            $scope.user.aboutMe && $scope.user.aboutMe != ''?complete++:null;
             typeof $scope.user.deposit != 'undefined'?complete++:null;
         }
         if($scope.phase == 'home'){
-            $scope.user.address?complete++:null;
-            $scope.user.apptInfo.title?complete++:null;
+            $scope.user.address && $scope.user.address != ''?complete++:null;
+            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete++:null;
             typeof $scope.user.apptInfo.roomType != 'undefined'?complete++:null;
        }
         if($scope.phase == 'basic'){

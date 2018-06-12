@@ -1,16 +1,4 @@
-swapsApp.directive('swaps', function() {
-    return {
-        restrict: 'E',
-        controller: swapsController,
-        scope: {
-            swaps: '=',
-            popup: '='
-        },
-        templateUrl: '../../directives/swaps/swaps.html'
-    }
-});
-
-function swapsController($scope, $rootScope, $filter, AccountService){
+swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $location, AccountService){
     $scope.addSwap = {
         guests:2
     };
@@ -21,21 +9,10 @@ function swapsController($scope, $rootScope, $filter, AccountService){
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
 
-    var confirmedDates = [];
-    var today = (new Date()).toLocaleDateString('en-US');
-    var minDate;
-
     $scope.popup?$scope.limit = 4:$scope.limit = $scope.swaps.length;
 
     $scope.title = $scope.swaps.length != 0?'Edit and Add Swap Locations':'Tell us where you want to go, so other Swappers can see your home.';
 
-    if($rootScope.user){
-        $rootScope.user.requests.forEach(function(request){
-            if(request.status === $rootScope.data.requestStatus.confirmed){
-                confirmedDates = confirmedDates.concat(getConfirmedDates(request.departure, request.returnDate));
-            }
-        });
-    }
 
     $scope.edit = function(index, swap){
         $scope.currentSwap = angular.copy(swap);
@@ -65,6 +42,10 @@ function swapsController($scope, $rootScope, $filter, AccountService){
             };
             if($scope.swaps > 5){
                 $scope.toMany = true;
+            }
+            if($scope.onboarding){
+                $scope.closeModel();
+                $location.url('/account/set-swap-dates');
             }
         });
     }
@@ -106,7 +87,10 @@ function swapsController($scope, $rootScope, $filter, AccountService){
     };
 
     $scope.close = function(){
-        $scope.$dismiss();
+        if($scope.closeModel){
+            $scope.closeModel();
+        }
+        $scope.modelInstance.close();
     };
 
     $scope.orderByDeparture = function(swap){
@@ -121,20 +105,18 @@ function swapsController($scope, $rootScope, $filter, AccountService){
         $scope.editingField = -1;
     }
 
-    function getConfirmedDates(startDate, stopDate) {
-        var dateArray = [];
-        var currentDate = startDate;
-        while (currentDate <= stopDate) {
-            var date = new Date (currentDate);
-            dateArray.push(date.toLocaleDateString('en-US'));
-            currentDate = addDays(date, 1).getTime();
-        }
-        return dateArray;
-    }
+});
 
-    function addDays(date, days) {
-        date.setDate(date.getDate() + days);
-        return date;
+swapsApp.directive('swaps', function() {
+    return {
+        restrict: 'E',
+        controller: 'swapsController',
+        scope: {
+            swaps: '=',
+            popup: '=',
+            onboarding: '=',
+            closeModel: '&'
+        },
+        templateUrl: '../../directives/swaps/swaps.html'
     }
-
-}
+});

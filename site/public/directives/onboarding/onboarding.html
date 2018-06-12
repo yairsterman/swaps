@@ -1,5 +1,5 @@
 <div class="onboarding-wrapper">
-    <div class="icon icon-delete top-corner" ng-click="close()"></div>
+    <div class="icon icon-delete top-corner" ng-click="closeModel()"></div>
     <div class="onboarding-header">
         <div class="phases">
             <div class="col-xs-3 phase">
@@ -125,23 +125,6 @@
                         <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label listing-label" for="deposit">Payment Plan:<br>
-                        <span class="explanation"></span>
-                    </label>
-                    <div class="payment-plan" tooltip-placement="top-left" uib-tooltip-template="'../../pages/components/payment-plans.html'">
-                        <select class="form-control" id="deposit" ng-model="user.deposit"
-                                ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
-                            {{plan.displayName}} - ${{plan.value}} per night
-                        </select>
-                    </div>
-                </div>
-                <!--<div class="form-group">-->
-                    <!--<div class="plan-explanation">-->
-                        <!--This plan covers you for up to ${{data.securityDeposit[user.deposit].damage}} in cases of-->
-                        <!--damages and cancellations.-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
         <div class="user-info address" ng-if="phase == 'home'">
@@ -271,23 +254,19 @@
                     You've completed you're profile.
                 </div>
                 <div class="sub-title">
-                    What would you like to do next?
+                    Do you already have travel plans?<br>
+                    Enter yor travel information here <br>and we'll start finding a perfect swap for you
                 </div>
-                <div class="start-button end">
-                    <div class="complete-btn btn btn-primary" ng-click="go('travelers/Anywhere')">
+                <div class="swap-dates">
+                    <swaps swaps="user.travelingInfo" popup="true" onboarding="true" close-model="closeModel()"></swaps>
+                </div>
+                <div class="start-button end swap-dates-end">
+                    <div class="sub-title">
+                        No plans yet..?<br>
+                        See what we have to offer
+                    </div>
+                    <div class="complete-btn btn btn-primary" ng-click="go('travelers')">
                         Search for Swap!
-                    </div>
-                    <div class="sub-title">
-                        How about?
-                    </div>
-                    <div class="complete-btn btn btn-primary btn-close" ng-click="go('profile/'+user._id)">
-                        View Profile
-                    </div>
-                    <div class="sub-title">
-                        or maybe..?
-                    </div>
-                    <div class="complete-btn btn btn-primary" ng-click="go('account/set-up-swaps')">
-                        Set Swap Date
                     </div>
                 </div>
             </div>
@@ -306,7 +285,7 @@
                     <div class="sub-title">
                         Not now?
                     </div>
-                    <div class="complete-btn btn btn-primary btn-close" ng-click="close()">
+                    <div class="complete-btn btn btn-primary btn-close" ng-click="closeModel()">
                         Continue
                     </div>
                 </div>
@@ -319,15 +298,15 @@
             Back
         </div>
         <div class="button next" ng-click="next()" ng-hide="phase == 'photos' || phase == 'onSignup' || phase == 'completedOnboarding'">
-            Next
+            {{isPhaseComplete() == 3?'Next':'Skip'}}
             <div class="glyphicon glyphicon-chevron-right"></div>
         </div>
         <div class="button next" ng-click="finish()" ng-if="phase == 'photos'">
-            Finish
+            Complete
             <div class="glyphicon glyphicon-chevron-right"></div>
         </div>
-        <div class="button next close" ng-click="close()" ng-if="phase == 'completedOnboarding'">
-            Close
+        <div class="button next close" ng-click="closeModel()" ng-if="phase == 'completedOnboarding'">
+            No thanks, I'll continue by myself
         </div>
     </div>
 </div>

@@ -23,6 +23,16 @@ swapsApp.directive('datepicker', function() {
             var maxDate = today;
             var openAllDates = scope.setUpSwap || false;
 
+            if(scope.user && scope.user.city){
+                scope.userCity = scope.user.city;
+            }
+
+            // ranges
+            var now = new Date();
+            var startOfNextMonth = formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 1), scope.localeFormat);
+            var endOfNextMonth = formatDate(new Date(now.getFullYear(), now.getMonth() + 2, 0), scope.localeFormat);
+            var next4weeks = formatDate(new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7 * 4), scope.localeFormat);
+
             if(scope.findTravel){ //from profile or set up swap page
                 findTravelInfo();
             }
@@ -33,61 +43,71 @@ swapsApp.directive('datepicker', function() {
                 scope.currentDates = scope.swapDates.date;
                 element.daterangepicker({
                     autoApply: true,
-                    opens: 'center',
+                    opens: 'right',
                     locale: {
                         format: scope.localeFormat
                     },
                     minDate: formatDate(new Date(minDate), scope.localeFormat),
+                    ranges: {
+                        'Next 4 weeks': [minDate, next4weeks],
+                        'Next month': [startOfNextMonth, endOfNextMonth],
+                        'Weekends': [minDate, endOfNextMonth],
+                    },
+                    showCustomRangeLabel: false,
+                    alwaysShowCalendars: true
                 });
                 element.on('apply.daterangepicker', function(ev, picker) {
                     scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
+                    if(picker.chosenLabel == 'Weekends'){
+                        scope.swapDates.chosenLabel = 'Weekends'
+                    }
                 });
                 scope.swapDates.when= scope.currentDatesWhen;
                 scope.swapDates.date= scope.currentDates;
             }
 
             function setDates(){
+                var options = {
+                    autoApply: true,
+                    opens: 'left',
+                    locale: {
+                        format: scope.localeFormat
+                    },
+                    isInvalidDate: function(arg){
+                        return isInvalidDate(arg);
+                    },
+                    minDate: minDate,
+                    startDate: minDate,
+                };
                 if(scope.setUpSwap){
                     // setting daterangepicker causes date to default to today,
                     // so save the dates that are set and override the defaults
                     scope.currentDates = scope.swapDates.dates;
+
+                    options.ranges = {
+                        'Next 4 weeks': [minDate, next4weeks],
+                        'Next month': [startOfNextMonth, endOfNextMonth],
+                        'Weekends': [minDate, endOfNextMonth]
+                    };
+                    options.showCustomRangeLabel = false;
+                    options.alwaysShowCalendars = true;
+                    options.opens = 'right';
                 }
                 if(!scope.userCity || !scope.profile.travelingInformation || scope.profile.travelingInformation.length === 0){
                     scope.notSwapping = true;
-                    element.daterangepicker({
-                        autoApply: true,
-                        opens: 'left',
-                        locale: {
-                            format: scope.localeFormat
-                        },
-                        isInvalidDate: function(arg){
-                            return isInvalidDate(arg);
-                        },
-                        minDate: minDate,
-                        startDate: minDate,
-                        endDate: minDate
-                    });
+                    options.endDate = minDate;
                 }
                 else{
-                    element.daterangepicker({
-                        autoApply: true,
-                        opens: 'left',
-                        locale: {
-                            format: scope.localeFormat
-                        },
-                        isInvalidDate: function(arg){
-                            return isInvalidDate(arg);
-                        },
-                        startDate: minDate,
-                        endDate: minDate,
-                        minDate: minDate,
-                        maxDate: maxDate
-                    });
+                    options.maxDate = maxDate;
                 }
+                element.daterangepicker(options);
                 element.on('apply.daterangepicker', function(ev, picker) {
                     if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
                         if(scope.setUpSwap){
                             scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+                            if(picker.chosenLabel == 'Weekends'){
+                                scope.swapDates.chosenLabel = 'Weekends'
+                            }
                         }
                         else{
                             scope.swapDates.from = picker.startDate.format(scope.modelFormat);

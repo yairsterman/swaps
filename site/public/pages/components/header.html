@@ -39,7 +39,7 @@
                     <div class="underlined"></div>
                 </a>
             </div>
-            <div class="login sign-up" data-toggle="modal" data-target="#swapModel" ng-if="user._id">
+            <div class="login sign-up" ng-click="openSwapDates()" ng-if="user._id">
                 Set Swap Date
                 <div class="underlined"></div>
             </div>
@@ -56,15 +56,15 @@
                 <div class="icon icon-mail"></div>
             </div>
 			 <div class="user-area" ng-if="user._id">
-			    <div class="profile-pic" style="background-image:url('{{user.image}}')">
-
-			    </div>
 			    <!-- <div class="username">
 			    	{{user.displayName}}
 			    </div> -->
 			    <div class="dropdown">
-				    <div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}
-				    <span class="caret"></span></div>
+                    <div class="profile-pic" data-toggle="dropdown" style="background-image:url('{{user.image}}')">
+
+                    </div>
+				    <!--<div class="dropdown-toggle username" data-toggle="dropdown">{{user.firstName}}-->
+				    <!--<span class="caret"></span></div>-->
 					    <ul class="dropdown-menu">
 					      <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
                             <li><a href="" ng-click ="go('account/listing')">My Home</a></li>

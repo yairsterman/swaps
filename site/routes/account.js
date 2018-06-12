@@ -43,40 +43,39 @@ router.post('/reauth', function (req, res, next) {
 });
 
 router.post('/edit-profile', function (req, res, next) {
-    var id = req.user._id;
-    var email = req.body.email;
-    var aboutMe = req.body.aboutMe;
-    var occupation = req.body.occupation;
-    var birthday = req.body.birthday;
-    var gender = req.body.gender;
-    var thingsToDo = req.body.thingsToDo;
+    let id = req.user._id;
+    let email = req.body.email;
+    let aboutMe = req.body.aboutMe;
+    let occupation = req.body.occupation;
+    let birthday = req.body.birthday;
+    let gender = req.body.gender;
+    let thingsToDo = req.body.thingsToDo;
 
-    User.update({_id: id}, {
-            $set: {
-                email: email,
-                aboutMe: aboutMe,
-                occupation: occupation,
-                gender: gender,
-                birthday: birthday,
-                thingsToDo: thingsToDo
-            }
-        },
-        function (err, updated) {
-            if (err) {
-                error.message = err;
-                res.json(error);
-            }
-            else {
-                User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                    if (err) {
-                        error.message = err;
-                        res.json(error);
-                    }
-                    else {
-                        res.json(user);
-                    }
-                });
-            }
+    let toUpdate = {};
+    if(email)
+        toUpdate.email = email;
+    if(aboutMe)
+        toUpdate.aboutMe = aboutMe;
+    if(occupation)
+        toUpdate.occupation = occupation;
+    if(birthday)
+        toUpdate.birthday = birthday;
+    if(gender)
+        toUpdate.gender = gender;
+    if(thingsToDo)
+        toUpdate.thingsToDo = thingsToDo;
+
+
+    User.findOneAndUpdate({_id: id}, {$set: toUpdate}, {new: true, projection: Data.getVisibleUserData().restricted})
+        .then(function (user) {
+        if (!user) {
+            error.message = 'No user found';
+            return res.json(error);
+        }
+        res.json(user);
+        },function(err){
+            error.message = err;
+            return res.json(error);
         });
 });
 
@@ -87,70 +86,56 @@ router.post('/edit-listing', function (req, res, next) {
     let deposit = req.body.deposit;
     let location = {};
 
-    if (!address) {
-        User.update({_id: id}, {$set: {apptInfo: apptInfo, deposit: deposit}},
-            function (err, updated) {
-                if (err) {
-                    error.message = err;
-                    res.json(error);
-                }
-                else {
-                    User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                        if (err) {
-                            error.message = err;
-                            res.json(error);
-                        }
-                        else {
-                            res.json(user);
-                        }
-                    });
-                }
-            });
-    }
-    else {
+    let toUpdate = {};
+
+    if(apptInfo)
+        toUpdate.apptInfo = apptInfo;
+    if(deposit)
+        toUpdate.apptInfo = deposit;
+
+    let dfr = Q.defer();
+    if(address){
         geocoder.geocode(address)
             .then(function (geo) {
-                location = geo.location;
+                toUpdate.location = geo.location;
                 let country = geo.country;
                 let city = geo.city;
                 let region = geo.region;
                 if (!city) {
                     city = geo.region;
                 }
-                User.update({_id: id}, {
-                        $set: {
-                            location: location,
-                            country: country,
-                            city: city,
-                            region: region,
-                            address: address,
-                            apptInfo: apptInfo,
-                            deposit: deposit
-                        }
-                    },
-                    function (err, updated) {
-                        if (err) {
-                            error.message = err;
-                            res.json(error);
-                        }
-                        else {
-                            User.findOne({_id: id}, Data.getVisibleUserData().restricted, function (err, user) {
-                                if (err) {
-                                    error.message = err;
-                                    res.json(error);
-                                }
-                                else {
-                                    res.json(user);
-                                }
-                            });
-                        }
-                    });
+                toUpdate.country = country;
+                toUpdate.city = city;
+                toUpdate.region = region;
+                toUpdate.address = address;
+                dfr.resolve();
             })
             .catch(function (err) {
                 error.message = err;
-                res.json(error);
+                dfr.reject(error);
             });
     }
+    else{
+        dfr.resolve();
+    }
+
+    dfr.promise.then(function(){
+        User.findOneAndUpdate({_id: id}, {$set: toUpdate}, {new: true, projection: Data.getVisibleUserData().restricted})
+            .then(function (user) {
+                if (!user) {
+                    error.message = 'No user found';
+                    return res.json(error);
+                }
+                res.json(user);
+            },function(err){
+                error.message = err;
+                return res.json(error);
+            });
+    },function(err){
+        error.message = err;
+        return res.json(error);
+    });
+
 });
 
 router.post('/add-travel-info', function (req, res, next) {

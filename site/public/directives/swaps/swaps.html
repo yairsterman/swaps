@@ -1,32 +1,35 @@
-<div class="swaps-wrapper">
-    <!--<div class="icon icon-delete top-corner" ng-click="close()"></div>-->
-    <div class="title">{{title}}
+<div class="swaps-wrapper {{onboarding?'onboarding-swap-wrapper':''}}">
+    <div class="icon icon-delete top-corner" ng-click="close()" ng-if="popup"></div>
+    <div class="title" ng-if="!onboarding">{{title}}
         <div class="underline"></div>
     </div>
-    <div class="sub-title">
+    <div class="sub-title" ng-if="!onboarding">
         This way you will appear in other Swappers' searches,<br>
         making it easier for you to find a Swap
     </div>
-    <div class="edit-swaps {{popup || toMany?'':'overflow'}}">
+    <div class="edit-swaps {{popup || toMany?'':'overflow'}}" ng-if="!onboarding">
         <div class="single-swap" ng-repeat="swap in swaps | orderBy : orderByDeparture | limitTo : limit track by swap._id ">
             <div class="row search-area">
                 <div class="search-field left col-sm-4 col-xs-12">
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-model="swap.fullDestination" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" autocomplete city="true">
+                    <div class="icon icon-infocenter"></div>
                 </div>
                 <div class="search-field col-sm-4 col-xs-12">
                     <input type="text" class="form-control" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-model="swap.dates" swap-dates="swap" user="user" profile="false"
                            user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                            data="data" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" >
                     <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(swap)" ng-if="!saving && editingField == $index && swap.dates"></div>
+                    <div class="icon icon-calender"></div>
                 </div>
                 <div class="search-field right col-sm-4 col-xs-12 ">
                     <div class="guests-search">
                         <input type="number" class="form-control guests" placeholder="2" ng-model="swap.guests" min="1" max="8" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}">
                     </div>
+                    <div class="icon icon-man-small"></div>
                 </div>
             </div>
             <div class="action">
-                <input type="button" class="btn btn-primary btn-send" value="EDIT" ng-click="edit($index, swap)" ng-if="!saving && editingField != $index">
+                <input type="button" class="btn btn-primary btn-edit" value="EDIT" ng-click="edit($index, swap)" ng-if="!saving && editingField != $index">
                 <input type="button" class="btn btn-primary btn-send" value="SAVE" ng-click="update(swap)" ng-disabled="saving" ng-if="editingField == $index" disabled="{{saving}}">
                 <div class="btn btn-danger" ng-click="removeTravelInfo(swap)" ng-if="!saving && editingField != $index" ng-disabled="saving" disabled="{{saving}}">
                     <div class="glyphicon glyphicon-remove">
@@ -37,21 +40,24 @@
             </div>
         </div>
     </div>
-    <div class="single-swap add-swap">
-        <div class="row search-area">
+    <div class="single-swap add-swap {{popup?'':'account-page-add'}} {{onboarding?'onboarding-add':''}}">
+        <div class="row search-area {{onboarding?'onboarding-search-area':''}}">
             <div class="search-field left col-sm-4 col-xs-12">
                 <input type="text" class="form-control" placeholder="Anywhere" id="addCity1" ng-model="addSwap.fullDestination" ng-disabled="editing" disabled="{{editing}}" autocomplete city="true">
+                <div class="icon icon-infocenter"></div>
             </div>
             <div class="search-field col-sm-4 col-xs-12">
                 <input type="text" class="form-control" placeholder="Anytime" id="searchDateAdd" name="searchDateAdd" ng-model="addSwap.dates" swap-dates="addSwap" user="user" profile="false"
                        user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                        data="data"  ng-disabled="editing" disabled="{{editing}}">
                 <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(addSwap)" ng-if="addSwap.dates"></div>
+                <div class="icon icon-calender"></div>
             </div>
             <div class="search-field right col-sm-4 col-xs-12 ">
                 <div class="guests-search">
                     <input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="addSwap.guests" min="1" max="8" ng-disabled="editing" disabled="{{editing}}">
                 </div>
+                <div class="icon icon-man-small"></div>
             </div>
         </div>
         <div class="action">

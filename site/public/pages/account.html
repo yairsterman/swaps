@@ -13,7 +13,7 @@
                                                                                        ng-click="go('account/messages')">Messages</a>
                     </li>
                     <li class="single-link {{activeTab == 'set-up-swaps'?'active':''}}"><a href=""
-                                                                                    ng-click="go('account/set-up-swaps')">Set up Swap</a>
+                                                                                    ng-click="go('account/set-swap-dates')">Set Swap Dates</a>
                     </li>
                     <li class="single-link {{activeTab == 'upcoming-swaps'?'active':''}}"><a href=""
                                                                                     ng-click="go('account/upcoming-swaps')">Upcoming Swaps</a>
@@ -374,9 +374,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="swaps-and-requests" ng-if="activeTab == 'set-up-swaps'">
+                <div class="swaps-and-requests" ng-if="activeTab == 'set-swap-dates'">
                     <div class="swap-title"></div>
-                    <swaps swaps="user.travelingInfo"></swaps>
+                    <swaps swaps="user.travelingInformation"></swaps>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
                     <div class="loader" ng-if="saving"></div>

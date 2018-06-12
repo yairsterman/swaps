@@ -1,70 +1,129 @@
-swaps{
-  .swaps-wrapper{
-    padding: 0 0 30px 0;
-    font-size: 20px;
-    .title{
-      color: #848a91;
-      text-align: left;
-      padding: 0 5px 5px 5px;
-      font-weight: 300;
+.swaps-wrapper{
+  padding: 0 0 30px 40px;
+  font-size: 20px;
+  &.onboarding-swap-wrapper{
+    padding: 0;
+  }
+  .title{
+    color: #848a91;
+    text-align: left;
+    padding: 0 5px 5px 5px;
+    font-weight: 300;
+  }
+  .sub-title{
+    color: #484848;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0 5px 10px 5px;
+  }
+  .underline{
+    border-bottom: 2px solid rgba(14,93,124,0.5);
+    padding-top: 8px;
+    width: 12%;
+  }
+  .edit-swaps{
+    &.overflow{
+      max-height: 300px;
+      overflow-y: scroll;
     }
-    .sub-title{
-      color: #484848;
-      text-align: left;
-      font-size: 14px;
-      font-weight: 400;
-      padding: 0 5px 10px 5px;
-    }
-    .underline{
-      border-bottom: 2px solid rgba(14,93,124,0.5);
-      padding-top: 8px;
-      width: 12%;
-    }
-    .edit-swaps{
-      &.overflow{
-        max-height: 300px;
-        overflow-y: scroll;
-      }
-    }
-    .single-swap{
-      display: flex;
-      &.add-swap{
+  }
+  .single-swap{
+    display: flex;
+    &.add-swap{
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 2px solid rgba(14,93,124,0.5);
+      &.account-page-add{
         margin-right: 12px;
-        margin-top: 15px;
-        padding-top: 10px;
-        border-top: 2px solid rgba(14,93,124,0.5);
       }
-      .search-area{
-        margin: 0;
-        width: 75%;
-        margin-bottom: 15px;
-        .search-field{
-          padding:0 5px;
-          position: relative;
-          .glyphicon{
-            position: absolute;
-            right: 10px;
-            top: 4px;
-            padding: 6px;
-            font-size: 14px;
-            color: #c7a768;
-            &:focus{
-              outline: none;
-            }
+      &.onboarding-add{
+        width: 80%;
+        margin: auto;
+        border: none;
+      }
+    }
+    .search-area{
+      margin: 0;
+      width: 75%;
+      margin-bottom: 15px;
+      &.onboarding-search-area{
+        width: 90%;
+      }
+      .search-field{
+        padding:0 5px;
+        position: relative;
+        .glyphicon{
+          position: absolute;
+          right: 10px;
+          top: 4px;
+          padding: 6px;
+          font-size: 14px;
+          color: #c7a768;
+          &:focus{
+            outline: none;
           }
+        }
+        .form-control{
+          padding-left: 36px;
+          border-radius: 0;
+          background-color: #ffffff;
+          border: 1px #0E5D7C solid;
+          color: rgba(199, 167, 104, 1);
+          font-size: 14px;
+          height: initial;
+          -webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          -moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          &:focus{
+            border-color: #0E5D7C;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
+          }
+        }
+        .icon{
+          position: absolute;
+          &.icon-man-small{
+            bottom: 8px;
+            left: 10px;
+          }
+          &.icon-calender{
+            bottom: 7px;
+            left: 14px;
+          }
+          &.icon-infocenter{
+            transform: scale(0.70);
+            bottom: 2px;
+            left: 10px;
+          }
+        }
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+          color: rgba(199, 167, 104, 0.8);
         }
       }
     }
   }
-  .action{
-    .btn-cancel{
-      background-color: #c7a768;
-      border-color: #c7a768;
-      color: white;
-      &:hover, &:focus, &:active{
-        background-color: #a3854b;
-        border-color: #a3854b;
-      }
+}
+.action{
+  .btn-edit{
+    background-color: #ffffff;
+    border-color: #0E5D7C;
+    color: #0E5D7C;
+    transition: 0.3s ease;
+    &:hover, &:focus, &:active{
+      background-color: #0E5D7C;
+      border-color: #0E5D7C;
+      color: #ffffff;
+    }
+  }
+  .btn-cancel{
+    background-color: #c7a768;
+    border-color: #c7a768;
+    color: white;
+    &:hover, &:focus, &:active{
+      transition: 0.3s ease;
+      background-color: #a3854b;
+      border-color: #a3854b;
     }
   }
 }

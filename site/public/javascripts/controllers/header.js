@@ -61,18 +61,17 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
     }
 
-	$scope.openDate = function(){
-		$('input[name="searchDate"]').daterangepicker({
-			autoApply: true,
-			opens: 'center',
-			locale: {
-	            format: 'MMM DD'
-	        }
-		});
-		$('input[name="searchDate"]').on('apply.daterangepicker', function(ev, picker) {
-            $rootScope.search.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
-	  	});
-	}
+    $scope.openSwapDates = function (){
+        $scope.popup = true;
+        $scope.swaps = $scope.user.travelingInfo;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/swaps/swaps.html',
+            size: 'lg',
+            controller: 'swapsController',
+            scope: $scope
+        });
+    }
 
     $scope.$on('auth-return', function(event, args) {
 	    $scope.user = $rootScope.user;
