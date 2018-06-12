@@ -10,7 +10,6 @@ let less = require('less');
 let fs = require('fs');
 
 let passportService = require('./services/passport');
-let emailService = require('./services/email');
 let config = require('./config');
 
 let index = require('./routes/index');
@@ -21,6 +20,7 @@ let utils = require('./routes/utils');
 let transactions = require('./routes/transactions');
 let login = require('./routes/login');
 let community = require('./routes/community');
+let review = require('./routes/review');
 
 const app = express();
 
@@ -73,7 +73,9 @@ app.use('/utils', utils);
 app.use('/transactions', transactions);
 app.use('/auth', login);
 app.use('/community', community);
+app.use('/review', review);
 app.use('/', index);
+
 
 app.use(passport.initialize());
 app.use(passport.session());

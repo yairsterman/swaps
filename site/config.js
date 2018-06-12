@@ -24,17 +24,19 @@ let config = {
     FACEBOOK_APP_ID : '1628077027210389',
     FACEBOOK_APP_SECRET : '5a927f2caa3f5eb9a2eeaad0eaf1b225',
 
+    jwtSecret: 'swaps' ,
+
     cloudinaryName: 'swaps',
     cloudinaryKey: '141879543552186',
     cloudinarySecret: 'DzracCkoJ12usH_8xCe2sG8of3I',
 
     ADMIN_PASSWORD: 'q3e5t7u',
 
-    // mongoUrl: 'mongodb://18.221.167.219/test', // for dev
-    mongoUrl: 'mongodb://127.0.0.1/test', // for production
+    mongoUrl: 'mongodb://18.221.167.219/test', // for dev
+    // mongoUrl: 'mongodb://127.0.0.1/test', // for production
 
-    baseUrl: 'https://swapshome.com'
-    // baseUrl: 'http://localhost:3000'
+    // baseUrl: 'https://swapshome.com'
+    baseUrl: 'http://localhost:3000'
 };
 
 module.exports = config;
