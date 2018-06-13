@@ -107,9 +107,14 @@ swapper-home{
       }
       .icon{
         margin: 5px;
-        -webkit-transform: translateZ(0) scale(0.9);
-        -ms-transform: translateZ(0) scale(0.9);
-        transform: translateZ(0) scale(0.9);
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        &.icon-heart-empty{
+          -webkit-transform: translateZ(0) scale(0.9);
+          -ms-transform: translateZ(0) scale(0.9);
+          transform: translateZ(0) scale(0.9);
+        }
         &:focus{
           outline: none;
         }

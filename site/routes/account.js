@@ -457,10 +457,10 @@ router.put('/add-favorite', function (req, res, next) {
                 .exec();
         }
     })
-    .then(function(err, _user){
+    .then(function(_user){
         user = _user;
         if (!user) {
-            error.message = err;
+            error.message = 'No user found';
             throw (error);
         }
         else {
