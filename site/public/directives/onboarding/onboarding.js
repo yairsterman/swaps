@@ -2,7 +2,6 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.user = $rootScope.user;
     $scope.numOfFiles = 0;
     $scope.community = {};
-    $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
 
     $scope.getInitialPhase = function(){
         var initialPhase = 'onSignup';
@@ -31,7 +30,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         if($scope.isPhaseComplete() < 3){
             initialPhase = 'about';
         }
-
+        $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
         $scope.phase = initialPhase;
     }
 
@@ -138,13 +137,11 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         }
         if($scope.phase == 'about'){
             $scope.user.occupation && $scope.user.occupation != ''?complete++:null;
-            $scope.user.aboutMe && $scope.user.aboutMe != ''?complete++:null;
-            typeof $scope.user.deposit != 'undefined'?complete++:null;
+            $scope.user.aboutMe && $scope.user.aboutMe != ''?complete=complete+2:null;
         }
         if($scope.phase == 'home'){
             $scope.user.address && $scope.user.address != ''?complete++:null;
-            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete++:null;
-            typeof $scope.user.apptInfo.roomType != 'undefined'?complete++:null;
+            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete=complete+2:null;
        }
         if($scope.phase == 'basic'){
             complete = $scope.user.apptInfo.amenities.length > 0?3:2;
