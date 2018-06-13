@@ -2,6 +2,7 @@ var login = null;
 swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, MessageService, $timeout) {
     login = $scope;
     $rootScope.externalLogin = $routeParams.external;
+    $scope.innerHeight = $window.innerHeight;
 
     // $scope.signin = signin;
     $scope.title = $scope.signin?'Join Swaps':'Log In';
