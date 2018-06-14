@@ -48,7 +48,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
     $scope.profileComplete = function(){
         if(!$scope.user._id)
             return false;
-        return $scope.user.photos.length >= 3 && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' &&
+        return $scope.user.photos.length > 0 && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' &&
             $scope.user.address && $scope.user.address !== '' &&
             $scope.user.apptInfo.about && $scope.user.apptInfo.about !== '' &&
             $scope.user.occupation && $scope.user.occupation !== '' &&

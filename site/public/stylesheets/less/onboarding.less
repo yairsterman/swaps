@@ -24,6 +24,10 @@
             border-radius: 50%;
             border: 2px solid #848a91;
             transition: 0.3s ease;
+            @media @mobile {
+              width: 30px;
+              height: 30px;
+            }
             &.first{
               background: rgb(14,93,124); /* Old browsers */
               background: -moz-linear-gradient(top, rgba(14,93,124,1) 0%, rgba(255,255,255,1) 66%); /* FF3.6-15 */
@@ -50,6 +54,9 @@
             border-bottom: 1px solid #848a91;
             width: 40%;
             transition: 0.4s ease;
+            @media @mobile {
+              width: 30%;
+            }
             &.active{
               border-color: #0E5D7C;
             }
@@ -288,25 +295,39 @@
     }
     .photos{
       position: relative;
+      .photos-area{
+        position: relative;
+      }
       .photos-title{
-        font-size: 15px;
+        font-size: 22px;
+        font-weight: 300;
         text-align: center;
         padding-bottom: 10px;
+        @media @mobile {
+          font-size: 20px;
+        }
+      }
+      .photos-sub-title{
+        font-size: 15px;
+        text-align: center;
+        padding-bottom: 20px;
+        @media @mobile {
+          font-size: 14px;
+        }
       }
       .box{
         background-color: rgba(199, 167, 104, 0.2);
         z-index: 1;
         position: absolute;
-        width: 107%;
-        height: 87%;
-        margin: 0 -15px;
-        @media @mobile {
-          width: 110%;
-          height: 82%;
-        }
-        @media @tablet {
-          width: 105%;
-        }
+        width: 100%;
+        height: 100%;
+        //@media @mobile {
+        //  width: 100%;
+        //  height: 100%;
+        //}
+        //@media @tablet {
+        //  width: 100%;
+        //}
         &.has-advanced-upload {
           outline: 2px dashed grey;
           outline-offset: -10px;
@@ -325,19 +346,20 @@
           position: absolute;
           text-align: center;
           font-size: 16px;
-          top: 24%;
+          top: 40%;
           width: 100%;
         }
       }
       .uploaded-photos{
+        margin: auto;
         .photo{
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
-          height: 200px;
+          height: 300px;
           border: 1px solid grey;
           @media @mobile {
-            height: 180px;
+            height: 220px;
           }
         }
       }

@@ -5,9 +5,7 @@
   overflow: hidden;
   height: 480px;
   transition: 0.4s ease;
-  @media @mobile {
-    height: 400px;
-  }
+
   &.cancel{
     height: auto;
     min-height: 200px;
@@ -235,6 +233,9 @@
     font-size: 18px;
     position: absolute;
     bottom: 0;
+    @media @mobile {
+      margin: 0;
+    }
     &.cancel{
       position: relative;
     }
@@ -247,6 +248,9 @@
   }
   .send-message{
     margin-top: 40px;
+    @media @mobile {
+      margin-top: 20px;
+    }
     .send-text{
       font-size: 16px;
     }

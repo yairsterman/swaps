@@ -23,6 +23,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         $scope.phase = 'home';
         $scope.fillCircle();
         if($scope.isPhaseComplete() < 3){
+            $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
             initialPhase = 'home';
         }
         $scope.phase = 'about';
@@ -30,7 +31,6 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         if($scope.isPhaseComplete() < 3){
             initialPhase = 'about';
         }
-        $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
         $scope.phase = initialPhase;
     }
 
@@ -72,6 +72,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             return;
         }
         if($scope.phase == 'home'){
+            $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
             $scope.phase = 'basic';
             return;
         }
@@ -147,7 +148,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             complete = $scope.user.apptInfo.amenities.length > 0?3:2;
         }
         if($scope.phase == 'photos'){
-            complete = $scope.user.photos.length;
+            complete = $scope.user.photos.length > 0?3:0;
         }
         return complete;
     };

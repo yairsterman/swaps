@@ -299,7 +299,7 @@ router.post('/uploadCompleted', function (req, res, next) {
 		}
 		if(result.resources.length > 0 && result.resources[0].public_id == req.body.public_id)
 		{
-            let toUpdate = {image: result.resources[0].secure_url};
+            let toUpdate = {"$push": {"photos": result.resources[0].secure_url}};
             findOneAndUpdate(id, toUpdate, res);
 		}
 		else

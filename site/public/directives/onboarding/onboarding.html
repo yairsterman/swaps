@@ -236,12 +236,11 @@
             </div>
         </div>
         <div class="user-info photos" ng-if="phase == 'photos'">
-            <div class="photos-title" ng-if="user.photos.length == 0">
-                Upload 3 photos of your home. <br>
-                These photos are how other Swappers will see your home, make sure they best represent your home.
+            <div class="photos-title">
+                Upload one or more photos of your home.
             </div>
-            <div class="photos-title" ng-if="user.photos.length < 3 && user.photos.length > 0">
-                Upload {{3 - user.photos.length}} more {{user.photos.length == 2?'photo':'photos'}} of your home.
+            <div class="photos-sub-title">
+                Homes with more than 3 photos are likely to get more views.
             </div>
             <div class="photos-area">
                 <div class="box has-advanced-upload" ng-if="user.photos.length < 3">
@@ -259,16 +258,23 @@
                 </div>
                 <div class="uploaded-photos row">
                     <div class="col-sm-12 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
-                    <div class="col-sm-6 col-xs-6 photo" style="background-image: url({{user.photos[1]}})"></div>
-                    <div class="col-sm-6 col-xs-6 photo" style="background-image: url({{user.photos[2]}})"></div>
                 </div>
             </div>
         </div>
         <div ng-if="phase == 'completedOnboarding'">
-            <div ng-if="profileComplete()">
-                <div class="main-title">
+            <div>
+                <div class="main-title" ng-if="profileComplete()">
                     Congratulations! <br>
                     You've completed you're profile.
+                </div>
+                <div ng-if="!profileComplete()">
+                    <div class="main-title">
+                        Hold Up! <br>
+                        Your profile is not complete yet.
+                    </div>
+                    <div class="sub-title">
+                        You must complete your profile in order to send and receive swap requests.
+                    </div>
                 </div>
                 <div class="sub-title">
                     Do you already have travel plans?<br>
@@ -287,30 +293,10 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="!profileComplete()">
-                <div class="main-title">
-                    Hold Up! <br>
-                    Your profile is not complete yet.
-                </div>
-                <div class="sub-title">
-                    You must complete your profile in order to send and receive swap requests.
-                </div>
-                <div class="start-button end">
-                    <div class="complete-btn btn btn-primary" ng-click="go('account/edit')">
-                        Complete Profile
-                    </div>
-                    <div class="sub-title">
-                        Not now?
-                    </div>
-                    <div class="complete-btn btn btn-primary btn-close" ng-click="closeModel()">
-                        Continue
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="buttons {{phase == 'about'?'home':''}}">
-        <div class="button back" ng-click="back()" ng-hide="phase == 'about' || phase == 'onSignup' || phase == 'completedOnboarding'">
+        <div class="button back" ng-click="back()" ng-hide="phase == 'about' || phase == 'onSignup'">
             <div class="glyphicon glyphicon-chevron-left"></div>
             Back
         </div>

@@ -308,16 +308,17 @@
 				.dropdown-menu {
 				    left: initial;
 				    right: 0;
-				    min-width: 140px;
+				    min-width: 200px;
 				    width: 100%;
 					li{
 						a{
 							color: rgb(14,93,124);
 							margin: 0 14px;
-							padding: 6px 0;
+							padding: 12px 0;
 							font-size: 16px;
-							border-bottom: 1px solid rgba(199,167,104,0.6);
-							transition: 0.3s ease;
+							font-weight: 300;
+							border-bottom: 1px solid rgba(0,0,0,0.1);
+							transition: 0.2s ease;
 							&:hover{
 								color: rgb(14,93,124);
 								text-decoration: none;
@@ -345,9 +346,28 @@
 				width: 25px;
 			}
 		}
-		.dropdown-menu{
+		.dropdown-menu {
+			left: initial;
 			right: 0;
-			left:initial;
+			min-width: 200px;
+			width: 100%;
+			li{
+				a{
+					color: rgb(14,93,124);
+					margin: 0 14px;
+					padding: 12px 0;
+					font-size: 16px;
+					font-weight: 300;
+					border-bottom: 1px solid rgba(0,0,0,0.1);
+					transition: 0.2s ease;
+					&:hover{
+						color: rgb(14,93,124);
+						text-decoration: none;
+						background-color: #ffffff;
+						border-bottom: 1px solid rgba(14,93,124,0.6);
+					}
+				}
+			}
 		}
 		.search-field{
 			width: 50%;
