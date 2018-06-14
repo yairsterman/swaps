@@ -610,6 +610,24 @@
 		margin: 0 12vw;
 		padding-bottom: 40px;
 		.all-plans{
+			.coming-soon{
+				background-color: rgba(211,211,211,0.8);
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				z-index: 15;
+				cursor: initial;
+				.coming-soon-title{
+					top: 39%;
+					left: 12%;
+					position: absolute;
+					font-size: 32px;
+					font-weight: 500;
+					color: #a82121;
+					transform: skewy(-10deg);
+					text-transform: uppercase;
+				}
+			}
 		}
 		.single-plan{
 			color: #ffffff;
@@ -631,6 +649,14 @@
 				.plan-image{
 					background-image: url('../../images/static/backpack.png');
 				}
+				&:hover{
+					background: #68b8d5; /* Old browsers */
+					background: -moz-linear-gradient(top, #b2def7 0%, #68b8d5 100%); /* FF3.6-15 */
+					background: -webkit-linear-gradient(top, #b2def7 0%,#68b8d5 100%); /* Chrome10-25,Safari5.1-6 */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2def7', endColorstr='#68b8d5',GradientType=0 ); /* IE6-9 */
+					background: linear-gradient(to bottom, #b2def7 0%,#68b8d5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				}
+				transition: 1s ease;
 			}
 			&.globetrotter{
 				background: #68b8d5; /* Old browsers */

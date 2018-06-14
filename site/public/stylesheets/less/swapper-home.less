@@ -8,28 +8,28 @@ swapper-home{
     -webkit-box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
     -moz-box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
     box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
-    height: 28vw;
+    height: 362px;
     cursor: pointer;
     transition: 0.4s ease;
     @media @desktop {
-      height: 29vw;
+      height: 310px;
     }
     @media @tablet {
-      height: 34vw;
+      height: 362px;
     }
     @media @mobile {
-      height: 90vw;
+      height: 362px;
     }
     &:focus {
       outline: none;
     }
     .carousel {
-      height: 20vw;
-      @media @tablet {
-        height: 22vw;
+      height: 260px;
+      @media @desktop {
+        height: 210px;
       }
-      @media @mobile {
-        height: 60vw;
+      @media @tablet {
+        height: 260px;
       }
       .carousel-inner {
         height: 100%;
@@ -76,21 +76,18 @@ swapper-home{
       background-repeat: no-repeat;
       background-size: cover;
       border: 1px solid grey;
-      width: 4vw;
-      height: 4vw;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       position: absolute;
-      top: ~'calc(16vw - 5px)';
+      bottom: 105px;
       right: 15px;
-      @media (max-width: @screen-sm-max) {
-        width: 8vw;
-        height: 8vw;
-        top: 16vw;
+      @media @desktop {
+        bottom: 105px;
       }
-      @media @mobile {
-        width: 15vw;
-        height: 15vw;
-        top: 45vw;
+      @media @tablet {
+        width: 60px;
+        height: 60px;
       }
     }
     .favorite{
@@ -125,19 +122,9 @@ swapper-home{
       }
     }
     .user-info {
-      height: 7.5vw;
+      height: 96px;
       padding-top: 4px;
       overflow: hidden;
-      color:#0E5D7C;
-      @media @desktop {
-        height: 8.5vw;
-      }
-      @media @tablet {
-        height: 11vw;
-      }
-      @media @mobile {
-        height: 28vw;
-      }
       .apt-title {
         font-size: 18px;
         font-weight: 500;
@@ -171,29 +158,20 @@ swapper-home{
     .basics {
       display: flex;
       //justify-content: space-between;
-      padding-top: 0.4vw;
+      padding-top: 6px;
       color: #616161;
-      @media @desktop {
-        padding-top: 0.4vw;
-      }
-      @media @tablet {
-        padding-top: 0.8vw;
-      }
-      @media @mobile {
-        padding-top: 2vw;
-
-      }
       .tiny-text {
         padding-right: 14px;
         font-size: 14px;
         display: flex;
         align-items: center;
-        @media  @desktop{
+        @media  @desktop, @tablet, @mobile{
           font-size: 12px;
         }
         .icon{
           margin-right: 0;
           &.icon-door-small{
+            margin-left: -2px;
             margin-right: 2px;
           }
           &.icon-bed-small{
@@ -201,9 +179,6 @@ swapper-home{
           }
           &.icon-duck-small{
             margin-right: 7px;
-          }
-          @media @mobile {
-            margin-right: 5px;
           }
         }
         @media @mobile {

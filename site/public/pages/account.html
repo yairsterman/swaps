@@ -18,12 +18,14 @@
                     <li class="single-link {{activeTab == 'upcoming-swaps'?'active':''}}"><a href=""
                                                                                     ng-click="go('account/upcoming-swaps')">Upcoming Swaps</a>
                     </li>
-                    <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
-                                                                                      ng-click="go('account/reviews')">Reviews</a>
-                    </li>
                     <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
                                                                                            ng-click="go('account/homes-i-like')">Homes
                         I Like</a></li>
+                    <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
+                                                                                      ng-click="go('account/reviews')">Reviews</a>
+                    </li>
+                    <li class="single-link {{activeTab == 'pricing'?'active':''}}"><a href=""
+                                                                                           ng-click="go('account/pricing')">Pricing</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-xs-12 content {{activeTab == 'upcoming-swaps'?'scroll':''}}">
@@ -418,6 +420,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="fav-tab" ng-if="activeTab == 'homes-i-like'">
+
+                    <div ng-if="user.favorites.length == 0">
+                        <div class="no-reviews">You have no saved homes</div>
+                    </div>
+                    <div class="favorite-cont" ng-if="user.favorites.length > 0">
+
+                        <div class="fav-scroll">
+                            <div class="favorites-show"
+                                 ng-repeat="favorite in likedHomes">
+                                <swapper-home class="col-sm-6 col-xs-12 single-favorite" traveler="favorite"></swapper-home>
+                                <div class="clearfix visible-xs"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="reviews-tab" ng-if="activeTab == 'reviews'">
                     <div ng-if="user.reviews.length == 0">
                         <div class="no-reviews">You Have no reviews</div>
@@ -441,18 +459,41 @@
                         </div>
                     </div>
                 </div>
-                <div class="fav-tab" ng-if="activeTab == 'homes-i-like'">
+                <div class="pricing-tab" ng-if="activeTab == 'pricing'">
+                    <div class="payment-plan">
+                        <div class="row all-plans">
+                            <div class="col-sm-4">
+                                <div class="single-plan {{plan.name}}" ng-click="choosePlan(plan.id)" ng-repeat="plan in data.securityDeposit">
+                                    <div class="coming-soon" ng-if="plan.id > 0">
+                                        <div class="coming-soon-title">
+                                            Coming soon
+                                        </div>
+                                    </div>
+                                    <div class="plan-top">
+                                        <div class="plan-title">
+                                            {{plan.displayName}}
+                                            <br>
+                                            Payment Plan
+                                        </div>
+                                        <div class="plan-image">
 
-                    <div ng-if="user.favorites.length == 0">
-                        <div class="no-reviews">You have no saved homes</div>
-                    </div>
-                    <div class="favorite-cont" ng-if="user.favorites.length > 0">
-
-                        <div class="fav-scroll">
-                            <div class="favorites-show"
-                                 ng-repeat="favorite in likedHomes">
-                                <swapper-home class="col-sm-6 col-xs-12 single-favorite" traveler="favorite"></swapper-home>
-                                <div class="clearfix visible-xs"></div>
+                                        </div>
+                                    </div>
+                                    <div class="plan-bottom">
+                                        <div class="small-text">
+                                            Per night
+                                        </div>
+                                        <div class="price">
+                                            {{plan.night}}$
+                                        </div>
+                                        <div class="covers">
+                                            This plan covers up to <br> {{plan.damage}}$
+                                        </div>
+                                        <div class="small-text">
+                                            in damages or cancellations
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
