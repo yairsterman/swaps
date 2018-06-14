@@ -7,6 +7,7 @@ let request = require('request');
 let email = require('../services/email.js');
 let emailMessages = require('../services/email-messages.js');
 let Data = require('../user_data/data.js');
+let querystring = require('querystring');
 
 
 let error = {
@@ -214,11 +215,11 @@ function getExpirationDate(terminalInformation, index, expdate){
         if (!error && response.statusCode == 200) {
             let result;
             try{
-                result = JSON.parse(body);
+                result = querystring.parse(body);
                 if(result.error_msg){
                     return dfr.reject(result.error_msg);
                 }
-                dfr.resolve(result.expdate);
+                dfr.resolve('' + result.expmonth + result.expyear);
             }
             catch(e){
                 dfr.reject(e);
