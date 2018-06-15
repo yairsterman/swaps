@@ -100,6 +100,7 @@ app.use(function(err, req, res, next) {
   res.render('error.html');
 });
 
+let emailService = require('./services/email');
 emailService.init();
 passportService.init();
 
