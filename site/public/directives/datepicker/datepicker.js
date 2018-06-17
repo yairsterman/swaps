@@ -48,11 +48,11 @@ swapsApp.directive('datepicker', function() {
                         format: scope.localeFormat
                     },
                     minDate: formatDate(new Date(minDate), scope.localeFormat),
-                    ranges: {
-                        'Next 4 weeks': [minDate, next4weeks],
-                        'Next month': [startOfNextMonth, endOfNextMonth],
-                        'Weekends': [minDate, endOfNextMonth],
-                    },
+                    // ranges: {
+                    //     'Next 4 weeks': [minDate, next4weeks],
+                    //     'Next month': [startOfNextMonth, endOfNextMonth],
+                    //     'Weekends': [minDate, endOfNextMonth],
+                    // },
                     showCustomRangeLabel: false,
                     alwaysShowCalendars: true
                 });
@@ -84,11 +84,11 @@ swapsApp.directive('datepicker', function() {
                     // so save the dates that are set and override the defaults
                     scope.currentDates = scope.swapDates.dates;
 
-                    options.ranges = {
-                        'Next 4 weeks': [minDate, next4weeks],
-                        'Next month': [startOfNextMonth, endOfNextMonth],
-                        'Weekends': [minDate, endOfNextMonth]
-                    };
+                    // options.ranges = {
+                    //     'Next 4 weeks': [minDate, next4weeks],
+                    //     'Next month': [startOfNextMonth, endOfNextMonth],
+                    //     'Weekends': [minDate, endOfNextMonth]
+                    // };
                     options.showCustomRangeLabel = false;
                     options.alwaysShowCalendars = true;
                     options.opens = 'right';

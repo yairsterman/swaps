@@ -215,21 +215,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label listing-label">Payment Plan:<br>
-                            <span class="explanation">Choose the plan that suits your needs</span>
-                            </label>
-                            <div class="col-sm-4 col-xs-12">
-                                <select class="form-control {{focusPlan?'focus':''}}" id="deposit" ng-model="edit.deposit" ng-focus="focusPlan" ng-blur="focusPlan=false"
-                                        ng-options="plan.id as plan.displayName + ' - $' + plan.value + ' per night' for plan in data.securityDeposit">
-                                    {{plan.displayName}} - ${{plan.value}} per night
-                                </select>
-                            </div>
-                            <div class="col-sm-4 col-xs-12 plan-explanation">
-                                This plan covers you for up to ${{data.securityDeposit[edit.deposit].damage}} in cases of
-                                damages and cancellations
-                            </div>
-                        </div>
                     </form>
                     <div class="info-section rules">
                         <div class="form-group row">
