@@ -48,5 +48,10 @@ angular.module('filters', [])
                 return month + ' ' + td.getFullYear();
             return month + ' ' + td.getDate();
         };
+    })
+    .filter('trustAsHtml', function($sce) {
+        return function(html) {
+            return $sce.trustAsHtml(html);
+        };
     });
 

@@ -21,6 +21,7 @@ let utils = require('./routes/utils');
 let transactions = require('./routes/transactions');
 let login = require('./routes/login');
 let community = require('./routes/community');
+let blog = require('./routes/blog');
 
 const app = express();
 
@@ -73,6 +74,7 @@ app.use('/utils', utils);
 app.use('/transactions', transactions);
 app.use('/auth', login);
 app.use('/community', community);
+app.use('/blog', blog);
 app.use('/', index);
 
 app.use(passport.initialize());

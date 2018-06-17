@@ -1,0 +1,42 @@
+@import 'media.less';
+.blog-page{
+  background-color: #ffffff;
+  .main-photo{
+    height: 450px;
+    width: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    @media @mobile {
+      height: 250px;
+    }
+  }
+  .content{
+    width: 60%;
+    margin: auto;
+    padding: 40px 0;
+    @media @mobile {
+      width: 100%;
+    }
+    .blog-title{
+      font-size: 30px;
+      text-align: center;
+      color: #848a91;
+      font-weight: 300;
+      .underline{
+        width: 10%;
+        margin: auto;
+        transition: .4s ease;
+        padding-top: 12px;
+        border-bottom: 2px solid rgba(14,93,124,0.5);
+      }
+    }
+    .blog-html{
+      padding-top: 20px;
+      p{
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+  }
+}
