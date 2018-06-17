@@ -39,7 +39,7 @@ $routeProvider
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
     })
-    .when('/tips-for-trips/:post?', {
+    .when('/tips-for-trips/:slug?', {
         templateUrl : '/pages/blog.html',
         controller  : 'blogController'
     })

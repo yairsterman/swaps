@@ -7,8 +7,8 @@ let Blog = require('../models/Blog.js');
 
 router.get('/getPost', function (req, res, next) {
 
-    let name = req.query.post;
-    Blog.findOne({name: name}, function (err, post) {
+    let slug = req.query.slug;
+    Blog.findOne({slug: slug}, function (err, post) {
         if (err) return res.json(err);
         res.json(post);
     });

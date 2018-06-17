@@ -1,8 +1,8 @@
 swapsApp.service('BlogService', function($http, $q){
 
-    this.getPost = function(post) {
+    this.getPost = function(slug) {
         var defer = $q.defer();
-        $http.get('blog/getPost?post=' + post).then(function(data){
+        $http.get('blog/getPost?slug=' + slug).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }

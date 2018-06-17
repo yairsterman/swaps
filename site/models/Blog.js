@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 let schema = new Schema({
     title: String,
-    name: String,
+    slug: String,
     photo: String,
     html: String,
     excerpt: String,
