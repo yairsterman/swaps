@@ -4,6 +4,7 @@ let GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 let User = require('../models/User.js');
 let email = require('./email.js');
 let emailMessages = require('./email-messages.js');
+let data = require('../user_data/data.js');
 let config = require('../config.js');
 let Q = require('q');
 let moment = require('moment');
@@ -93,8 +94,7 @@ module.exports.init = function () {
                             rooms: 1,
                             bedType: 1
                         },
-                        deposit: 1,
-                        paymentInfo: {}
+                        deposit: 0,
                     });
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                         user.image = result.url;
