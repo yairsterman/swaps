@@ -37,7 +37,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.closeModel = function(){
         if($rootScope.externalLogin){
             $rootScope.externalLogin = false;
-            $location.url('/');
+            $location.url('/travelers');
         }
         $scope.$dismiss();
     }
@@ -95,11 +95,18 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             $scope.phase = 'basic';
             return;
         }
+        if($scope.phase == 'completedOnboarding'){
+            $scope.getInitialPhase();
+            return;
+        }
     }
 
     $scope.finish = function(){
         $scope.fillCircle();
         $scope.phase = 'completedOnboarding' ;
+        if($rootScope.profileComplete()){
+            $scope.noBack = true;
+        }
     }
 
     $scope.fillCircle = function(){

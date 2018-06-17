@@ -101,6 +101,7 @@
       }
     }
     .tooltip-inner {
+      font-family: MavenPro;
       background-color: white !important;
       width: 100% !important;
       max-width: 700px !important;
@@ -140,14 +141,21 @@
       padding: 1% 0;
       width: 50%;
       margin: auto;
+      &.photos{
+        width: 75%;
+        padding: 0;
+        @media @mobile {
+          width: 100%;
+        }
+        @media @tablet {
+          width: 100%;
+        }
+      }
       @media @mobile {
         width: 100%;
       }
       @media @tablet {
         width: 100%;
-      }
-      &.photos{
-        padding: 0;
       }
       .payment-plan{
         @media @desktop, @desktop-lg {
@@ -311,6 +319,7 @@
         font-size: 15px;
         text-align: center;
         padding-bottom: 20px;
+        font-weight: 300;
         @media @mobile {
           font-size: 14px;
         }

@@ -129,10 +129,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do fo a living" data-placement="right" tooltip>Occupation:
+                    <label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do for a living" data-placement="right" tooltip>Occupation:
                         <span class="explanation "></span>
                     </label>
-                    <input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')" ng-focus-lost="isInFocus = 'aboutMe'" ng-model="user.occupation">
+                    <input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')"  ng-model="user.occupation">
                 </div>
                 <div class="form-group">
                     <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
@@ -150,7 +150,7 @@
                 <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
                     <span class="explanation"></span>
                 </label>
-                <input class="form-control" id="address" type="text" placeholder="Enter Your current address" is-focused="!isInFocus && (!user.address || user.address == '')"  ng-model="user.address" autocomplete>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')"  ng-model="user.address" autocomplete>
             </div>
             <div class="form-group">
                 <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
@@ -237,10 +237,11 @@
         </div>
         <div class="user-info photos" ng-if="phase == 'photos'">
             <div class="photos-title">
-                Upload one or more photos of your home.
+                Upload a nice photo of your home
             </div>
             <div class="photos-sub-title">
-                Homes with more than 3 photos are likely to get more views.
+                You can add more photos of your place on the "My Home" tab in your Profile page.<br>
+                Homes with 3 or more photos are far more likely to get viewed
             </div>
             <div class="photos-area">
                 <div class="box has-advanced-upload" ng-if="user.photos.length < 3">
@@ -263,40 +264,42 @@
         </div>
         <div ng-if="phase == 'completedOnboarding'">
             <div>
-                <div class="main-title" ng-if="profileComplete()">
-                    Congratulations! <br>
-                    You've completed you're profile.
+                <div ng-if="profileComplete()">
+                    <div class="main-title">
+                        Nice! <br>
+                        Your profile is complete
+                    </div>
+                    <div class="sub-title">
+                        Got any travel plans?<br>
+                        Enter the information below, <br>and we’ll get started on finding you a perfect Swap.
+                    </div>
+                    <div class="swap-dates">
+                        <swaps swaps="user.travelingInfo" popup="true" onboarding="true" close-model="closeModel()"></swaps>
+                    </div>
+                    <div class="start-button end swap-dates-end">
+                        <div class="sub-title">
+                            No plans yet?<br>
+                            See what else we have to offer
+                        </div>
+                        <div class="complete-btn btn btn-primary" ng-click="go('travelers')">
+                            Search for Swap!
+                        </div>
+                    </div>
                 </div>
                 <div ng-if="!profileComplete()">
                     <div class="main-title">
                         Hold Up! <br>
-                        Your profile is not complete yet.
+                        It seems like you forgot to fill in some info
                     </div>
                     <div class="sub-title">
-                        You must complete your profile in order to send and receive swap requests.
-                    </div>
-                </div>
-                <div class="sub-title">
-                    Do you already have travel plans?<br>
-                    Enter yor travel information here <br>and we'll start finding a perfect swap for you
-                </div>
-                <div class="swap-dates">
-                    <swaps swaps="user.travelingInfo" popup="true" onboarding="true" close-model="closeModel()"></swaps>
-                </div>
-                <div class="start-button end swap-dates-end">
-                    <div class="sub-title">
-                        No plans yet..?<br>
-                        See what we have to offer
-                    </div>
-                    <div class="complete-btn btn btn-primary" ng-click="go('travelers')">
-                        Search for Swap!
+                        You need to complete your profile in order to send and receive swap requests
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="buttons {{phase == 'about'?'home':''}}">
-        <div class="button back" ng-click="back()" ng-hide="phase == 'about' || phase == 'onSignup'">
+        <div class="button back" ng-click="back()" ng-hide="phase == 'about' || phase == 'onSignup' || noBack">
             <div class="glyphicon glyphicon-chevron-left"></div>
             Back
         </div>
@@ -309,7 +312,7 @@
             <div class="glyphicon glyphicon-chevron-right"></div>
         </div>
         <div class="button next close" ng-click="closeModel()" ng-if="phase == 'completedOnboarding'">
-            No thanks, I'm good
+            {{!profileComplete()?'I’ll do it later':'Continue'}}
         </div>
     </div>
 </div>

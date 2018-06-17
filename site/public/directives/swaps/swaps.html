@@ -1,11 +1,11 @@
 <div class="swaps-wrapper {{onboarding?'onboarding-swap-wrapper':''}}">
     <div class="icon icon-delete top-corner" ng-click="close()" ng-if="popup"></div>
-    <div class="title" ng-if="!onboarding">{{title}}
+    <div class="title" ng-if="!onboarding">Got any travel plans?
         <div class="underline"></div>
     </div>
     <div class="sub-title" ng-if="!onboarding">
-        This way you will appear in other Swappers' searches,<br>
-        making it easier for you to find a Swap
+        Enter the information below, <br>
+        and we’ll get started on finding you a perfect Swap.
     </div>
     <div class="edit-swaps {{popup || toMany?'':'overflow'}}" ng-if="!onboarding">
         <div class="single-swap" ng-repeat="swap in swaps | orderBy : orderByDeparture | limitTo : limit track by swap._id ">

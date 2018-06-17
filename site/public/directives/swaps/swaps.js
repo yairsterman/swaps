@@ -11,7 +11,6 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
 
     $scope.popup?$scope.limit = 4:$scope.limit = $scope.swaps.length;
 
-    $scope.title = $scope.swaps.length != 0?'Edit and Add Swap Locations':'Tell us where you want to go, so other Swappers can see your home.';
 
 
     $scope.edit = function(index, swap){
