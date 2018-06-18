@@ -31,6 +31,12 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
                     templateUrl: '../../directives/onboarding/onboarding.html',
                     size: 'lg',
                     controller: 'onboardingController'
+                }).closed.then(function(){
+                    if($rootScope.externalLogin){
+                        $rootScope.externalLogin = false;
+                        $location.url('/');
+
+                    }
                 });
             }
             else{
