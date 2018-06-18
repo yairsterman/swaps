@@ -25,7 +25,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             $scope.loggedIn = true;
             if(!$scope.externalLogin)
                 $scope.modelInstance.close();
-            if(!$scope.profileComplete()) {
+            if(!$rootScope.profileComplete()) {
                 $scope.modelInstance = $uibModal.open({
                     animation: !$scope.externalLogin,
                     templateUrl: '../../directives/onboarding/onboarding.html',
@@ -46,13 +46,6 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
                 }
             }
         });
-    };
-
-    $scope.profileComplete = function(){
-        if(!$scope.user._id)
-            return false;
-        return $scope.user.photos.length >= 3 && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' &&
-            $scope.user.address && $scope.user.address !== '';
     };
 
     $scope.FBLogin = function(){

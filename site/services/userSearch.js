@@ -85,7 +85,7 @@ function getHighestTravelScore(user, geo, searchDates, req){
         // if user has not specified dates (set date for 'Anytime')
         // then the date is a match but not full score
         if(!travelDates.departure || !travelDates.returnDate){
-            totalDatesRelevance = 0.5;
+            totalDatesRelevance = 0.3;
         }
         else{
             let overlappingDays = getOverlappingDays(travelDates, searchDates);
@@ -97,7 +97,7 @@ function getHighestTravelScore(user, geo, searchDates, req){
         if(from > 0 && to > 0 && totalDatesRelevance > 0){
             placesAndDatesRelevance = 90;
         }
-        let totalPlaceRelevance = (from * fromRelevance) + (to * toRelevance)  * placesRelevancePercent;
+        let totalPlaceRelevance = ((from * fromRelevance) + (to * toRelevance))  * placesRelevancePercent;
         totalDatesRelevance = totalDatesRelevance * datesRelevancePercent;
 
         let finalTravelRelevance = (totalPlaceRelevance + totalDatesRelevance) / 100 * placesAndDatesRelevance;
