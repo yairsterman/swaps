@@ -61,7 +61,7 @@ function getHighestTravelScore(user, geo, searchDates, req){
     // if user not logged in and search is only by user's location,
     // return higher score for users who are currently traveling
     if(!req.user){
-        let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.8;
+        let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.5;
         placesAndDatesRelevance = (from * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
         return placesAndDatesRelevance;
     }
@@ -69,7 +69,7 @@ function getHighestTravelScore(user, geo, searchDates, req){
     // if the user has no traveling information then return only
     // the places relevance percent of total places and dates relevance
     if(!user.travelingInformation || user.travelingInformation.length == 0){
-        return (from * placesRelevancePercent) / 100  * placesAndDatesRelevance;
+        return (from * fromRelevance * placesRelevancePercent) / 100  * placesAndDatesRelevance;
     }
     user.travelingInformation.forEach(travel => {
 

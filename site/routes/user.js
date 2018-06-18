@@ -86,12 +86,14 @@ router.get('/get-all-users', function(req, res, next) {
 });
 
 router.get('/get-all-users-admin', function(req, res, next) {
-    var password = req.query.password;
+    let password = req.query.password;
     if(password !== config.ADMIN_PASSWORD){
         error.message = "No Access";
         res.json(error);
         return;
     }
+    let params = {};
+    setRequiredParams(params);
     User.find(params, Data.getVisibleUserData().accessible)
         .populate({
             path: 'community',
@@ -104,7 +106,7 @@ router.get('/get-all-users-admin', function(req, res, next) {
 });
 
 router.get('/get-featured-users', function(req, res, next) {
-    var params = {};
+    let params = {};
     setRequiredParams(params);
     params = {featured: true};
     if(req.user){
