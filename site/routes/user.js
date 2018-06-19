@@ -94,7 +94,7 @@ router.get('/get-all-users-admin', function(req, res, next) {
     }
     let params = {};
     setRequiredParams(params);
-    User.find(params, Data.getVisibleUserData().accessible)
+    User.find({})
         .populate({
             path: 'community',
             select: 'name _id',
