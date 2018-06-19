@@ -174,9 +174,9 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     };
 
-    this.emailSignin = function(credentials) {
+    this.emailSignup = function(credentials) {
         var defer = $q.defer();
-        $http.post('/auth/signin', credentials).then(function(data){
+        $http.post('/auth/signup', credentials).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }

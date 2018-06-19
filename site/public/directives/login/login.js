@@ -89,12 +89,11 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             $scope.passwordsMismatch = true;
             return;
         }
-        if($scope.signin){
-            emailSignup();
-        }
-        else{
-            emailSignin();
-        }
+        AccountService.emailSignup($scope.credentials).then(function(userId){
+            $scope.loginCallBack(userId);
+        },function(err){
+            $scope.error = err;
+        })
     };
 
     $scope.goToEmailLogin = function(){
@@ -117,21 +116,5 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.policy = function(){
         $window.open('https://swapshome.com/privacy-policy' , '_blank');
     };
-
-    function emailSignin(){
-        AccountService.emailSignin($scope.credentials).then(function(userId){
-            $scope.loginCallBack(userId);
-        },function(err){
-            $scope.error = err;
-        })
-    }
-
-    function emailSignup(){
-        AccountService.emailSignup($scope.credentials).then(function(userId){
-            $scope.loginCallBack(userId);
-        },function(err){
-            $scope.error = err;
-        })
-    }
 });
 
