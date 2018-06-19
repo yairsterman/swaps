@@ -191,32 +191,16 @@ module.exports.init = function () {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function (req, email, password, done) {
-
-            // asynchronous
-            // User.findOne wont fire unless data is sent back
-            process.nextTick(function () {
-
-                // find a user whose email is the same as the forms email
-                // we are checking to see if the user trying to login already exists
-                User.findOne({'local.email': email}, function (err, user) {
-                    // if there are any errors, return the error
-                    if (err)
-                        return done(err);
-
-                    // check to see if theres already a user with that email
+                User.findOne({email: email}, function (err, user) {
+                    if (err) return done(err);
                     if (user) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                        return done(null, user);
                     } else {
-
-                        // if there is no user with that email
-                        // create the user
-                        var newUser = new User();
-
-                        // set the user's local credentials
-                        newUser.local.email = email;
-                        newUser.local.password = newUser.generateHash(password);
-
-                        // save the user
+                            user = new User({
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email
+                        });
                         newUser.save(function (err) {
                             if (err)
                                 throw err;
@@ -225,9 +209,6 @@ module.exports.init = function () {
                     }
 
                 });
-
-            });
-
         }));
 
 
