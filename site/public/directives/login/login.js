@@ -75,6 +75,10 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             if(form.password.$invalid){
                 $scope.passwordInvalid = true;
             }
+            if($scope.signin && $scope.credentials.password !== $scope.credentials.confirmPassword){
+                $scope.confirmPasswordInvalid = true;
+                $scope.passwordsMismatch = true;
+            }
             return;
         }
         if($scope.signin && $scope.credentials.password !== $scope.credentials.confirmPassword){
