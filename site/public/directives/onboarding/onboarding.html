@@ -109,7 +109,7 @@
         </div>
         <div class="user-info address" ng-if="phase == 'about'">
             <div class="">
-                <div  ng-if="user.googleId && !user.facebookId">
+                <div ng-if="!user.facebookId">
                     <div class="row">
                         <div class="col-sm-4 col-xs-12 form-group">
                             <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="Choose a picture of yourself" data-placement="bottom" tooltip>Profile Picture:
@@ -126,6 +126,14 @@
                             </label>
                             <input class="datepicker form-control" name="birthday" ng-model="user.birthday" birthday="user.birthday" birthday-picker>
                         </div>
+                    </div>
+                </div>
+                <div ng-if="user.facebookId">
+                    <div class="form-group">
+                        <label class="control-label listing-label" for="email" data-toggle="tooltip" title="Enter a valid email" data-placement="right" tooltip>Email:
+                            <span class="asterisk">*</span>
+                        </label>
+                        <input id="email" class="form-control {{user.email?'greyed-out':''}}" type="email" ng-model="user.email">
                     </div>
                 </div>
                 <div class="form-group">
@@ -157,7 +165,7 @@
                     <span class="explanation"></span>
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-model="user.apptInfo.title">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="(!user.apptInfo.title || user.apptInfo.title == '')" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="form-group">
