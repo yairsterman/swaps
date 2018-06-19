@@ -53,7 +53,7 @@ module.exports.init = function () {
                 if (err) return done(err);
                 if (user) {
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
-                            user.image = result.url;
+                            user.image = result.secure_url;
                             user.facebookId = profile.id;
                             if (profile._json.email && !user.email) {
                                 user.email = profile._json.email;
@@ -97,7 +97,7 @@ module.exports.init = function () {
                         deposit: 0,
                     });
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
-                        user.image = result.url;
+                        user.image = result.secure_url;
                         user.save(function (err, user) {
                             if (err) return next(err);
                             console.log("new user saved");
@@ -166,7 +166,7 @@ module.exports.init = function () {
                         paymentInfo: {}
                     });
                     uploadProfileImage(user._id, profile._json.image.url).then(function (result) {
-                        user.image = result.url;
+                        user.image = result.secure_url;
                         user.save(function (err, user) {
                             if (err) return next(err);
                             console.log("new user saved");
