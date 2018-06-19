@@ -8,6 +8,7 @@ let emailMessages = require('./email-messages.js');
 let data = require('../user_data/data.js');
 let config = require('../config.js');
 let Q = require('q');
+const bcrypt = require('bcrypt-nodejs');
 let moment = require('moment');
 
 const cloudinary = require('cloudinary');
@@ -170,13 +171,13 @@ module.exports.init = function () {
                     uploadProfileImage(user._id, profile._json.image.url).then(function (result) {
                         user.image = result.url;
                         user.save(function (err, user) {
-                            if (err) return next(err);
+                            if (err) return done(err);
                             console.log("new user saved");
                             email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
                             return done(null, user);
                         });
                     }, function (err) {
-                        return next(err);
+                        return done(err);
                     });
                 }
             });
@@ -197,14 +198,18 @@ module.exports.init = function () {
                         return done(null, user);
                     } else {
                             user = new User({
-                            firstName: firstName,
-                            lastName: lastName,
+                            firstName: 'eran',
+                            lastName: 'sterman',
                             email: email
                         });
-                        newUser.save(function (err) {
-                            if (err)
-                                throw err;
-                            return done(null, newUser);
+                        bcrypt.genSalt(config.saltRounds, function (err, salt) {
+                            bcrypt.hash(password, salt, null, function (err, hash) {
+                                user.password = hash;
+                                user.save(function (err) { 
+                                    if (err) return done(err);
+                                    return done(null, user);
+                                });
+                            });
                         });
                     }
 
