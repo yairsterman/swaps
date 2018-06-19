@@ -63,10 +63,10 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
 
     $scope.EmailLogin = function(form){
         if(form.$invalid){
-            if(form.firstName.$invalid){
+            if(form.firstName && form.firstName.$invalid){
                 $scope.firstNameInvalid = true;
             }
-            if(form.lastName.$invalid){
+            if(form.lastName && form.lastName.$invalid){
                 $scope.lastNameInvalid = true;
             }
             if(form.email.$invalid){
@@ -77,7 +77,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             }
             return;
         }
-        if($scope.credentials.password !== $scope.credentials.confirmPassword){
+        if($scope.signin && $scope.credentials.password !== $scope.credentials.confirmPassword){
             $scope.confirmPasswordInvalid = true;
             $scope.passwordsMismatch = true;
             return;
