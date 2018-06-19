@@ -93,6 +93,14 @@ input:-webkit-autofill{
   background-color: #ffffff !important;
 }
 
+.modal-dialog {
+  -webkit-transform: translate(0,0) !important;
+  -ms-transform: translate(0,0) !important;
+  transform: translate(0,0) !important;
+  -webkit-animation: model 0.4s ease;
+  animation: model 0.4s ease;
+}
+
 .pac-container{
   border: 2px solid #c7a768;
   box-shadow: none;
@@ -256,4 +264,14 @@ div{
       color: #ffffff;
     }
   }
+}
+
+@keyframes model {
+  0% {transform: scale(0.9); opacity: 0}
+  100% {transform: scale(1); opacity: 1}
+}
+
+@-webkit-keyframes model {
+  0% {transform: scale(0.9); opacity: 0}
+  100% {transform: scale(1); opacity: 1}
 }
