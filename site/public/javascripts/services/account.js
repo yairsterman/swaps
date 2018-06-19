@@ -171,6 +171,7 @@ swapsApp.service('AccountService', function($http, $q){
         }, function(err){
             defer.reject(err);
         });
+        return defer.promise;
     };
 
     this.emailSignin = function(credentials) {
@@ -185,6 +186,7 @@ swapsApp.service('AccountService', function($http, $q){
         }, function(err){
             defer.reject(err);
         });
+        return defer.promise;
     };
 
     this.addFavorite = function(favorite) {
