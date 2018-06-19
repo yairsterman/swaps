@@ -1,4 +1,4 @@
-let request = null
+var request = null
 swapsApp.controller('requestController', function($scope, $rootScope, MessageService, UsersService, $timeout) {
     request = $scope;
     $scope.send = {

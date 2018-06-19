@@ -64,7 +64,7 @@ swapsApp.service('UsersService', function($http, $q){
     };
 
     function createQuery(params){
-        let query = '?';
+        var query = '?';
 
         angular.forEach(params,function(value,key){
             if(value || value == 0){

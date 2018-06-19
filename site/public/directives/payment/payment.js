@@ -18,7 +18,7 @@ swapsApp.directive('payment', function() {
         templateUrl: '../../directives/payment/payment.html'
     }
 });
-let payment = null;
+var payment = null;
 
 function paymentController($scope, $sce){
     payment = $scope;
