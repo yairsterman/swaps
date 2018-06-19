@@ -8,6 +8,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.title = $scope.signin?'Join Swaps':'Log In';
     $scope.subTitle = $scope.signin?'In just a few steps you could find your next Swap':'';
     $scope.credentials = {};
+    $scope.passwordType = 'password';
 
     $scope.close = function(){
         $scope.modelInstance.close();
@@ -15,6 +16,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
 
     $scope.goToSignin = function(){
         $scope.signin = true;
+        $scope.isEmailLogin = false;
         $scope.title = 'Join Swaps';
         $scope.subTitle = 'In just a few steps you could find your next Swap';
     };
@@ -59,7 +61,27 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
         // window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
     };
 
-    $scope.EmailLogin = function(){
+    $scope.EmailLogin = function(form){
+        if(form.$invalid){
+            if(form.firstName.$invalid){
+                $scope.firstNameInvalid = true;
+            }
+            if(form.lastName.$invalid){
+                $scope.lastNameInvalid = true;
+            }
+            if(form.email.$invalid){
+                $scope.emailInvalid = true;
+            }
+            if(form.password.$invalid){
+                $scope.passwordInvalid = true;
+            }
+            return;
+        }
+        if($scope.credentials.password !== $scope.credentials.confirmPassword){
+            $scope.confirmPasswordInvalid = true;
+            $scope.passwordsMismatch = true;
+            return;
+        }
         if($scope.signin){
             emailSignup();
         }
@@ -72,6 +94,15 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
         $scope.isEmailLogin = true;
     };
 
+    $scope.showPassword = function(){
+        if($scope.passwordType == 'password'){
+            $scope.passwordType = 'text'
+        }
+        else{
+            $scope.passwordType = 'password'
+        }
+    }
+
     $scope.terms = function(){
         $window.open('https://swapshome.com/terms-and-conditions' , '_blank');
     };
@@ -83,12 +114,16 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     function emailSignin(){
         AccountService.emailSignin($scope.credentials).then(function(user){
             $scope.loginCallBack(user);
+        },function(err){
+            $scope.error = err;
         })
     }
 
     function emailSignup(){
         AccountService.emailSignup($scope.credentials).then(function(user){
             $scope.loginCallBack(user);
+        },function(err){
+            $scope.error = err;
         })
     }
 });

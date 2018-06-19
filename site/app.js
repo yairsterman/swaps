@@ -25,11 +25,6 @@ let blog = require('./routes/blog');
 
 const app = express();
 
-
-app.use(passport.initialize());
-app.use(passport.session());
-passportService.init();
-
 // view engine setup
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -48,6 +43,8 @@ app.use(session({
     cookie: { maxAge: 3600000*24*365 },
     resave: true,
     saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // load mongoose package
 const mongoose = require('mongoose');
@@ -81,7 +78,6 @@ app.use('/community', community);
 app.use('/blog', blog);
 app.use('/', index);
 
-
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
 // catch 404 and forward to error handler
@@ -103,7 +99,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-
+passportService.init();
 emailService.init();
 
 app.listen(3000,function () {

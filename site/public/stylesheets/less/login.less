@@ -1,6 +1,7 @@
 @import 'media.less';
 .login-model{
   min-height: 435px;
+  position: relative;
   .top-corner{
     position: absolute;
     top: 10px;
@@ -30,7 +31,7 @@
     font-size: 20px;
     font-weight: 300;
     &.has-height{
-      min-height: 45px;
+      min-height: 15px;
     }
   }
   .bottom{
@@ -105,22 +106,48 @@
         padding-left: 36px;
       }
       &.signup{
-        padding: 0 100px;
+        padding: 0 80px;
         width: 100%;
       }
     }
   }
-  .password{
+  .mg-20{
+    margin-top: 30px;
+  }
+  .email-login{
+    margin: 0 20px;
     position: relative;
-    .fa{
-      position: absolute;
-      top: 5px;
-      right: 15px;
-      font-size: 20px;
-      cursor: pointer;
-    }
     .form-control{
-      padding-right: 40px;
+      height: 38px;
+      font-size: 18px;
+      &.error{
+        border: 1px solid #a94442;
+        box-shadow: 0 0 3px 3px rgba(169,68,66,0.4);
+      }
+    }
+    .error{
+      font-weight: 400;
+      color: #a94442;
+    }
+    .explanation{
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .password{
+      position: relative;
+      .fa{
+        position: absolute;
+        top: 8px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        &:focus{
+          outline: none;
+        }
+      }
+      .form-control{
+        padding-right: 40px;
+      }
     }
   }
 }
