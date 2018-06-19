@@ -30,11 +30,11 @@ let config = {
 
     ADMIN_PASSWORD: 'q3e5t7u',
 
-    // mongoUrl: 'mongodb://18.221.167.219/test', // for dev
-    mongoUrl: 'mongodb://127.0.0.1/test', // for production
+    mongoUrl: 'mongodb://18.221.167.219/test', // for dev
+    // mongoUrl: 'mongodb://127.0.0.1/test', // for production
 
-    baseUrl: 'https://swapshome.com'
-    // baseUrl: 'http://localhost:3000'
+    // baseUrl: 'https://swapshome.com'
+    baseUrl: 'http://localhost:3000'
 };
 
 module.exports = config;

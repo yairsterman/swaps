@@ -25,6 +25,11 @@ let blog = require('./routes/blog');
 
 const app = express();
 
+
+app.use(passport.initialize());
+app.use(passport.session());
+passportService.init();
+
 // view engine setup
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -43,8 +48,7 @@ app.use(session({
     cookie: { maxAge: 3600000*24*365 },
     resave: true,
     saveUninitialized: false}));
-app.use(passport.initialize());
-app.use(passport.session());
+
 // load mongoose package
 const mongoose = require('mongoose');
 // Use native Node promises
@@ -77,8 +81,6 @@ app.use('/community', community);
 app.use('/blog', blog);
 app.use('/', index);
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -100,8 +102,9 @@ app.use(function(err, req, res, next) {
   res.render('error.html');
 });
 
+
+
 emailService.init();
-passportService.init();
 
 app.listen(3000,function () {
     console.log("listening on 3000");

@@ -22,4 +22,20 @@ router.get('/google/callback',
     }
 );
 
+
+
+router.get('/signup',
+    passport.authenticate('google', {failureRedirect: '/'}), function (req, res) {
+        // Successful authentication, redirect home.
+        res.render('close-auth.html', {userId: req.session.passport.user});
+    }
+);
+router.post('/signup', passport.authenticate('local-signup', {
+    successRedirect : '/good', // redirect to the secure profile section
+    failureRedirect : '/bad' // redirect back to the signup page if there is an error
+}));
+
+
+
+
 module.exports = router;
