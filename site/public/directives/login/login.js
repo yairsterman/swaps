@@ -74,6 +74,9 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             }
             if(form.password.$invalid){
                 $scope.passwordInvalid = true;
+                if(!$scope.signin){
+                    $scope.error = "Wrong password";
+                }
             }
             if($scope.signin && $scope.credentials.password !== $scope.credentials.confirmPassword){
                 $scope.confirmPasswordInvalid = true;
@@ -116,16 +119,16 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     };
 
     function emailSignin(){
-        AccountService.emailSignin($scope.credentials).then(function(user){
-            $scope.loginCallBack(user);
+        AccountService.emailSignin($scope.credentials).then(function(userId){
+            $scope.loginCallBack(userId);
         },function(err){
             $scope.error = err;
         })
     }
 
     function emailSignup(){
-        AccountService.emailSignup($scope.credentials).then(function(user){
-            $scope.loginCallBack(user);
+        AccountService.emailSignup($scope.credentials).then(function(userId){
+            $scope.loginCallBack(userId);
         },function(err){
             $scope.error = err;
         })

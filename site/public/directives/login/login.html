@@ -77,6 +77,7 @@
                 </div>
             </div>
         </form>
+        <div class="error" ng-if="error">{{error}}</div>
         <div class="button-signin bottom">
             <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>{{signin?'Join with Email':' Log in with Email'}}</button>
         </div>

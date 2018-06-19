@@ -161,30 +161,30 @@ swapsApp.service('AccountService', function($http, $q){
 
     this.emailSignup = function(credentials) {
         var defer = $q.defer();
-        return $http.post('/auth/signup', credentials).then(function(data){
+        $http.post('/auth/signup', credentials).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }
             else{
                 defer.resolve(data.data);
             }
-        }, function(err){
-            defer.reject(err);
+        }, function(data){
+            defer.reject(data.data.message);
         });
         return defer.promise;
     };
 
     this.emailSignin = function(credentials) {
         var defer = $q.defer();
-        return $http.post('/auth/signin', credentials).then(function(data){
+        $http.post('/auth/signin', credentials).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.error);
             }
             else{
                 defer.resolve(data.data);
             }
-        }, function(err){
-            defer.reject(err);
+        }, function(data){
+            defer.reject(data.data.message);
         });
         return defer.promise;
     };

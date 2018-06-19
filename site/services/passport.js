@@ -62,11 +62,11 @@ module.exports.init = function () {
                             user.email = profile._json.email;
                         }
                         user.save(function (err, user) {
-                            if (err) return next(err);
+                            if (err) return done(err);
                             return done(null, user);
                         });
                     }, function (err) {
-                        return next(err);
+                        return done(err);
                     });
                 }
                 else {
@@ -102,7 +102,7 @@ module.exports.init = function () {
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                         user.image = result.url;
                         user.save(function (err, user) {
-                            if (err) return next(err);
+                            if (err) return done(err);
                             console.log("new user saved");
                             if (user.email) {
                                 email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
@@ -110,7 +110,7 @@ module.exports.init = function () {
                             return done(null, user);
                         });
                     }, function (err) {
-                        return next(err);
+                        return done(err);
                     });
                 }
             });
@@ -130,7 +130,7 @@ module.exports.init = function () {
                     if (!user.googleId) {
                         user.googleId = profile.id;
                         user.save(function (err, user) {
-                            if (err) return next(err);
+                            if (err) return done(err);
                             return done(null, user);
                         });
                     }
@@ -165,7 +165,7 @@ module.exports.init = function () {
                             rooms: 1,
                             bedType: 1
                         },
-                        deposit: 1,
+                        deposit: 0,
                         paymentInfo: {}
                     });
                     uploadProfileImage(user._id, profile._json.image.url).then(function (result) {
@@ -195,13 +195,34 @@ module.exports.init = function () {
             User.findOne({email: email}, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    return done({message: 'user already exists'}, null);
+                    return done({error: true, message: 'User already exists'}, null);
                 } else {
                     user = new User({
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
                         email: email,
-                        image: 'http://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg'
+                        image: 'http://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg',
+                        gender: 3,
+                        birthday: '01/01/1999',
+                        occupation: '',
+                        aboutMe: '',
+                        country: '',
+                        city: '',
+                        address: '',
+                        swaps: 0,
+                        allowViewHome: true,
+                        traveling: false,
+                        travelingDates: {},
+                        apptInfo: {
+                            roomType: 0,
+                            propertyType: 0,
+                            beds: 1,
+                            baths: 1,
+                            guests: 2,
+                            rooms: 1,
+                            bedType: 1
+                        },
+                        deposit: 0
                     });
                     bcrypt.genSalt(config.saltRounds, function (err, salt) {
                         bcrypt.hash(password, salt, null, function (err, hash) {
