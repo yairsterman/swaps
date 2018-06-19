@@ -1,6 +1,6 @@
 <div class="login-model">
+    <div class="icon icon-delete top-corner" ng-click="close()"></div>
     <div class="" ng-if="!isEmailLogin">
-        <div class="icon icon-delete top-corner" ng-click="close()"></div>
         <div class="title">
             {{title}}
             <div class="underline"></div>
@@ -56,7 +56,7 @@
                 <label class="control-label listing-label" for="email">Email:
                 </label>
                 <div class="">
-                    <input class="form-control {{emailInvalid?'error':''}}" type="text" id="email" name="email" placeholder="" ng-focus="emailInvalid = false;" ng-model="credentials.email" required>
+                    <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="emailInvalid = false;" ng-model="credentials.email" required>
                 </div>
             </div>
             <div class="form-group">
