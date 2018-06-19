@@ -1,5 +1,6 @@
 @import 'media.less';
 .login-model{
+  min-height: 435px;
   .top-corner{
     position: absolute;
     top: 10px;
@@ -28,6 +29,9 @@
     padding: 0 10px;
     font-size: 20px;
     font-weight: 300;
+    &.has-height{
+      min-height: 45px;
+    }
   }
   .bottom{
     font-size: 16px;
@@ -100,6 +104,23 @@
         color: white;
         padding-left: 36px;
       }
+      &.signup{
+        padding: 0 100px;
+        width: 100%;
+      }
+    }
+  }
+  .password{
+    position: relative;
+    .fa{
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .form-control{
+      padding-right: 40px;
     }
   }
 }

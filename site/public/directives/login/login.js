@@ -7,6 +7,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     // $scope.signin = signin;
     $scope.title = $scope.signin?'Join Swaps':'Log In';
     $scope.subTitle = $scope.signin?'In just a few steps you could find your next Swap':'';
+    $scope.credentials = {};
 
     $scope.close = function(){
         $scope.modelInstance.close();
@@ -59,9 +60,16 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     };
 
     $scope.EmailLogin = function(){
-        AccountService.emailLogin($scope.credentials).then(function(user){
-            $scope.loginCallBack(user);
-        })
+        if($scope.signin){
+            emailSignup();
+        }
+        else{
+            emailSignin();
+        }
+    };
+
+    $scope.goToEmailLogin = function(){
+        $scope.isEmailLogin = true;
     };
 
     $scope.terms = function(){
@@ -71,5 +79,17 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.policy = function(){
         $window.open('https://swapshome.com/privacy-policy' , '_blank');
     };
+
+    function emailSignin(){
+        AccountService.emailSignin($scope.credentials).then(function(user){
+            $scope.loginCallBack(user);
+        })
+    }
+
+    function emailSignup(){
+        AccountService.emailSignup($scope.credentials).then(function(user){
+            $scope.loginCallBack(user);
+        })
+    }
 });
 
