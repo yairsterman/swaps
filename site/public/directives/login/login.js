@@ -1,5 +1,5 @@
 var login = null;
-swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, MessageService, $timeout) {
+swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, AccountService, MessageService, $timeout) {
     login = $scope;
     $rootScope.externalLogin = $routeParams.external;
     $scope.innerHeight = $window.innerHeight;
@@ -56,6 +56,12 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.GoogleLogin = function(){
         window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
         // window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
+    };
+
+    $scope.EmailLogin = function(){
+        AccountService.emailLogin($scope.credentials).then(function(user){
+            $scope.loginCallBack(user);
+        })
     };
 
     $scope.terms = function(){

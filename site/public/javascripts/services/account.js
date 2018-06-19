@@ -159,6 +159,20 @@ swapsApp.service('AccountService', function($http, $q){
         });
    };
 
+    this.emailLogin = function(user) {
+        var defer = $q.defer();
+        return $http.post('/auth/signup', user).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+    };
+
     this.addFavorite = function(favorite) {
         var defer = $q.defer();
         $http.put('/account/add-favorite', {favorite: favorite}).then(function(data){
