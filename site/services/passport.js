@@ -192,28 +192,29 @@ module.exports.init = function () {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function (req, email, password, done) {
-                User.findOne({email: email}, function (err, user) {
-                    if (err) return done(err);
-                    if (user) {
-                        return done({message: 'user already exists'}, null);
-                    } else {
-                            user = new User({
-                            firstName: req.body.firstName,
-                            lastName: req.body.lastName,
-                            email: email
-                        });
-                        bcrypt.genSalt(config.saltRounds, function (err, salt) {
-                            bcrypt.hash(password, salt, null, function (err, hash) {
-                                user.password = hash;
-                                user.save(function (err) {
-                                    if (err) return done(err);
-                                    return done(null, user);
-                                });
+            User.findOne({email: email}, function (err, user) {
+                if (err) return done(err);
+                if (user) {
+                    return done({message: 'user already exists'}, null);
+                } else {
+                    user = new User({
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        email: email,
+                        image: 'http://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg'
+                    });
+                    bcrypt.genSalt(config.saltRounds, function (err, salt) {
+                        bcrypt.hash(password, salt, null, function (err, hash) {
+                            user.password = hash;
+                            user.save(function (err) {
+                                if (err) return done(err);
+                                return done(null, user);
                             });
                         });
-                    }
+                    });
+                }
 
-                });
+            });
         }));
 
 
