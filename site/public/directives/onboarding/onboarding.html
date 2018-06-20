@@ -132,14 +132,14 @@
                     <label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do for a living" data-placement="right" tooltip>Occupation:
                         <span class="explanation "></span>
                     </label>
-                    <input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')"  ng-model="user.occupation">
+                    <input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')"  ng-blur="isInFocus = 'aboutMe'" ng-model="user.occupation">
                 </div>
                 <div class="form-group">
                     <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
                         <span class="explanation "></span>
                     </label>
                     <div class="">
-                        <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="(!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
+                        <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-blur="loseFocus()" ng-model="user.aboutMe"></textarea>
                     </div>
                 </div>
             </div>
@@ -150,14 +150,14 @@
                 <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
                     <span class="explanation"></span>
                 </label>
-                <input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')"  ng-model="user.address" autocomplete>
+                <input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')" ng-blur="isInFocus = 'title'" ng-model="user.address" autocomplete>
             </div>
             <div class="form-group">
                 <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
                     <span class="explanation"></span>
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="(!user.apptInfo.title || user.apptInfo.title == '')" ng-model="user.apptInfo.title">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-blur="isInFocus = 'about'" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="form-group">
@@ -174,7 +174,7 @@
             <div class="form-group">
                 <label class="control-label listing-label " for="aboutMyHome" data-toggle="tooltip" title="What makes your home special" data-placement="right" tooltip>About My Home:</label>
                 <div class="">
-                    <textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="(!user.apptInfo.about || user.apptInfo.about == '')" ng-focus-lost="loseFocus()" ng-model="user.apptInfo.about"></textarea>
+                    <textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'about' && (!user.apptInfo.about || user.apptInfo.about == '')" ng-blur="loseFocus()" ng-model="user.apptInfo.about"></textarea>
                 </div>
             </div>
         </div>
