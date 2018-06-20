@@ -195,11 +195,21 @@ module.exports.init = function () {
             User.findOne({email: email}, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    if(req.body.firstName || req.body.lastName){
+                    if (req.body.firstName || req.body.lastName) {
                         return done({error: true, message: 'User already exists'}, null);
                     }
                     else {
-                        return done(null, user);
+                        if (user.password) {
+                            if (bcrypt.compareSync(req.body.password, user.password)) {
+                                return done(null, user);
+                            }
+                            else {
+                                return done({error: true, message: 'Wrong password'}, null);
+                            }
+                        }
+                        else {
+                            return done({error: true, message: 'user ' + req.body.email + ' has no password'}, null);
+                        }
                     }
                 } else {
                     if (req.body.firstName && req.body.lastName) {
