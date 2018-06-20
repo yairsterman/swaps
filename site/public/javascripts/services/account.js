@@ -193,7 +193,7 @@ swapsApp.service('AccountService', function($http, $q){
         var defer = $q.defer();
         $http.put('/account/add-favorite', {favorite: favorite}).then(function(data){
             if(data.data.error){
-                defer.reject(data.data.error);
+                defer.reject(data.data.message);
             }
             else{
                 defer.resolve(data.data);
