@@ -195,44 +195,54 @@ module.exports.init = function () {
             User.findOne({email: email}, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    return done({error: true, message: 'User already exists'}, null);
+                    if(req.body.firstName || req.body.lastName){
+                        return done({error: true, message: 'User already exists'}, null);
+                    }
+                    else {
+                        return done(null, user);
+                    }
                 } else {
-                    user = new User({
-                        firstName: req.body.firstName,
-                        lastName: req.body.lastName,
-                        email: email,
-                        image: 'http://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg',
-                        gender: 3,
-                        birthday: '01/01/1999',
-                        occupation: '',
-                        aboutMe: '',
-                        country: '',
-                        city: '',
-                        address: '',
-                        swaps: 0,
-                        allowViewHome: true,
-                        traveling: false,
-                        travelingDates: {},
-                        apptInfo: {
-                            roomType: 0,
-                            propertyType: 0,
-                            beds: 1,
-                            baths: 1,
-                            guests: 2,
-                            rooms: 1,
-                            bedType: 1
-                        },
-                        deposit: 0
-                    });
-                    bcrypt.genSalt(config.saltRounds, function (err, salt) {
-                        bcrypt.hash(password, salt, null, function (err, hash) {
-                            user.password = hash;
-                            user.save(function (err) {
-                                if (err) return done(err);
-                                return done(null, user);
+                    if (req.body.firstName && req.body.lastName) {
+                        user = new User({
+                            firstName: req.body.firstName,
+                            lastName: req.body.lastName,
+                            email: email,
+                            image: 'http://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg',
+                            gender: 3,
+                            birthday: '01/01/1999',
+                            occupation: '',
+                            aboutMe: '',
+                            country: '',
+                            city: '',
+                            address: '',
+                            swaps: 0,
+                            allowViewHome: true,
+                            traveling: false,
+                            travelingDates: {},
+                            apptInfo: {
+                                roomType: 0,
+                                propertyType: 0,
+                                beds: 1,
+                                baths: 1,
+                                guests: 2,
+                                rooms: 1,
+                                bedType: 1
+                            },
+                            deposit: 0
+                        });
+                        bcrypt.genSalt(config.saltRounds, function (err, salt) {
+                            bcrypt.hash(password, salt, null, function (err, hash) {
+                                user.password = hash;
+                                user.save(function (err) {
+                                    if (err) return done(err);
+                                    return done(null, user);
+                                });
                             });
                         });
-                    });
+                    }
+                    else {
+                        return done({error: true, message: 'no such user'}, null);
+                    }
                 }
 
             });

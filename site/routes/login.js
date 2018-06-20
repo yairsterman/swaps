@@ -34,37 +34,7 @@ router.post('/signup',
     }
 );
 
-router.post('/signin',function (req, res) {
-    if(!req.body.email){
-        res.status(404).json({message: 'no email '});
-    }
-    else {
-        User.findOne({email: req.body.email},function (err, user) {
-            if(err){
-                console.log(err);
-                res.status(409).json({message: err});
-            }
-            else{
-                if(user && user.password){
-                    if (bcrypt.compareSync(req.body.password, user.password)) {
-                        res.status(200).json(user._id);
-                    }
-                    else{
-                        res.status(404).json({message: 'Wrong password'});
-                    }
-                }
-                else{
-                    if(user.password) {
-                        res.status(404).json({message: 'No user with that email'});
-                    }
-                    else {
-                        res.status(404).json({message: 'user ' + req.body.email + ' has no password'});
-                    }
-                }
-            }
-        })
-    }
-    });
+
 
 
 
