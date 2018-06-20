@@ -109,7 +109,7 @@
         </div>
         <div class="user-info address" ng-if="phase == 'about'">
             <div class="">
-                <div  ng-if="user.googleId && !user.facebookId">
+                <div  ng-if="!user.facebookId">
                     <div class="row">
                         <div class="col-sm-4 col-xs-12 form-group">
                             <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="Choose a picture of yourself" data-placement="bottom" tooltip>Profile Picture:
@@ -139,7 +139,7 @@
                         <span class="explanation "></span>
                     </label>
                     <div class="">
-                        <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
+                        <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="(!user.aboutMe || user.aboutMe == '')" ng-focus-lost="loseFocus()" ng-model="user.aboutMe"></textarea>
                     </div>
                 </div>
             </div>
@@ -157,7 +157,7 @@
                     <span class="explanation"></span>
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-model="user.apptInfo.title">
+                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="(!user.apptInfo.title || user.apptInfo.title == '')" ng-model="user.apptInfo.title">
                 </div>
             </div>
             <div class="form-group">
@@ -174,7 +174,7 @@
             <div class="form-group">
                 <label class="control-label listing-label " for="aboutMyHome" data-toggle="tooltip" title="What makes your home special" data-placement="right" tooltip>About My Home:</label>
                 <div class="">
-                    <textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMyHome' && (!user.apptInfo.about || user.apptInfo.about == '')" ng-focus-lost="loseFocus()" ng-model="user.apptInfo.about"></textarea>
+                    <textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="(!user.apptInfo.about || user.apptInfo.about == '')" ng-focus-lost="loseFocus()" ng-model="user.apptInfo.about"></textarea>
                 </div>
             </div>
         </div>

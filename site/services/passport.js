@@ -208,7 +208,7 @@ module.exports.init = function () {
                             }
                         }
                         else {
-                            return done({error: true, message: 'user ' + req.body.email + ' has no password'}, null);
+                            return done({error: true, message: 'User has no password'}, null);
                         }
                     }
                 } else {
@@ -217,7 +217,7 @@ module.exports.init = function () {
                             firstName: req.body.firstName,
                             lastName: req.body.lastName,
                             email: email,
-                            image: 'http://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg',
+                            image: 'https://res.cloudinary.com/swaps/image/upload/v1529420641/default_profile_tzmvbv.jpg',
                             gender: 3,
                             birthday: '01/01/1999',
                             occupation: '',
@@ -251,7 +251,7 @@ module.exports.init = function () {
                         });
                     }
                     else {
-                        return done({error: true, message: 'no such user'}, null);
+                        return done({error: true, message: 'No such user'}, null);
                     }
                 }
 

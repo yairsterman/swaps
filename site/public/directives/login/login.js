@@ -21,8 +21,8 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
         $scope.subTitle = 'In just a few steps you could find your next Swap';
     };
 
-    $scope.loginCallBack = function(userId){
-        UsersService.getUser(userId).then(function(data){
+    $scope.loginCallBack = function(){
+        UsersService.getUser().then(function(data){
             $rootScope.user = data.data;
             $rootScope.$broadcast('login-success');
             $scope.loggedIn = true;
@@ -63,6 +63,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
 
     $scope.EmailLogin = function(form){
         $scope.error = false;
+        $scope.passwordsMismatch = false;
         if(form.$invalid){
             if(form.firstName && form.firstName.$invalid){
                 $scope.firstNameInvalid = true;
@@ -91,7 +92,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             return;
         }
         AccountService.emailSignup($scope.credentials).then(function(userId){
-            $scope.loginCallBack(userId);
+            $scope.loginCallBack();
         },function(err){
             $scope.error = err;
         })
