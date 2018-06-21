@@ -9,8 +9,8 @@ let passport       = require("passport");
 let less = require('less');
 let fs = require('fs');
 
-let passportService = require('./services/passport');
 let emailService = require('./services/email');
+let passportService = require('./services/passport');
 let config = require('./config');
 
 let index = require('./routes/index');
@@ -22,6 +22,7 @@ let transactions = require('./routes/transactions');
 let login = require('./routes/login');
 let community = require('./routes/community');
 let blog = require('./routes/blog');
+let review = require('./routes/review');
 
 const app = express();
 
@@ -76,7 +77,9 @@ app.use('/transactions', transactions);
 app.use('/auth', login);
 app.use('/community', community);
 app.use('/blog', blog);
+app.use('/review', review);
 app.use('/', index);
+
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -102,7 +105,6 @@ app.use(function(err, req, res, next) {
       res.render('error.html');
   }
 });
-
 
 passportService.init();
 emailService.init();

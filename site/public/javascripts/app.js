@@ -48,8 +48,12 @@ $routeProvider
         controller  : 'loginController'
     })
     .when('/verify-email', {
-        templateUrl : '/pages/verify-email.html',
-        controller  : 'verifyEmailController'
+        templateUrl: '/pages/verify-email.html',
+        controller: 'verifyEmailController'
+    })
+    .when('/review/:token', {
+        templateUrl : '/pages/review.html',
+        controller  : 'reviewController'
     });
 
     $locationProvider.html5Mode(true);
