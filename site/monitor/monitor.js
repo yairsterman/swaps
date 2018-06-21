@@ -16,10 +16,6 @@ let emailService = require('./../services/email');
 emailService.init();
 
 
-
-
-
-
 let schedule = require('node-schedule');
 //  # ┌────────────── second (optional)  0-59
 //  # │ ┌──────────── minute             0-59
