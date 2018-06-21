@@ -5,6 +5,7 @@ var UserSchema = new Schema({
     lastName: String,
     displayName: String,
     email: String,
+    verifyEmailToken: String,
     password: String,
     gender: Number,
     birthday: String,
@@ -58,6 +59,9 @@ var UserSchema = new Schema({
         guests: Number,
         rooms: Number,
         bedType: Number,
+    },
+    verifications:{
+      email: Boolean
     },
     community: {type: Schema.Types.ObjectId, ref: 'Community' },
     paymentInfo: {},

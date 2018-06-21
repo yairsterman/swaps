@@ -280,4 +280,19 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     }
 
+    this.verifyEmail = function(token) {
+        var defer = $q.defer();
+        $http.get('/account/verifyEmail?token=' + token).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject('Something went wrong');
+        });
+        return defer.promise;
+    }
+
 });

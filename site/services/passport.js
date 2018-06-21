@@ -245,6 +245,7 @@ module.exports.init = function () {
                                 user.password = hash;
                                 user.save(function (err) {
                                     if (err) return done(err);
+                                    email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
                                     return done(null, user);
                                 });
                             });
@@ -260,6 +261,10 @@ module.exports.init = function () {
 
 
 };
+
+function createVerifyToken(){
+
+}
 
 function getGender(gender) {
     if (gender) {

@@ -46,6 +46,10 @@ $routeProvider
     .when('/login', {
         templateUrl : '/pages/login.html',
         controller  : 'loginController'
+    })
+    .when('/verify-email', {
+        templateUrl : '/pages/verify-email.html',
+        controller  : 'verifyEmailController'
     });
 
     $locationProvider.html5Mode(true);
