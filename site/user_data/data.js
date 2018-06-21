@@ -47,6 +47,7 @@ const visibleUserData = {
         allowViewHome:true,
         deposit:true,
         community:true,
+        verifications: true,
         rating:true
     },
     restricted: {
@@ -80,6 +81,7 @@ const visibleUserData = {
         requests: true,
         googleId: true,
         community:true,
+        verifications: true,
         facebookId: true,
     }
 };

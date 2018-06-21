@@ -2,13 +2,15 @@ swapsApp.controller('verifyEmailController', function($scope, $routeParams, $roo
 
     $scope.token = $routeParams.token;
 
-    $scope.init = function(){
-
-        AccountService.verifyEmail($scope.slug).then(function(res){
-            $scope.title = res;
-        },function(err){
-            $scope.error = 'No post found'
-        });
-    }
+    AccountService.verifyEmail($scope.token).then(function(res){
+        if(res.verified){
+            $scope.title = 'Email verified';
+        }
+        else{
+            $scope.title = 'Email not verified';
+        }
+    },function(msg){
+        $scope.title = msg;
+    });
 
 });

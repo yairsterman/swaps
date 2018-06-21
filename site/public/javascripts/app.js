@@ -47,7 +47,7 @@ $routeProvider
         templateUrl : '/pages/login.html',
         controller  : 'loginController'
     })
-    .when('/verify-email', {
+    .when('/verify-email/:token', {
         templateUrl: '/pages/verify-email.html',
         controller: 'verifyEmailController'
     })

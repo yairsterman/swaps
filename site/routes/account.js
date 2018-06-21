@@ -14,6 +14,10 @@ let fs = require('fs');
 let Q = require('q');
 let Data = require('../user_data/data.js');
 let config = require('../config');
+let jwt = require('jsonwebtoken');
+let emailMessages = require('../services/email-messages.js');
+let EmailService = require('../services/email.js');
+let utils = require('../utils/util');
 
 let multer = require('multer');
 let upload = multer({dest: 'uploads/', limits: {files: 8}});
@@ -528,6 +532,50 @@ router.put('/unset-favorite', function (req, res, next) {
     findOneAndUpdate(id, toUpdate, res);
 
 });
+
+router.get('/verifyEmail', function (req, res, next) {
+
+    //find user with this verify token
+    User.findOne({verifyEmailToken: req.query.token}, function(err, user) {
+        if(err){
+            error.message = err;
+            return res.json(error);
+        }
+        if(!user){
+            error.message = 'No user found';
+            return res.json(error);
+        }
+        // make sure user's email is the same one the verify token was sent to
+        jwt.verify(req.query.token, config.jwtSecret, function (err, decoded) {
+            if (err) {
+                error.message = err;
+                return res.json(error);
+            }
+            let email = decoded.email;
+            if(email != user.email){
+                error.message = 'Wrong email, please resend verification email';
+                return res.json(error);
+            }
+            if(!user.verifications){
+                user.verifications = {};
+            }
+            user.verifications.email = true;
+            user.verifyEmailToken = null;
+            user.save(function (err) {
+                if (err){
+                    error.message = 'Failed to save user, please try again';
+                    return res.json(error);
+                }
+                EmailService.sendMail([user.email], 'Email verified', emailMessages.emailVerified(user));
+                return res.json({verified: true});
+            });
+        });
+
+    });
+
+
+});
+
 
 function findOneAndUpdate(id, toUpdate, res){
     User.findOneAndUpdate({_id: id}, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})

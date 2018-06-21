@@ -3,10 +3,11 @@ let FacebookStrategy = require('passport-facebook').Strategy;
 let LocalStrategy = require('passport-local').Strategy;
 let GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 let User = require('../models/User.js');
-let email = require('./email.js');
+let EmailService = require('./email.js');
 let emailMessages = require('./email-messages.js');
 let data = require('../user_data/data.js');
 let config = require('../config.js');
+let utils = require('../utils/util');
 let Q = require('q');
 const bcrypt = require('bcrypt-nodejs');
 let moment = require('moment');
@@ -101,11 +102,13 @@ module.exports.init = function () {
                     });
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                         user.image = result.url;
+                        let token = utils.createVerifyToken(user.email);
+                        user.verifyEmailToken = token;
                         user.save(function (err, user) {
                             if (err) return done(err);
                             console.log("new user saved");
                             if (user.email) {
-                                email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                                EmailService.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user, token));
                             }
                             return done(null, user);
                         });
@@ -173,7 +176,7 @@ module.exports.init = function () {
                         user.save(function (err, user) {
                             if (err) return done(err);
                             console.log("new user saved");
-                            email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                            EmailService.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
                             return done(null, user);
                         });
                     }, function (err) {
@@ -243,9 +246,11 @@ module.exports.init = function () {
                         bcrypt.genSalt(config.saltRounds, function (err, salt) {
                             bcrypt.hash(password, salt, null, function (err, hash) {
                                 user.password = hash;
+                                let token = utils.createVerifyToken(user.email);
+                                user.verifyEmailToken = token;
                                 user.save(function (err) {
                                     if (err) return done(err);
-                                    email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                                    EmailService.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user, token));
                                     return done(null, user);
                                 });
                             });
@@ -261,10 +266,6 @@ module.exports.init = function () {
 
 
 };
-
-function createVerifyToken(){
-
-}
 
 function getGender(gender) {
     if (gender) {
