@@ -8,7 +8,7 @@ const LOGO = 'http://res.cloudinary.com/swaps/image/upload/v1529335715/logo/logo
 // const REVIEW = 'https://swapshome.com/review/get-data?token=';
 const REVIEW = 'https://localhost:3000/review/get-data?token=';
 
-const SIGNITURE = '<div class="swaps-signature" style="width:60vw;margin:50px auto;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
+const SIGNITURE = '<div class="swaps-signature" style="margin:4vw;padding:4vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
     '<div>Tel Aviv, Israel</div></div>';
 const TOP = `<div class="swaps-logo" style="width:100px; height: 100px; margin:15px auto;"><img style="width:100px; height: 100px;" src="${LOGO}"></div>`;
 const STYLE = '<style type="text/css">' +
@@ -28,16 +28,16 @@ var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
 var messages = {
 
     registration: function(user){
-        return TOP +  '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Welcome To Swaps </div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP +  '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Welcome To Swaps </div></br>' +
         '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', thanks for joining Swaps. <br>' +
         'You are almost ready to start Swapping, be sure to complete your profile and add all the necessary information ' +
         'so you can request a Swap and allow users to view your profile. </div>' +
         '<a class="no-decoration" style="text-decoration: none;" href="' + ACCOUNT + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Complete Profile</div></a>' +
-        '</div>' + SIGNITURE + STYLE
+        '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     confirmation: function(user, swapper, dates){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Confirmed!</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Confirmed!</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Your Swap with ' + swapper.firstName + ' has been confirmed. </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Arrival: ' + new Date(dates.departure).toLocaleDateString("en-US",options) + '</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Checkout: ' + new Date(dates.returnDate + 1000*60*60*24).toLocaleDateString("en-US",options) + '</div>' +
@@ -45,11 +45,11 @@ var messages = {
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Don't forget to give each other all the necessary information needed to access your homes. </div>" +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     request: function(user, swapper, dates, nights, message){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">New Swap Request!</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">New Swap Request!</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' from ' + swapper.city + ' has requested to Swap with you for ' + nights + (nights>1?' nights':' night') + '. </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Arrival: ' + new Date(dates.departure).toLocaleDateString("en-US",options) + '</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Checkout: ' + new Date(dates.returnDate).toLocaleDateString("en-US",options) + '</div>' +
@@ -57,58 +57,58 @@ var messages = {
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Be sure to replay as soon as possible in order to allow " + swapper.firstName + ' to plan accordingly.' + "</div>" +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     requestSent: function(user, swapper){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Request Sent</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Request Sent</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Your Swap request to ' + swapper.firstName + ' has been sent</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Check out your Swap request status</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View upcoming swaps</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     canceled: function(user, swapper, message){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Canceled</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Canceled</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">We are sorry to inform you that your Swap with ' + swapper.firstName + ' has been canceled. </div>' +
             (message?'<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">'+swapper.firstName+ ' says: ' + '<div class="message" style="font-size: 18px; color:black;">"' + message +'"</div></div>':'') +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">If you are still planning on swapping between these dates you should <a href="'+ SET_SWAPS +'">update your swap dates.</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Please continue searching for your perfect Swapper.</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + SEARCH + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Find Swap</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     canceledSent: function(user, swapper){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Canceled</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Canceled</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">We have canceled your swap with ' + swapper.firstName + '. </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">All payments and deposits will be returned to you.</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Please continue searching for your perfect Swap.</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + SEARCH + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Find Swap</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     declined: function(user, swapper, message){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Declined</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Declined</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">We are sorry to inform you that your Swap with ' + swapper.firstName + ' has been declined. </div>' +
             (message?'<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">'+swapper.firstName+ ' says: ' + '<div class="message" style="font-size: 18px; color:black;">"' + message +'"</div></div>':'') +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Please continue searching for your perfect Swapper.</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + SEARCH + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Find Swap</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     message: function(user, swapper){
-        return TOP + '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">New Message</div></br>' +
+        return '<div style="background-color: #f3f4f5">' + TOP + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">New Message</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You have a new message from ' + swapper.firstName + ' </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You can view this message in your Swaps inbox.</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">My Messages</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     review: function(user, token){
-        return '<div class="swap-wrapper" style="width:60vw;margin:auto;padding:2vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">How Was Your Swap? </div></br>' +
+        return '<div style="background-color: #f3f4f5">' + '<div class="swap-wrapper" style="margin:6vw;padding:6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4);"> <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">How Was Your Swap? </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', hope you liked your swap please send a review.</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + REVIEW + token + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 230px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Review Swap</div></a>' +
-            '</div>' + SIGNITURE + STYLE
+            '</div>' + SIGNITURE + STYLE + '</div>'
     }
 };
 
