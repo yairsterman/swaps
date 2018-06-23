@@ -1,17 +1,39 @@
 var ho = null;
-swapsApp.controller('homeController', function($scope, $rootScope, $location, $window, $document,$timeout, $interval, $uibModal, UsersService) {
+swapsApp.controller('homeController', function($scope, $rootScope, $location, $window, $document,$timeout, $interval, $uibModal, UsersService, HomeService) {
     ho = $scope;
     $scope.user = $rootScope.user;
     $scope.map = null;
     $scope.slideIndex = 0;
     $scope.featured = [];
     $scope.options = ['cities'];
-
+	  $scope.range3 = [
+	    { value: 0, text: '+ day before'},
+      { value: 1, text: '+ day after'},
+      { value: 2, text: '± 1 day'},
+      { value: 3, text: '± 2 days'},
+      { value: 4, text: '± 3 days'},
+      { value: 5, text: 'exact dates'},
+    ];
+    $scope.rangeOptions1 = [];
+	  $scope.rangeOptions2 = [];
+	  $scope.duration = '';
     $rootScope.homepage = true;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
+    $rootScope.search.range1 = "5";
+    $rootScope.search.range2 = "5";
+    $scope.rangeLabel = 'Custom range';
+	  $scope.weekdays = [
+	    ["Sunday", "Sun"],
+      ["Monday", "Mon"],
+		  ["Tuesday", "Tue"],
+		  ["Wednesday", "Wen"],
+		  ["Thursday", "Thu"],
+		  ["Friday", "Fri"],
+		  ["Saturday", "Sat"]
+    ];
 
-    $scope.cities = [
+	  $scope.cities = [
         {
             "name": "Venice",
             "normal": "../images/cities/updated/venice.jpg",
@@ -41,6 +63,77 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     init();
 
+    $scope.rangeOptions1 = $scope.range3;
+    $scope.rangeOptions2 = $scope.range3;
+
+    $scope.datesRange = function (startDate, endDate) {
+	    var dates = [],
+        currentDate = startDate,
+		    addDays = function(days) {
+			    var date = new Date(this.valueOf());
+			    date.setDate(date.getDate() + days);
+			    return date;
+		    };
+	    while (currentDate <= endDate) {
+		    dates.push(currentDate);
+		    currentDate = addDays.call(currentDate, 1);
+	    }
+	    return dates;
+    };
+
+    $scope.changeDates = function () {
+      if($rootScope.search.when) {
+	      var depart = new Date($rootScope.search.when.split('-')[0]);
+	      var sat = new Date($rootScope.search.when.split('-')[0]);
+	      var Saturday = new Date(sat.setDate(sat.getDate() - sat.getDay() + 6));
+	      var range1 = $scope.datesRange(depart, Saturday);
+	      $timeout(function() {
+		      $scope.rangeLabel = $rootScope.search.chosenLabel;
+		      if($scope.rangeLabel === 'Weekends') {
+			      $scope.rangeOptions1 = [];
+			      $scope.rangeOptions2 = [];
+			      range1.forEach(function (item) {
+				      if($scope.weekdays[item.getDay()][0] !== "Saturday") {
+					      $scope.rangeOptions1.push(
+						      {value: $scope.weekdays[item.getDay()][0], text: $scope.weekdays[item.getDay()][0]},
+						      {value: $scope.weekdays[item.getDay()][1] + ' AM', text: $scope.weekdays[item.getDay()][1] + ' AM'},
+						      {value: $scope.weekdays[item.getDay()][1] + ' PM', text: $scope.weekdays[item.getDay()][1] + ' PM'});
+				      }
+				      else {
+					      $scope.rangeOptions1.push(
+						      {value: $scope.weekdays[item.getDay()][0], text: $scope.weekdays[item.getDay()][0]},
+						      {value: $scope.weekdays[item.getDay()][1] + ' AM', text: $scope.weekdays[item.getDay()][1] + ' AM'});
+				      }
+			      });
+			      $rootScope.search.range1 = $scope.weekdays[depart.getDay()][0];
+			      $scope.rangeOptions2.push(
+				      {value: $scope.weekdays[0][0], text: $scope.weekdays[0][0]},
+				      {value: $scope.weekdays[0][1] + ' PM', text: $scope.weekdays[0][1] + ' PM'},
+				      {value: $scope.weekdays[0][1] + ' AM', text: $scope.weekdays[0][1] + ' AM'},
+				      {value: $scope.weekdays[1][1] + ' PM', text: $scope.weekdays[1][0] + ' PM'},
+				      {value: $scope.weekdays[1][1] + ' AM', text: $scope.weekdays[1][1] + ' AM'}
+			      );
+
+			      $rootScope.search.range2 = $scope.weekdays[0][0];
+		      }
+		      else if($scope.rangeLabel === 'Custom Range') {
+			      $scope.rangeOptions1 = [];
+			      $scope.rangeOptions2 = [];
+			      $rootScope.search.range1 = "5";
+			      $rootScope.search.range2 = "5";
+			      $scope.range3.forEach(function (item) {
+				      $scope.rangeOptions1.push(item)
+				      $scope.rangeOptions2.push(item)
+			      });
+		      }
+		      else {
+			      $scope.rangeOptions1 = [];
+			      $scope.rangeOptions2 = [];
+		      }
+	      },300);
+      }
+    };
+
     $scope.searchSwap = function(e){
         e.preventDefault();
         var where = $rootScope.search.where;
@@ -50,7 +143,27 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         // else{
         //     where = where.split(',')[0]
         // }
-        $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
+      var searchData = {
+          where: where,
+          dates: $rootScope.search.when,
+          guests: $rootScope.search.guests,
+          range: {
+              type: $scope.rangeLabel,
+              departureRange: $rootScope.search.range1,
+              returnRange: $rootScope.search.range2,
+              duration: $scope.duration
+          }
+      };
+
+	    HomeService.search('request-link', searchData).then(function(data) {
+		    if (data.data.error) {
+			    console.log("search error");
+			    return;
+		    }
+		    else {
+			    $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
+		    }
+	    });
     }
 
     $scope.go = function(path){
