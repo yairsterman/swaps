@@ -18,6 +18,7 @@ let jwt = require('jsonwebtoken');
 let emailMessages = require('../services/email-messages.js');
 let EmailService = require('../services/email.js');
 let utils = require('../utils/util');
+let bcrypt = require('bcrypt-nodejs');
 
 let multer = require('multer');
 let upload = multer({dest: 'uploads/', limits: {files: 8}});
@@ -56,22 +57,44 @@ router.post('/edit-profile', function (req, res, next) {
     let gender = req.body.gender;
     let thingsToDo = req.body.thingsToDo;
 
-    let update = {};
-    if(email)
-        update.email = email;
-    if(aboutMe)
-        update.aboutMe = aboutMe;
-    if(occupation)
-        update.occupation = occupation;
-    if(birthday)
-        update.birthday = birthday;
-    if(gender)
-        update.gender = gender;
-    if(thingsToDo)
-        update.thingsToDo = thingsToDo;
-
-    let toUpdate = {$set: update};
-    findOneAndUpdate(id, toUpdate, res);
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            error.message = err;
+            return res.json(err);
+        }
+        else {
+            if (user) {
+                let update = {};
+                if(user.aboutMe !== aboutMe)
+                    update.aboutMe = aboutMe;
+                if(user.occupation !== occupation)
+                    update.occupation = occupation;
+                if(user.birthday !== birthday)
+                    update.birthday = birthday;
+                if(user.gender !== gender)
+                    update.gender = gender;
+                if(user.thingsToDo !== thingsToDo)
+                    update.thingsToDo = thingsToDo;
+                if(user.email !== email){
+                    update.email = email;
+                    let token = utils.createVerifyToken(update.email);
+                    update.verifyEmailToken = token;
+                    update.verifications = user.verifications;
+                    update.verifications.email = false;
+                }
+                let toUpdate = {$set: update};
+                findOneAndUpdate(id, toUpdate, res).then(function(){
+                    if(update.email){
+                        EmailService.sendMail([update.email], 'Email Verification', emailMessages.emailVerification(user, update.verifyEmailToken));
+                    }
+                });
+            }
+            else{
+                error.message = 'No user found';
+                return res.json(error);
+            }
+        }
+    });
 
 });
 
@@ -578,6 +601,7 @@ router.get('/verifyEmail', function (req, res, next) {
 
 
 function findOneAndUpdate(id, toUpdate, res){
+    let dfr = Q.defer();
     User.findOneAndUpdate({_id: id}, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})
         .populate({
             path: 'community',
@@ -586,14 +610,19 @@ function findOneAndUpdate(id, toUpdate, res){
         .exec(function (err, user) {
             if (err){
                 error.message = err;
-                return res.json(error);
+                res.json(error);
+                return dfr.reject(error);
             }
             if (!user) {
                 error.message = 'No user found';
-                return res.json(error);
+                res.json(error);
+                return dfr.reject(error);
             }
             res.json(user);
+            dfr.resolve();
         });
+
+    return dfr.promise;
 }
 
 module.exports = router;

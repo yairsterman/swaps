@@ -49,30 +49,6 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       types: ['address']
     };
 
-    var elementsReady = $interval(function() {
-      if($scope.activeTab != 'edit'){
-        $interval.cancel(elementsReady);
-        return;
-      }
-      var input = $('input[name="birthday"]');
-      if (input && $scope.edit) {
-          $('input[name="birthday"]').daterangepicker({
-              autoApply: true,
-              opens: 'center',
-              locale: {
-                  format: 'MM/DD/YYYY'
-              },
-              singleDatePicker: true,
-              showDropdowns: true,
-              startDate: $scope.edit.birthday,
-
-          });
-          $('input[name="birthday"]').on('apply.daterangepicker', function(ev, picker) {
-              $scope.edit.birthday = picker.startDate.format('MM/DD/YYYY');
-          });
-        $interval.cancel(elementsReady);
-      }
-    }, 100);
 
     $scope.$watch('activeTab', function(oldVal, newVal){
         // if($scope.activeTab == 'listing'){

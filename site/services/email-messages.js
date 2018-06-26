@@ -1,14 +1,13 @@
+let config = require('../config');
 
-const ACCOUNT = 'https://swapshome.com/account/edit';
-const MY_SWAPS = 'https://swapshome.com/account/upcoming-swaps';
-const SET_SWAPS = 'https://swapshome.com/account/set-up-swaps';
-const SEARCH = 'https://swapshome.com/travelers/Anywhere';
-const MESSAGES = 'https://swapshome.com/account/messages';
+const ACCOUNT = config.baseUrl + '/account/edit';
+const MY_SWAPS = config.baseUrl + '/account/upcoming-swaps';
+const SET_SWAPS = config.baseUrl + '/account/set-up-swaps';
+const SEARCH = config.baseUrl + '/travelers/Anywhere';
+const MESSAGES = config.baseUrl + '/account/messages';
 const LOGO = 'http://res.cloudinary.com/swaps/image/upload/v1529335715/logo/logo500.png';
-const REVIEW = 'https://swapshome.com/review/';
-// const REVIEW = 'https://localhost:3000/review/';
-const VERIFY_EMAIL = 'https://swapshome.com/verify-email/';
-// const VERIFY_EMAIL = 'http://localhost:3000/verify-email/';
+const REVIEW = config.baseUrl + '/review/';
+const VERIFY_EMAIL = config.baseUrl + '/verify-email/';
 
 
 const SIGNITURE = '<div class="swaps-signature" style="padding:6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
@@ -111,6 +110,16 @@ var messages = {
     emailVerified: function(user){
         return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Email Verified </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Thank you, your email has been successfully verified.</div>' +
+            '</div>' + SIGNITURE + STYLE + '</div>'
+    },
+
+    emailVerification: function(user, token){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Verify new email </div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', we see you have changed your email address, <br>' +
+            'Please verify that this is indeed your email. <br>' +
+            'Verifying your email is mandatory in order to send and receive swap requests.' +
+            '<br><br>Verify email bellow</div>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + VERIFY_EMAIL + token + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Verify Email</div></a>' +
             '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
