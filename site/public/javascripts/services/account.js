@@ -149,6 +149,23 @@ swapsApp.service('AccountService', function($http, $q){
         });
         return defer.promise;
     };
+
+    this.forgotPassword = function(email) {
+        var defer = $q.defer();
+
+        $http.post('auth/forgotPassword', {email:email}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+
+        return defer.promise;
+    };
 	
    this.logout = function(user) {
       return $http.post('/logout', user).then(function(data){

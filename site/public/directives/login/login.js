@@ -111,6 +111,35 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
             $scope.passwordType = 'password'
         }
     }
+    
+    $scope.forgotPassword = function(form){
+        $scope.error = false;
+        $scope.passwordsMismatch = false;
+        if(form.$invalid){
+            if(form.email.$invalid){
+                $scope.forgotEmailInvalid = true;
+            }
+            $scope.error = 'Please enter a valid email';
+            return;
+        }
+        AccountService.forgotPassword($scope.credentials.email).then(function(res){
+            $scope.forgotMailSent = true;
+        },function(err){
+            $scope.error = err;
+        })
+    };
+
+    $scope.goToForgot = function(){
+        $scope.forgotMailSent = false;
+        $scope.forgotEmailInvalid = false;
+        $scope.error = false;
+        $scope.forgot = true;
+    };
+
+    $scope.backForgot = function(){
+        $scope.error = false;
+        $scope.forgot = false;
+    };
 
     $scope.terms = function(){
         $window.open('https://swapshome.com/terms-and-conditions' , '_blank');

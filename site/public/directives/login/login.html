@@ -29,60 +29,107 @@
         </div>
     </div>
     <div class="email-login" ng-if="isEmailLogin">
-        <div class="title">
-            {{title}}
-            <div class="underline"></div>
-        </div>
-        <form name="signupForm">
-            <div class="row" ng-if="signin">
-                <div class="form-group col-md-6 col-sm-12">
-                    <label class="control-label listing-label" for="firstName" name="firstName">First Name:
-                    </label>
-                    <div class="">
-                        <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="firstNameInvalid = false;" ng-model="credentials.firstName" required>
+        <div ng-if="!forgot">
+            <div class="title">
+                {{title}}
+                <div class="underline"></div>
+            </div>
+            <form name="signupForm">
+                <div class="row" ng-if="signin">
+                    <div class="form-group col-md-6 col-sm-12">
+                        <label class="control-label listing-label" for="firstName" name="firstName">First Name:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="firstNameInvalid = false;" ng-model="credentials.firstName" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                        <label class="control-label listing-label" for="lastName">Last Name:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="lastNameInvalid = false;" ng-model="credentials.lastName" required>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group col-md-6 col-sm-12">
-                    <label class="control-label listing-label" for="lastName">Last Name:
+                <div class="mg-20" ng-if="!signin">
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="email">Email:
                     </label>
                     <div class="">
-                        <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="lastNameInvalid = false;" ng-model="credentials.lastName" required>
+                        <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="emailInvalid = false;" ng-model="credentials.email" required>
                     </div>
                 </div>
-            </div>
-            <div class="mg-20" ng-if="!signin">
-            </div>
-            <div class="form-group">
-                <label class="control-label listing-label" for="email">Email:
-                </label>
-                <div class="">
-                    <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="emailInvalid = false;" ng-model="credentials.email" required>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="password">Password:
+                        <span class="explanation" ng-if="signin">Must contain at least 6 characters</span>
+                    </label>
+                    <div class="password">
+                        <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="passwordInvalid = false;" placeholder="" minlength="6" ng-model="credentials.password" required>
+                        <i class="fa fa-eye" ng-if="!signin" ng-click="showPassword()"></i>
+                    </div>
+                    <label ng-if="!signin" class="control-label listing-label forgot" ng-click="goToForgot()">Forgot Password?
+                    </label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label listing-label" for="password">Password:
-                    <span class="explanation" ng-if="signin">Must contain at least 6 characters</span>
-                </label>
-                <div class="password">
-                    <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="passwordInvalid = false;" placeholder="" minlength="6" ng-model="credentials.password" required>
-                    <i class="fa fa-eye" ng-if="!signin" ng-click="showPassword()"></i>
+                <div class="form-group" ng-if="signin">
+                    <label class="control-label listing-label " for="confirmPassword">Confirm Password:
+                        <span class="error" ng-if="passwordsMismatch">Passwords don't match</span>
+                    </label>
+                    <div class="">
+                        <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="confirmPasswordInvalid = false;" placeholder="" ng-model="credentials.confirmPassword" required>
+                    </div>
                 </div>
+            </form>
+            <div class="error" ng-if="error">{{error}}</div>
+            <div class="button-signin bottom">
+                <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>{{signin?'Join with Email':' Log in with Email'}}</button>
             </div>
-            <div class="form-group" ng-if="signin">
-                <label class="control-label listing-label" for="confirmPassword">Confirm Password:
-                    <span class="error" ng-if="passwordsMismatch">Passwords don't match</span>
-                </label>
-                <div class="">
-                    <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="confirmPasswordInvalid = false;" placeholder="" ng-model="credentials.confirmPassword" required>
-                </div>
+            <div class="bottom" ng-if="!signin">
+                Don't have an account? <span class="link" ng-click="goToSignin()">Join</span>
             </div>
-        </form>
-        <div class="error" ng-if="error">{{error}}</div>
-        <div class="button-signin bottom">
-            <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>{{signin?'Join with Email':' Log in with Email'}}</button>
         </div>
-        <div class="bottom" ng-if="!signin">
-            Don't have an account? <span class="link" ng-click="goToSignin()">Join</span>
+        <div ng-if="forgot">
+            <div ng-if="!forgotMailSent">
+                <div class="title">
+                    Forgot Password
+                    <div class="underline"></div>
+                </div>
+                <div class="sub-title has-height">
+                    Please enter your email below and we will send a new password
+                </div>
+                <div class="mg-20" >
+                </div>
+                <form name="forgotForm">
+                    <div class="form-group">
+                        <label class="control-label listing-label" for="forgotEmail">Email:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{forgotEmailInvalid?'error':''}}" type="email" id="forgotEmail" name="email" placeholder="" ng-focus="forgotEmailInvalid = false;" ng-model="credentials.email" required>
+                        </div>
+                    </div>
+                </form>
+                <div class="error" ng-if="error">{{error}}</div>
+                <div class="button-signin bottom">
+                    <button type="button" class="btn btn-primary login-button forgot-button" ng-click="forgotPassword(forgotForm)">Send Password</button>
+                </div>
+                <div class="bottom">
+                    <span class="link" ng-click="backForgot()">Back to log in</span>
+                </div>
+            </div>
+            <div ng-if="forgotMailSent">
+                <div class="title">
+                    Password Sent
+                    <div class="underline"></div>
+                </div>
+                <div class="sub-title has-height">
+                    A new password has been sent to your email
+                </div>
+                <div class="mg-60" >
+                </div>
+                <div class="button-signin bottom">
+                    <button type="button" class="btn btn-default login-button email-button" ng-click="backForgot()"><i class="fa fa-envelope"></i>{{signin?'Join with Email':' Log in with Email'}}</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

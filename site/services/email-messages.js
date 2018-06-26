@@ -123,6 +123,15 @@ var messages = {
             '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
+    passwordRecovery: function(user, password){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Password Recovery </div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">So you forgot your password...  <br>'+
+            'Well, here is a new one for now:<br>' +
+            `<strong>${password}<strong><br></div>` +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + config.baseUrl + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Go to site</div></a>' +
+            '</div>' + SIGNITURE + STYLE + '</div>'
+    },
+
     review: function(user, token){
         return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">How Was Your Swap? </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', hope you liked your swap please send a review.</div>' +
