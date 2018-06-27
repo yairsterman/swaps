@@ -57,7 +57,7 @@ mongoose.Promise = global.Promise;
 //     .then(() =>  console.log('connection succesful'))
 // .catch((err) => console.error(err));
 
-mongoose.connect(config.mongoUrl).then(function () {
+mongoose.connect(config.mongoUrl,{useMongoClient: true}).then(function () {
     console.log('connection successful');
 }).catch(function (err) {
     console.error(err);
