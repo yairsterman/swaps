@@ -2,7 +2,7 @@
     <div class="icon icon-delete top-corner" ng-hide="$root.externalLogin" ng-click="closeModel()"></div>
     <div class="onboarding-header">
         <div class="phases">
-            <div class="col-xs-3 phase">
+            <div class="col-xs-4 phase">
                 <div class="top">
                     <div class="line">
 
@@ -20,25 +20,25 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-3 phase">
-                <div class="top">
-                    <div class="line">
+            <!--<div class="col-xs-3 phase">-->
+                <!--<div class="top">-->
+                    <!--<div class="line">-->
 
-                    </div>
-                    <div class="circle {{homeCircle}} {{phase == 'home'?'active':''}}">
+                    <!--</div>-->
+                    <!--<div class="circle {{homeCircle}} {{phase == 'home'?'active':''}}">-->
 
-                    </div>
-                    <div class="line">
+                    <!--</div>-->
+                    <!--<div class="line">-->
 
-                    </div>
-                </div>
-                <div class="bottom">
-                    <div class="phase-title">
-                        My Home
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-3 phase">
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="bottom">-->
+                    <!--<div class="phase-title">-->
+                        <!--My Home-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="col-xs-4 phase">
                 <div class="top">
                     <div class="line">
 
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-3 phase">
+            <div class="col-xs-4 phase">
                 <div class="top">
                     <div class="line">
 
@@ -136,56 +136,81 @@
                         <input id="email" class="form-control {{user.email?'greyed-out':''}}" type="email" ng-model="user.email">
                     </div>
                 </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do for a living" data-placement="right" tooltip>Occupation:-->
+                        <!--<span class="explanation "></span>-->
+                    <!--</label>-->
+                    <!--<input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')"  ng-blur="isInFocus = 'aboutMe'" ng-model="user.occupation">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:-->
+                        <!--<span class="explanation "></span>-->
+                    <!--</label>-->
+                    <!--<div class="">-->
+                        <!--<textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-blur="loseFocus()" ng-model="user.aboutMe"></textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="form-group">
-                    <label class="control-label listing-label" for="occupation" data-toggle="tooltip" title="What you do for a living" data-placement="right" tooltip>Occupation:
-                        <span class="explanation "></span>
+                    <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
+                        <span class="explanation"></span>
                     </label>
-                    <input id="occupation" class="form-control" type="text" is-focused="!isInFocus && (!user.occupation || user.occupation == '')"  ng-blur="isInFocus = 'aboutMe'" ng-model="user.occupation">
+                    <input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')" ng-blur="isInFocus = 'title'" ng-model="user.address" autocomplete>
                 </div>
                 <div class="form-group">
-                    <label class="control-label listing-label " for="aboutMe" data-toggle="tooltip" title="A short description of yourself" data-placement="right" tooltip>About Me:
-                        <span class="explanation "></span>
+                    <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
+                        <span class="explanation"></span>
                     </label>
                     <div class="">
-                        <textarea id="aboutMe" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'aboutMe' && (!user.aboutMe || user.aboutMe == '')" ng-blur="loseFocus()" ng-model="user.aboutMe"></textarea>
+                        <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-blur="isInFocus = 'about'" ng-model="user.apptInfo.title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" data-toggle="tooltip" title="The type of room you are offering" data-placement="right" tooltip>Room Type:<br>
+                        <span class="explanation"></span>
+                    </label>
+                    <div class="">
+                        <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"
+                                ng-options="room.id as room.displayName for room in data.roomType">
+                            {{room.displayName}}
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="user-info address" ng-if="phase == 'home'">
+        <!--<div class="user-info address" ng-if="phase == 'home'">-->
 
-            <div class="form-group">
-                <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
-                    <span class="explanation"></span>
-                </label>
-                <input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')" ng-blur="isInFocus = 'title'" ng-model="user.address" autocomplete>
-            </div>
-            <div class="form-group">
-                <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
-                    <span class="explanation"></span>
-                </label>
-                <div class="">
-                    <input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-blur="isInFocus = 'about'" ng-model="user.apptInfo.title">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label listing-label" data-toggle="tooltip" title="The type of room you are offering" data-placement="right" tooltip>Room Type:<br>
-                    <span class="explanation"></span>
-                </label>
-                <div class="">
-                    <select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"
-                            ng-options="room.id as room.displayName for room in data.roomType">
-                        {{room.displayName}}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label listing-label " for="aboutMyHome" data-toggle="tooltip" title="What makes your home special" data-placement="right" tooltip>About My Home:</label>
-                <div class="">
-                    <textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'about' && (!user.apptInfo.about || user.apptInfo.about == '')" ng-blur="loseFocus()" ng-model="user.apptInfo.about"></textarea>
-                </div>
-            </div>
-        </div>
+            <!--<div class="form-group">-->
+                <!--<label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:-->
+                    <!--<span class="explanation"></span>-->
+                <!--</label>-->
+                <!--<input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')" ng-blur="isInFocus = 'title'" ng-model="user.address" autocomplete>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:-->
+                    <!--<span class="explanation"></span>-->
+                <!--</label>-->
+                <!--<div class="">-->
+                    <!--<input class="form-control" type="text" id="title" placeholder="Describe your home"  is-focused="isInFocus == 'title' && (!user.apptInfo.title || user.apptInfo.title == '')" ng-blur="isInFocus = 'about'" ng-model="user.apptInfo.title">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="control-label listing-label" data-toggle="tooltip" title="The type of room you are offering" data-placement="right" tooltip>Room Type:<br>-->
+                    <!--<span class="explanation"></span>-->
+                <!--</label>-->
+                <!--<div class="">-->
+                    <!--<select class="form-control" id="roomType" ng-model="user.apptInfo.roomType"-->
+                            <!--ng-options="room.id as room.displayName for room in data.roomType">-->
+                        <!--{{room.displayName}}-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="control-label listing-label " for="aboutMyHome" data-toggle="tooltip" title="What makes your home special" data-placement="right" tooltip>About My Home:</label>-->
+                <!--<div class="">-->
+                    <!--<textarea id="aboutMyHome" rows="4" cols="20" class="form-control" is-focused="isInFocus == 'about' && (!user.apptInfo.about || user.apptInfo.about == '')" ng-blur="loseFocus()" ng-model="user.apptInfo.about"></textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="basic" ng-if="phase == 'basic'">
             <div class="form-group">
                 <label class="control-label listing-label" data-toggle="tooltip" title="Essential information about you home" data-placement="right" tooltip>Basics:
@@ -267,6 +292,11 @@
                 </div>
                 <div class="uploaded-photos row">
                     <div class="col-sm-12 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
+                </div>
+            </div>
+            <div class="progress" ng-if="uploadStarted">
+                <div class="progress-bar" ng-style="{'width': imageProgress + '%'}">
+
                 </div>
             </div>
         </div>
