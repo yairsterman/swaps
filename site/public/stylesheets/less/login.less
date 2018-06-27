@@ -1,9 +1,11 @@
 @import 'media.less';
 .login-model{
+  min-height: 420px;
+  position: relative;
   .top-corner{
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
   }
   .icon{
     &:focus{
@@ -13,7 +15,7 @@
   .title{
     text-align: center;
     color: #848a91;
-    padding-top: 20px;
+    padding-top: 10px;
     font-size: 30px;
     font-weight: 300;
   }
@@ -28,31 +30,34 @@
     padding: 0 10px;
     font-size: 20px;
     font-weight: 300;
+    &.has-height{
+      min-height: 15px;
+    }
   }
   .bottom{
     font-size: 16px;
     text-align: center;
     padding-bottom: 10px;
     font-weight: 300;
+    &.bottom-text{
+      position: absolute;
+      bottom:10px;
+      width: 100%;
+    }
     .link{
       color: #045F79;
+      cursor: pointer;
       &:focus{
         outline: none;
       }
     }
   }
   .button-signin{
-    padding: 2vw 0 ;
+    padding: 10px 0 ;
     text-align: center;
     font-size: 20px;
     &.bottom{
-      padding: 1vw 0 3vw 0;
-      @media @mobile {
-        padding: 5vw 0 15vw 0;
-      }
-    }
-    @media @mobile {
-      padding: 15vw 0 5vw 0;
+      padding: 10px 0 40px 0;
     }
     .fa{
       padding-right: 18px;
@@ -95,6 +100,70 @@
           }
         }
       }
+      &.email-button{
+        background-color: #CD0007;
+        color: white;
+        padding-left: 36px;
+      }
+      &.signup{
+        padding: 0 80px;
+        width: 100%;
+        @media @mobile {
+          padding: 0 60px;
+        }
+      }
+      &.forgot-button{
+        padding: 0 80px;
+      }
+    }
+  }
+  .mg-20{
+    margin-top: 30px;
+  }
+  .mg-60{
+    margin-top: 60px;
+  }
+  .email-login{
+    margin: 0 20px;
+    position: relative;
+    .form-control{
+      height: 38px;
+      font-size: 18px;
+      &.error{
+        border: 1px solid #a94442;
+        box-shadow: 0 0 3px 3px rgba(169,68,66,0.4);
+      }
+    }
+    .error{
+      font-weight: 400;
+      color: #a94442;
+    }
+    .explanation{
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .password{
+      position: relative;
+      .fa{
+        position: absolute;
+        top: 8px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        &:focus{
+          outline: none;
+        }
+      }
+      .form-control{
+        padding-right: 40px;
+      }
+    }
+    .forgot{
+      margin-top: 10px;
+      text-align: center;
+      width: 100%;
+      font-weight: 400;
+      color: #045F79;
     }
   }
 }
@@ -110,7 +179,7 @@
     padding: 10px;
   }
   .title-container {
-    width: 420px;
+    width: 380px;
     margin: auto;
     @media @mobile {
       width: 100%;
@@ -121,7 +190,7 @@
       color: #fff;
       font-size: 56px;
       font-weight: 500;
-      height: 170px;
+      height: 150px;
       @media @mobile {
         height: 110px;
       }
@@ -130,7 +199,7 @@
       color: #fff;
       font-weight: 400;
       padding: 5px 0;
-      font-size: 28px;
+      font-size: 24px;
       margin-top: -40px;
       line-height: 1.2em;
       @media @mobile {
@@ -154,6 +223,9 @@
     color: #fff;
     font-size: 18px;
     font-weight: 300;
+    &.after-signup{
+      color: #333;
+    }
     @media @mobile {
       font-size: 16px;
       padding-bottom: 15px;
@@ -163,15 +235,23 @@
     background-color: #ffffff;
     margin: auto;
     width: 400px;
-    height: 400px;
+    min-height: 430px;
     padding: 15px;
     border: 1px solid rgba(0,0,0,0.2);
     .title{
       padding-bottom: 10px;
+      padding-top: 0;
     }
     @media @mobile {
       width: auto;
-      height: 450px;
+      min-height: 450px;
+    }
+  }
+  .link{
+    color: #045F79;
+    cursor: pointer;
+    &:focus{
+      outline: none;
     }
   }
 }

@@ -12,6 +12,7 @@
 @import "swaps.less";
 @import "payment.less";
 @import "request.less";
+@import "review.less";
 @import "loader.less";
 @import "login.less";
 @import "info.less";
@@ -87,6 +88,18 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   opacity: 1;
+}
+
+input:-webkit-autofill{
+  background-color: #ffffff !important;
+}
+
+.modal-dialog {
+  -webkit-transform: translate(0,0) !important;
+  -ms-transform: translate(0,0) !important;
+  transform: translate(0,0) !important;
+  -webkit-animation: model 0.4s ease;
+  animation: model 0.4s ease;
 }
 
 .pac-container{
@@ -193,6 +206,7 @@ div{
 }
 
 .alertify{
+  z-index: 11;
   background-color: #f9f6f1;
   .msg{
     color: #848a91 !important;
@@ -252,4 +266,14 @@ div{
       color: #ffffff;
     }
   }
+}
+
+@keyframes model {
+  0% {transform: scale(0.9); opacity: 0}
+  100% {transform: scale(1); opacity: 1}
+}
+
+@-webkit-keyframes model {
+  0% {transform: scale(0.9); opacity: 0}
+  100% {transform: scale(1); opacity: 1}
 }

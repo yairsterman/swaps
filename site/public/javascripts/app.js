@@ -46,6 +46,14 @@ $routeProvider
     .when('/login', {
         templateUrl : '/pages/login.html',
         controller  : 'loginController'
+    })
+    .when('/verify-email/:token', {
+        templateUrl: '/pages/verify-email.html',
+        controller: 'verifyEmailController'
+    })
+    .when('/review/:token', {
+        templateUrl : '/pages/review.html',
+        controller  : 'reviewController'
     });
 
     $locationProvider.html5Mode(true);

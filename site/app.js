@@ -9,8 +9,8 @@ let passport       = require("passport");
 let less = require('less');
 let fs = require('fs');
 
-let passportService = require('./services/passport');
 let emailService = require('./services/email');
+let passportService = require('./services/passport');
 let config = require('./config');
 
 let index = require('./routes/index');
@@ -22,6 +22,7 @@ let transactions = require('./routes/transactions');
 let login = require('./routes/login');
 let community = require('./routes/community');
 let blog = require('./routes/blog');
+let review = require('./routes/review');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use(session({
     saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+
 // load mongoose package
 const mongoose = require('mongoose');
 // Use native Node promises
@@ -55,7 +57,7 @@ mongoose.Promise = global.Promise;
 //     .then(() =>  console.log('connection succesful'))
 // .catch((err) => console.error(err));
 
-mongoose.connect(config.mongoUrl).then(function () {
+mongoose.connect(config.mongoUrl,{useMongoClient: true}).then(function () {
     console.log('connection successful');
 }).catch(function (err) {
     console.error(err);
@@ -75,10 +77,9 @@ app.use('/transactions', transactions);
 app.use('/auth', login);
 app.use('/community', community);
 app.use('/blog', blog);
+app.use('/review', review);
 app.use('/', index);
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 // app.use(bodyParser({uploadDir:'./uploads'}));
 
@@ -97,11 +98,16 @@ app.use(function(err, req, res, next) {
   console.log(err);
   // render the error page
   res.status(err.status || 500);
-  res.render('error.html');
+  if(err.error){
+      res.json(err);
+  }
+  else{
+      res.render('error.html');
+  }
 });
 
-emailService.init();
 passportService.init();
+emailService.init();
 
 app.listen(3000,function () {
     console.log("listening on 3000");

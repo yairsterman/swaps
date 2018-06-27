@@ -8,17 +8,17 @@ swapper-home{
     -webkit-box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
     -moz-box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
     box-shadow: 5px 6px 15px -6px rgba(0, 0, 0, 0.39);
-    height: 362px;
+    height: 365px;
     cursor: pointer;
     transition: 0.4s ease;
     @media @desktop {
       height: 310px;
     }
     @media @tablet {
-      height: 362px;
+      height: 365px;
     }
     @media @mobile {
-      height: 362px;
+      height: 365px;
     }
     &:focus {
       outline: none;
@@ -161,10 +161,13 @@ swapper-home{
       padding-top: 6px;
       color: #616161;
       .tiny-text {
-        padding-right: 14px;
+        padding-right: 18px;
         font-size: 14px;
         display: flex;
         align-items: center;
+        &.man{
+          padding-right: 14px;
+        }
         @media  @desktop, @tablet, @mobile{
           font-size: 12px;
         }

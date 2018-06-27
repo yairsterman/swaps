@@ -149,6 +149,40 @@ swapsApp.service('AccountService', function($http, $q){
         });
         return defer.promise;
     };
+
+    this.forgotPassword = function(email) {
+        var defer = $q.defer();
+
+        $http.post('auth/forgotPassword', {email:email}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+
+        return defer.promise;
+    };
+
+    this.changePassword = function(passwords) {
+        var defer = $q.defer();
+
+        $http.post('account/changePassword', passwords).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+
+        return defer.promise;
+    };
 	
    this.logout = function(user) {
       return $http.post('/logout', user).then(function(data){
@@ -159,11 +193,41 @@ swapsApp.service('AccountService', function($http, $q){
         });
    };
 
+    this.emailSignup = function(credentials) {
+        var defer = $q.defer();
+        $http.post('/auth/signup', credentials).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.error);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(data){
+            defer.reject(data.data.message);
+        });
+        return defer.promise;
+    };
+
+    this.emailSignup = function(credentials) {
+        var defer = $q.defer();
+        $http.post('/auth/signup', credentials).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(data){
+            defer.reject(data.data.message);
+        });
+        return defer.promise;
+    };
+
     this.addFavorite = function(favorite) {
         var defer = $q.defer();
         $http.put('/account/add-favorite', {favorite: favorite}).then(function(data){
             if(data.data.error){
-                defer.reject(data.data.error);
+                defer.reject(data.data.message);
             }
             else{
                 defer.resolve(data.data);
@@ -246,6 +310,21 @@ swapsApp.service('AccountService', function($http, $q){
             }
         }, function(err){
             defer.reject(err);
+        });
+        return defer.promise;
+    }
+
+    this.verifyEmail = function(token) {
+        var defer = $q.defer();
+        $http.get('/account/verifyEmail?token=' + token).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject('Something went wrong');
         });
         return defer.promise;
     }
