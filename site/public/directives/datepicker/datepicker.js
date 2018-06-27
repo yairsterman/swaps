@@ -57,7 +57,7 @@ swapsApp.directive('datepicker', function() {
 	                    'Weekends': [minDate, endOfTheWeek],
 	                    'Month': [minDate, next4weeks],
                     },
-                    showCustomRangeLabel: true,
+                    showCustomRangeLabel: false,
                     alwaysShowCalendars: true,
                     autoUpdateInput: true
                 });
@@ -67,7 +67,10 @@ swapsApp.directive('datepicker', function() {
                         scope.swapDates.chosenLabel = 'Weekends'
                     }
                     else if(picker.chosenLabel == 'Month') {
-                        scope.swapDates.chosenLabel = 'Month'
+                        scope.swapDates.chosenLabel = 'Month';
+                        if(!scope.currentDatesWhen) {
+	                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + formatDate(new Date(next4weeks), 'MM/DD/YYYY');
+                        }
                     }
                     else if(picker.chosenLabel == 'Custom Range') {
                         scope.swapDates.chosenLabel = 'Custom Range';

@@ -16,12 +16,13 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     ];
     $scope.rangeOptions1 = [];
 	  $scope.rangeOptions2 = [];
-	  $scope.duration = '';
+	  $scope.duration = '6-8';
     $rootScope.homepage = true;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
     $rootScope.search.range1 = "5";
     $rootScope.search.range2 = "5";
+    $rootScope.search.duration = $scope.duration;
     $scope.rangeLabel = 'Custom range';
 	  $scope.weekdays = [
 	    ["Sunday", "Sun"],
@@ -81,8 +82,30 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 	    return dates;
     };
 
+    $scope.getWeekendsRanges = function (arr, depart) {
+	    $scope.rangeOptions1 = [];
+	    $scope.rangeOptions2 = [];
+	    arr.forEach(function (item) {
+		    if($scope.weekdays[item.getDay()][1] !== "Sat") {
+			    $scope.rangeOptions1.push(
+				    {value: $scope.weekdays[item.getDay()][1], text: $scope.weekdays[item.getDay()][1]});
+		    }
+		    else {
+			    $scope.rangeOptions1.push(
+				    {value: $scope.weekdays[item.getDay()][1], text: $scope.weekdays[item.getDay()][1]});
+		    }
+	    });
+	    $rootScope.search.range1 = $scope.weekdays[depart.getDay()][1];
+	    $scope.rangeOptions2.push(
+		    {value: $scope.weekdays[0][1], text: $scope.weekdays[0][1]},
+		    {value: $scope.weekdays[1][1], text: $scope.weekdays[1][1]}
+	    );
+
+	    $rootScope.search.range2 = $scope.weekdays[0][1];
+    };
+
     $scope.changeDates = function () {
-      if($rootScope.search.when) {
+	    if($rootScope.search.when) {
 	      var depart = new Date($rootScope.search.when.split('-')[0]);
 	      var sat = new Date($rootScope.search.when.split('-')[0]);
 	      var Saturday = new Date(sat.setDate(sat.getDate() - sat.getDay() + 6));
@@ -90,31 +113,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 	      $timeout(function() {
 		      $scope.rangeLabel = $rootScope.search.chosenLabel;
 		      if($scope.rangeLabel === 'Weekends') {
-			      $scope.rangeOptions1 = [];
-			      $scope.rangeOptions2 = [];
-			      range1.forEach(function (item) {
-				      if($scope.weekdays[item.getDay()][0] !== "Saturday") {
-					      $scope.rangeOptions1.push(
-						      {value: $scope.weekdays[item.getDay()][0], text: $scope.weekdays[item.getDay()][0]},
-						      {value: $scope.weekdays[item.getDay()][1] + ' AM', text: $scope.weekdays[item.getDay()][1] + ' AM'},
-						      {value: $scope.weekdays[item.getDay()][1] + ' PM', text: $scope.weekdays[item.getDay()][1] + ' PM'});
-				      }
-				      else {
-					      $scope.rangeOptions1.push(
-						      {value: $scope.weekdays[item.getDay()][0], text: $scope.weekdays[item.getDay()][0]},
-						      {value: $scope.weekdays[item.getDay()][1] + ' AM', text: $scope.weekdays[item.getDay()][1] + ' AM'});
-				      }
-			      });
-			      $rootScope.search.range1 = $scope.weekdays[depart.getDay()][0];
-			      $scope.rangeOptions2.push(
-				      {value: $scope.weekdays[0][0], text: $scope.weekdays[0][0]},
-				      {value: $scope.weekdays[0][1] + ' PM', text: $scope.weekdays[0][1] + ' PM'},
-				      {value: $scope.weekdays[0][1] + ' AM', text: $scope.weekdays[0][1] + ' AM'},
-				      {value: $scope.weekdays[1][1] + ' PM', text: $scope.weekdays[1][0] + ' PM'},
-				      {value: $scope.weekdays[1][1] + ' AM', text: $scope.weekdays[1][1] + ' AM'}
-			      );
-
-			      $rootScope.search.range2 = $scope.weekdays[0][0];
+		      	$scope.getWeekendsRanges(range1, depart);
 		      }
 		      else if($scope.rangeLabel === 'Custom Range') {
 			      $scope.rangeOptions1 = [];
@@ -132,29 +131,58 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 		      }
 	      },300);
       }
+      else {
+	    	$timeout(function () {
+			    if($rootScope.search.chosenLabel === 'Month') {
+			    	$scope.rangeLabel = $rootScope.search.chosenLabel;
+				    $scope.rangeOptions1 = [];
+				    $scope.rangeOptions2 = [];
+			    }
+			    else {
+				    if($rootScope.search.chosenLabel === 'Weekends') {
+				    	var curr = new Date();
+				    	var depart = new Date();
+				    	var Saturday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6));
+					    var range1 = $scope.datesRange(depart, Saturday);
+					    $scope.rangeLabel = $rootScope.search.chosenLabel;
+					    $scope.getWeekendsRanges(range1, depart);
+				    }
+			    }
+		    }, 300);
+	    }
     };
 
+    $scope.changeRange = function () {
+    	if($scope.duration) {
+		    var arr =  $scope.duration.split('-');
+		    var min = Number(arr[0]);
+		    var max = Number(arr[1]);
+		    if(min === max) {
+			    $rootScope.search.duration = min+''
+		    }
+		    else {
+			    $rootScope.search.duration = $scope.duration;
+		    }
+	    }
+	    else $rootScope.search.duration = '6-8';
+    }
+
     $scope.searchSwap = function(e){
-        e.preventDefault();
-        var where = $rootScope.search.where;
-        // if(!where || where == ''){
-        //     where	= 'Anywhere';
-        // }
-        // else{
-        //     where = where.split(',')[0]
-        // }
+    	e.preventDefault();
       var searchData = {
-          where: where,
+          where: $rootScope.search.where,
           dates: $rootScope.search.when,
           guests: $rootScope.search.guests,
           range: {
               type: $scope.rangeLabel,
               departureRange: $rootScope.search.range1,
               returnRange: $rootScope.search.range2,
-              duration: $scope.duration
           }
       };
 
+      searchData.range.duration = searchData.range.type === 'Month' ? $rootScope.search.duration : null
+
+	    console.log('search data', searchData);
 	    HomeService.search('request-link', searchData).then(function(data) {
 		    if (data.data.error) {
 			    console.log("search error");

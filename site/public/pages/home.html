@@ -21,7 +21,7 @@
                 </div>
                 <div class="search-field col-sm-4 col-xs-12">
                     <label for="searchDate">When</label>
-                    <div class="range-wr">
+                    <form name="rangeForm" class="range-wr" novalidate>
                         <div ng-if="rangeOptions1.length && rangeLabel !== 'Month'">
                             <p>Departure</p>
 
@@ -37,10 +37,11 @@
                         </div>
                         <div ng-if="rangeLabel === 'Month'" class="duration-wr">
                             <p>Duration</p>
-                            <input type="text" ng-model="duration" >
-                            <span if="duration">nights</span>
+                            <input type="text" name="durationRange" ng-model="duration" ng-change="changeRange()" duration>
+                            <span style="color: red; opacity: 0.5" ng-show="rangeForm.durationRange.$error.duration">Wrong data</span>
+                            <span ng-if="duration">nights</span>
                         </div>
-                    </div>
+                    </form>
                     <!--<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">-->
                     <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker>
                     <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
