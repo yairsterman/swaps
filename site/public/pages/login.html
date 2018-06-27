@@ -12,22 +12,81 @@
         Start swapping today and save a ton of money on your travels!
     </div>
     <div class="login-model" ng-if="!loggedIn">
-        <div class="title">
-            Join Swaps
-            <div class="underline"></div>
+        <div class="" ng-if="!isEmailLogin">
+            <div class="title">
+                Join Swaps
+                <div class="underline"></div>
+            </div>
+            <div class="sub-title">
+                In just a few steps you could find your next Swap
+            </div>
+            <div class="button-signin">
+                <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
+            </div>
+            <div class="button-signin">
+                <button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div>Join with Google</button>
+            </div>
+            <div class="sub-title">
+                Or
+            </div>
+            <div class="button-signin bottom">
+                <button type="button" class="btn btn-default login-button email-button" ng-click="goToEmailLogin()"><i class="fa fa-envelope"></i>Join with Email</button>
+            </div>
+            <div class="bottom">
+                By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
+                and <span class="link" ng-click="policy()">Privacy Policy</span>
+            </div>
         </div>
-        <div class="sub-title">
-            In just a few steps you could find your next Swap
-        </div>
-        <div class="button-signin">
-            <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
-        </div>
-        <div class="button-signin bottom">
-            <button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div>Join with Google</button>
-        </div>
-        <div class="bottom">
-            By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
-            and <span class="link" ng-click="policy()">Privacy Policy</span>
+        <div class="email-login" ng-if="isEmailLogin">
+            <div class="title">
+                Join Swaps
+                <div class="underline"></div>
+            </div>
+            <form name="signupForm">
+                <div class="row">
+                    <div class="form-group col-md-6 col-sm-12">
+                        <label class="control-label listing-label" for="firstName" name="firstName">First Name:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="firstNameInvalid = false;" ng-model="credentials.firstName" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                        <label class="control-label listing-label" for="lastName">Last Name:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="lastNameInvalid = false;" ng-model="credentials.lastName" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="email">Email:
+                    </label>
+                    <div class="">
+                        <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="emailInvalid = false;" ng-model="credentials.email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="password">Password:
+                        <span class="explanation">Must contain at least 6 characters</span>
+                    </label>
+                    <div class="password">
+                        <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="passwordInvalid = false;" placeholder="" minlength="6" ng-model="credentials.password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="confirmPassword">Confirm Password:
+                        <span class="error" ng-if="passwordsMismatch">Passwords don't match</span>
+                    </label>
+                    <div class="">
+                        <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="confirmPasswordInvalid = false;" placeholder="" ng-model="credentials.confirmPassword" required>
+                    </div>
+                </div>
+            </form>
+            <div class="error" ng-if="error">{{error}}</div>
+            <div class="button-signin bottom">
+                <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>Join with Email</button>
+            </div>
         </div>
     </div>
 </div>

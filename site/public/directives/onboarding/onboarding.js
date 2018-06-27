@@ -32,6 +32,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             initialPhase = 'about';
         }
         $scope.phase = initialPhase;
+        getInitialFocus();
     }
 
     $scope.closeModel = function(){
@@ -133,6 +134,15 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         return complete == 1?'first':complete==2?'second':complete>=3?'done':'';
     }
 
+    function getInitialFocus(){
+        if($scope.phase == 'about'){
+            $scope.user.address && $scope.user.address != ''?$scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?$scope.user.apptInfo.about && $scope.user.apptInfo.about?$scope.isInFocus = 'about':$scope.isInFocus = 'title':$scope.isInFocus = false: null;
+        }
+        if($scope.phase == 'home'){
+            $scope.user.occupation && $scope.user.occupation != ''?$scope.user.aboutMe && $scope.user.aboutMe != ''?$scope.isInFocus = 'aboutMe':$scope.isInFocus = false: null;
+        }
+    }
+
     // returns how much of the phase is complete 1,2, or 3
     $scope.isPhaseComplete = function(){
         var complete = 0;
@@ -149,7 +159,8 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         }
         if($scope.phase == 'home'){
             $scope.user.address && $scope.user.address != ''?complete++:null;
-            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete=complete+2:null;
+            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete++:null;
+            $scope.user.apptInfo.about && $scope.user.apptInfo.about != ''?complete++:null;
        }
         if($scope.phase == 'basic'){
             complete = $scope.user.apptInfo.amenities.length > 0?3:2;

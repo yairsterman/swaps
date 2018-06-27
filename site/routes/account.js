@@ -14,6 +14,11 @@ let fs = require('fs');
 let Q = require('q');
 let Data = require('../user_data/data.js');
 let config = require('../config');
+let jwt = require('jsonwebtoken');
+let emailMessages = require('../services/email-messages.js');
+let EmailService = require('../services/email.js');
+let utils = require('../utils/util');
+let bcrypt = require('bcrypt-nodejs');
 
 let multer = require('multer');
 let upload = multer({dest: 'uploads/', limits: {files: 8}});
@@ -52,22 +57,44 @@ router.post('/edit-profile', function (req, res, next) {
     let gender = req.body.gender;
     let thingsToDo = req.body.thingsToDo;
 
-    let update = {};
-    if(email)
-        update.email = email;
-    if(aboutMe)
-        update.aboutMe = aboutMe;
-    if(occupation)
-        update.occupation = occupation;
-    if(birthday)
-        update.birthday = birthday;
-    if(gender)
-        update.gender = gender;
-    if(thingsToDo)
-        update.thingsToDo = thingsToDo;
-
-    let toUpdate = {$set: update};
-    findOneAndUpdate(id, toUpdate, res);
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            error.message = err;
+            return res.json(err);
+        }
+        else {
+            if (user) {
+                let update = {};
+                if(user.aboutMe !== aboutMe)
+                    update.aboutMe = aboutMe;
+                if(user.occupation !== occupation)
+                    update.occupation = occupation;
+                if(user.birthday !== birthday)
+                    update.birthday = birthday;
+                if(user.gender !== gender)
+                    update.gender = gender;
+                if(user.thingsToDo !== thingsToDo)
+                    update.thingsToDo = thingsToDo;
+                if(user.email !== email){
+                    update.email = email;
+                    let token = utils.createVerifyToken(update.email);
+                    update.verifyEmailToken = token;
+                    update.verifications = user.verifications;
+                    update.verifications.email = false;
+                }
+                let toUpdate = {$set: update};
+                findOneAndUpdate(id, toUpdate, res).then(function(){
+                    if(update.email){
+                        EmailService.sendMail([update.email], 'Email Verification', emailMessages.emailVerification(user, update.verifyEmailToken));
+                    }
+                });
+            }
+            else{
+                error.message = 'No user found';
+                return res.json(error);
+            }
+        }
+    });
 
 });
 
@@ -115,6 +142,58 @@ router.post('/edit-listing', function (req, res, next) {
         let toUpdate = {$set: update};
         findOneAndUpdate(id, toUpdate, res);
 
+    },function(err){
+        error.message = err;
+        return res.json(error);
+    });
+
+});
+
+router.post('/changePassword', function (req, res, next) {
+    let id = req.user._id;
+    let newPassword = req.body.new;
+    let password = req.body.current;
+
+    if(!newPassword || !password){
+        error.message = 'Wrong password';
+        return res.json(error);
+    }
+
+    let dfr = Q.defer();
+
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            dfr.reject(err);
+        }
+        else {
+            if (user) {
+                if (user.password) {
+                    if (bcrypt.compareSync(password, user.password)) {
+                        dfr.resolve(user);
+                    }
+                    else {
+                        dfr.reject('Wrong password');
+                    }
+                }
+                else{
+                    dfr.reject('Wrong password');
+                }
+            }
+            else{
+                dfr.reject('No user found');
+            }
+        }
+    });
+
+    dfr.promise.then(function(){
+        bcrypt.genSalt(config.saltRounds, function (err, salt) {
+            bcrypt.hash(newPassword, salt, null, function (err, hash) {
+                let update = {};
+                update.password = hash;
+                let toUpdate = {$set: update};
+                findOneAndUpdate(id, toUpdate, res);
+            });
+        });
     },function(err){
         error.message = err;
         return res.json(error);
@@ -529,7 +608,52 @@ router.put('/unset-favorite', function (req, res, next) {
 
 });
 
+router.get('/verifyEmail', function (req, res, next) {
+
+    //find user with this verify token
+    User.findOne({verifyEmailToken: req.query.token}, function(err, user) {
+        if(err){
+            error.message = err;
+            return res.json(error);
+        }
+        if(!user){
+            error.message = 'No user found';
+            return res.json(error);
+        }
+        // make sure user's email is the same one the verify token was sent to
+        jwt.verify(req.query.token, config.jwtSecret, function (err, decoded) {
+            if (err) {
+                error.message = err;
+                return res.json(error);
+            }
+            let email = decoded.email;
+            if(email != user.email){
+                error.message = 'Wrong email, please resend verification email';
+                return res.json(error);
+            }
+            if(!user.verifications){
+                user.verifications = {};
+            }
+            user.verifications.email = true;
+            user.verifyEmailToken = null;
+            user.save(function (err) {
+                if (err){
+                    error.message = 'Failed to save user, please try again';
+                    return res.json(error);
+                }
+                EmailService.sendMail([user.email], 'Email verified', emailMessages.emailVerified(user));
+                return res.json({verified: true});
+            });
+        });
+
+    });
+
+
+});
+
+
 function findOneAndUpdate(id, toUpdate, res){
+    let dfr = Q.defer();
     User.findOneAndUpdate({_id: id}, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})
         .populate({
             path: 'community',
@@ -538,14 +662,19 @@ function findOneAndUpdate(id, toUpdate, res){
         .exec(function (err, user) {
             if (err){
                 error.message = err;
-                return res.json(error);
+                res.json(error);
+                return dfr.reject(error);
             }
             if (!user) {
                 error.message = 'No user found';
-                return res.json(error);
+                res.json(error);
+                return dfr.reject(error);
             }
             res.json(user);
+            dfr.resolve();
         });
+
+    return dfr.promise;
 }
 
 module.exports = router;

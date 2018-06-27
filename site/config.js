@@ -1,4 +1,3 @@
-
 // noinspection JSAnnotator
 let config = {
     tranzillaTokenSupplier: 'swapshomtok',
@@ -21,8 +20,10 @@ let config = {
         formatter: null         // 'gpx', 'string', ...
     },
 
-    FACEBOOK_APP_ID : '1628077027210389',
-    FACEBOOK_APP_SECRET : '5a927f2caa3f5eb9a2eeaad0eaf1b225',
+    FACEBOOK_APP_ID: '1628077027210389',
+    FACEBOOK_APP_SECRET: '5a927f2caa3f5eb9a2eeaad0eaf1b225',
+
+    jwtSecret: 'swapstick' ,
 
     cloudinaryName: 'swaps',
     cloudinaryKey: '141879543552186',
@@ -30,11 +31,13 @@ let config = {
 
     ADMIN_PASSWORD: 'q3e5t7u',
 
-    // mongoUrl: 'mongodb://18.221.167.219/test', // for dev
-    mongoUrl: 'mongodb://127.0.0.1/test', // for production
+    saltRounds: 10,
 
-    baseUrl: 'https://swapshome.com'
-    // baseUrl: 'http://localhost:3000'
+    mongoUrl: 'mongodb://18.221.167.219/test', // for dev
+    // mongoUrl: 'mongodb://127.0.0.1/test', // for production
+
+    // baseUrl: 'https://swapshome.com'
+    baseUrl: 'http://localhost:3000'
 };
 
 module.exports = config;
