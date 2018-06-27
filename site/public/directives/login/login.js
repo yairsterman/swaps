@@ -2,6 +2,7 @@ var login = null;
 swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, AccountService, MessageService, $timeout) {
     login = $scope;
     $rootScope.externalLogin = $routeParams.external;
+    $scope.signin = $rootScope.externalLogin;
     $scope.innerHeight = $window.innerHeight;
 
     // $scope.signin = signin;
@@ -139,6 +140,14 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.backForgot = function(){
         $scope.error = false;
         $scope.forgot = false;
+    };
+
+    $scope.backToSocial = function(){
+        $scope.isEmailLogin = false;
+    };
+
+    $scope.setToFalse = function(variable){
+        $scope[variable] = false;
     };
 
     $scope.terms = function(){

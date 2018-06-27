@@ -48,14 +48,14 @@
                         <label class="control-label listing-label" for="firstName" name="firstName">First Name:
                         </label>
                         <div class="">
-                            <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="firstNameInvalid = false;" ng-model="credentials.firstName" required>
+                            <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="setToFalse('firstNameInvalid')" ng-model="credentials.firstName" required>
                         </div>
                     </div>
                     <div class="form-group col-md-6 col-sm-12">
                         <label class="control-label listing-label" for="lastName">Last Name:
                         </label>
                         <div class="">
-                            <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="lastNameInvalid = false;" ng-model="credentials.lastName" required>
+                            <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="setToFalse('lastNameInvalid')" ng-model="credentials.lastName" required>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                     <label class="control-label listing-label" for="email">Email:
                     </label>
                     <div class="">
-                        <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="emailInvalid = false;" ng-model="credentials.email" required>
+                        <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="setToFalse('emailInvalid')" ng-model="credentials.email" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -71,7 +71,7 @@
                         <span class="explanation">Must contain at least 6 characters</span>
                     </label>
                     <div class="password">
-                        <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="passwordInvalid = false;" placeholder="" minlength="6" ng-model="credentials.password" required>
+                        <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="setToFalse('passwordInvalid')" placeholder="" minlength="6" ng-model="credentials.password" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -79,14 +79,20 @@
                         <span class="error" ng-if="passwordsMismatch">Passwords don't match</span>
                     </label>
                     <div class="">
-                        <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="confirmPasswordInvalid = false;" placeholder="" ng-model="credentials.confirmPassword" required>
+                        <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="setToFalse('confirmPasswordInvalid')" placeholder="" ng-model="credentials.confirmPassword" required>
                     </div>
                 </div>
             </form>
             <div class="error" ng-if="error">{{error}}</div>
-            <div class="button-signin bottom">
+            <div class="button-signin">
                 <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>Join with Email</button>
             </div>
+            <div class="bottom">
+                Back to <span class="link" ng-click="backToSocial()">Social Sign up</span>
+            </div>
         </div>
+    </div>
+    <div class="description after-signup">
+        Already signed up? <a class="link" href="https://swapshome.com">Go to site</a>
     </div>
 </div>
