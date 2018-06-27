@@ -13,6 +13,7 @@ var UserSchema = new Schema({
     aboutMe: String,
     facebookId: String,
     googleId: String,
+    localId: String,
     image: String,
     country: String,
     city: String,

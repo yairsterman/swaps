@@ -20,11 +20,11 @@
         <div class="button-signin bottom">
             <button type="button" class="btn btn-default login-button email-button" ng-click="goToEmailLogin()"><i class="fa fa-envelope"></i>{{signin?'Join with Email':' Log in with Email'}}</button>
         </div>
-        <div class="bottom" ng-if="signin">
+        <div class="bottom bottom-text" ng-if="signin">
             By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
             and <span class="link" ng-click="policy()">Privacy Policy</span>
         </div>
-        <div class="bottom" ng-if="!signin">
+        <div class="bottom bottom-text" ng-if="!signin">
             Don't have an account? <span class="link" ng-click="goToSignin()">Join</span>
         </div>
     </div>

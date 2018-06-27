@@ -155,7 +155,24 @@ swapsApp.service('AccountService', function($http, $q){
 
         $http.post('auth/forgotPassword', {email:email}).then(function(data){
             if(data.data.error){
-                defer.reject(data.data.error);
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject(err);
+        });
+
+        return defer.promise;
+    };
+
+    this.changePassword = function(passwords) {
+        var defer = $q.defer();
+
+        $http.post('account/changePassword', passwords).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
             }
             else{
                 defer.resolve(data.data);

@@ -12,6 +12,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
 
     $scope.select = {};
+    $scope.passwords = {};
 
     const DAY = 1000*60*60*24;
     $scope.day = DAY;
@@ -108,7 +109,42 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         })
         .finally(function(){
             $scope.saving = false;
-        });;
+        });
+    }
+
+    $scope.changePassword = function(form){
+        $scope.error = false;
+        $scope.success = false;
+        if(form.$invalid){
+            if(form.current.$invalid){
+                $scope.currentInvalid = true;
+            }
+            if(form.new.$invalid){
+                $scope.newInvalid = true;
+            }
+            if(form.confirm.$invalid){
+                $scope.confirmInvalid = true;
+            }
+            $scope.error = 'Invalid fields';
+            return;
+        }
+        if($scope.passwords.new !== $scope.passwords.confirm){
+            $scope.error = "Passwords don't match";
+            return;
+        }
+        $scope.saving = true;
+        AccountService.changePassword($scope.passwords).then(function(data){
+            $scope.user = data;
+            $scope.passwords = {};
+            $scope.error = false;
+            updateUser();
+            $scope.success = true;
+        },function(err){
+            $scope.error = err;
+        })
+        .finally(function(){
+            $scope.saving = false;
+        });
     }
 
     $scope.cancelRequest = function(requestInfo){

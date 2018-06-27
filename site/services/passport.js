@@ -88,7 +88,6 @@ module.exports.init = function () {
                         swaps: 0,
                         allowViewHome: true,
                         traveling: false,
-                        travelingDates: {},
                         apptInfo: {
                             roomType: 0,
                             propertyType: 0,
@@ -158,7 +157,6 @@ module.exports.init = function () {
                         swaps: 0,
                         allowViewHome: true,
                         traveling: false,
-                        travelingDates: {},
                         apptInfo: {
                             roomType: 0,
                             propertyType: 0,
@@ -231,7 +229,6 @@ module.exports.init = function () {
                             swaps: 0,
                             allowViewHome: true,
                             traveling: false,
-                            travelingDates: {},
                             apptInfo: {
                                 roomType: 0,
                                 propertyType: 0,
@@ -248,6 +245,7 @@ module.exports.init = function () {
                                 user.password = hash;
                                 let token = utils.createVerifyToken(user.email);
                                 user.verifyEmailToken = token;
+                                user.localId = user._id;
                                 user.save(function (err) {
                                     if (err) return done(err);
                                     EmailService.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user, token));

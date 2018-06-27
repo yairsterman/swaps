@@ -149,6 +149,58 @@ router.post('/edit-listing', function (req, res, next) {
 
 });
 
+router.post('/changePassword', function (req, res, next) {
+    let id = req.user._id;
+    let newPassword = req.body.new;
+    let password = req.body.current;
+
+    if(!newPassword || !password){
+        error.message = 'Wrong password';
+        return res.json(error);
+    }
+
+    let dfr = Q.defer();
+
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            dfr.reject(err);
+        }
+        else {
+            if (user) {
+                if (user.password) {
+                    if (bcrypt.compareSync(password, user.password)) {
+                        dfr.resolve(user);
+                    }
+                    else {
+                        dfr.reject('Wrong password');
+                    }
+                }
+                else{
+                    dfr.reject('Wrong password');
+                }
+            }
+            else{
+                dfr.reject('No user found');
+            }
+        }
+    });
+
+    dfr.promise.then(function(){
+        bcrypt.genSalt(config.saltRounds, function (err, salt) {
+            bcrypt.hash(newPassword, salt, null, function (err, hash) {
+                let update = {};
+                update.password = hash;
+                let toUpdate = {$set: update};
+                findOneAndUpdate(id, toUpdate, res);
+            });
+        });
+    },function(err){
+        error.message = err;
+        return res.json(error);
+    });
+
+});
+
 router.post('/set-community', function (req, res, next) {
     let code = req.body.code;
     let id = req.user._id;

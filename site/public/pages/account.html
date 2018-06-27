@@ -24,8 +24,11 @@
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
                                                                                       ng-click="go('account/reviews')">Reviews</a>
                     </li>
-                    <li class="single-link {{activeTab == 'pricing'?'active':''}}"><a href=""
-                                                                                           ng-click="go('account/pricing')">Pricing</a></li>
+                    <!--<li class="single-link {{activeTab == 'pricing'?'active':''}}"><a href=""-->
+                                                                                           <!--ng-click="go('account/pricing')">Pricing</a></li>-->
+
+                    <li class="single-link {{activeTab == 'password'?'active':''}}" ng-if="user.localId"><a href=""
+                                                                                      ng-click="go('account/password')">Password</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-xs-12 content {{activeTab == 'upcoming-swaps'?'scroll':''}}">
@@ -444,49 +447,99 @@
                         </div>
                     </div>
                 </div>
-                <div class="pricing-tab" ng-if="activeTab == 'pricing'">
-                    <div class="payment-plan">
-                        <div class="pricing-title">
-                            Choose a pricing plan
-                            <div class="underline"></div>
-                        </div>
-                        <div class="row all-plans">
-                            <div class="col-sm-4" ng-repeat="plan in data.securityDeposit">
-                                <div class="single-plan {{plan.type}}">
-                                    <div class="coming-soon" ng-if="plan.id > 0">
-                                        <div class="coming-soon-title">
-                                            Coming soon
-                                        </div>
-                                    </div>
-                                    <div class="plan-top">
-                                        <div class="plan-title">
-                                            {{plan.displayName}}
-                                            <br>
-                                            Payment Plan
-                                        </div>
-                                        <div class="plan-image">
+                <div class="password-tab" ng-if="activeTab == 'password'">
+                    <div class="permanent-info">
+                        <div class="title">
+                            Change Password
+                            <div class="underline">
 
-                                        </div>
-                                    </div>
-                                    <div class="plan-bottom">
-                                        <div class="small-text">
-                                            Per night
-                                        </div>
-                                        <div class="price">
-                                            {{plan.night}}$
-                                        </div>
-                                        <div class="covers">
-                                            This plan covers up to <br> {{plan.damage}}$
-                                        </div>
-                                        <div class="small-text">
-                                            in damages or cancellations
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
+                    <form class="form-horizontal edit-form" name="changePasswordForm">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="control-label">Current password:</label>
+                                <div class="">
+                                    <input class="form-control {{currentInvalid?'error':''}} " ng-focus="currentInvalid = false;" type="password" name="current" ng-model="passwords.current" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="control-label">New password:
+                                    <span class="explanation">At least 6 characters</span>
+                                </label>
+                                <div class="">
+                                    <input class="form-control {{newInvalid?'error':''}}" ng-focus="newInvalid = false;" type="password" name="new" minlength="6" ng-model="passwords.new" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="control-label">Confirm new password:</label>
+                                <div class="">
+                                    <input class="form-control {{confirmInvalid?'error':''}}" ng-focus="confirmInvalid = false;" type="password" name="confirm" ng-model="passwords.confirm" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="message {{error?'error-message':''}}">
+                                    <span ng-if="success">Password changed successfully</span>
+                                    <span ng-if="error">{{error}}</span>
+                                </div>
+                                <div class="buttons">
+                                    <input type="button" class="btn btn-primary btn-edit" value="Save"
+                                           ng-click="changePassword(changePasswordForm)" ng-disabled="saving" disabled="{{saving}}">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+                <!--<div class="pricing-tab" ng-if="activeTab == 'pricing'">-->
+                    <!--<div class="payment-plan">-->
+                        <!--<div class="pricing-title">-->
+                            <!--Choose a pricing plan-->
+                            <!--<div class="underline"></div>-->
+                        <!--</div>-->
+                        <!--<div class="row all-plans">-->
+                            <!--<div class="col-sm-4" ng-repeat="plan in data.securityDeposit">-->
+                                <!--<div class="single-plan {{plan.type}}">-->
+                                    <!--<div class="coming-soon" ng-if="plan.id > 0">-->
+                                        <!--<div class="coming-soon-title">-->
+                                            <!--Coming soon-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="plan-top">-->
+                                        <!--<div class="plan-title">-->
+                                            <!--{{plan.displayName}}-->
+                                            <!--<br>-->
+                                            <!--Payment Plan-->
+                                        <!--</div>-->
+                                        <!--<div class="plan-image">-->
+
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="plan-bottom">-->
+                                        <!--<div class="small-text">-->
+                                            <!--Per night-->
+                                        <!--</div>-->
+                                        <!--<div class="price">-->
+                                            <!--{{plan.night}}$-->
+                                        <!--</div>-->
+                                        <!--<div class="covers">-->
+                                            <!--This plan covers up to <br> {{plan.damage}}$-->
+                                        <!--</div>-->
+                                        <!--<div class="small-text">-->
+                                            <!--in damages or cancellations-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
     </div>
