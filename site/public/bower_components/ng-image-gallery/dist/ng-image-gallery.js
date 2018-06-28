@@ -197,7 +197,7 @@
 							'<div ng-if="thumbnails && !inline" class="ng-image-gallery-thumbnails" ui-sortable="{ ' + "'ui-floating'" + ' : true }" ng-model="images">' +
  								'<div class="thumb" ng-repeat="image in images track by image.id" ng-click="methods.open($index);" show-image-async="{{image.thumbUrl || image.url}}" async-kind="thumb" ng-style="{\'width\' : thumbSize+\'px\', \'height\' : thumbSize+\'px\'}">'+
  									'<div class="loader"></div>'+
- 									'<div class="thumb-delete-img" ng-click="_deleteImg(image, $event)"></div>'+
+ 									'<div class="thumb-delete-img" ng-click="_deleteImg(image, $event)" title="Delete this image.."></div>'+
  								'</div>' +
  							'</div>' +
 
@@ -377,7 +377,9 @@
 					};
 
 					scope._deleteImg = function(img, event){
-                        event.stopPropagation();
+						if(event){
+                            event.stopPropagation();
+                        }
 						var _deleteImgCallback = function(){
 							var index = scope.images.indexOf(img);
 							console.log(index);

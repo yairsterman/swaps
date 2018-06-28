@@ -207,6 +207,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 updateUser();
                 showAlert('Photos Uploaded Successfully', false);
                 $scope.saving = false;
+                $scope.imageProgress = 0;
             }
         });
 	}
@@ -215,6 +216,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.numOfFiles--;
         if($scope.numOfFiles === 0){//uploaded all photos
             $scope.saving = false;
+            $scope.imageProgress = 0;
             $scope.$apply();
         }
         showAlert('Could not upload photo', true);
@@ -234,6 +236,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 		});
 		// $('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
 		// $('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
+        $('.cloudinary-fileupload').bind('fileuploadprogressall', function(e, data) {
+            $scope.imageProgress = Math.round((data.loaded * 100.0) / data.total) / $scope.numOfFiles;
+            $scope.$apply();
+        });
 	}
 
     function add_profileUploadButton(e, data){
@@ -259,13 +265,13 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         },function(err){
             showAlert('Failed to upload photo, please try again later', true);
         })
-            .finally(function(){
-                $scope.numOfFiles--;
-                if($scope.numOfFiles === 0){//uploaded all photos
-                    showAlert('Photo Uploaded Successfully', false);
-                    $scope.saving = false;
-                }
-            });
+        .finally(function(){
+            $scope.numOfFiles--;
+            if($scope.numOfFiles === 0){//uploaded all photos
+                showAlert('Photo Uploaded Successfully', false);
+                $scope.saving = false;
+            }
+        });
     }
 
     $scope.initUploadProfileButton =function(){
@@ -384,6 +390,28 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.edit = angular.copy($scope.user);
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         init();
+    });
+
+    $scope.$watchCollection('images', function(newVal ,oldVal){
+        if(!$scope.saving && oldVal && newVal && oldVal !== newVal){
+            var oldVal = oldVal.map(function(image){
+                return image.url;
+            });
+            var newVal = newVal.map(function(image){
+                return image.url;
+            });
+            if(oldVal != newVal){
+                $scope.saving = true;
+                var photos = $scope.images.map(function(image){
+                    return image.url;
+                });
+                AccountService.reorderPhotos(photos).then(function(data){
+                    $rootScope.user = data;
+                    $scope.user = $rootScope.user;
+                    updateUser();
+                })
+            }
+        }
     });
 
     function setPhotoGalery(){

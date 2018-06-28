@@ -149,6 +149,45 @@ router.post('/edit-listing', function (req, res, next) {
 
 });
 
+router.post('/reorderPhotos', function (req, res, next) {
+    let id = req.user._id;
+    let photos = req.body.photos;
+    if(!photos || !Array.isArray(photos)){
+        error.message = '';
+        return res.json(error);
+    }
+
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            error.message = err;
+            return res.json(err);
+        }
+        else {
+            if (user && user.photos) {
+                let update = {};
+                photos.forEach((photo) => {
+                    // check if the photos are the same as saved on user and
+                    // no duplicates were added
+                    let index = user.photos.indexOf(photo);
+                    let lastIndex = user.photos.lastIndexOf(photo);
+                    if(index === -1 || lastIndex !== index){
+                        error.message = 'Bad photo ordering';
+                        return res.json(error);
+                    }
+                });
+                update.photos = photos;
+                let toUpdate = {$set: update};
+                findOneAndUpdate(id, toUpdate, res);
+            }
+            else{
+                error.message = 'No user found';
+                return res.json(error);
+            }
+        }
+    });
+
+});
+
 router.post('/changePassword', function (req, res, next) {
     let id = req.user._id;
     let newPassword = req.body.new;

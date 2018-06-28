@@ -105,6 +105,21 @@ swapsApp.service('AccountService', function($http, $q){
        return defer.promise;
    };
 
+   this.reorderPhotos = function(photos) {
+       var defer = $q.defer();
+       $http.post('account/reorderPhotos', {photos:photos}).then(function(data){
+           if(data.data.error){
+               defer.reject(data.data.error);
+           }
+           else{
+               defer.resolve(data.data);
+           }
+       }, function(err){
+           defer.reject(err);
+       });
+       return defer.promise;
+   };
+
     this.getRequests = function() {
         var defer = $q.defer();
         $http.get('account/get-requests').then(function(data){
