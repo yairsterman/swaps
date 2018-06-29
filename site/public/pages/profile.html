@@ -23,7 +23,7 @@
                             {{profile.firstName}}
                         </div>
                         <div class="occupation">
-                            {{age}} • {{profile.occupation}}
+                            <span ng-if="profile.birthday">{{age}}</span> <span ng-if="profile.occupation">• {{profile.occupation}}</span>
                         </div>
                     </div>
                 </div>
@@ -45,8 +45,8 @@
                         </div>
                     </div>
 
-                    <div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}
-                    </div>
+                    <!--<div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}-->
+                    <!--</div>-->
                     <hr>
                     <div class="swap-info">
                         <div class="search-field">
@@ -71,9 +71,9 @@
                             Request Sent
                         </div>
                     </div>
-                    <div class="not-charged" ng-hide="requestSent">
-                        You won't be charged yet
-                    </div>
+                    <!--<div class="not-charged" ng-hide="requestSent">-->
+                        <!--You won't be charged yet-->
+                    <!--</div>-->
                 </div>
                 <div class="" ng-if="user._id == profile._id">
                     <a href="/account/edit">
@@ -102,7 +102,7 @@
                                 {{profile.firstName}}
                             </div>
                             <div class="occupation">
-                                {{age}} • {{profile.occupation}}
+                                <span ng-if="profile.birthday">{{age}}</span> <span ng-if="profile.occupation">• {{profile.occupation}}</span>
                             </div>
                         </div>
                     </div>
@@ -122,8 +122,8 @@
                             </div>
                         </div>
 
-                        <div class="deposit">Payment Plan - {{data.securityDeposit[profile.deposit].displayName}}
-                        </div>
+                        <!--<div class="deposit">Payment Plan - {{data.securityDeposit[profile.deposit].displayName}}-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -188,7 +188,7 @@
                 </div>
                 <hr>
                 <div class="">
-                    <div class="row">
+                    <div class="row" ng-if="profile.apptInfo.about">
                         <!--The following line is to fix the bootstrap grid on small screens-->
                         <div class="clearfix visible-xs"></div>
                         <div class="col-sm-2 col-xs-22 left-side-description">About My Home</div>
@@ -199,7 +199,7 @@
                     <!--<div class="icon-plus read-more-button" ></div>-->
                     <!--<div class="plain-text read-more-button">{{showMore.aboutHome.active?'Read Less':'Read More'}}</div>-->
                     <!--</div>-->
-                    <div class="row">
+                    <div class="row"  ng-if="profile.aboutMe">
                         <div class="col-sm-2 col-xs-12 left-side-description">About me</div>
                         <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
                             {{profile.aboutMe}}
@@ -210,7 +210,7 @@
                     <!--<div class="plain-text read-more-button" >{{showMore.aboutMe.active?'Read Less':'Read More'}}</div>-->
                     <!--</div>-->
 
-                    <hr>
+                    <hr ng-if="profile.aboutMe || profile.apptInfo.about">
                     <div class="row">
                         <div class="col-sm-2 col-xs-12 left-side-description">Basic amenities</div>
                         <div class="col-sm-8 col-xs-12 right-side-elaboration">

@@ -20,18 +20,20 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         if($scope.isPhaseComplete() < 3){
             initialPhase = 'basic';
         }
-        $scope.phase = 'home';
-        $scope.fillCircle();
-        if($scope.isPhaseComplete() < 3){
-            $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
-            initialPhase = 'home';
-        }
+        // $scope.phase = 'home';
+        // $scope.fillCircle();
+        // if($scope.isPhaseComplete() < 3){
+        //     $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
+        //     initialPhase = 'home';
+        // }
         $scope.phase = 'about';
         $scope.fillCircle();
         if($scope.isPhaseComplete() < 3){
+            $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
             initialPhase = 'about';
         }
         $scope.phase = initialPhase;
+        getInitialFocus();
     }
 
     $scope.closeModel = function(){
@@ -68,14 +70,15 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             $scope.finish();
         }
         if($scope.phase == 'about'){
-            $scope.phase = 'home';
-            return;
-        }
-        if($scope.phase == 'home'){
             $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
             $scope.phase = 'basic';
             return;
         }
+        // if($scope.phase == 'home'){
+        //     $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
+        //     $scope.phase = 'basic';
+        //     return;
+        // }
         if($scope.phase == 'basic'){
             $scope.phase = 'photos';
             return;
@@ -83,12 +86,12 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     }
 
     $scope.back = function(){
-        if($scope.phase == 'home'){
-            $scope.phase = 'about';
-            return;
-        }
+        // if($scope.phase == 'home'){
+        //     $scope.phase = 'about';
+        //     return;
+        // }
         if($scope.phase == 'basic'){
-            $scope.phase = 'home';
+            $scope.phase = 'about';
             return;
         }
         if($scope.phase == 'photos'){
@@ -115,10 +118,10 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             complete = $scope.isPhaseComplete();
             $scope.aboutCircle = getFill(complete);
         }
-        if($scope.phase == 'home'){
-            complete = $scope.isPhaseComplete();
-            $scope.homeCircle = getFill(complete);
-        }
+        // if($scope.phase == 'home'){
+        //     complete = $scope.isPhaseComplete();
+        //     $scope.homeCircle = getFill(complete);
+        // }
         if($scope.phase == 'basic'){
             complete = $scope.isPhaseComplete();
             $scope.basicCircle = getFill(complete);
@@ -133,6 +136,15 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         return complete == 1?'first':complete==2?'second':complete>=3?'done':'';
     }
 
+    function getInitialFocus(){
+        if($scope.phase == 'about'){
+            $scope.user.address && $scope.user.address != ''?$scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?$scope.user.apptInfo.about && $scope.user.apptInfo.about?$scope.isInFocus = 'about':$scope.isInFocus = 'title':$scope.isInFocus = false: null;
+        }
+        // if($scope.phase == 'home'){
+        //     $scope.user.occupation && $scope.user.occupation != ''?$scope.user.aboutMe && $scope.user.aboutMe != ''?$scope.isInFocus = 'aboutMe':$scope.isInFocus = false: null;
+        // }
+    }
+
     // returns how much of the phase is complete 1,2, or 3
     $scope.isPhaseComplete = function(){
         var complete = 0;
@@ -144,13 +156,17 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             else return 1;
         }
         if($scope.phase == 'about'){
-            $scope.user.occupation && $scope.user.occupation != ''?complete++:null;
-            $scope.user.aboutMe && $scope.user.aboutMe != ''?complete=complete+2:null;
-        }
-        if($scope.phase == 'home'){
             $scope.user.address && $scope.user.address != ''?complete++:null;
-            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete=complete+2:null;
-       }
+            $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete++:null;
+            complete++
+            // $scope.user.occupation && $scope.user.occupation != ''?complete++:null;
+            // $scope.user.aboutMe && $scope.user.aboutMe != ''?complete=complete+2:null;
+        }
+       //  if($scope.phase == 'home'){
+       //      $scope.user.address && $scope.user.address != ''?complete++:null;
+       //      $scope.user.apptInfo.title && $scope.user.apptInfo.title != ''?complete++:null;
+       //      $scope.user.apptInfo.about && $scope.user.apptInfo.about != ''?complete++:null;
+       // }
         if($scope.phase == 'basic'){
             complete = $scope.user.apptInfo.amenities.length > 0?3:2;
         }
@@ -164,6 +180,8 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.fillCircle();
 
     function add_uploadButton(e, data){
+        $scope.uploadStarted = false;
+        $scope.imageProgress = 0;
         if(data.files[0].type.indexOf('image') === -1){
             showAlert('Wrong file type, only images are allowed', true);
             return;
@@ -173,6 +191,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             $scope.numOfFiles++;
             data.formData = token;
             data.submit();
+            $scope.uploadStarted = true;
         },function(){
             $scope.saving = false;
         });
@@ -224,7 +243,11 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             acceptFileTypes: /(\.|\/)(jpe?g|png)$/i
         });
         // $('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
-        // $('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
+        // $('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);cloudinaryprogressall
+        $('.cloudinary-fileupload').bind('fileuploadprogressall', function(e, data) {
+            $scope.imageProgress = Math.round((data.loaded * 100.0) / data.total);
+            $scope.$apply();
+        });
     }
 
     function add_profileUploadButton(e, data){
@@ -272,6 +295,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         });
         // $('input.cloudinary-fileupload[type=file]').bind('fileuploaddone', fileuploaddone_uploadbutton);
         // $('input.cloudinary-fileupload[type=file]').bind('fileuploadfail', uploadFail);
+
     }
 
     function showAlert(msg, error){
@@ -285,6 +309,9 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
 
     function saveChanges(){
         if($scope.phase == 'about'){
+            if($scope.user.apptInfo.title || $scope.user.address){
+                saveListingChanges();
+            }
             saveProfileChanges();
         }
         else{
@@ -305,6 +332,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         AccountService.editProfile($scope.user).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
+            $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
         },function(err){
             showAlert('Error saving changes', true);
         });

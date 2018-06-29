@@ -47,6 +47,7 @@ const visibleUserData = {
         allowViewHome:true,
         deposit:true,
         community:true,
+        verifications: true,
         rating:true
     },
     restricted: {
@@ -79,7 +80,9 @@ const visibleUserData = {
         messages: true,
         requests: true,
         googleId: true,
+        localId: true,
         community:true,
+        verifications: true,
         facebookId: true,
     }
 };
@@ -183,7 +186,7 @@ const genders =[
 
 const roomType =[
     {id: 0, type: 'SingleRoom', displayName: 'Single Room'},
-    {id: 1, type: 'EntireHome', displayName: 'Entire Home'},
+    {id: 1, type: 'EntirePlace', displayName: 'Entire Place'},
     {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
 ];
 
