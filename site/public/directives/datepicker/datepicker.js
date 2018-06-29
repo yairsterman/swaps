@@ -57,7 +57,7 @@ swapsApp.directive('datepicker', function() {
 	                    'Weekends': [minDate, endOfTheWeek],
 	                    'Month': [minDate, next4weeks],
                     },
-                    showCustomRangeLabel: false,
+                    showCustomRangeLabel: true,
                     alwaysShowCalendars: true,
                     autoUpdateInput: true
                 });
