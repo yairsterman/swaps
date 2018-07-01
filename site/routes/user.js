@@ -92,9 +92,20 @@ router.get('/get-all-users-admin', function(req, res, next) {
         res.json(error);
         return;
     }
+    let complete = req.query.complete;
+    let names = req.query.names;
     let params = {};
-    setRequiredParams(params);
-    User.find({})
+    if(complete){
+        setRequiredParams(params);
+    }
+    let projection = {};
+    if(names){
+        projection = {
+            firstName: true,
+            lastName: true
+        }
+    }
+    User.find(params,projection)
         .populate({
             path: 'community',
             select: 'name _id',

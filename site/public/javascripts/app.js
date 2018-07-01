@@ -1,4 +1,4 @@
-var swapsApp = angular.module('swapsApp', ['filters','ngRoute', 'ui.bootstrap', 'ngMaterial', 'ngAlertify', 'ngMessages', 'ngSanitize','thatisuday.ng-image-gallery', 'bw.paging']);
+var swapsApp = angular.module('swapsApp', ['filters','ngRoute', 'ui.bootstrap', 'ngMaterial', 'ngAlertify', 'ngMessages', 'ngSanitize','thatisuday.ng-image-gallery', 'ui.sortable', 'bw.paging']);
 
 // configure our routes
 swapsApp.config(function($routeProvider, $locationProvider) {
@@ -39,8 +39,12 @@ $routeProvider
         templateUrl : '/pages/travelers.html',
         controller  : 'travelersController'
     })
-    .when('/tips-for-trips/:slug?', {
+    .when('/tips-for-trips', {
         templateUrl : '/pages/blog.html',
+        controller  : 'blogController'
+    })
+    .when('/tips-for-trips/:slug?', {
+        templateUrl : '/pages/single-post.html',
         controller  : 'blogController'
     })
     .when('/login', {

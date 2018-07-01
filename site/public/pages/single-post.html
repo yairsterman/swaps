@@ -1,0 +1,20 @@
+<div class="blog-page" ng-init="init()">
+    <div class="single-post">
+        <div class="main-photo" style="background-image: url({{post.photo}})">
+
+        </div>
+        <div class="content">
+            <div class="blog-title">
+                {{post.title}}
+                <div class="underline">
+                </div>
+            </div>
+            <div class="blog-date">
+                {{post.date | date :'MMMM yyyy'}}
+            </div>
+            <div class="blog-html" ng-bind-html="post.html | trustAsHtml">
+
+            </div>
+        </div>
+    </div>
+</div>

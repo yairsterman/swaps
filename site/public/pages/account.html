@@ -138,6 +138,11 @@
 								data-max-chunk-size="52428800" data-update-path="google.com" 
 								data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
                             </div>
+                            <div class="progress" ng-if="saving">
+                                <div class="progress-bar" ng-style="{'width': imageProgress + '%'}">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <form class="form-horizontal edit-form" role="form">
