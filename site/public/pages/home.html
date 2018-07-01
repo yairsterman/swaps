@@ -19,7 +19,7 @@
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
                     <div class="icon icon-infocenter"></div>
                 </div>
-                <div class="search-field col-sm-4 col-xs-12">
+                <div class="search-field col-sm-7 col-xs-12">
                     <label for="searchDate">When</label>
                     <form name="rangeForm" class="range-wr" novalidate>
                         <div ng-if="rangeOptions1.length && rangeLabel !== 'Month'">
@@ -47,15 +47,15 @@
                     <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
                     <div class="icon icon-calender"></div>
                 </div>
-                <div class="search-field right col-sm-4 col-xs-12 ">
-                    <label for="guests">Travelers</label>
-                    <div class="guests-search">
-                        <input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">
-                    </div>
+                <div class="search-field right col-sm-1 col-xs-12 ">
+                    <!--<label for="guests">Travelers</label>-->
+                    <!--<div class="guests-search">-->
+                        <!--<input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">-->
+                    <!--</div>-->
                     <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
                         <button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>
                     </a>
-                    <div class="icon icon-man-small"></div>
+                    <!--<div class="icon icon-man-small"></div>-->
                 </div>
                 <div class="no-padding col-sm-4 col-xs-12 visible-xs">
                     <button class="search" ng-click="searchSwap($event)">Search</button>

@@ -166,18 +166,11 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
           }
       };
 
-      searchData.range.duration = searchData.range.type === 'Month' ? $rootScope.search.duration : null
+    searchData.range.duration = searchData.range.type === 'Month' ? $rootScope.search.duration : null;
 
-	    console.log('search data', searchData);
-	    HomeService.search('request-link', searchData).then(function(data) {
-		    if (data.data.error) {
-			    console.log("search error");
-			    return;
-		    }
-		    else {
-			    $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
-		    }
-	    });
+    console.log('search data', searchData);
+    $scope.go(`travelers${searchData.where?'/'+searchData.where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
+
     }
 
     $scope.go = function(path){
