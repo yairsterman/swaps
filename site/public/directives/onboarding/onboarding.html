@@ -82,7 +82,12 @@
                 Welcome to Swaps!
             </div>
             <div class="sub-title">
-                Complete your profile in a few quick steps. you can always edit this information in your profile.
+                Complete your profile in a just few quick steps.<br> you can always edit this information through your account.
+            </div>
+            <div class="start-button padding-15">
+                <div class="complete-btn btn btn-primary" ng-click="next()">
+                    Start Now!
+                </div>
             </div>
             <div ng-if="!user.community">
                 <div class="description">
@@ -96,14 +101,6 @@
                     <div class="complete-btn btn btn-primary btn-close" ng-click="sendCommunityCode()" ng-disabled="!community.code || community.code ==''">
                         Send
                     </div>
-                </div>
-                <div class="sub-title">
-                    Joining on your own?
-                </div>
-            </div>
-            <div class="start-button padding-15">
-                <div class="complete-btn btn btn-primary" ng-click="next()">
-                    Start!
                 </div>
             </div>
         </div>
