@@ -6,17 +6,10 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.slideIndex = 0;
     $scope.featured = [];
     $scope.options = ['cities'];
-	  $scope.range3 = [
-	    { value: 0, text: '+ day before'},
-      { value: 1, text: '+ day after'},
-      { value: 2, text: '± 1 day'},
-      { value: 3, text: '± 2 days'},
-      { value: 4, text: '± 3 days'},
-      { value: 5, text: 'exact dates'},
-    ];
+    $scope.showFlexible = false;
     $scope.rangeOptions1 = [];
-	  $scope.rangeOptions2 = [];
-	  $scope.duration = '6-8';
+    $scope.rangeOptions2 = [];
+    $scope.duration = '6-8';
     $rootScope.homepage = true;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
@@ -24,17 +17,25 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $rootScope.search.range2 = "5";
     $rootScope.search.duration = $scope.duration;
     $scope.rangeLabel = 'Custom range';
-	  $scope.weekdays = [
-	    ["Sunday", "Sun"],
-      ["Monday", "Mon"],
-		  ["Tuesday", "Tue"],
-		  ["Wednesday", "Wen"],
-		  ["Thursday", "Thu"],
-		  ["Friday", "Fri"],
-		  ["Saturday", "Sat"]
+    $scope.weekendStart = [
+        {value:"Thursday", text:"Thu"},
+        {value: "Friday", text:"Fri"}
+    ];
+    $scope.weekendEnd = [
+        {value:"Saturday", text:"Sat"},
+        {value: "Sunday", text:"Sun"},
+        {value: "Monday", text:"Mon"}
+    ];
+    $scope.flexibleDates = [
+        { value: "0", text: '+ day before'},
+        { value: "1", text: '+ day after'},
+        { value: "2", text: '± 1 day'},
+        { value: "3", text: '± 2 days'},
+        { value: "4", text: '± 3 days'},
+        { value: "5", text: 'exact dates'},
     ];
 
-	  $scope.cities = [
+    $scope.cities = [
         {
             "name": "Venice",
             "normal": "../images/cities/updated/venice.jpg",
@@ -116,25 +117,24 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     };
 
     $scope.changeDates = function () {
-	    if($rootScope.search.date) {
-	      var depart = new Date($rootScope.search.date.split('-')[0]);
-	      var sat = new Date($rootScope.search.date.split('-')[0]);
-	      var Saturday = new Date(sat.setDate(sat.getDate() - sat.getDay() + 6));
-	      var range1 = $scope.datesRange(depart, Saturday);
-	      $timeout(function() {
-		      $scope.rangeLabel = $rootScope.search.chosenLabel;
-		      if($scope.rangeLabel === 'Weekends') {
-		      	$scope.getWeekendsRanges(range1, depart);
-		      }
-		      else if($scope.rangeLabel === 'Custom Range') {
-			      $scope.getCustomRange();
-		      }
-		      else {
-			      $scope.rangeOptions1 = [];
-			      $scope.rangeOptions2 = [];
-		      }
-	      },300);
-      }
+        if($rootScope.search.date) {
+            $timeout(function() {
+                $scope.rangeLabel = $rootScope.search.chosenLabel;
+                if($scope.rangeLabel === 'Weekends') {
+                    $rootScope.search.range1 = $scope.weekendStart[0].value;
+                    $rootScope.search.range2 = $scope.weekendEnd[1].value;
+                    $scope.datesDropdown = $scope.weekendStart[0].text + '-' + $scope.weekendEnd[1].text;
+                }
+                else if($scope.rangeLabel === 'Custom Range') {
+                    $rootScope.search.range1 = $scope.flexibleDates[5].value;
+                    $rootScope.search.range2 = $scope.flexibleDates[5].value;
+                    $scope.datesDropdown = 'Flexible';
+                }
+                else if($scope.rangeLabel === 'Month'){
+                    $scope.datesDropdown = '6-8 Nights';
+                }
+            },300);
+        }
     };
 
     $scope.changeRange = function () {
@@ -157,7 +157,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
       var searchData = {
           where: $rootScope.search.where,
           date: $rootScope.search.date,
-	        when: $rootScope.search.when,
+            when: $rootScope.search.when,
           guests: $rootScope.search.guests,
           range: {
               type: $scope.rangeLabel,

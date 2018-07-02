@@ -8,7 +8,7 @@ swapsApp.directive('duration', function() {
 					var duration =  viewValue.split('-');
 					var min = Number(duration[0]);
 					var max = Number(duration[1]);
-					if(isNaN(min) || isNaN(max)) {;
+					if(isNaN(min) || isNaN(max)) {
 							return false
 						}
 						else if(min > max) {
