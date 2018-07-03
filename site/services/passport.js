@@ -63,6 +63,8 @@ module.exports.init = function () {
                         if (profile._json.email && !user.email) {
                             user.email = profile._json.email;
                         }
+                        if(!user.IP)
+                            user.IP = req.headers['x-forwarded-for'] || req.headers['x-real-ip'];
                         user.save(function (err, user) {
                             if (err) return done(err);
                             return done(null, user);
@@ -134,6 +136,8 @@ module.exports.init = function () {
                 if (user) {
                     if (!user.googleId) {
                         user.googleId = profile.id;
+                        if(!user.IP)
+                            user.IP = req.headers['x-forwarded-for'] || req.headers['x-real-ip'];
                         user.save(function (err, user) {
                             if (err) return done(err);
                             return done(null, user);
