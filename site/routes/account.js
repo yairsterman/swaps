@@ -33,7 +33,7 @@ cloudinary.config({
   api_secret: config.cloudinarySecret
 });
 
-const TRANSFORMATION = "w_1200,h_720,c_limit";
+const TRANSFORMATION = "w_1400,h_920,c_limit";
 const PROFILE_TRANSFORMATION = 'w_200,h_200,c_limit';
 
 // const siteUrl = "https://swapshome.com/";

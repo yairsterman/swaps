@@ -10,13 +10,23 @@
       padding-bottom: 6vw;
       text-align: center;
       font-weight: 300;
+      @media @mobile {
+        font-size: 46px;
+        padding: 20px 0;
+      }
     }
     .post-excerpt{
       height: 350px;
+      @media @mobile {
+        height: auto;
+      }
     }
     .post-content{
       display: flex;
       height: 100%;
+      @media @mobile {
+        display: block;
+      }
       &:nth-child(even){
         flex-direction: row-reverse;
       }
@@ -26,6 +36,15 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        @media @mobile {
+          height: 250px;
+        }
+      }
+      .excerpt{
+        @media @mobile {
+          padding-top: 20px;
+          height: 350px;
+        }
       }
       .excerpt-title{
         font-size: 26px;
@@ -50,6 +69,14 @@
         padding-top: 20px;
         font-size: 16px;
         line-height: 20px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        @media @mobile {
+          -webkit-line-clamp: 10;
+        }
       }
       .read-more{
         position: absolute;
@@ -60,6 +87,9 @@
         border-color: #0e5d7c;
         color: #0e5d7c;
         transition: 0.3s ease;
+        @media @mobile {
+          right: initial;
+        }
         &:hover{
           background-color: #0e5d7c;
           color: #ffffff;
@@ -113,6 +143,15 @@
         p{
           font-size: 16px;
           line-height: 20px;
+        }
+      }
+      .img{
+        &.half-width{
+          width: 50%;
+        }
+        &.fll{
+          float:left;
+          padding-right:15px;
         }
       }
     }
