@@ -36,7 +36,9 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        background-attachment: fixed;
         @media @mobile {
+          background-attachment: unset;
           height: 250px;
         }
       }
@@ -148,6 +150,9 @@
       .img{
         &.half-width{
           width: 50%;
+          @media @mobile {
+            width: 100%;
+          }
         }
         &.fll{
           float:left;
