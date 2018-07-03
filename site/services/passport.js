@@ -99,7 +99,7 @@ module.exports.init = function () {
                             bedType: 1
                         },
                         deposit: 0,
-                        IP: req.ip || req.connection.remoteAddress
+                        IP: req['x-forwarded-for'] || req['x-real-ip']
                     });
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                         user.image = result.secure_url;
@@ -171,7 +171,7 @@ module.exports.init = function () {
                         },
                         deposit: 0,
                         paymentInfo: {},
-                        IP: req.ip || req.connection.remoteAddress
+                        IP: req['x-forwarded-for'] || req['x-real-ip']
                     });
                     uploadProfileImage(user._id, profile._json.image.url).then(function (result) {
                         user.image = result.secure_url;
@@ -243,7 +243,7 @@ module.exports.init = function () {
                                 bedType: 1
                             },
                             deposit: 0,
-                            IP: req.ip || req.connection.remoteAddress
+                            IP: req['x-forwarded-for'] || req['x-real-ip']
                         });
                         bcrypt.genSalt(config.saltRounds, function (err, salt) {
                             bcrypt.hash(password, salt, null, function (err, hash) {
