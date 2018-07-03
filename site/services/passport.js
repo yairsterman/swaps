@@ -37,9 +37,10 @@ module.exports.init = function () {
             clientID: config.FACEBOOK_APP_ID,
             clientSecret: config.FACEBOOK_APP_SECRET,
             callbackURL: config.baseUrl + "/auth/facebook/callback",
-            profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday']
+            profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday'],
+            passReqToCallback: true
         },
-        function (accessToken, refreshToken, profile, done) {
+        function (req, accessToken, refreshToken, profile, done) {
             console.log(profile);
             let query = {};
             query['facebookId'] = profile.id;
@@ -98,6 +99,7 @@ module.exports.init = function () {
                             bedType: 1
                         },
                         deposit: 0,
+                        IP: req.ip || req.connection.remoteAddress
                     });
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
                         user.image = result.secure_url;
@@ -122,9 +124,10 @@ module.exports.init = function () {
     passport.use(new GoogleStrategy({
             clientID: config.googleClientId,
             clientSecret: config.googleClientSecret,
-            callbackURL: config.baseUrl + "/auth/google/callback"
+            callbackURL: config.baseUrl + "/auth/google/callback",
+            passReqToCallback: true
         },
-        function (accessToken, refreshToken, profile, done) {
+        function (req, accessToken, refreshToken, profile, done) {
             console.log(profile);
             User.findOne({$or: [{googleId: profile.id}, {email: profile.emails[0].value}]}, function (err, user) {
                 if (err) return done(err);
@@ -167,7 +170,8 @@ module.exports.init = function () {
                             bedType: 1
                         },
                         deposit: 0,
-                        paymentInfo: {}
+                        paymentInfo: {},
+                        IP: req.ip || req.connection.remoteAddress
                     });
                     uploadProfileImage(user._id, profile._json.image.url).then(function (result) {
                         user.image = result.secure_url;
@@ -238,7 +242,8 @@ module.exports.init = function () {
                                 rooms: 1,
                                 bedType: 1
                             },
-                            deposit: 0
+                            deposit: 0,
+                            IP: req.ip || req.connection.remoteAddress
                         });
                         bcrypt.genSalt(config.saltRounds, function (err, salt) {
                             bcrypt.hash(password, salt, null, function (err, hash) {

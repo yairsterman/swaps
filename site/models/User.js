@@ -36,6 +36,7 @@ var UserSchema = new Schema({
             country: String
         }
     }],
+    IP: String,
     travelingInfo: Array,
     rating: Number,
     requests: [{ type: Schema.Types.ObjectId, ref: 'Request' }],
