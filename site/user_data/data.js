@@ -217,6 +217,34 @@ const months = [
     {id: 12, name: 'December'},
 ]
 
+const weekendStart = [
+    {id: 1, value:"Thu"},
+    {id: 2, value:"Fri"}
+]
+
+const weekendEnd = [
+    {id: 1, value:"Sat"},
+    {id: 2, value:"Sun"},
+    {id: 3, value:"Mon"}
+]
+
+const flexibleDates = [
+    {id: 0, value: 'exact dates'},
+    {id: 1, value: '+ day before'},
+    {id: 2, value: '+ day after'},
+    {id: 3, value: '± 1 day'},
+    {id: 4, value: '± 2 days'},
+    {id: 5, value: '± 3 days'},
+]
+
+const label = [
+    {id: 1, value: "Dates"},
+    {id: 2, value: "Month"},
+    {id: 3, value: "Weekends"}
+]
+
+
+
 const years = [
     2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030
 ]
@@ -299,6 +327,22 @@ data.getTransactionMode = function(){
 
 data.getVisibleRequestData = function(){
     return visibleRequestData;
+};
+
+data.getWeekendStart = function(){
+    return weekendStart;
+};
+
+data.getWeekendEnd = function(){
+    return weekendEnd;
+};
+
+data.getFlexibleDates = function(){
+    return flexibleDates;
+};
+
+data.getLabel = function(){
+    return label;
 };
 
 

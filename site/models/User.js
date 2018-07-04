@@ -29,10 +29,10 @@ var UserSchema = new Schema({
         returnDate: Number,
         guests: Number,
         fullDestination: String,
-        label : String,
+        label : Number,
         flexible:{
-          startRange: String,
-          endRange: String,
+          startRange: Number,
+          endRange: Number,
         },
         destination: {
             city: String,
