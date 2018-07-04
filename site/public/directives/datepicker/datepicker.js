@@ -50,7 +50,8 @@ swapsApp.directive('datepicker', function() {
                     opens: 'right',
                     startDate: now,
                     locale: {
-                        format: scope.localeFormat
+                        format: scope.localeFormat,
+                        customRangeLabel: "Dates",
                     },
                     minDate: formatDate(new Date(minDate), scope.localeFormat),
                     ranges: {
@@ -72,8 +73,8 @@ swapsApp.directive('datepicker', function() {
 	                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + formatDate(new Date(next4weeks), 'MM/DD/YYYY');
                         }
                     }
-                    else if(picker.chosenLabel == 'Custom Range') {
-                        scope.swapDates.chosenLabel = 'Custom Range';
+                    else if(picker.chosenLabel == 'Dates') {
+                        scope.swapDates.chosenLabel = 'Dates';
                     }
                 });
                 scope.swapDates.when= scope.currentDatesWhen;

@@ -191,9 +191,6 @@
     margin-bottom: 8px;
     cursor: pointer;
   }
-  .ranges li:last-of-type {
-    display: none;
-  }
     .ranges li:hover {
       background-color: #08c;
       border: 1px solid #08c;

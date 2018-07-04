@@ -21,54 +21,55 @@
                 </div>
                 <div class="search-field col-sm-6 col-xs-12">
                     <label for="searchDate">When</label>
-                    <div class="row">
-                        <div class="col-xs-8">
+                    <div class="row flex">
+                        <div class="col-xs-7">
                             <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker>
                             <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-xs-5">
                             <div class="dropdown">
-                                <div class="flexable-dates" data-toggle="dropdown">
-                                    {{datesDropdown}}
+                                <div class="flexible-dates" data-toggle="dropdown" ng-if="search.when">
+                                    {{rangeLabel === 'Weekends'? data.weekendStart[search.range1].value +'-'+data.weekendEnd[search.range2].value :rangeLabel === 'Dates'?search.range1 != 0 || search.range2 != 0?'Flexible':'Exact dates':rangeLabel === 'Month'?(search.range1 != search.range2?search.range1 +'-'+ search.range2:search.range1) + ' Nights': ''}}
+                                    <span class="glyphicon glyphicon-chevron-down"></span>
                                 </div>
-                                <form name="rangeForm" class="range-wr dropdown-menu" novalidate>
-                                    <div ng-if="rangeLabel === 'Weekends'">
-                                        <div>
-                                            <label class="flexible-label">Departure</label>
+                                <div class="dropdown-menu">
+                                    <form name="rangeForm" class="range-wr" novalidate>
+                                        <div ng-if="rangeLabel === 'Weekends'" class="flex">
+                                            <div class="flex">
+                                                <label class="flexible-label">Departure: </label>
+                                                <select ng-model="search.range1" class="form-control">
+                                                    <option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex">
+                                                <label class="flexible-label">Return: </label>
+                                                <select ng-model="search.range2" class="form-control">
+                                                    <option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div ng-if="rangeLabel === 'Dates'" class="flex">
+                                            <div class="flex">
+                                                <label class="flexible-label">Departure: </label>
 
-                                            <select ng-model="search.range1">
-                                                <option ng-repeat="x in weekendStart" value="{{x.value}}">{{x.text}}</option>
-                                            </select>
+                                                <select ng-model="search.range1" class="form-control">
+                                                    <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex">
+                                                <label class="flexible-label">Return: </label>
+                                                <select ng-model="search.range2" class="form-control">
+                                                    <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label class="flexible-label">Return</label>
-                                            <select ng-model="search.range2">
-                                                <option ng-repeat="x in weekendEnd" value="{{x.value}}">{{x.text}}</option>
-                                            </select>
+                                        <div ng-if="rangeLabel === 'Month'" class="duration-wr">
+                                            <label class="flexible-label">Duration: </label>
+                                            <input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="duration" ng-change="changeRange()" duration>
+                                            <span class="nights">Nights</span>
                                         </div>
-                                    </div>
-                                    <div ng-if="rangeLabel === 'Custom Range'">
-                                        <div>
-                                            <label class="flexible-label">Departure</label>
-
-                                            <select ng-model="search.range1">
-                                                <option ng-repeat="x in flexibleDates" value="{{x.value}}">{{x.text}}</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="flexible-label">Return</label>
-                                            <select ng-model="search.range2">
-                                                <option ng-repeat="x in flexibleDates" value="{{x.value}}">{{x.text}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div ng-if="rangeLabel === 'Month'" class="duration-wr">
-                                        <label class="flexible-label">Duration</label>
-                                        <input type="text" name="durationRange" ng-model="duration" ng-change="changeRange()" duration>
-                                        <span style="color: red; opacity: 0.5" ng-show="rangeForm.durationRange.$error.duration">Wrong data</span>
-                                        <span >nights</span>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

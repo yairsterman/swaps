@@ -9,31 +9,11 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.showFlexible = false;
     $scope.rangeOptions1 = [];
     $scope.rangeOptions2 = [];
-    $scope.duration = '6-8';
     $rootScope.homepage = true;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
-    $rootScope.search.range1 = "5";
-    $rootScope.search.range2 = "5";
-    $rootScope.search.duration = $scope.duration;
-    $scope.rangeLabel = 'Custom range';
-    $scope.weekendStart = [
-        {value:"Thursday", text:"Thu"},
-        {value: "Friday", text:"Fri"}
-    ];
-    $scope.weekendEnd = [
-        {value:"Saturday", text:"Sat"},
-        {value: "Sunday", text:"Sun"},
-        {value: "Monday", text:"Mon"}
-    ];
-    $scope.flexibleDates = [
-        { value: "0", text: '+ day before'},
-        { value: "1", text: '+ day after'},
-        { value: "2", text: '± 1 day'},
-        { value: "3", text: '± 2 days'},
-        { value: "4", text: '± 3 days'},
-        { value: "5", text: 'exact dates'},
-    ];
+    $scope.duration = $rootScope.search.duration;
+    $scope.rangeLabel = 'Dates';
 
     $scope.cities = [
         {
@@ -65,73 +45,24 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     init();
 
-    $scope.rangeOptions1 = $scope.range3;
-    $scope.rangeOptions2 = $scope.range3;
-
-    $scope.datesRange = function (startDate, endDate) {
-	    var dates = [],
-        currentDate = startDate,
-		    addDays = function(days) {
-			    var date = new Date(this.valueOf());
-			    date.setDate(date.getDate() + days);
-			    return date;
-		    };
-	    while (currentDate <= endDate) {
-		    dates.push(currentDate);
-		    currentDate = addDays.call(currentDate, 1);
-	    }
-	    return dates;
-    };
-
-    $scope.getWeekendsRanges = function (arr, depart) {
-	    $scope.rangeOptions1 = [];
-	    $scope.rangeOptions2 = [];
-	    arr.forEach(function (item) {
-		    if($scope.weekdays[item.getDay()][1] !== "Sat") {
-			    $scope.rangeOptions1.push(
-				    {value: $scope.weekdays[item.getDay()][1], text: $scope.weekdays[item.getDay()][1]});
-		    }
-		    else {
-			    $scope.rangeOptions1.push(
-				    {value: $scope.weekdays[item.getDay()][1], text: $scope.weekdays[item.getDay()][1]});
-		    }
-	    });
-	    $rootScope.search.range1 = $scope.weekdays[depart.getDay()][1];
-	    $scope.rangeOptions2.push(
-		    {value: $scope.weekdays[0][1], text: $scope.weekdays[0][1]},
-		    {value: $scope.weekdays[1][1], text: $scope.weekdays[1][1]}
-	    );
-
-	    $rootScope.search.range2 = $scope.weekdays[0][1];
-    };
-
-    $scope.getCustomRange = function () {
-	    $scope.rangeOptions1 = [];
-	    $scope.rangeOptions2 = [];
-	    $rootScope.search.range1 = "5";
-	    $rootScope.search.range2 = "5";
-	    $scope.range3.forEach(function (item) {
-		    $scope.rangeOptions1.push(item)
-		    $scope.rangeOptions2.push(item)
-	    });
-    };
-
     $scope.changeDates = function () {
         if($rootScope.search.date) {
             $timeout(function() {
                 $scope.rangeLabel = $rootScope.search.chosenLabel;
                 if($scope.rangeLabel === 'Weekends') {
-                    $rootScope.search.range1 = $scope.weekendStart[0].value;
-                    $rootScope.search.range2 = $scope.weekendEnd[1].value;
-                    $scope.datesDropdown = $scope.weekendStart[0].text + '-' + $scope.weekendEnd[1].text;
+                    $rootScope.search.range1 = $scope.data.weekendStart[0].id.toString();
+                    $rootScope.search.range2 = $scope.data.weekendEnd[1].id.toString();
+                    $scope.dropdownRange = $scope.data.weekendStart[0].id.toString() + '-' + $scope.data.weekendEnd[1].id.toString();
                 }
-                else if($scope.rangeLabel === 'Custom Range') {
-                    $rootScope.search.range1 = $scope.flexibleDates[5].value;
-                    $rootScope.search.range2 = $scope.flexibleDates[5].value;
-                    $scope.datesDropdown = 'Flexible';
+                else if($scope.rangeLabel === 'Dates') {
+                    $rootScope.search.range1 = $scope.data.flexibleDates[0].id.toString();
+                    $rootScope.search.range2 = $scope.data.flexibleDates[0].id.toString();
+                    $scope.dropdownRange = 'Exact dates';
                 }
                 else if($scope.rangeLabel === 'Month'){
-                    $scope.datesDropdown = '6-8 Nights';
+                    $rootScope.search.range1 = 6;
+                    $rootScope.search.range2 = 8;
+                    $scope.duration = '6-8';
                 }
             },300);
         }
@@ -142,14 +73,19 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 		    var arr =  $scope.duration.split('-');
 		    var min = Number(arr[0]);
 		    var max = Number(arr[1]);
-		    if(min === max) {
-			    $rootScope.search.duration = min+''
+		    if(min === max || isNaN(max)) {
+                $scope.duration = min+'';
+                max = min;
 		    }
-		    else {
-			    $rootScope.search.duration = $scope.duration;
-		    }
+            $rootScope.search.range1 = min;
+            $rootScope.search.range2 = max;
 	    }
-	    else $rootScope.search.duration = '6-8';
+	    else {
+            // $scope.duration = '6-8';
+            $rootScope.search.range1 = 6;
+            $rootScope.search.range2 = 8;
+        }
+
     }
 
     $scope.searchSwap = function(e){

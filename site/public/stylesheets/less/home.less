@@ -276,12 +276,93 @@
 				.glyphicon{
 					position: absolute;
 					right: 10px;
-					top: 46px;
+					top: 9px;
 					padding: 6px;
 					font-size: 14px;
 					color: #c7a768;
 					&:focus{
 						outline: none;
+					}
+				}
+				.flexible-dates{
+					cursor: pointer;
+					height: 42px;
+					padding: 10px 12px;
+					font-size: 18px;
+					line-height: 1.42857143;
+					display: block;
+					font-weight: 300;
+					position: relative;
+					.glyphicon{
+						position: absolute;
+						top: 10px;
+					}
+				}
+				.flex{
+					display: flex;
+					align-items: center;
+				}
+				.dropdown{
+					&.open{
+						.glyphicon{
+							transform: rotate(180);
+						}
+					}
+				}
+				.dropdown-menu{
+					left:initial;
+					right: -5px;
+					margin-top: 0;
+				}
+				.range-wr {
+					min-width: 296px;
+					display: flex;
+					align-items: center;
+					padding: 0 10px;
+					font-size: 16px;
+					.flexible-label{
+						display: inline;
+						color: #0e5d7c;
+						font-size: 16px;
+						padding: 0;
+						width: auto;
+					}
+					> div {
+						p {
+							float: left;
+							margin-right: 10px;
+							color: #0e5d7c;
+						}
+						select {
+							border: 0;
+							outline: 0;
+							background: transparent;
+							color: #c7a768;
+						}
+					}
+					.form-control{
+						max-width: 100px;
+						margin: 0 10px;
+						padding: 0 7px;
+						box-sizing: border-box;
+						display: inline-block;
+						border: 1px solid #ccc;
+						height: 32px;
+						min-width: 75px;
+					}
+					.duration-wr {
+						input {
+							max-width: 100px;
+							margin: 0 10px;
+							padding: 0 7px;
+							box-sizing: border-box;
+							display: inline-block;
+							border: 1px solid #ccc;
+							height: 32px;
+						}
+						.nights{
+							font-weight: 300;
+						}
 					}
 				}
 			}
@@ -291,38 +372,6 @@
 			color: rgba(255, 245, 225, 0.8);
 			font-size: 22px;
 			margin-bottom: 1vw;
-		}
-
-		.range-wr {
-			.flexible-label{
-				display: inline;
-				color: #0e5d7c;
-				font-size: 12px;
-				padding: 0;
-			}
-			> div {
-				float: left;
-				margin-right: 20px;
-				p {
-					float: left;
-					margin-right: 10px;
-					color: #0e5d7c;
-				}
-				select {
-					border: 0;
-					outline: 0;
-					background: transparent;
-					color: #c7a768;
-				}
-			}
-			.duration-wr {
-				input {
-					max-width: 100px;
-					margin-right: 10px;
-					padding: 0 7px;
-					box-sizing: border-box;
-				}
-			}
 		}
 		label{
 			color: rgba(199, 167, 104, 1);

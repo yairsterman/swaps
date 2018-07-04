@@ -218,14 +218,14 @@ const months = [
 ]
 
 const weekendStart = [
-    {id: 1, value:"Thu"},
-    {id: 2, value:"Fri"}
+    {id: 0, value:"Thu"},
+    {id: 1, value:"Fri"}
 ]
 
 const weekendEnd = [
-    {id: 1, value:"Sat"},
-    {id: 2, value:"Sun"},
-    {id: 3, value:"Mon"}
+    {id: 0, value:"Sat"},
+    {id: 1, value:"Sun"},
+    {id: 2, value:"Mon"}
 ]
 
 const flexibleDates = [
@@ -238,9 +238,9 @@ const flexibleDates = [
 ]
 
 const label = [
-    {id: 1, value: "Dates"},
-    {id: 2, value: "Month"},
-    {id: 3, value: "Weekends"}
+    {id: 0, value: "Dates"},
+    {id: 1, value: "Month"},
+    {id: 2, value: "Weekends"}
 ]
 
 
@@ -265,8 +265,12 @@ var dataForSite = {
     securityDeposit: securityDeposit,
     creditCards: creditCards,
     months: months,
-    years: years
-}
+    years: years,
+    label: label,
+    flexibleDates: flexibleDates,
+    weekendEnd: weekendEnd,
+    weekendStart: weekendStart
+};
 
 data.getAmenities = function(){
     return amenities;
