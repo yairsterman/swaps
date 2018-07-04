@@ -32,6 +32,10 @@ swapsApp.directive('datepicker', function() {
             var startOfNextMonth = formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 1), scope.localeFormat);
             var endOfNextMonth = formatDate(new Date(now.getFullYear(), now.getMonth() + 2, 0), scope.localeFormat);
             var next4weeks = formatDate(new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7 * 4), scope.localeFormat);
+	          var curr = new Date();
+	          var endOfTheWeek = formatDate(new Date(curr.setDate(curr.getDate() - curr.getDay() + 7)), scope.localeFormat);
+	          var date = new Date();
+	          var yesterday = formatDate(new Date(date.setDate(date.getDate() - 1)), scope.localeFormat);
 
             if(scope.findTravel){ //from profile or set up swap page
                 findTravelInfo();
@@ -44,22 +48,32 @@ swapsApp.directive('datepicker', function() {
                 element.daterangepicker({
                     autoApply: true,
                     opens: 'right',
+                    startDate: now,
                     locale: {
                         format: scope.localeFormat
                     },
                     minDate: formatDate(new Date(minDate), scope.localeFormat),
-                    // ranges: {
-                    //     'Next 4 weeks': [minDate, next4weeks],
-                    //     'Next month': [startOfNextMonth, endOfNextMonth],
-                    //     'Weekends': [minDate, endOfNextMonth],
-                    // },
-                    showCustomRangeLabel: false,
-                    alwaysShowCalendars: true
+                    ranges: {
+	                    'Weekends': [minDate, endOfTheWeek],
+	                    'Month': [minDate, next4weeks],
+                    },
+                    showCustomRangeLabel: true,
+                    alwaysShowCalendars: true,
+                    autoUpdateInput: true
                 });
                 element.on('apply.daterangepicker', function(ev, picker) {
                     scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
                     if(picker.chosenLabel == 'Weekends'){
                         scope.swapDates.chosenLabel = 'Weekends'
+                    }
+                    else if(picker.chosenLabel == 'Month') {
+                        scope.swapDates.chosenLabel = 'Month';
+                        if(!scope.currentDatesWhen) {
+	                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + formatDate(new Date(next4weeks), 'MM/DD/YYYY');
+                        }
+                    }
+                    else if(picker.chosenLabel == 'Custom Range') {
+                        scope.swapDates.chosenLabel = 'Custom Range';
                     }
                 });
                 scope.swapDates.when= scope.currentDatesWhen;

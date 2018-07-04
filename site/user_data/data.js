@@ -115,7 +115,7 @@ const amenities = [
 
 const thingsToDo = [
     {id: 0, name: 'club', displayName:'Clubbing', icon:'icon-club', img:'../images/icons/club.png'},
-    {id: 1, name: 'bar', displayName:'Cocktail Bars', icon:'icon-bar', img:'../images/icons/bar.png'},
+    {id: 1, name: 'bar', displayName:'Cocktail Bars', icon:'icon-cocktail', img:'../images/icons/cocktail.png'},
     {id: 2, name: 'gym', displayName:'Gym', icon:'icon-gym', img:'../images/icons/gym.png'},
     {id: 3, name: 'theater', displayName:'Theater', icon:'icon-cinema', img:'../images/icons/cinema.png'},
     {id: 4, name: 'museum', displayName:'Museums', icon:'icon-museum', img:'../images/icons/museum.png'},

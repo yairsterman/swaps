@@ -189,7 +189,11 @@
     color: #08c;
     padding: 3px 12px;
     margin-bottom: 8px;
-    cursor: pointer; }
+    cursor: pointer;
+  }
+  .ranges li:last-of-type {
+    display: none;
+  }
     .ranges li:hover {
       background-color: #08c;
       border: 1px solid #08c;
