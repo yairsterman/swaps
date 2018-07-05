@@ -230,8 +230,8 @@ const weekendEnd = [
 
 const flexibleDates = [
     {id: 0, value: 'exact dates'},
-    {id: 1, value: '+ day before'},
-    {id: 2, value: '+ day after'},
+    {id: 1, value: '+ day '},
+    {id: 2, value: '- day'},
     {id: 3, value: '± 1 day'},
     {id: 4, value: '± 2 days'},
     {id: 5, value: '± 3 days'},

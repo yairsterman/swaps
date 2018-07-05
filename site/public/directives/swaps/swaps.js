@@ -84,6 +84,7 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
     $scope.removeDates = function(swap){
         swap.dates = undefined;
         swap.when = undefined;
+        swap.rangeLabel = undefined;
         swap.removeDates = true;
     };
 
@@ -122,6 +123,9 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
             }
             if(min < 1){
                 min = 1;
+            }
+            if(min > 58){
+                min = 58;
             }
             if(max > 58){
                 max = 58;

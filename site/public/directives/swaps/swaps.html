@@ -14,13 +14,15 @@
                     <input type="text" class="form-control" placeholder="Anywhere" id="searchCity{{$index}}" ng-model="swap.fullDestination" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" autocomplete city="true">
                     <div class="icon icon-infocenter"></div>
                 </div>
-                <div class="search-field when transition-ease {{editingField == $index && swap.when?'col-sm-6':'col-sm-4'}} col-xs-12">
+                <div class="search-field when transition-ease col-sm-6 col-xs-12">
                     <div class="row flex">
                         <div class="col-xs-12 {{editingField == $index && swap.when?'col-sm-7':'col-sm-12'}}">
                             <input type="text" class="form-control no-border" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-model="swap.dates" swap-dates="swap" user="user" profile="false"
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                                    data="data" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" ng-change="changeDates(swap)">
                             <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(swap)" ng-if="!saving && editingField == $index && swap.dates"></div>
+                            <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Next 4 weekends':swap.rangeLabel === 'Month'?'Within next 2 months':swap.rangeLabel === 'Dates' && swap.range1 != 0 ?data.flexibleDates[swap.range1].value:''}}</span>
+                            <span class="flexible-return">{{swap.rangeLabel === 'Dates' && swap.range2 != 0?data.flexibleDates[swap.range2].value:''}}</span>
                         </div>
                         <div class="{{editingField == $index && swap.when?'col-xs-12 col-sm-5':'col-xs-0'}}">
                             <div class="dropdown">
@@ -71,7 +73,7 @@
                     </div>
                     <div class="icon icon-calender"></div>
                 </div>
-                <div class="search-field right transition-ease {{editingField == $index && swap.when?'col-sm-2':'col-sm-4'}} col-xs-12 ">
+                <div class="search-field right transition-ease col-sm-2 col-xs-12 ">
                     <div class="guests-search">
                         <input type="number" class="form-control guests" placeholder="2" ng-model="swap.guests" min="1" max="8" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}">
                     </div>
@@ -96,13 +98,15 @@
                 <input type="text" class="form-control" placeholder="Anywhere" id="addCity1" ng-model="addSwap.fullDestination" ng-disabled="editing" disabled="{{editing}}" autocomplete city="true">
                 <div class="icon icon-infocenter"></div>
             </div>
-            <div class="search-field when transition-ease {{!editing && addSwap.when?'col-sm-6':'col-sm-4'}} col-xs-12">
+            <div class="search-field when transition-ease col-sm-6 col-xs-12">
                 <div class="row flex">
                     <div class="col-xs-12 {{!editing && addSwap.when?'col-sm-7':'col-sm-12'}}">
                         <input type="text" class="form-control no-border" placeholder="Anytime" id="searchDateAdd" name="searchDateAdd" ng-model="addSwap.dates" swap-dates="addSwap" user="user" profile="false"
                                user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                                data="data"  ng-disabled="editing" disabled="{{editing}}" ng-change="changeDates(addSwap)">
                         <div class="glyphicon glyphicon glyphicon-remove" ng-click="removeDates(addSwap)" ng-if="addSwap.dates"></div>
+                        <span class="flexible-departure">{{addSwap.rangeLabel === 'Weekends'?'Next 4 weekends':addSwap.rangeLabel === 'Month'?'Within next 2 months':addSwap.rangeLabel === 'Dates' && addSwap.range1 != 0 ?data.flexibleDates[addSwap.range1].value:''}}</span>
+                        <span class="flexible-return">{{addSwap.rangeLabel === 'Dates' && addSwap.range2 != 0?data.flexibleDates[addSwap.range2].value:''}}</span>
                     </div>
                     <div class="{{addSwap.when?'col-xs-12 col-sm-5':'col-xs-0'}}">
                         <div class="dropdown">
@@ -153,7 +157,7 @@
                 </div>
                 <div class="icon icon-calender"></div>
             </div>
-            <div class="search-field right transition-ease {{!editing && addSwap.when?'col-sm-2':'col-sm-4'}} col-xs-12 ">
+            <div class="search-field right transition-ease col-sm-2 col-xs-12 ">
                 <div class="guests-search">
                     <input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="addSwap.guests" min="1" max="8" ng-disabled="editing" disabled="{{editing}}">
                 </div>
