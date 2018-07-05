@@ -47,16 +47,20 @@
       margin: 0;
       width: 80%;
       margin-bottom: 15px;
+
       &.onboarding-search-area{
         width: 90%;
       }
       .search-field{
         padding:0 5px;
         position: relative;
+        &.transition-ease{
+          transition: 0.1s ease;
+        }
         .glyphicon{
           position: absolute;
           right: 10px;
-          top: 4px;
+          top: 8px;
           padding: 6px;
           font-size: 14px;
           color: #c7a768;
@@ -70,8 +74,8 @@
           background-color: #ffffff;
           border: 1px #0E5D7C solid;
           color: rgba(199, 167, 104, 1);
-          font-size: 14px;
-          height: initial;
+          font-size: 16px;
+          height: 42px;
           -webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
           -moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
           box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
@@ -80,31 +84,131 @@
             -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
             box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
           }
+          &.no-border{
+            border: none;
+            box-shadow: none;
+            height: 40px;
+          }
         }
         .icon{
           position: absolute;
           &.icon-man-small{
-            bottom: 8px;
+            bottom: 11px;
             left: 10px;
           }
           &.icon-calender{
-            bottom: 7px;
-            left: 14px;
+            bottom: 10px;
+            left: 7px;
           }
           &.icon-infocenter{
             transform: scale(0.70);
-            bottom: 2px;
+            bottom: 6px;
             left: 10px;
           }
         }
         ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
           color: rgba(199, 167, 104, 0.8);
         }
+        &.when{
+          border: 1px #0e5d7c solid;
+          -webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          -moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          padding: 0;
+        }
+      }
+      .flexible-dates{
+        cursor: pointer;
+        height:40px;
+        padding: 9px 5px;
+        font-size: 16px;
+        line-height: 1.42857143;
+        display: block;
+        font-weight: 300;
+        position: relative;
+        .glyphicon{
+          position: absolute;
+          top: 8px;
+          right: 2px;
+        }
+      }
+      .flex{
+        display: flex;
+        align-items: center;
+      }
+      .dropdown{
+        &.open{
+          .glyphicon{
+            transform: rotate(180);
+          }
+        }
+      }
+      .dropdown-menu{
+        left:initial;
+        right: -5px;
+        margin-top: 0;
+      }
+      .range-wr {
+        min-width: 296px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        font-size: 16px;
+        .flexible-label{
+          display: inline;
+          color: #0e5d7c;
+          font-size: 14px;
+          padding: 0;
+          width: auto;
+        }
+        > div {
+          p {
+            float: left;
+            margin-right: 10px;
+            color: #0e5d7c;
+          }
+          select {
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #c7a768;
+          }
+        }
+        .form-control{
+          max-width: 100px;
+          margin: 0 10px;
+          padding: 0 7px;
+          box-sizing: border-box;
+          display: inline-block;
+          border: 1px solid #ccc;
+          height: 24px;
+          min-width: 75px;
+          font-size: 12px;
+        }
+        .duration-wr {
+          input {
+            max-width: 100px;
+            margin: 0 10px;
+            padding: 0 7px;
+            box-sizing: border-box;
+            display: inline-block;
+            border: 1px solid #ccc;
+            height: 24px;
+            font-size: 12px;
+          }
+          .nights{
+            font-weight: 300;
+          }
+        }
       }
     }
   }
 }
 .action{
+  .btn{
+    height: 42px;
+    font-size: 16px;
+  }
   .btn-edit{
     background-color: #ffffff;
     border-color: #0E5D7C;

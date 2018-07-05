@@ -105,7 +105,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     searchData.range.duration = searchData.range.type === 'Month' ? $rootScope.search.duration : null;
 
     console.log('search data', searchData);
-    $scope.go(`travelers${searchData.where?'/'+searchData.where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
+    $scope.go(`travelers${searchData.where?'/'+searchData.where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}${$scope.rangeLabel?'&label='+$scope.rangeLabel + '&startRange=' + $rootScope.search.range1 + '&endRange=' + $rootScope.search.range2:''}`);
 
     }
 
@@ -194,6 +194,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.removeDates = function(){
         $rootScope.search.when = undefined;
         $rootScope.search.date = undefined;
+        $scope.rangeLabel = undefined;
     }
 
     $scope.openLogin = function(signin){

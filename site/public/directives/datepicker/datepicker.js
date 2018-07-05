@@ -32,6 +32,7 @@ swapsApp.directive('datepicker', function() {
             var startOfNextMonth = formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 1), scope.localeFormat);
             var endOfNextMonth = formatDate(new Date(now.getFullYear(), now.getMonth() + 2, 0), scope.localeFormat);
             var next4weeks = formatDate(new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7 * 4), scope.localeFormat);
+            var next2Months = formatDate(new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7 * 8), scope.localeFormat);
 	          var curr = new Date();
 	          var endOfTheWeek = formatDate(new Date(curr.setDate(curr.getDate() - curr.getDay() + 7)), scope.localeFormat);
 	          var date = new Date();
@@ -55,8 +56,8 @@ swapsApp.directive('datepicker', function() {
                     },
                     minDate: formatDate(new Date(minDate), scope.localeFormat),
                     ranges: {
-	                    'Weekends': [minDate, endOfTheWeek],
-	                    'Month': [minDate, next4weeks],
+	                    'Next Weekends': [minDate, next4weeks],
+	                    'Next Month': [minDate, next2Months],
                     },
                     showCustomRangeLabel: true,
                     alwaysShowCalendars: true,
@@ -99,12 +100,13 @@ swapsApp.directive('datepicker', function() {
                     // so save the dates that are set and override the defaults
                     scope.currentDates = scope.swapDates.dates;
 
-                    // options.ranges = {
-                    //     'Next 4 weeks': [minDate, next4weeks],
-                    //     'Next month': [startOfNextMonth, endOfNextMonth],
-                    //     'Weekends': [minDate, endOfNextMonth]
-                    // };
-                    options.showCustomRangeLabel = false;
+                    options.ranges =  {
+                        'Weekends': [minDate, next4weeks],
+                        'Month': [minDate, next2Months],
+                    };
+                    options.locale.customRangeLabel = "Dates";
+                    options.autoUpdateInput = true;
+                    options.showCustomRangeLabel = true;
                     options.alwaysShowCalendars = true;
                     options.opens = 'right';
                 }
@@ -122,6 +124,15 @@ swapsApp.directive('datepicker', function() {
                             scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
                             if(picker.chosenLabel == 'Weekends'){
                                 scope.swapDates.chosenLabel = 'Weekends'
+                            }
+                            else if(picker.chosenLabel == 'Month') {
+                                scope.swapDates.chosenLabel = 'Month';
+                                if(!scope.currentDatesWhen) {
+                                    scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + formatDate(new Date(next4weeks), 'MM/DD/YYYY');
+                                }
+                            }
+                            else if(picker.chosenLabel == 'Dates') {
+                                scope.swapDates.chosenLabel = 'Dates';
                             }
                         }
                         else{

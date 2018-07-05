@@ -1,6 +1,7 @@
-swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $location, AccountService){
+swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $timeout, $location, AccountService){
     $scope.addSwap = {
-        guests:2
+        guests:2,
+        duration:'6-8'
     };
     $scope.user = $rootScope.user;
     $scope.data = $rootScope.data;
@@ -8,6 +9,7 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
 
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
+    $scope.rangeLabel = 'Dates';
 
     $scope.popup?$scope.limit = 4:$scope.limit = $scope.swaps.length;
 
@@ -103,6 +105,65 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
         $scope.saving = false;
         $scope.editingField = -1;
     }
+
+    $scope.changeRange = function (swap) {
+        if(swap.duration) {
+            var arr =  swap.duration.split('-');
+            var min = Number(arr[0]);
+            var max = Number(arr[1]);
+            if(isNaN(min)){
+                swap.range1 = 6;
+                swap.range2 = 8;
+                return;
+            }
+            if(min === max || isNaN(max)) {
+                swap.duration = min+'';
+                max = min;
+            }
+            if(min < 1){
+                min = 1;
+            }
+            if(max > 58){
+                max = 58;
+            }
+            if(min > max){
+                swap.range1 = max;
+                swap.range2 = min;
+                return;
+            }
+            swap.range1 = min;
+            swap.range2 = max;
+        }
+        else {
+            // $scope.duration = '6-8';
+            swap.range1 = 6;
+            swap.range2 = 8;
+        }
+
+    };
+
+    $scope.changeDates = function (swap) {
+        if(swap.dates) {
+            $timeout(function() {
+                swap.rangeLabel = swap.chosenLabel;
+                if(swap.rangeLabel === 'Weekends') {
+                    swap.range1 = $scope.data.weekendStart[0].id.toString();
+                    swap.range2 = $scope.data.weekendEnd[1].id.toString();
+                    swap.dropdownRange = $scope.data.weekendStart[0].id.toString() + '-' + $scope.data.weekendEnd[1].id.toString();
+                }
+                else if(swap.rangeLabel === 'Dates') {
+                    swap.range1 = $scope.data.flexibleDates[0].id.toString();
+                    swap.range2 = $scope.data.flexibleDates[0].id.toString();
+                    swap.dropdownRange = 'Exact dates';
+                }
+                else if(swap.rangeLabel === 'Month'){
+                    swap.range1 = 6;
+                    swap.range2 = 8;
+                    swap.duration = '6-8';
+                }
+            },300);
+        }
+    };
 
 });
 
