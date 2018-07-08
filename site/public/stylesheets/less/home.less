@@ -252,6 +252,9 @@
 				&:nth-child(2){
 					border-right: 1px solid rgba(199, 167, 104, 0.5);
 					border-left: 1px solid rgba(199, 167, 104, 0.5);
+					@media @mobile {
+						border: none;
+					}
 				}
 			}
 			.icon{
@@ -263,6 +266,9 @@
 				&.icon-calender{
 					bottom: 12px;
 					left: 14px;
+					@media @mobile {
+						bottom: 54px;
+					}
 				}
 				&.icon-infocenter{
 					transform: scale(0.70);
@@ -280,6 +286,11 @@
 					padding: 6px;
 					font-size: 14px;
 					color: #c7a768;
+					&.glyphicon-remove{
+						@media @mobile {
+							right: 25px;
+						}
+					}
 					&:focus{
 						outline: none;
 					}
@@ -305,6 +316,9 @@
 					display: block;
 					font-weight: 300;
 					position: relative;
+					@media @mobile {
+						padding-left: 38px;
+					}
 					.glyphicon{
 						position: absolute;
 						top: 10px;
@@ -313,8 +327,22 @@
 				.flex{
 					display: flex;
 					align-items: center;
+					@media @mobile {
+						flex-direction: column;
+					}
+					&.flex-row{
+						@media @mobile {
+							flex-direction: row;
+							justify-content: space-between;
+							width: 100%;
+							padding-bottom: 10px;
+						}
+					}
 				}
 				.dropdown{
+					@media @mobile {
+						height: 42px;
+					}
 					&.open{
 						.glyphicon{
 							transform: rotate(180deg);
@@ -325,6 +353,10 @@
 					left:initial;
 					right: -5px;
 					margin-top: 0;
+					@media @mobile {
+						right: -24px;
+						max-width: 300px;
+					}
 				}
 				.range-wr {
 					min-width: 296px;
@@ -332,6 +364,11 @@
 					align-items: center;
 					padding: 0 10px;
 					font-size: 16px;
+					.full-width{
+						@media @mobile {
+							width: 100%;
+						}
+					}
 					.flexible-label{
 						display: inline;
 						color: #0e5d7c;
@@ -361,6 +398,9 @@
 						border: 1px solid #ccc;
 						height: 32px;
 						min-width: 75px;
+						@media @mobile {
+							max-width: 130px;
+						}
 					}
 					.duration-wr {
 						input {
@@ -449,9 +489,10 @@
 				position: relative;
 				bottom: 0;
 				margin: 0;
-				padding: 12px;
+				padding: 0px;
 				font-size: 18px;
 				width: 100%;
+				top: initial;
 			}
 		}
 	}

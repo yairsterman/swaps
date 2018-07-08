@@ -28,7 +28,7 @@
                             <span class="flexible-departure">{{rangeLabel === 'Weekends'?'Next 4 weekends':rangeLabel === 'Within Range'?'Within next 2 months':rangeLabel === 'Dates' && search.startRange != 0 ?data.flexibleDates[search.startRange].value:''}}</span>
                             <span class="flexible-return">{{rangeLabel === 'Dates' && search.endRange != 0?data.flexibleDates[search.endRange].value:''}}</span>
                         </div>
-                        <div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-xs-0'}}">
+                        <div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-sm-0'}} full-width">
                             <div class="dropdown">
                                 <div class="flexible-dates" data-toggle="dropdown" ng-if="rangeLabel">
                                     {{rangeLabel === 'Weekends'? data.weekendStart[search.startRange].value +'-'+data.weekendEnd[search.endRange].value :rangeLabel === 'Dates'?search.startRange != 0 || search.endRange != 0?'Flexible':'Exact dates':rangeLabel === 'Within Range'?(search.startRange != search.endRange?search.startRange +'-'+ search.endRange:search.startRange) + ' Nights': ''}}
@@ -37,13 +37,13 @@
                                 <div class="dropdown-menu" ng-if="rangeLabel">
                                     <form name="rangeForm" class="range-wr" novalidate>
                                         <div ng-if="rangeLabel === 'Weekends'" class="flex">
-                                            <div class="flex">
+                                            <div class="flex flex-row">
                                                 <label class="flexible-label">Departure: </label>
                                                 <select ng-model="search.startRange" class="form-control">
                                                     <option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>
                                                 </select>
                                             </div>
-                                            <div class="flex">
+                                            <div class="flex flex-row">
                                                 <label class="flexible-label">Return: </label>
                                                 <select ng-model="search.endRange" class="form-control">
                                                     <option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>
@@ -51,14 +51,14 @@
                                             </div>
                                         </div>
                                         <div ng-if="rangeLabel === 'Dates'" class="flex">
-                                            <div class="flex">
+                                            <div class="flex flex-row">
                                                 <label class="flexible-label">Departure: </label>
 
                                                 <select ng-model="search.startRange" class="form-control">
                                                     <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
                                                 </select>
                                             </div>
-                                            <div class="flex">
+                                            <div class="flex flex-row">
                                                 <label class="flexible-label">Return: </label>
                                                 <select ng-model="search.endRange" class="form-control">
                                                     <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>

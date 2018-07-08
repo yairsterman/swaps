@@ -57,6 +57,11 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
     }
 
+    $scope.autoSearch = function(){
+        var where = $rootScope.search.where;
+        $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
+    }
+
     $scope.openSwapDates = function (){
         $scope.popup = true;
         $scope.swaps = $scope.user.travelingInfo;

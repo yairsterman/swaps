@@ -30,7 +30,7 @@
                                     {{swap.rangeLabel === 'Weekends'? data.weekendStart[swap.startRange].value +'-'+data.weekendEnd[swap.endRange].value :swap.rangeLabel === 'Dates'?swap.startRange != 0 || swap.endRange != 0?'Flexible':'Exact dates':swap.rangeLabel === 'Within Range'?(swap.startRange != swap.endRange?swap.startRange +'-'+ swap.endRange:swap.startRange) + ' Nights': ''}}
                                     <span class="glyphicon glyphicon-chevron-down" ng-if="editingField == $index"></span>
                                 </div>
-                                <div class="dropdown-menu" ng-if="editingField == $index">
+                                <div class="dropdown-menu" ng-if="editingField == $index && swap.rangeLabel">
                                     <form name="rangeForm" class="range-wr" novalidate>
                                         <div ng-if="swap.rangeLabel === 'Weekends'" class="flex">
                                             <div class="flex">

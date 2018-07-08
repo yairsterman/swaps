@@ -30,6 +30,9 @@
   }
   .single-swap{
     display: flex;
+    @media @mobile {
+      flex-direction: column;
+    }
     &.add-swap{
       margin-top: 15px;
       padding-top: 10px;
@@ -47,7 +50,9 @@
       margin: 0;
       width: 80%;
       margin-bottom: 15px;
-
+      @media @mobile {
+        width: auto;
+      }
       &.onboarding-search-area{
         width: 90%;
       }

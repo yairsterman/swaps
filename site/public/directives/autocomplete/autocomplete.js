@@ -9,16 +9,14 @@ swapsApp.directive('autocomplete', function() {
 
             google.maps.event.addListener(gPlace, 'place_changed', function() {
                 scope.$apply(function() {
-                    if(attrs.city){
+                    if(gPlace.getPlace().formatted_address){
                         model.$setViewValue(gPlace.getPlace().formatted_address);
                     }
                     else{
-                        if(gPlace.getPlace().formatted_address){
-                            model.$setViewValue(gPlace.getPlace().formatted_address);
-                        }
-                        else{
-                            model.$setViewValue(gPlace.getPlace().name);
-                        }
+                        model.$setViewValue(gPlace.getPlace().name);
+                    }
+                    if(scope.$parent.autoSearch){
+                        scope.$parent.autoSearch();
                     }
                 });
             });
