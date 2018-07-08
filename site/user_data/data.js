@@ -115,7 +115,7 @@ const amenities = [
 
 const thingsToDo = [
     {id: 0, name: 'club', displayName:'Clubbing', icon:'icon-club', img:'../images/icons/club.png'},
-    {id: 1, name: 'bar', displayName:'Cocktail Bars', icon:'icon-bar', img:'../images/icons/bar.png'},
+    {id: 1, name: 'bar', displayName:'Cocktail Bars', icon:'icon-cocktail', img:'../images/icons/cocktail.png'},
     {id: 2, name: 'gym', displayName:'Gym', icon:'icon-gym', img:'../images/icons/gym.png'},
     {id: 3, name: 'theater', displayName:'Theater', icon:'icon-cinema', img:'../images/icons/cinema.png'},
     {id: 4, name: 'museum', displayName:'Museums', icon:'icon-museum', img:'../images/icons/museum.png'},
@@ -217,6 +217,34 @@ const months = [
     {id: 12, name: 'December'},
 ]
 
+const weekendStart = [
+    {id: 0, value:"Thu"},
+    {id: 1, value:"Fri"}
+]
+
+const weekendEnd = [
+    {id: 0, value:"Sat"},
+    {id: 1, value:"Sun"},
+    {id: 2, value:"Mon"}
+]
+
+const flexibleDates = [
+    {id: 0, value: 'exact dates'},
+    {id: 1, value: '+ day '},
+    {id: 2, value: '- day'},
+    {id: 3, value: '± 1 day'},
+    {id: 4, value: '± 2 days'},
+    {id: 5, value: '± 3 days'},
+]
+
+const label = [
+    {id: 0, value: "Dates"},
+    {id: 1, value: "Month"},
+    {id: 2, value: "Weekends"}
+]
+
+
+
 const years = [
     2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030
 ]
@@ -237,8 +265,12 @@ var dataForSite = {
     securityDeposit: securityDeposit,
     creditCards: creditCards,
     months: months,
-    years: years
-}
+    years: years,
+    label: label,
+    flexibleDates: flexibleDates,
+    weekendEnd: weekendEnd,
+    weekendStart: weekendStart
+};
 
 data.getAmenities = function(){
     return amenities;
@@ -299,6 +331,22 @@ data.getTransactionMode = function(){
 
 data.getVisibleRequestData = function(){
     return visibleRequestData;
+};
+
+data.getWeekendStart = function(){
+    return weekendStart;
+};
+
+data.getWeekendEnd = function(){
+    return weekendEnd;
+};
+
+data.getFlexibleDates = function(){
+    return flexibleDates;
+};
+
+data.getLabel = function(){
+    return label;
 };
 
 

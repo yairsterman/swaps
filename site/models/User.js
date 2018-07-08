@@ -29,7 +29,9 @@ var UserSchema = new Schema({
         returnDate: Number,
         guests: Number,
         fullDestination: String,
-        label : String,
+        rangeLabel : String,
+        startRange: Number,
+        endRange: Number,
         destination: {
             city: String,
             region: String,
