@@ -264,9 +264,9 @@ router.post('/add-travel-info', function (req, res, next) {
     let dates = info.when ? info.when.split('-') : null;
     let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
     let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
-    let label = info.label;
-    let startRange = info.startRange;
-    let endRange = info.endRange;
+    let rangeLabel = info.rangeLabel;
+    let startRange = parseInt(info.startRange);
+    let endRange = parseInt(info.endRange);
 
     geocoder.geocode(where).then(function (geo) {
 
@@ -277,8 +277,9 @@ router.post('/add-travel-info', function (req, res, next) {
             returnDate: returnDate,
             dates: departure && returnDate ? `${moment.utc(departure).format('MMM DD')} - ${moment.utc(returnDate).format('MMM DD')}` : null,
             guests: guests,
-            label: label,
-            flexible: {startRange: startRange, endRange: endRange}
+            rangeLabel: rangeLabel,
+            startRange: startRange,
+            endRange: endRange
         };
 
         let toUpdate = {$push: {travelingInformation: newInfo}};
@@ -301,15 +302,12 @@ router.post('/update-travel-info', function (req, res, next) {
     let dates = info.when ? info.when.split('-') : null;
     let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
     let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
-    let label = info.label;
-    let startRange = info.startRange;
-    let endRange = info.endRange;
+    let rangeLabel = info.rangeLabel;
+    let startRange = parseInt(info.startRange);
+    let endRange = parseInt(info.endRange);
 
     geocoder.geocode(where).then(function (geo) {
         let updatedInfo = {};
-
-        updatedInfo['label'] = label;
-        updatedInfo['flexible'] = {startRange: startRange, endRange: endRange};
 
         if (where) {
             updatedInfo['travelingInformation.$.fullDestination'] = where;
@@ -322,6 +320,12 @@ router.post('/update-travel-info', function (req, res, next) {
             updatedInfo['travelingInformation.$.returnDate'] = returnDate;
             updatedInfo['travelingInformation.$.dates'] = `${moment(departure).utc().format('MMM DD')} - ${moment(returnDate).utc().format('MMM DD')}`;
         }
+        if(rangeLabel)
+            updatedInfo['travelingInformation.$.rangeLabel'] = rangeLabel;
+        if(startRange || startRange == 0)
+            updatedInfo['travelingInformation.$.startRange'] = startRange;
+        if(endRange || endRange == 0)
+            updatedInfo['travelingInformation.$.endRange'] = endRange;
         if (removeDates) {
             updatedInfo['travelingInformation.$.dates'] = null;
             updatedInfo['travelingInformation.$.departure'] = null;
@@ -332,9 +336,22 @@ router.post('/update-travel-info', function (req, res, next) {
             updatedInfo['travelingInformation.$.destination'] = null;
         }
 
-        let toUpdate = {$set: updatedInfo};
-        findOneAndUpdate(id, toUpdate, res);
-
+        User.findOneAndUpdate({'travelingInformation._id': travelId}, {$set: updatedInfo}, {new: true, projection: Data.getVisibleUserData().restricted})
+            .populate({
+                path: 'community',
+                select: 'name _id',
+            })
+            .exec(function (err, user) {
+                if (err) {
+                    error.message = err;
+                    return res.json(error);
+                }
+                if (!user) {
+                    error.message = 'No user found';
+                    return res.json(error);
+                }
+                res.json(user);
+            });
     });
 });
 

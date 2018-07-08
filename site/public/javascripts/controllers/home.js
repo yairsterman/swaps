@@ -48,64 +48,65 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.changeDates = function () {
         if($rootScope.search.date) {
             $timeout(function() {
-                $scope.rangeLabel = $rootScope.search.chosenLabel;
+                $scope.rangeLabel = $rootScope.search.rangeLabel;
                 if($scope.rangeLabel === 'Weekends') {
-                    $rootScope.search.range1 = $scope.data.weekendStart[0].id.toString();
-                    $rootScope.search.range2 = $scope.data.weekendEnd[1].id.toString();
-                    $scope.dropdownRange = $scope.data.weekendStart[0].id.toString() + '-' + $scope.data.weekendEnd[1].id.toString();
+                    $rootScope.search.startRange = $rootScope.search.startRange?$rootScope.search.startRange:$scope.data.weekendStart[0].id.toString();
+                    $rootScope.search.endRange = $rootScope.search.endRange?$rootScope.search.endRange:$scope.data.weekendEnd[1].id.toString();
                 }
                 else if($scope.rangeLabel === 'Dates') {
-                    $rootScope.search.range1 = $scope.data.flexibleDates[0].id.toString();
-                    $rootScope.search.range2 = $scope.data.flexibleDates[0].id.toString();
-                    $scope.dropdownRange = 'Exact dates';
+                    $rootScope.search.startRange = $rootScope.search.startRange?$rootScope.search.startRange:$scope.data.flexibleDates[0].id.toString();
+                    $rootScope.search.endRange = $rootScope.search.endRange?$rootScope.search.endRange:$scope.data.flexibleDates[0].id.toString();
                 }
-                else if($scope.rangeLabel === 'Month'){
-                    $rootScope.search.range1 = 6;
-                    $rootScope.search.range2 = 8;
-                    $scope.duration = '6-8';
+                else if($scope.rangeLabel === 'Within Range'){
+                    $rootScope.search.startRange = $rootScope.search.startRange?$rootScope.search.startRange:6;
+                    $rootScope.search.endRange =  $rootScope.search.endRange? $rootScope.search.endRange:8;
+                    $rootScope.search.duration = $rootScope.search.startRange?$rootScope.search.startRange+'-'+$rootScope.search.endRange:'6-8';
                 }
             },300);
         }
     };
 
     $scope.changeRange = function () {
-    	if($scope.duration) {
-		    var arr =  $scope.duration.split('-');
+    	if($rootScope.search.duration) {
+		    var arr =  $rootScope.search.duration.split('-');
 		    var min = Number(arr[0]);
 		    var max = Number(arr[1]);
-		    if(min === max || isNaN(max)) {
-                $scope.duration = min+'';
+            if(isNaN(min)){
+                $rootScope.search.startRange = 6;
+                $rootScope.search.endRange = 8;
+                return;
+            }
+            if(min === max || isNaN(max)) {
+                $rootScope.search.duration = min+'';
                 max = min;
-		    }
-            $rootScope.search.range1 = min;
-            $rootScope.search.range2 = max;
-	    }
-	    else {
-            // $scope.duration = '6-8';
-            $rootScope.search.range1 = 6;
-            $rootScope.search.range2 = 8;
+            }
+            if(min < 1){
+                min = 1;
+            }
+            if(min > 58){
+                min = 58;
+            }
+            if(max > 58){
+                max = 58;
+            }
+            if(min > max){
+                $rootScope.search.startRange = max;
+                $rootScope.search.endRange = min;
+                return;
+            }
+            $rootScope.search.startRange = min;
+            $rootScope.search.endRange = max;
+        }
+        else {
+            $rootScope.search.startRange = 6;
+            $rootScope.search.endRange = 8;
         }
 
     }
 
     $scope.searchSwap = function(e){
-    	e.preventDefault();
-      var searchData = {
-          where: $rootScope.search.where,
-          date: $rootScope.search.date,
-            when: $rootScope.search.when,
-          guests: $rootScope.search.guests,
-          range: {
-              type: $scope.rangeLabel,
-              departureRange: $rootScope.search.range1,
-              returnRange: $rootScope.search.range2,
-          }
-      };
-
-    searchData.range.duration = searchData.range.type === 'Month' ? $rootScope.search.duration : null;
-
-    console.log('search data', searchData);
-    $scope.go(`travelers${searchData.where?'/'+searchData.where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}${$scope.rangeLabel?'&label='+$scope.rangeLabel + '&startRange=' + $rootScope.search.range1 + '&endRange=' + $rootScope.search.range2:''}`);
+        e.preventDefault();
+        $scope.go(`travelers${$rootScope.search.where?'/'+$rootScope.search.where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}${$scope.rangeLabel?'&label='+$scope.rangeLabel + '&startRange=' + $rootScope.search.startRange + '&endRange=' + $rootScope.search.endRange:''}`);
 
     }
 
@@ -195,6 +196,8 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         $rootScope.search.when = undefined;
         $rootScope.search.date = undefined;
         $scope.rangeLabel = undefined;
+        $rootScope.search.startRange = undefined;
+        $rootScope.search.endRange = undefined;
     }
 
     $scope.openLogin = function(signin){

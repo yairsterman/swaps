@@ -5,6 +5,9 @@ swapsApp.directive('duration', function() {
 		require: 'ngModel',
 		link: function(scope, elm, attr, ngModel) {
 				ngModel.$validators.duration = function (modelValue, viewValue) {
+					if(!viewValue){
+						return false;
+					}
 					var duration =  viewValue.split('-');
 					var min = Number(duration[0]);
 					var max = Number(duration[1]);
