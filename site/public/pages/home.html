@@ -23,12 +23,12 @@
                     <label for="searchDate">When</label>
                     <div class="row flex">
                         <div class="col-xs-12 {{rangeLabel?'col-sm-7':'col-sm-12'}}">
-                            <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker>
+                            <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker readonly="true">
                             <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
                             <span class="flexible-departure">{{rangeLabel === 'Weekends'?'Next 4 weekends':rangeLabel === 'Within Range'?'Within next 2 months':rangeLabel === 'Dates' && search.startRange != 0 ?data.flexibleDates[search.startRange].value:''}}</span>
                             <span class="flexible-return">{{rangeLabel === 'Dates' && search.endRange != 0?data.flexibleDates[search.endRange].value:''}}</span>
                         </div>
-                        <div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-sm-0'}} full-width">
+                        <div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-sm-0'}} xs-full-width">
                             <div class="dropdown">
                                 <div class="flexible-dates" data-toggle="dropdown" ng-if="rangeLabel">
                                     {{rangeLabel === 'Weekends'? data.weekendStart[search.startRange].value +'-'+data.weekendEnd[search.endRange].value :rangeLabel === 'Dates'?search.startRange != 0 || search.endRange != 0?'Flexible':'Exact dates':rangeLabel === 'Within Range'?(search.startRange != search.endRange?search.startRange +'-'+ search.endRange:search.startRange) + ' Nights': ''}}
