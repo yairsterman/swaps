@@ -47,6 +47,26 @@
 			.find-swap{
 				display: none;
 			}
+			.icon{
+				position: absolute;
+				&.icon-man-small{
+					bottom: 8px;
+					left: 10px;
+				}
+				&.icon-calender{
+					bottom: 7px;
+					left: 14px;
+				}
+				&.icon-infocenter{
+					transform: scale(0.70);
+					bottom: 6px;
+					left: 10px;
+					@media @mobile {
+						bottom: 2px;
+						left: 8px;
+					}
+				}
+			}
 		}
 
 		&.navbar-other {
@@ -384,6 +404,10 @@
 				-webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
 				-moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
 				box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+				@media @mobile {
+					padding-right: 5px;
+					padding-left: 32px;
+				}
 				&:focus{
 					border-color: #0E5D7C;
 					-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(14,93,124,.6);
@@ -446,7 +470,7 @@
 			margin: 2% auto;
 			@media @mobile {
 				width: 100%;
-				margin: 10px;
+				//margin: 10px;
 			}
 		}
     }

@@ -71,6 +71,9 @@
       margin: auto;
       height: 49px;
       width: 280px;
+      @media @mobile {
+        width: 270px;
+      }
       &:focus{
         outline: none;
       }
@@ -78,6 +81,9 @@
         background-color: #3B5998;
         color: white;
         padding-left: 36px;
+        @media @mobile {
+          padding-left: 32px;
+        }
       }
       &.google-button{
         background: white;
@@ -86,6 +92,9 @@
         white-space: nowrap;
         font-family: 'Roboto', sans-serif;
         padding-left: 19px;
+        @media @mobile {
+          padding-left: 16px;
+        }
         .google-icon{
           background-image: url("../../images/google.svg");
           width: 53px;
@@ -104,6 +113,9 @@
         background-color: #CD0007;
         color: white;
         padding-left: 36px;
+        @media @mobile {
+          padding-left: 31px;
+        }
       }
       &.signup{
         padding: 0 80px;

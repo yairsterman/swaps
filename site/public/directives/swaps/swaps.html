@@ -15,8 +15,8 @@
                     <div class="icon icon-infocenter"></div>
                 </div>
                 <div class="search-field when transition-ease col-sm-6 col-xs-12">
-                    <div class="row flex">
-                        <div class="col-xs-12 {{swap.rangeLabel?'col-sm-7':'col-sm-12'}}">
+                    <div class="row xs-flex">
+                        <div class="col-xs-7 {{swap.rangeLabel?'col-sm-7':'col-sm-12'}}">
                             <input type="text" class="form-control no-border" placeholder="Anytime" id="searchDate{{$index}}" name="searchDate{{$index}}" ng-model="swap.dates" swap-dates="swap" user="user" profile="false"
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                                    data="data" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" ng-change="changeDates(swap)">
@@ -24,7 +24,7 @@
                             <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Next 4 weekends':swap.rangeLabel === 'Within Range'?'Within next 2 months':swap.rangeLabel === 'Dates' && swap.startRange != 0 ?data.flexibleDates[swap.startRange].value:''}}</span>
                             <span class="flexible-return">{{swap.rangeLabel === 'Dates' && swap.endRange != 0?data.flexibleDates[swap.endRange].value:''}}</span>
                         </div>
-                        <div class="{{swap.rangeLabel?'col-xs-12 col-sm-5':'col-xs-0'}}">
+                        <div class="{{swap.rangeLabel?'col-xs-5 col-sm-5':'col-xs-0'}}">
                             <div class="dropdown">
                                 <div class="flexible-dates" data-toggle="dropdown" ng-if="swap.rangeLabel">
                                     {{swap.rangeLabel === 'Weekends'? data.weekendStart[swap.startRange].value +'-'+data.weekendEnd[swap.endRange].value :swap.rangeLabel === 'Dates'?swap.startRange != 0 || swap.endRange != 0?'Flexible':'Exact dates':swap.rangeLabel === 'Within Range'?(swap.startRange != swap.endRange?swap.startRange +'-'+ swap.endRange:swap.startRange) + ' Nights': ''}}

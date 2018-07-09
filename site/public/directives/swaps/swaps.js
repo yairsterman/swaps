@@ -101,6 +101,7 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
     $scope.close = function(){
         if($scope.closeModel){
             $scope.closeModel();
+            return;
         }
         $scope.modelInstance.close();
     };
