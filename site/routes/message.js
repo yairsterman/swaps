@@ -19,7 +19,7 @@ const DAY = 1000*60*60*24;
 const USER_UNAVAILABLE = {code:409, msg:'You have already booked these dates'};
 const REQUEST_UNAVAILABLE = {code:411, msg:'The dates you requested have already been booked by the user'};
 
-router.post('/sendMessage', function(req, res, next) {
+router.post('/sendMessage', function(req, res) {
 	var recipientId = req.body.recipientId;
 	var sender = req.user;
 	var message = req.body.message;
@@ -28,9 +28,10 @@ router.post('/sendMessage', function(req, res, next) {
 				date: now,
 				isRequest: false,
 				message: message
-			}
+			};
 
 	saveMessage(sender._id, recipientId, sender._id, newMessage, false).then(function(recipient){
+        // email.sendMail(["stermaneran@gmail.com"],'New Message', emailMessages.message(recipient, sender));
         email.sendMail([recipient.email],'New Message', emailMessages.message(recipient, sender));
         return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
 	})

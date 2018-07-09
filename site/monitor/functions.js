@@ -137,12 +137,13 @@ module.exports.emailConfirmedRequests = function () {
 
 
 /**
- * Find all swaps are completed
+ * Find all swaps that are completed
+ * adn mail a review email to the swapers
  */
 module.exports.emailReview = function () {
-    Requests.find({status: data.getRequestStatus().confirmed}, function (err, requests) {
+    Requests.findOne({status: data.getRequestStatus().confirmed}, function (err, request) {
         if (err) return err;
-        requests.forEach(function (request) {
+        // requests.forEach(function (request) {
             let now = moment.utc().valueOf();
             let diff = util.calculateNightsBetween(now, request.checkout);
             User.find({$or: [{_id: request.user1}, {_id: request.user2}]}, function (err, user) {
@@ -161,26 +162,26 @@ module.exports.emailReview = function () {
                     }, config.jwtSecret);
 
                     request.update({tokenUser1: t1, tokenUser2: t2}).then(function () {
-                        if(user[0]._id == request.user1){
+                        if(user[0]._id.equals(request.user1)){
                             if (user[0].email) {
-                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], t1));
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.review(user[0], t1));
                                 console.log("email sent");
                                 // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
                             if (user[1].email) {
-                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[1], t2));
+                                email.sendMail(['029932136a@gmail.com'], 'Review!!!', emailMessages.review(user[1], t2));
                                 console.log("email sent");
                                 // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
                         }
                         else{
                             if (user[0].email) {
-                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[0], t2));
+                                email.sendMail(['029932136a@gmail.com'], 'Review!!!', emailMessages.review(user[0], t2));
                                 console.log("email sent");
                                 // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
                             if (user[1].email) {
-                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.eran(user[1], t1));
+                                email.sendMail(['stermaneran@gmail.com'], 'Review!!!', emailMessages.review(user[1], t1));
                                 console.log("email sent");
                                 // email.sendMail([user.email], 'Review!!!', emailMessages.eran(user,t1));
                             }
@@ -254,6 +255,6 @@ module.exports.emailReview = function () {
                 //     }
                 // }
             });
-        })
+        // })
     });
 };

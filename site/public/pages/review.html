@@ -1,25 +1,68 @@
 <div class="review-page">
     <div class="review-area">
-        <div class="title">
-            How was your swap with {{firstName}}?
+
+        <!---->
+        <div ng-if="!showmessage && !case1">
+            <div class="title">
+                How was your swap with {{firstName}}?
+            </div>
+            <div class="title">
+                <br>
+                Would you like to send a private message to {{firstName}}
+            </div>
+
+            <div class="send-message">
+                <textarea class="form-control review" rows="6" cols="20" ng-model="message.text"></textarea>
+                <input type="button" class="btn btn-primary btn-swap" value="Send private message"
+                       ng-click="sendMessage()" ng-disabled="message.text == ''">
+            </div>
+            <input type="button" class="btn btn-primary btn-swap" value="Skip"
+                   ng-click="skip()" ng-disabled="showmessage == true">
         </div>
-        <div class="review-stars">
-            <span class="icon icon-star-large" ng-click="setRating(1)"></span>
-            <span class="icon {{rating > 1?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(2)"></span>
-            <span class="icon {{rating > 2?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(3)"></span>
-            <span class="icon {{rating > 3?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(4)"></span>
-            <span class="icon {{rating > 4?'icon-star-large':'icon-emptystar-large'}}" ng-click="setRating(5)"></span>
+
+        <!---->
+
+        <div ng-if="showmessage && !case1">
+            <div class="title">
+                How was your swap with {{firstName}}?
+            </div>
+            <div class="review-stars">
+                <span class="icon icon-star-large" ng-click="setRating(1)"></span>
+                <span class="icon {{message.rating > 1?'icon-star-large':'icon-emptystar-large'}}"
+                      ng-click="setRating(2)"></span>
+                <span class="icon {{message.rating > 2?'icon-star-large':'icon-emptystar-large'}}"
+                      ng-click="setRating(3)"></span>
+                <span class="icon {{message.rating > 3?'icon-star-large':'icon-emptystar-large'}}"
+                      ng-click="setRating(4)"></span>
+                <span class="icon {{message.rating > 4?'icon-star-large':'icon-emptystar-large'}}"
+                      ng-click="setRating(5)"></span>
+            </div>
+
+            <div class="title">
+                Write a review of your swap with {{firstName}}
+            </div>
+            <div class="sub-title">
+                Remember this review can be seen on {{firstName}}'s profile by anyone
+            </div>
+            <div class="send-review">
+                <textarea class="form-control review" rows="6" cols="20" ng-model="message.review" ></textarea>
+                <input type="button" class="btn btn-primary btn-swap" value="Send Review"
+                       ng-click="postReview()" ng-disabled="message.review == ''">
+            </div>
         </div>
-        <div class="title">
-            Write a review of your swap with {{firstName}}
+
+
+        <div ng-if="case1">
+            <div class="title">
+                <br>
+                Thank you for your review!
+            </div>
+
+            <input type="button" class="btn btn-primary btn-swap" value="Home"
+                   ng-click="home()" ng-disabled="showmessage == true">
         </div>
-        <div class="sub-title">
-            Remember this review can be seen on {{firstName}}'s profile by anyone
-        </div>
-        <div class="send-review">
-            <textarea class="form-control review" rows="6" cols="20" ng-model="review"></textarea>
-            <input type="button" class="btn btn-primary btn-swap" value="Send Review"
-                   ng-click="postReview()" ng-disabled="review == ''">
-        </div>
+
+
+
     </div>
 </div>
