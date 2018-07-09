@@ -74,6 +74,7 @@
         display: -webkit-box;
         -webkit-line-clamp: 10;
         -webkit-box-orient: vertical;
+        font-weight: 300;
         @media @mobile {
           -webkit-line-clamp: 10;
         }
@@ -145,12 +146,18 @@
         p{
           font-size: 16px;
           line-height: 20px;
+          font-weight: 300;
         }
       }
       .img{
+        max-width: 650px;
+        margin: auto;
+        padding: 10px 0;
         &.half-width{
           width: 50%;
+          padding: 0;
           @media @mobile {
+            padding: 10px 0;
             width: 100%;
           }
         }

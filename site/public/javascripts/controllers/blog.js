@@ -1,4 +1,5 @@
 swapsApp.controller('blogController', function($scope, $routeParams, $rootScope, $location, BlogService) {
+    $rootScope.homepage = false;
 
     $scope.slug = $routeParams.slug;
 
