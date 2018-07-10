@@ -13,7 +13,7 @@ let error = {
 	message: ''
 };
 
-const USERS_PER_PAGE = 10;
+const USERS_PER_PAGE = 12;
 
 router.get('/getUsers', function(req, res, next) {
     // user's country or user's current location city

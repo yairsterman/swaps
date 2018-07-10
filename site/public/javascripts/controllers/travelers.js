@@ -221,6 +221,10 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
                 var location = results[0].geometry.location;
 
+                if(results[0].types.includes('country')){
+                    zoom = 6;
+                }
+
                 var mapOptions = {
                     zoom: zoom,
                     center: new google.maps.LatLng(location.lat(), location.lng()),

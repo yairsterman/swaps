@@ -52,8 +52,8 @@ function getHighestTravelScore(user, geo, searchDates, req){
     let placesRelevancePercent = 80;
     let datesRelevancePercent = 20;
     let placesAndDatesRelevance = 60;
-    let fromRelevance = 0.3;
-    let toRelevance = 0.7;
+    let fromRelevance = 0.4;
+    let toRelevance = 0.6;
 
     // match search address and user address
     let from = matchPlaces(user, geo);
@@ -61,7 +61,7 @@ function getHighestTravelScore(user, geo, searchDates, req){
     // if user not logged in and search is only by user's location,
     // return higher score for users who are currently traveling
     if(!req.user){
-        let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.5;
+        let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.8;
         placesAndDatesRelevance = (from * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
         return placesAndDatesRelevance;
     }

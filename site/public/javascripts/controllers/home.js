@@ -238,53 +238,55 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
 
     var fixmeTop;     // get initial position of the element
 
-    var elementsReady = $interval(function() {
-        var input = $('.navbar');
-        if (input.length > 0) {
-            fixmeTop = $('.search-area').offset().top + 80;
-            $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollTop(); // get current position
-                if (currentScroll >= fixmeTop) {
-                    if(!$('.navbar').hasClass('navbar-other')){
-                        $('.navbar').addClass('navbar-other').addClass('no-opacity');
-                        $timeout(function(){
-                            if(!$('.navbar').hasClass('navbar-other')){
-                                $('.navbar').addClass('navbar-other');
-                            }
-                            $('.navbar').addClass('sticky');
-                            $('.navbar').addClass('opacity');
-                            $('.navbar').removeClass('no-opacity');
-                        },500)
-                    }
-                } else {
-                    $('.navbar').removeClass('opacity');
-                    $timeout(function(){
-                        if($('.navbar').hasClass('opacity')){
-                            $('.navbar').removeClass('opacity');
+    if(!$rootScope.isMobile){
+        var elementsReady = $interval(function() {
+            var input = $('.navbar');
+            if (input.length > 0) {
+                fixmeTop = $('.search-area').offset().top + 80;
+                $(window).scroll(function() {                  // assign scroll event listener
+                    var currentScroll = $(window).scrollTop(); // get current position
+                    if (currentScroll >= fixmeTop) {
+                        if(!$('.navbar').hasClass('navbar-other')){
+                            $('.navbar').addClass('navbar-other').addClass('no-opacity');
+                            $timeout(function(){
+                                if(!$('.navbar').hasClass('navbar-other')){
+                                    $('.navbar').addClass('navbar-other');
+                                }
+                                $('.navbar').addClass('sticky');
+                                $('.navbar').addClass('opacity');
+                                $('.navbar').removeClass('no-opacity');
+                            },500)
                         }
-                        $('.navbar').removeClass('navbar-other');
-                        $('.navbar').removeClass('sticky');
-                    },500);
-                }
-            });
-            var fixmeHomes = $('#featuredHomes').offset().top;
-            $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollTop(); // get current position
-                if (currentScroll >= fixmeHomes) {
-                    $('.description-icon').css({'animation': 'bounce 1s'});
-                    $('.description-icon').css({'transform': 'scale(0.8)'});
-                }
-            });
-            var fixmeborder = $('.points-container-border').offset().top + 20;
-            $(window).scroll(function() {                  // assign scroll event listener
-                var currentScroll = $(window).scrollTop(); // get current position
-                if (currentScroll >= fixmeborder) {
-                    $('.swappers-border').css({'width': '12%'});
-                }
-            });
-            $interval.cancel(elementsReady);
-        }
-    }, 100);
+                    } else {
+                        $('.navbar').removeClass('opacity');
+                        $timeout(function(){
+                            if($('.navbar').hasClass('opacity')){
+                                $('.navbar').removeClass('opacity');
+                            }
+                            $('.navbar').removeClass('navbar-other');
+                            $('.navbar').removeClass('sticky');
+                        },500);
+                    }
+                });
+                var fixmeHomes = $('#featuredHomes').offset().top;
+                $(window).scroll(function() {                  // assign scroll event listener
+                    var currentScroll = $(window).scrollTop(); // get current position
+                    if (currentScroll >= fixmeHomes) {
+                        $('.description-icon').css({'animation': 'bounce 1s'});
+                        $('.description-icon').css({'transform': 'scale(0.8)'});
+                    }
+                });
+                var fixmeborder = $('.points-container-border').offset().top + 20;
+                $(window).scroll(function() {                  // assign scroll event listener
+                    var currentScroll = $(window).scrollTop(); // get current position
+                    if (currentScroll >= fixmeborder) {
+                        $('.swappers-border').css({'width': '12%'});
+                    }
+                });
+                $interval.cancel(elementsReady);
+            }
+        }, 100);
+    }
 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;
