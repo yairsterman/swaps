@@ -511,6 +511,10 @@
 		&.description-icon{
 			margin: auto;
 			transform: scale(0);
+			&.animated{
+				animation: bounce 1s;
+				transform: scale(0.8);
+			}
 		}
 	}
 	
@@ -618,6 +622,28 @@
 			margin: auto;
 			font-size: 16px;
 			padding-bottom: 3%;
+			opacity: 0;
+			&.first{
+				&.animated{
+					animation: fadeIn 1s forwards;
+					-webkit-animation: fadeIn 1s forwards;
+					animation-delay: 0.5s;
+				}
+			}
+			&.second{
+				&.animated{
+					animation: fadeIn 1s forwards;
+					-webkit-animation: fadeIn 1s forwards;
+					animation-delay: 1s;
+				}
+			}
+			&.third{
+				&.animated{
+					animation: fadeIn 1s forwards;
+					-webkit-animation: fadeIn 1s forwards;
+					animation-delay: 1.5s;
+				}
+			}
 		}
 	}
 
@@ -975,5 +1001,16 @@
 	1000% {
 		-webkit-transform: rotate(360deg);
 		transform: rotate(360deg);
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		transform: translate(0, 80px);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(0);
+		opacity: 1;
 	}
 }

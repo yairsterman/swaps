@@ -268,21 +268,21 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                         },500);
                     }
                 });
-                var fixmeHomes = $('#featuredHomes').offset().top;
-                $(window).scroll(function() {                  // assign scroll event listener
-                    var currentScroll = $(window).scrollTop(); // get current position
-                    if (currentScroll >= fixmeHomes) {
-                        $('.description-icon').css({'animation': 'bounce 1s'});
-                        $('.description-icon').css({'transform': 'scale(0.8)'});
-                    }
-                });
-                var fixmeborder = $('.points-container-border').offset().top + 20;
-                $(window).scroll(function() {                  // assign scroll event listener
-                    var currentScroll = $(window).scrollTop(); // get current position
-                    if (currentScroll >= fixmeborder) {
-                        $('.swappers-border').css({'width': '12%'});
-                    }
-                });
+                // var fixmeHomes = $('#featuredHomes').offset().top;
+                // $(window).scroll(function() {                  // assign scroll event listener
+                //     var currentScroll = $(window).scrollTop(); // get current position
+                //     if (currentScroll >= fixmeHomes) {
+                //         $('.description-icon').css({'animation': 'bounce 1s'});
+                //         $('.description-icon').css({'transform': 'scale(0.8)'});
+                //     }
+                // });
+                // var fixmeborder = $('.points-container-border').offset().top + 20;
+                // $(window).scroll(function() {                  // assign scroll event listener
+                //     var currentScroll = $(window).scrollTop(); // get current position
+                //     if (currentScroll >= fixmeborder) {
+                //         $('.swappers-border').css({'width': '12%'});
+                //     }
+                // });
                 $interval.cancel(elementsReady);
             }
         }, 100);
