@@ -89,6 +89,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 
 	$scope.go = function(path){
         $(window).unbind('scroll');
+        $rootScope.searchPage = false;
         if(path == 'account/messages'){
             $scope.unread = 0;
         }

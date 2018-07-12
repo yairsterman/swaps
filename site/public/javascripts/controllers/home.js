@@ -10,6 +10,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.rangeOptions1 = [];
     $scope.rangeOptions2 = [];
     $rootScope.homepage = true;
+    $rootScope.searchPage = false;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
     $scope.duration = $rootScope.search.duration;
