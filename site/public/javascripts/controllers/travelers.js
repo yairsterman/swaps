@@ -14,7 +14,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
     var filter = {};
-    $scope.pageSize = 10;
+    $scope.pageSize = 12;
     $anchorScroll();
 
     $scope.filter.guests = parseInt($routeParams.guests);
