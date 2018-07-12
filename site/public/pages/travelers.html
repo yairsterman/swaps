@@ -19,13 +19,13 @@
                             <div ng-if="filter.rangeLabel === 'Weekends'" class="flex">
                                 <div class="flex flex-row">
                                     <label class="flexible-label">Departure: </label>
-                                    <select ng-model="filter.startRange" class="form-control" ng-change="getPage(1)">
+                                    <select ng-model="filter.startRange" class="form-control" ng-change="getPage(1)" ng-disabled="loading">
                                         <option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-row">
                                     <label class="flexible-label">Return: </label>
-                                    <select ng-model="filter.endRange" class="form-control" ng-change="getPage(1)">
+                                    <select ng-model="filter.endRange" class="form-control" ng-change="getPage(1)" ng-disabled="loading">
                                         <option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>
                                     </select>
                                 </div>
@@ -34,20 +34,20 @@
                                 <div class="flex flex-row">
                                     <label class="flexible-label">Departure: </label>
 
-                                    <select ng-model="filter.startRange" class="form-control" ng-change="getPage(1)">
+                                    <select ng-model="filter.startRange" class="form-control" ng-change="getPage(1)" ng-disabled="loading">
                                         <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-row">
                                     <label class="flexible-label">Return: </label>
-                                    <select ng-model="filter.endRange" class="form-control" ng-change="getPage(1)">
+                                    <select ng-model="filter.endRange" class="form-control" ng-change="getPage(1)" ng-disabled="loading">
                                         <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div ng-if="filter.rangeLabel === 'Within Range'" class="duration-wr">
                                 <label class="flexible-label">Duration: </label>
-                                <input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="filter.duration" ng-change="changeRange()">
+                                <input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="filter.duration" ng-change="changeRange()" ng-disabled="loading">
                                 <span class="nights">Nights</span>
                             </div>
                         </form>
@@ -66,7 +66,7 @@
                         <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="filter.guests" min="1" max="8">
                     </div>
                     <div class="apply col-xs-7">
-                        <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="getPage(1)">
+                        <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="getPage(1)" ng-disabled="loading">
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
                 <div class="room-type">
-                    <div class="filter" ng-repeat="room in data.roomType">
+                    <div class="filter {{loading?'disabled':''}} " ng-repeat="room in data.roomType">
                         <div class="filter-checkbox" ng-click="checkRoomType(room.id, $event)">
                             <div class="check icon icon-check {{isCheckedRoomType(room.id)?'checked':''}}"></div>
                         </div>
@@ -98,7 +98,7 @@
             </button>
             <div class="dropdown-menu amenities-dropdown" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
                 <div class="row mg-0 amenities">
-                    <div class="filter col-sm-6 col-xs-6" ng-repeat="amenity in data.amenities">
+                    <div class="filter {{loading?'disabled':''}} col-sm-6 col-xs-6" ng-repeat="amenity in data.amenities">
                         <div class="filter-checkbox" ng-click="checkAmenity(amenity.id, $event)">
                             <div class="check icon icon-check {{isCheckedAmenity(amenity.id)?'checked':''}}"></div>
                         </div>

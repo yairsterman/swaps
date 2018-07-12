@@ -22,6 +22,8 @@ router.get('/getUsers', function(req, res, next) {
     let guests = req.query.guests?parseInt(req.query.guests):null;
     let page = req.query.page?parseInt(req.query.page):0;
     let when = req.query.when;
+    let amenities = req.query.amenities;
+    let room = req.query.room;
     let params = {};
     let or = [];
 
@@ -29,6 +31,16 @@ router.get('/getUsers', function(req, res, next) {
         setRequiredParams(params);
         if(guests){
             params['apptInfo.guests'] = {'$gt':(guests-1)}; //guests less then
+        }
+        if(amenities){
+            amenities = amenities.split(',').map(a => {
+                return parseInt(a);
+            });
+            params['apptInfo.amenities'] = {'$all':amenities};
+        }
+        if(room){
+            room = room.split(',');
+            params['apptInfo.roomType'] = {'$in':room};
         }
         // if users' country was specified, find only users traveling to the same country
         if(destination){

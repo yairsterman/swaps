@@ -48,6 +48,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.checkAmenity = function(index, event){
+        if($scope.loading){
+            return;
+        }
         event.preventDefault();
         event.stopPropagation();
         if($scope.isCheckedAmenity(index)){
@@ -64,6 +67,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.checkRoomType = function(index, event){
+        if($scope.loading){
+            return;
+        }
         event.preventDefault();
         event.stopPropagation();
         if($scope.isCheckedRoomType(index)){
@@ -180,14 +186,17 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.filter.rangeLabel = undefined;
         $scope.filter.startRange = undefined;
         $scope.filter.endRange = undefined;
+        $scope.getPage(1);
     }
 
     $scope.removeRoomTypes = function(){
         $scope.checkedRoomTypes = [];
+        $scope.getPage(1);
     }
 
     $scope.removeFacilities = function(){
         $scope.checkedAmenities = [];
+        $scope.getPage(1);
     }
 
     $scope.nextPage = function(){
