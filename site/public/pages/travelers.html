@@ -1,19 +1,80 @@
 <div class="travelers-page">
-    <div class="visible-xs">
-        <div class="dates row">
-            <div class="search-field col-xs-6">
-                <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="filter.date" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
-                <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="filter.date"></div>
+    <div class="filters">
+        <button class="filter-button date-button {{filter.when?'active':''}}">
+            <i class="fa fa-times" ng-click="removeDates()" ng-if="filter.when"></i>
+            <div class="filter-dates" ng-model="filter.date" id="searchDate" name="searchDate" ng-model="filter.date" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+                <div class="icon icon-calender" ></div>
+                {{filter.when?filter.date:'Dates'}}
+                <span class="flexible-departure">{{filter.rangeLabel === 'Weekends'?'Next 4 weekends':filter.rangeLabel === 'Within Range'?'Within next 2 months':filter.rangeLabel === 'Dates' && filter.startRange != 0 ?data.flexibleDates[filter.startRange].value:''}}</span>
+                <span class="flexible-return">{{filter.rangeLabel === 'Dates' && filter.endRange != 0?data.flexibleDates[filter.endRange].value:''}}</span>
             </div>
-            <div class="search-field col-xs-6">
-                <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="filter.guests" min="1" max="8">
+            <div class="">
+                <div class="dropdown">
+                    <div class="flexible-dates" data-toggle="dropdown" ng-if="filter.rangeLabel">
+                        {{filter.rangeLabel === 'Weekends'? data.weekendStart[filter.startRange].value +'-'+data.weekendEnd[filter.endRange].value :filter.rangeLabel === 'Dates'?filter.startRange != 0 || filter.endRange != 0?'Flexible':'Exact dates':filter.rangeLabel === 'Within Range'?(filter.startRange != filter.endRange?filter.startRange +'-'+ filter.endRange:filter.startRange) + ' Nights': ''}}
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </div>
+                    <div class="dropdown-menu flexible-dropdown" ng-if="filter.rangeLabel">
+                        <form name="rangeForm" class="range-wr" novalidate>
+                            <div ng-if="filter.rangeLabel === 'Weekends'" class="flex">
+                                <div class="flex flex-row">
+                                    <label class="flexible-label">Departure: </label>
+                                    <select ng-model="filter.startRange" class="form-control" ng-change="getPage(1)">
+                                        <option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label class="flexible-label">Return: </label>
+                                    <select ng-model="filter.endRange" class="form-control" ng-change="getPage(1)">
+                                        <option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-if="filter.rangeLabel === 'Dates'" class="flex">
+                                <div class="flex flex-row">
+                                    <label class="flexible-label">Departure: </label>
+
+                                    <select ng-model="filter.startRange" class="form-control" ng-change="getPage(1)">
+                                        <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label class="flexible-label">Return: </label>
+                                    <select ng-model="filter.endRange" class="form-control" ng-change="getPage(1)">
+                                        <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-if="filter.rangeLabel === 'Within Range'" class="duration-wr">
+                                <label class="flexible-label">Duration: </label>
+                                <input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="filter.duration" ng-change="changeRange()">
+                                <span class="nights">Nights</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </button>
+        <div class="dropdown travelers-dropdown" uib-dropdown>
+            <button class="filter-button dropdown-toggle {{filter.guests?'active':''}}" id="travelers" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="icon icon-man-small" ></div>
+                {{filter.guests}} {{filter.guests>1?'Travelers':'Traveler'}}
+            </button>
+            <div class="dropdown-menu" uib-dropdown-menu  aria-labelledby="travelers">
+                <div class="travelers-search">
+                    <div class="search-field filter col-xs-5">
+                        <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="filter.guests" min="1" max="8">
+                    </div>
+                    <div class="apply col-xs-7">
+                        <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="getPage(1)">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="filters">
         <div class="dropdown">
-            <button class="filter-button dropdown-toggle" type="button" id="filterRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="caret"></div>
+            <button class="filter-button dropdown-toggle {{checkedRoomTypes.length > 0?'active':''}}" type="button" id="filterRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-times" ng-click="removeRoomTypes()" ng-if="checkedRoomTypes.length > 0"></i>
+                <div class="icon icon-door-small"></div>
                 Room Type
             </button>
             <div class="dropdown-menu" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
@@ -30,8 +91,9 @@
             </div>
         </div>
         <div class="dropdown">
-            <button class="filter-button dropdown-toggle" type="button" id="filterAmenities" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="caret"></div>
+            <button class="filter-button dropdown-toggle facilities {{checkedAmenities.length > 0?'active':''}}" type="button" id="filterAmenities" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-times" ng-click="removeFacilities()" ng-if="checkedAmenities.length > 0"></i>
+                <div class="icon icon-TV"></div>
                 Facilities
             </button>
             <div class="dropdown-menu amenities-dropdown" aria-labelledby="filterAmenities" ng-click="$event.stopPropagation()">
@@ -47,9 +109,7 @@
                 </div>
             </div>
         </div>
-        <div class="apply">
-            <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="getPage(1)">
-        </div>
+
     </div>
     <div class="people-and-map">
         <div class="">

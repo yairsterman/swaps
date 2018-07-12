@@ -112,8 +112,9 @@
 		margin-bottom: 4vw;
 		@media @mobile{
 			height: 60vw;
-			margin: 0 4vw;
-			margin-right: calc(4vw - 5px);
+			margin: 0;
+			padding: 5px;
+			padding-right: 0;
 		}
 		.columns{
 			height: 100%;
@@ -225,6 +226,14 @@
 		transition: 0.4s ease;
 		padding-top: 12px;
 		border-bottom: 3px solid rgba(14,93,124,0.5);
+		&.animated{
+			animation: stretch 1s forwards;
+			-webkit-animation: stretch 1s forwards;
+			@media @mobile {
+				animation: stretch-xs 1s forwards;
+				-webkit-animation: stretch-xs 1s forwards;
+			}
+		}
 	}
 	.find-swap {
 		width: 70%;
@@ -635,6 +644,9 @@
 					animation: fadeIn 1s forwards;
 					-webkit-animation: fadeIn 1s forwards;
 					animation-delay: 1s;
+					@media @mobile {
+						animation-delay: 0.5s;
+					}
 				}
 			}
 			&.third{
@@ -642,6 +654,9 @@
 					animation: fadeIn 1s forwards;
 					-webkit-animation: fadeIn 1s forwards;
 					animation-delay: 1.5s;
+					@media @mobile {
+						animation-delay: 0.5s;
+					}
 				}
 			}
 		}
@@ -711,7 +726,13 @@
 	}
 	.travelers-list {
 		margin: 0 4vw;
-		padding: 0;
+		padding: 0 15px;
+		min-height: 380px;
+		overflow: hidden;
+		@media @mobile {
+			height: auto;
+			margin: 0;
+		}
 		.traveler-col {
 			transition: 0.5s ease;
 			padding: 5px;
@@ -983,7 +1004,22 @@
 		-webkit-transform: scale(1);
 		transform: scale(1);
 	}
-	1000% {
+	100% {
+		-webkit-transform: scale(0.8);
+		transform: scale(0.8);
+	}
+}
+
+@-webkit-keyframes bounce{
+	0% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+	}
+	50% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	100% {
 		-webkit-transform: scale(0.8);
 		transform: scale(0.8);
 	}
@@ -1012,5 +1048,52 @@
 	100% {
 		transform: translate(0);
 		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeIn {
+	0% {
+		transform: translate(0, 80px);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(0);
+		opacity: 1;
+	}
+}
+
+@keyframes stretch {
+	0% {
+		width: 0;
+	}
+	100% {
+		width: 12%;
+	}
+}
+
+@-webkit-keyframes stretch {
+	0% {
+		width: 0;
+	}
+	100% {
+		width: 12%;
+	}
+}
+
+@keyframes stretch-xs {
+	0% {
+		width: 0;
+	}
+	100% {
+		width:24%;
+	}
+}
+
+@-webkit-keyframes stretch-xs {
+	0% {
+		width: 0;
+	}
+	100% {
+		width: 24%;
 	}
 }

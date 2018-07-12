@@ -23,16 +23,225 @@
 		-moz-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		@media @mobile {
-			height: 10vw;
+			height: auto;
+			display: flex;
+			flex-wrap: wrap;
 		}
 		.filter-button{
+			position: relative;
 			font-size: 14px;
-			padding-right: 3vw;
 			background-color: transparent;
-			border: none;
 			width: auto;
+			height: 40px;
+			padding: 5px 15px;
 			text-align: left;
 			color: #045F79;
+			border: 1px solid #045f79;
+			border-radius: 4px;
+			margin-right: 20px;
+			transition: 0.3s ease;
+			display: flex;
+			align-items: center;
+			outline: none;
+			@media @mobile {
+				margin-top: 10px;
+			}
+			&.date-button{
+				&.active{
+					padding: 0 0px 0 15px;
+				}
+				@media @mobile {
+					padding: 0 15px;
+				}
+			}
+			&.active{
+				background-color: lightgrey;
+			}
+			&:focus, &:active{
+				outline: none;
+			}
+			&.facilities{
+				padding: 2px 15px;
+			}
+			.icon{
+				margin-right: 5px;
+				margin-top: -2px;
+				&.icon-TV{
+					transform: scale(0.7);
+					margin-top: -2px;
+				}
+				&.icon-calender{
+					margin-top: 0;
+					margin-right: 10px;
+				}
+			}
+			.filter-dates{
+				display: flex;
+				align-items: center;
+				@media @mobile {
+					margin-bottom: 5px;
+				}
+			}
+			.glyphicon{
+				position: absolute;
+				right: 10px;
+				top: 9px;
+				font-size: 14px;
+				color: #c7a768;
+				&.glyphicon-remove{
+					@media @mobile {
+						right: 25px;
+					}
+				}
+				&:focus{
+					outline: none;
+				}
+			}
+			.flexible-departure{
+				position: absolute;
+				top: 1px;
+				font-size: 10px;
+				left: 55px;
+				color: #000;
+			}
+			.flexible-return{
+				position: absolute;
+				top: 1px;
+				font-size: 10px;
+				left: 104px;
+				color: #000;
+			}
+			.flexible-dates{
+				height: 38px;
+				padding: 9px;
+				border-radius: 4px;
+				margin-left: 20px;
+				cursor: pointer;
+				min-width: 120px;
+				font-size: 14px;
+				line-height: 1.42857143;
+				display: block;
+				position: relative;
+				transition: 0.3s ease;
+				&:hover{
+					color: #fff;
+					background-color: #045f79;
+				}
+				@media @mobile {
+				}
+				.glyphicon{
+					position: absolute;
+					top: 12px;
+					right: 10px;
+
+				}
+			}
+			.flexible-dropdown{
+				@media @mobile {
+					left: -97%;
+				}
+			}
+			.flex{
+				display: flex;
+				align-items: center;
+				@media @mobile {
+					flex-direction: column;
+				}
+				&.flex-row{
+					@media @mobile {
+						flex-direction: row;
+						justify-content: space-between;
+						width: 100%;
+						padding-bottom: 10px;
+					}
+				}
+			}
+			.dropdown{
+				@media @mobile {
+					height: 42px;
+				}
+				&.open{
+					.glyphicon{
+						transform: rotate(180deg);
+					}
+				}
+			}
+			.range-wr {
+				min-width: 296px;
+				display: flex;
+				align-items: center;
+				padding: 0 10px;
+				font-size: 16px;
+				.xs-full-width{
+					@media @mobile {
+						width: 100%;
+					}
+					@media @tablet {
+						width: 0%;
+					}
+				}
+				.flexible-label{
+					display: inline;
+					color: #0e5d7c;
+					font-size: 16px;
+					padding: 0;
+					width: auto;
+				}
+				> div {
+					p {
+						float: left;
+						margin-right: 10px;
+						color: #0e5d7c;
+					}
+					select {
+						border: 0;
+						outline: 0;
+						background: transparent;
+						color: #c7a768;
+					}
+				}
+				.form-control{
+					max-width: 100px;
+					margin: 0 10px;
+					padding: 0 7px;
+					box-sizing: border-box;
+					display: inline-block;
+					border: 1px solid #ccc;
+					height: 32px;
+					min-width: 75px;
+					@media @mobile {
+						max-width: 130px;
+					}
+				}
+				.duration-wr {
+					input {
+						max-width: 100px;
+						margin: 0 10px;
+						padding: 0 7px;
+						box-sizing: border-box;
+						display: inline-block;
+						border: 1px solid #ccc;
+						height: 32px;
+					}
+					.nights{
+						font-weight: 300;
+					}
+				}
+			}
+			.fa{
+				outline: none;
+				position: absolute;
+				top: -2px;
+				left: 1px;
+				z-index: 10;
+				font-size: 16px;
+				font-weight: 100;
+				-webkit-text-stroke: 2px lightgray;
+			}
+		}
+		.travelers-search{
+			display: flex;
+			align-items: center;
 		}
 		.dropdown-menu{
 			padding: 10px;
@@ -40,21 +249,29 @@
 				outline: none;
 			}
 			&.amenities-dropdown{
-				@media @mobile {
-					left: -20vw;
-				}
+
 			}
 		}
 		.amenities{
-			width: 30vw;
+			min-width: 340px;
 			@media @mobile {
-				width: 60vw;
+				min-width: 300px;
 			}
 		}
 		.apply{
 			.btn-apply{
+				height: 34px;
+				padding: 6px 12px;
+				border-radius: 4px;
 				font-size: 14px;
-				padding: 2px 10px;
+				background-color: #fff;
+				border: 1px solid #045f79;
+				color: #045f79;
+				transition: 0.3s ease;
+				&:hover{
+					background-color: #045f79;
+					color: #fff;
+				}
 			}
 		}
 		.filter{
@@ -149,7 +366,7 @@
 			height: 100%;
 			background-color: rgba(255,255,255,0.8);
 			transition: 1.5s ease;
-			z-index: 10;
+			z-index: 7;
 			&.disappear{
 				opacity: 0;
 				z-index: -1;

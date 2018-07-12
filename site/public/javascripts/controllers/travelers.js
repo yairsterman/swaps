@@ -1,6 +1,6 @@
 var tr = null;
-swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location', '$routeParams', '$anchorScroll', '$mdSidenav',
-    'UsersService', 'Utils', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $mdSidenav, UsersService, Utils) {
+swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location', '$routeParams', '$anchorScroll', '$timeout','$mdSidenav',
+    'UsersService', 'Utils', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $timeout, $mdSidenav, UsersService, Utils) {
     tr = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = true;
@@ -19,6 +19,10 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
     $scope.filter.guests = parseInt($routeParams.guests);
     $scope.filter.when = $routeParams.dates != 'undefined'?$routeParams.dates:undefined;
+    $scope.filter.rangeLabel = $routeParams.label;
+    $scope.filter.startRange = $routeParams.startRange;
+    $scope.filter.endRange = $routeParams.endRange;
+
     // if($location.search().dates && $location.search().dates != 'undefined'){
     //     $scope.filter.date = $location.search().dates;
     // }
@@ -52,6 +56,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         else{
             $scope.checkedAmenities.push(index);
         }
+        $scope.getPage(1);
     }
 
     $scope.isCheckedAmenity = function(index){
@@ -67,10 +72,76 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         else{
             $scope.checkedRoomTypes.push(index);
         }
+        $scope.getPage(1);
     }
 
     $scope.isCheckedRoomType = function(index){
         return $scope.checkedRoomTypes.includes(index);
+    }
+
+    $scope.$watch('filter.when', function(){
+        if(!$scope.filter.when){
+            return;
+        }
+        var dates = $scope.filter.when.split('-');
+        var date1 = (new Date(dates[0])).toLocaleDateString('en-us', {month: 'short', day: 'numeric'});
+        var date2 = (new Date(dates[1])).toLocaleDateString('en-us', {month: 'short', day: 'numeric'});
+        $scope.filter.date = date1 + ' - ' + date2;
+        $timeout(function() {
+            if($scope.filter.rangeLabel === 'Weekends') {
+                $scope.filter.startRange = $scope.filter.startRange?$scope.filter.startRange:$scope.data.weekendStart[0].id.toString();
+                $scope.filter.endRange = $scope.filter.endRange?$scope.filter.endRange:$scope.data.weekendEnd[1].id.toString();
+            }
+            else if($scope.filter.rangeLabel === 'Dates') {
+                $scope.filter.startRange = $scope.filter.startRange?$scope.filter.startRange:$scope.data.flexibleDates[0].id.toString();
+                $scope.filter.endRange = $scope.filter.endRange?$scope.filter.endRange:$scope.data.flexibleDates[0].id.toString();
+            }
+            else if($scope.filter.rangeLabel === 'Within Range'){
+                $scope.filter.startRange = $scope.filter.startRange?$scope.filter.startRange:6;
+                $scope.filter.endRange =  $scope.filter.endRange? $scope.filter.endRange:8;
+                $scope.filter.duration = $scope.filter.startRange?$scope.filter.startRange+'-'+$scope.filter.endRange:'6-8';
+            }
+            $scope.getPage(1);
+        },500);
+    });
+
+    $scope.changeRange = function () {
+        if($scope.filter.duration) {
+            var arr =  $scope.filter.duration.split('-');
+            var min = Number(arr[0]);
+            var max = Number(arr[1]);
+            if(isNaN(min)){
+                $scope.filter.startRange = 6;
+                $scope.filter.endRange = 8;
+                return;
+            }
+            if(min === max || isNaN(max)) {
+                $scope.filter.duration = min+'';
+                max = min;
+            }
+            if(min < 1){
+                min = 1;
+            }
+            if(min > 58){
+                min = 58;
+            }
+            if(max > 58){
+                max = 58;
+            }
+            if(min > max){
+                $scope.filter.startRange = max;
+                $scope.filter.endRange = min;
+                return;
+            }
+            $scope.filter.startRange = min;
+            $scope.filter.endRange = max;
+        }
+        else {
+            $scope.filter.startRange = 6;
+            $scope.filter.endRange = 8;
+        }
+        $scope.getPage(1);
+
     }
 
     $scope.search = function(){
@@ -102,9 +173,21 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         };
     }
 
+
     $scope.removeDates = function(){
         $scope.filter.when = undefined;
         $scope.filter.date = undefined;
+        $scope.filter.rangeLabel = undefined;
+        $scope.filter.startRange = undefined;
+        $scope.filter.endRange = undefined;
+    }
+
+    $scope.removeRoomTypes = function(){
+        $scope.checkedRoomTypes = [];
+    }
+
+    $scope.removeFacilities = function(){
+        $scope.checkedAmenities = [];
     }
 
     $scope.nextPage = function(){
@@ -122,6 +205,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.getPage = function(page){
+        $('.travelers-dropdown.open').removeClass('open');
         scrollToTop();
         getTravelers(parseInt(page) - 1);
     }
