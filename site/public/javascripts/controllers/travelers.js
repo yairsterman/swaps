@@ -1,6 +1,6 @@
 var tr = null;
-swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location', '$routeParams', '$anchorScroll', '$timeout','$mdSidenav',
-    'UsersService', 'Utils', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $timeout, $mdSidenav, UsersService, Utils) {
+swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location', '$routeParams', '$anchorScroll', '$timeout', '$uibModal', '$mdSidenav',
+    'UsersService', 'Utils', function($scope, $rootScope, $location, $routeParams, $anchorScroll, $timeout, $uibModal, $mdSidenav, UsersService, Utils) {
     tr = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = true;
@@ -358,7 +358,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     function countPages(){
-        $scope.totalPages = Math.ceil($scope.totalUsers / 10);
+        $scope.totalPages = Math.ceil($scope.totalUsers / 12);
         $scope.pageNumbers = [];
         for (var i = 1; i <= $scope.totalPages; i++) {
             $scope.pageNumbers.push(i);
@@ -396,6 +396,18 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
           });
           $scope.travelers = travelers;
           countPages();
+          if($scope.travelers.length == 0){
+              $scope.failedCity = $scope.city;
+              $scope.modelInstance = $uibModal.open({
+                  animation: true,
+                  templateUrl: '../../pages/components/join-us.html',
+                  size: 'md',
+                  windowClass: 'request-modal',
+                  scope: $scope
+              });
+              $scope.city = undefined;
+              getTravelers(page);
+          }
           $scope.loading = false;
         },function(){
             //error message

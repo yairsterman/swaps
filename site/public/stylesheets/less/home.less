@@ -635,14 +635,14 @@
 			&.first{
 				&.animated{
 					animation: fadeIn 1s forwards;
-					-webkit-animation: fadeIn 1s forwards;
+					-webkit-animation: fadeIn 2s forwards;
 					animation-delay: 0.5s;
 				}
 			}
 			&.second{
 				&.animated{
 					animation: fadeIn 1s forwards;
-					-webkit-animation: fadeIn 1s forwards;
+					-webkit-animation: fadeIn 2s forwards;
 					animation-delay: 1s;
 					@media @mobile {
 						animation-delay: 0.5s;
@@ -652,7 +652,7 @@
 			&.third{
 				&.animated{
 					animation: fadeIn 1s forwards;
-					-webkit-animation: fadeIn 1s forwards;
+					-webkit-animation: fadeIn 2s forwards;
 					animation-delay: 1.5s;
 					@media @mobile {
 						animation-delay: 0.5s;
@@ -725,11 +725,13 @@
 		}
 	}
 	.travelers-list {
-		margin: 0 4vw;
+		margin-left: ~'calc(4vw - 15px)';
+		margin-right: ~'calc(4vw - 15px)';
 		padding: 0 15px;
-		min-height: 380px;
+		max-height: 380px;
 		overflow: hidden;
 		@media @mobile {
+			max-height: none;
 			height: auto;
 			margin: 0;
 		}

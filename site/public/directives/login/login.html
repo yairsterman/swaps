@@ -66,7 +66,7 @@
                     </label>
                     <div class="password">
                         <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="passwordInvalid = false;" placeholder="" minlength="6" ng-model="credentials.password" required>
-                        <i class="fa fa-eye" ng-if="!signin" ng-click="showPassword()"></i>
+                        <i class="fa {{eyeIcon}}" ng-if="!signin" ng-click="showPassword()"></i>
                     </div>
                     <label ng-if="!signin" class="control-label listing-label forgot" ng-click="goToForgot()">Forgot Password?
                     </label>

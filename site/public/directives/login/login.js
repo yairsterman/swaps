@@ -10,6 +10,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.subTitle = $scope.signin?'In just a few steps you could find your next Swap':'';
     $scope.credentials = {};
     $scope.passwordType = 'password';
+    $scope.eyeIcon = 'fa-eye';
 
     $scope.close = function(){
         $scope.modelInstance.close();
@@ -53,13 +54,13 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     };
 
     $scope.FBLogin = function(){
-        // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
 
     $scope.GoogleLogin = function(){
-        // window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
     };
 
     $scope.EmailLogin = function(form){
@@ -107,9 +108,11 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.showPassword = function(){
         if($scope.passwordType == 'password'){
             $scope.passwordType = 'text'
+            $scope.eyeIcon = 'fa-eye-slash';
         }
         else{
             $scope.passwordType = 'password'
+            $scope.eyeIcon = 'fa-eye';
         }
     }
     

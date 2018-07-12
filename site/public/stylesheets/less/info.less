@@ -1,3 +1,5 @@
+@import 'media.less';
+
 .information-page{
   background-color: #ffffff;
   padding: 0 15% 60px 15%;
@@ -42,5 +44,55 @@
   }
   .pa-55{
     padding-top:55px;
+  }
+}
+.join-us-page{
+  .top-corner{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+  }
+  .title{
+    font-size: 26px;
+    padding: 10px 0;
+    color: #0E5D7C;;
+  }
+  .sub-title{
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 300;
+    @media @mobile {
+      font-size: 16px;
+    }
+  }
+  .section{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    .icon-wrapper{
+      float: left;
+      transform: scale(0.8);
+      @media @mobile {
+        transform: scale(0.6);
+        margin-left: -30px;
+      }
+    }
+  }
+  .ok-btn{
+    width: 150px;
+    margin: 20px auto;
+    font-size: 20px;
+    border-radius: 4px;
+    text-align: center;
+    padding: 12px;
+    transition: 0.3s ease;
+    background-color: #fff;
+    border: 1px solid #0e5d7c;
+    color: #0e5d7c;
+    &:hover{
+      background-color: #0e5d7c;
+      border-color: #0e5d7c;
+      color: #fff;
+    }
   }
 }
