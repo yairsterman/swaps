@@ -3,6 +3,13 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.numOfFiles = 0;
     $scope.community = {};
 
+    if(Object.keys($location.search()).length == 0) {
+        $scope.absUrl = $location.path()+ '?';
+    }
+    else{
+        $scope.absUrl = $location.absUrl() + '&';
+    }
+
     $scope.getInitialPhase = function(){
         var initialPhase = 'onSignup';
         $scope.phase = 'onSignup';
@@ -33,6 +40,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             initialPhase = 'about';
         }
         $scope.phase = initialPhase;
+        $location.search('phase',initialPhase);
         getInitialFocus();
     }
 
@@ -62,6 +70,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.next = function(){
         if($scope.phase == 'onSignup'){
             $scope.phase = 'about';
+            $location.search('phase',$scope.phase);
             return;
         }
         saveChanges();
@@ -72,6 +81,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         if($scope.phase == 'about'){
             $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
             $scope.phase = 'basic';
+            $location.search('phase',$scope.phase);
             return;
         }
         // if($scope.phase == 'home'){
@@ -81,6 +91,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         // }
         if($scope.phase == 'basic'){
             $scope.phase = 'photos';
+            $location.search('phase',$scope.phase);
             return;
         }
     }
@@ -107,7 +118,9 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.finish = function(){
         $scope.fillCircle();
         $scope.phase = 'completedOnboarding' ;
+        $location.search('phase','done');
         if($rootScope.profileComplete()){
+            $location.search('phase','complete');
             $scope.noBack = true;
         }
     }

@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var Data = require('../user_data/data.js');
 var https = require('https');
+let emailMessages = require('../services/email-messages.js');
+let EmailService = require('../services/email.js');
 
 router.get('/get-data', function(req, res, next) {
     res.json(Data.getData());
@@ -18,6 +20,11 @@ router.get('/google-map', function(req, res, next) {
     // })
     res.redirect('https://maps.googleapis.com/maps/api/js?key=AIzaSyAsQULXcHotWeN2NVKBQHkh_o7fCC78Wwo&libraries=places&sensor=false&language=en');
 
+});
+
+router.post('/sendMailToInfo', function(req, res, next) {
+    EmailService.sendMail(['info@swapshome.com'], 'New interested user', emailMessages.userInterested(req.body.email, req.body.city));
+    res.json({success: true});
 });
 
 

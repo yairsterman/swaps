@@ -405,6 +405,17 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
                   windowClass: 'request-modal',
                   scope: $scope
               });
+              $scope.modelInstance.closed.then(function(value){
+                  if(!$scope.signingin){
+                      $scope.modelInstance = $uibModal.open({
+                          animation: true,
+                          templateUrl: '../../pages/components/leave-email.html',
+                          size: 'md',
+                          windowClass: 'request-modal',
+                          scope: $scope
+                      });
+                  }
+              });
               $scope.city = undefined;
               getTravelers(page);
           }
@@ -412,6 +423,14 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         },function(){
             //error message
         });
+    }
+
+    $scope.signin = function(){
+        $scope.signingin = true;
+    }
+
+    $scope.sendEmail = function(){
+        Utils.sendMailToInfo($scope.email, $scope.failedCity);
     }
 
     $scope.$on('login-success', function(event, args) {
