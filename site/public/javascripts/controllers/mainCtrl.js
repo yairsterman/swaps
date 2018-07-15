@@ -10,16 +10,12 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
     });
 
     $scope.openLogin = function(signin){
+        $scope.signin = signin;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/login/login.html',
             size: 'sm',
             controller: 'loginController',
-            resolve: {
-                signin: function () {
-                    return signin;
-                }
-            },
             scope:$scope
         });
     }

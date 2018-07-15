@@ -1,18 +1,32 @@
-<div class="join-us-page">
+<div class="join-us-page" style="min-height: 230px;">
     <div class="top-corner icon icon-delete" ng-click="modelInstance.close()"></div>
-    <div class="cancel-swap">
-        <div class="title">
-            Not interested in joining?
-        </div>
-        <div class="section" style="padding: 20px;">
-            <div class="sub-title">
-                No problem, how about leaving your email and we will notify you when someone from {{failedCity.split(',')[0]}}
-                joins us.
+    <div ng-if="!$parent.emailSent">
+        <div class="cancel-swap">
+            <div class="title">
+                Not interested in joining?
+            </div>
+            <div class="section" style="padding: 20px;">
+                <div class="sub-title">
+                    No problem, how about leaving your email and we will notify you when someone from {{failedCity.split(',')[0]}}
+                    joins us.
+                </div>
+            </div>
+            <div class="form">
+                <input class="form-control" type="email" ng-model="$parent.email" placeholder="your@email.com">
             </div>
         </div>
-        <div class="form">
-            <input class="form-control" type="email" ng-model="$parent.email" placeholder="your@email.com">
+        <div class="btn-primary ok-btn" ng-click="sendEmail()">Send</div>
+    </div>
+    <div ng-if="$parent.emailSent">
+        <div class="cancel-swap">
+            <div class="title">
+                Thank you!
+            </div>
+            <div class="" style="padding: 30px">
+                <div class="sub-title" style="text-align: center">
+                    We will notify you as soon as swap option come up
+                </div>
+            </div>
         </div>
     </div>
-    <div class="btn-primary ok-btn" ng-click="sendEmail();modelInstance.close()">Send</div>
 </div>

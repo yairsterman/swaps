@@ -430,7 +430,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.sendEmail = function(){
-        Utils.sendMailToInfo($scope.email, $scope.failedCity);
+        Utils.sendMailToInfo($scope.email, $scope.failedCity).then(function(){
+            $scope.emailSent =true;
+        });
     }
 
     $scope.$on('login-success', function(event, args) {

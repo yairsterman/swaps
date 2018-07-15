@@ -2,7 +2,9 @@ var login = null;
 swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, AccountService, MessageService, $timeout) {
     login = $scope;
     $rootScope.externalLogin = $routeParams.external;
-    $scope.signin = $rootScope.externalLogin;
+    if($rootScope.externalLogin){
+        $scope.signin = $rootScope.externalLogin;
+    }
     $scope.innerHeight = $window.innerHeight;
 
     // $scope.signin = signin;
@@ -54,14 +56,14 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
 
     $scope.FBLogin = function(){
         $location.search('login','facebook');
-        // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
 
     $scope.GoogleLogin = function(){
         $location.search('login','gmail');
-        // window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('http://localhost:3000/auth/google', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('https://swapshome.com/auth/google', 'newwindow', 'width=640, height=400');
     };
 
     $scope.EmailLogin = function(form){
