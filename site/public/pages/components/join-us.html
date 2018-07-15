@@ -32,5 +32,6 @@
             </div>
         </div>
     </div>
-    <div class="btn-primary ok-btn" ng-click="signin();openLogin(true);modelInstance.close({$value: true})">Join Swaps</div>
+    <div class="btn-primary ok-btn" ng-click="signin();openLogin(true);modelInstance.close({$value: true})" ng-if="!loggedIn">Join Swaps</div>
+    <div class="btn-primary ok-btn" ng-click="modelInstance.close()" ng-if="loggedIn">Continue</div>
 </div>

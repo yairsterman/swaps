@@ -396,8 +396,11 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
           });
           $scope.travelers = travelers;
           countPages();
-          if($scope.travelers.length == 0){
+          if($scope.travelers.length == 0 && !$scope.failedCity){
               $scope.failedCity = $scope.city;
+              if($rootScope.user && $rootScope.user._id){
+                  $scope.loggedIn = true;
+              }
               $scope.modelInstance = $uibModal.open({
                   animation: true,
                   templateUrl: '../../pages/components/join-us.html',
@@ -406,7 +409,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
                   scope: $scope
               });
               $scope.modelInstance.closed.then(function(value){
-                  if(!$scope.signingin){
+                  if(!$scope.signingin && !$rootScope.user){
                       $scope.modelInstance = $uibModal.open({
                           animation: true,
                           templateUrl: '../../pages/components/leave-email.html',
