@@ -34,6 +34,11 @@ function chargeRequest(token, index, userId, payment, userEmail, expdate){
     amount = payment.discount?amount * ((100 - payment.discount) / 100):amount; // distract discount from final amount
     let tranmode = Data.getTransactionMode().regular;
 
+    //-------------
+    // All transactions are free - remove later
+    amount = 0 ;
+    //-------------
+
     let terminalInformation = {
         supplier: config.tranzillaSupplier,
         password: config.tranzillaPassword,
@@ -48,10 +53,18 @@ function chargeRequest(token, index, userId, payment, userEmail, expdate){
             if (!error && response.statusCode == 200) {
                 let result;
                 try{
-                    result = JSON.parse(body);
-                    if(result.error_msg){
-                        return dfr.reject(result.error_msg);
-                    }
+                    // result = JSON.parse(body);
+                    //
+                    // if(result.error_msg){
+                    //     return dfr.reject(result.error_msg);
+                    // }
+                    // Mock result since transactions are free - remove later
+                    result = {
+                        TranzilaTK: token,
+                        ConfirmationCode: '000000',
+                        index: 0,
+                        sum: 0
+                    };
                     result.type = Data.getTransactionType().regular;
                     createAndSaveToUser(result, userId).then(function({transactionId, token}){
                         dfr.resolve(transactionId);
@@ -140,9 +153,10 @@ function refund(transaction, userId){
 function createAndSaveToUser (data, userId){
     let dfr = Q.defer();
 
-    if(data.ConfirmationCode == '0000000'){//failed transaction
-        dfr.reject('transaction failed');
-    }
+    // REMOVE FOR NOW!! since transactions are free
+    // if(data.ConfirmationCode == '0000000'){//failed transaction
+    //     dfr.reject('transaction failed');
+    // }
 
     let token = data.TranzilaTK;
     let transaction = new Transaction({
@@ -202,33 +216,35 @@ function saveTransactionId(userId, transactionId){
 function getExpirationDate(terminalInformation, index, expdate){
     let dfr = Q.defer();
 
-    if(expdate){
-        //return the expiration date without querying tranzila
-        dfr.resolve(expdate);
-    }
+    dfr.resolve('0000'); // Mock date for free transactions - remove later
 
-    request.post({
-        headers : {"Content-Type": "application/x-www-form-urlencoded"},
-        url: config.tranzilaGetIndexUrl,
-        body: `terminal=${terminalInformation.supplier}&passw=${terminalInformation.password}&index=${index}&response_return_format=json`
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let result;
-            try{
-                result = querystring.parse(body);
-                if(result.error_msg){
-                    return dfr.reject(result.error_msg);
-                }
-                dfr.resolve('' + result.expmonth + result.expyear);
-            }
-            catch(e){
-                dfr.reject(e);
-            }
-        }
-        else{
-            dfr.reject(error);
-        }
-    });
+    // if(expdate){
+    //     //return the expiration date without querying tranzila
+    //     dfr.resolve(expdate);
+    // }
+    //
+    // request.post({
+    //     headers : {"Content-Type": "application/x-www-form-urlencoded"},
+    //     url: config.tranzilaGetIndexUrl,
+    //     body: `terminal=${terminalInformation.supplier}&passw=${terminalInformation.password}&index=${index}&response_return_format=json`
+    // }, function (error, response, body) {
+    //     if (!error && response.statusCode == 200) {
+    //         let result;
+    //         try{
+    //             result = querystring.parse(body);
+    //             if(result.error_msg){
+    //                 return dfr.reject(result.error_msg);
+    //             }
+    //             dfr.resolve('' + result.expmonth + result.expyear);
+    //         }
+    //         catch(e){
+    //             dfr.reject(e);
+    //         }
+    //     }
+    //     else{
+    //         dfr.reject(error);
+    //     }
+    // });
 
     return dfr.promise;
 }
