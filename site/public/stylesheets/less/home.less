@@ -72,29 +72,30 @@
 	.section{
 		padding-bottom: 4vw;
 		&.main-section{
-			height: 40vw;
+			padding-top: 70px;
+			height: 42vw;
 			//background-image: url('../../images/static/home.jpg');
 			//background-position: bottom;
 			//background-size: cover;
 			//background-repeat: no-repeat;
-			background: -moz-linear-gradient(top, rgba(14,93,124,1) 10%, rgba(255,255,255,0.8) 100%); /* FF3.6-15 */
-			background: -webkit-linear-gradient(top, rgba(14,93,124,1) 10%,rgba(255,255,255,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
-			background: linear-gradient(to bottom, rgba(14,93,124,1) 10%,rgba(255,255,255,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
+			background: -moz-linear-gradient(top, #fff 6%, rgba(255,255,255,0.8) 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, #fff 6%,rgba(255,255,255,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, #fff 6%,rgba(255,255,255,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
 			position: relative;
 			@media @mobile {
 				height: 450px;
-				background: -moz-linear-gradient(top, rgba(14,93,124,1) 10%, rgba(255,255,255,0.7) 100%); /* FF3.6-15 */
-				background: -webkit-linear-gradient(top, rgba(14,93,124,1) 10%,rgba(255,255,255,0.7) 100%); /* Chrome10-25,Safari5.1-6 */
-				background: linear-gradient(to bottom, rgba(14,93,124,1) 10%,rgba(255,255,255,0.7) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
+				background: -moz-linear-gradient(top, #fff 6%, rgba(255,255,255,0.7) 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, #fff 6%,rgba(255,255,255,0.7) 100%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, #fff 6%,rgba(255,255,255,0.7) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
 			}
 		}
 		&.featured-homes{
 			min-height: 40vw;
-			background: -moz-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,1) 25%); /* FF3.6-15 */
-			background: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 25%); /* Chrome10-25,Safari5.1-6 */
-			background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 25%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			background: -moz-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,1) 45%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 45%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 45%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 			@media @mobile {
 				background: -moz-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 15%); /* FF3.6-15 */
@@ -190,7 +191,7 @@
 		}
 		.title-swaps {
 			background-repeat: no-repeat;
-			color: #fff;
+			color: #0E5D7C;
 			font-size: 56px;
 			font-weight: 500;
 			height: 170px;
@@ -200,7 +201,7 @@
 		}
 
 		.points-container {
-			color: #fff;
+			color: #0E5D7C;
 			font-weight: 400;
 			padding: 5px 0;
 			font-size: 32px;
@@ -213,13 +214,14 @@
 			.points-container-border{
 				width: 12%;
 				padding-top: 12px;
-				border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+				border-bottom: 3px solid rgba(14,93,124,0.4);
 				@media @mobile {
 					width: 24%;
 				}
 			}
 		}
 	}
+
 	.swappers-border{
 		width: 0;
 		margin: auto;
@@ -256,6 +258,7 @@
 			margin: 0;
 			background-color: #fff;
 			border-radius: 5px;
+			box-shadow: 0 0 4px 2px rgba(14,93,124,0.6);
 			.search-field{
 				padding: 0;
 				&:nth-child(2){
@@ -509,6 +512,17 @@
 		}
 	}
 
+	.instagram-row{
+		margin-left: ~'calc(4vw - 15px)';
+		margin-right: ~'calc(4vw - 15px)';
+		.instagram-image{
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			width:100%;
+			height: 18vw;
+		}
+	}
 	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
 		color: rgba(199, 167, 104, 0.8);
 	}

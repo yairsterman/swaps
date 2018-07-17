@@ -1,10 +1,13 @@
 @import 'media.less';
 
 .header{
-	background-color: #fff;
+	background-color: transparent;
 	height: 70px;
+	position: absolute;
+	width: 100%;
+	top: 0;
 	&.default-header{
-		background-color: #ffffff;
+		background-color: transparent;
 	}
 	.navbar{
 	    margin-bottom: 0;
@@ -32,7 +35,7 @@
 			}
 		}
 		&.navbar-default {
-			background-color: #fff;
+			background-color: transparent;
 			border-bottom: 1px solid #eeeeee;
 			//border: 0;
 			border: none;
@@ -42,6 +45,9 @@
 			@media @mobile {
 				position: fixed;
 				width: 100%;
+			}
+			.logo{
+				display: none;
 			}
 			.navbar-collapse {
 				border: 0;
