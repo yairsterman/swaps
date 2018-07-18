@@ -8,6 +8,7 @@ let schema = new Schema({
     html: String,
     excerpt: String,
     author: String,
+    show: Boolean,
     date: { type: Date, default: Date.now },
 });
 
