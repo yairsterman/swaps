@@ -3,96 +3,104 @@
         <div class="title-container">
             <div class="title-swaps" style="background-image: url('../images/logotype.svg')"></div>
             <div class="points-container">
-                Home is Wherever<div></div>
-                <div class="points-container-border"></div>
+                Home is Wherever.
             </div>
-        </div>
+            <div class="points-container-border"></div>
+            <div class="find-swap">
+                <!--<div class="start-swapping">Start Swapping</div>-->
+                <div class="row search-area">
+                    <div class="search-field left col-sm-12 col-xs-12">
+                        <label class="where-label" for="searchCity">Where would you like to go?</label>
+                        <div class="search-input">
+                            <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
+                            <div class="icon icon-infocenter"></div>
+                            <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
+                                <button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>
+                            </a>
+                        </div>
+                    </div>
+                    <!--<div class="search-field col-sm-6 col-xs-12 hidden-xs">-->
+                    <!--<label for="searchDate">When</label>-->
+                    <!--<div class="row flex">-->
+                    <!--<div class="col-xs-12 {{rangeLabel?'col-sm-7':'col-sm-12'}}">-->
+                    <!--<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker readonly="true">-->
+                    <!--<div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>-->
+                    <!--<span class="flexible-departure">{{rangeLabel === 'Weekends'?'Next 4 weekends':rangeLabel === 'Within Range'?'Within next 2 months':rangeLabel === 'Dates' && search.startRange != 0 ?data.flexibleDates[search.startRange].value:''}}</span>-->
+                    <!--<span class="flexible-return">{{rangeLabel === 'Dates' && search.endRange != 0?data.flexibleDates[search.endRange].value:''}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-sm-0'}} xs-full-width">-->
+                    <!--<div class="dropdown">-->
+                    <!--<div class="flexible-dates" data-toggle="dropdown" ng-if="rangeLabel">-->
+                    <!--{{rangeLabel === 'Weekends'? data.weekendStart[search.startRange].value +'-'+data.weekendEnd[search.endRange].value :rangeLabel === 'Dates'?search.startRange != 0 || search.endRange != 0?'Flexible':'Exact dates':rangeLabel === 'Within Range'?(search.startRange != search.endRange?search.startRange +'-'+ search.endRange:search.startRange) + ' Nights': ''}}-->
+                    <!--<span class="glyphicon glyphicon-chevron-down"></span>-->
+                    <!--</div>-->
+                    <!--<div class="dropdown-menu" ng-if="rangeLabel">-->
+                    <!--<form name="rangeForm" class="range-wr" novalidate>-->
+                    <!--<div ng-if="rangeLabel === 'Weekends'" class="flex">-->
+                    <!--<div class="flex flex-row">-->
+                    <!--<label class="flexible-label">Departure: </label>-->
+                    <!--<select ng-model="search.startRange" class="form-control">-->
+                    <!--<option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="flex flex-row">-->
+                    <!--<label class="flexible-label">Return: </label>-->
+                    <!--<select ng-model="search.endRange" class="form-control">-->
+                    <!--<option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div ng-if="rangeLabel === 'Dates'" class="flex">-->
+                    <!--<div class="flex flex-row">-->
+                    <!--<label class="flexible-label">Departure: </label>-->
+
+                    <!--<select ng-model="search.startRange" class="form-control">-->
+                    <!--<option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="flex flex-row">-->
+                    <!--<label class="flexible-label">Return: </label>-->
+                    <!--<select ng-model="search.endRange" class="form-control">-->
+                    <!--<option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div ng-if="rangeLabel === 'Within Range'" class="duration-wr">-->
+                    <!--<label class="flexible-label">Duration: </label>-->
+                    <!--<input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="search.duration" ng-change="changeRange()">-->
+                    <!--<span class="nights">Nights</span>-->
+                    <!--</div>-->
+                    <!--</form>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">&ndash;&gt;-->
+                    <!--<div class="icon icon-calender"></div>-->
+                    <!--</div>-->
+                    <!--<div class="search-field right col-sm-2 col-xs-12 ">-->
+                        <!--&lt;!&ndash;<label for="guests">Travelers</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="guests-search">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">-->
+                            <!--<button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>-->
+                        <!--</a>-->
+                        <!--&lt;!&ndash;<div class="icon icon-man-small"></div>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--<div class="no-padding col-sm-4 col-xs-12 visible-xs">-->
+                        <!--<button class="search" ng-click="searchSwap($event)">Search</button>-->
+                    <!--</div>-->
+                </div>
+            </div>
         <!--<div class="button-div container" scroll-to-top>-->
             <!--<span class="icon icon-brownerrow"-->
                   <!--style="cursor: pointer"></span>-->
         <!--</div>-->
-        <div class="find-swap">
-            <!--<div class="start-swapping">Start Swapping</div>-->
-            <div class="row search-area">
-                <div class="search-field left col-sm-4 col-xs-12">
-                    <label for="searchCity">Where</label>
-                    <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
-                    <div class="icon icon-infocenter"></div>
-                </div>
-                <div class="search-field col-sm-6 col-xs-12 hidden-xs">
-                    <label for="searchDate">When</label>
-                    <div class="row flex">
-                        <div class="col-xs-12 {{rangeLabel?'col-sm-7':'col-sm-12'}}">
-                            <input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker readonly="true">
-                            <div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>
-                            <span class="flexible-departure">{{rangeLabel === 'Weekends'?'Next 4 weekends':rangeLabel === 'Within Range'?'Within next 2 months':rangeLabel === 'Dates' && search.startRange != 0 ?data.flexibleDates[search.startRange].value:''}}</span>
-                            <span class="flexible-return">{{rangeLabel === 'Dates' && search.endRange != 0?data.flexibleDates[search.endRange].value:''}}</span>
-                        </div>
-                        <div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-sm-0'}} xs-full-width">
-                            <div class="dropdown">
-                                <div class="flexible-dates" data-toggle="dropdown" ng-if="rangeLabel">
-                                    {{rangeLabel === 'Weekends'? data.weekendStart[search.startRange].value +'-'+data.weekendEnd[search.endRange].value :rangeLabel === 'Dates'?search.startRange != 0 || search.endRange != 0?'Flexible':'Exact dates':rangeLabel === 'Within Range'?(search.startRange != search.endRange?search.startRange +'-'+ search.endRange:search.startRange) + ' Nights': ''}}
-                                    <span class="glyphicon glyphicon-chevron-down"></span>
-                                </div>
-                                <div class="dropdown-menu" ng-if="rangeLabel">
-                                    <form name="rangeForm" class="range-wr" novalidate>
-                                        <div ng-if="rangeLabel === 'Weekends'" class="flex">
-                                            <div class="flex flex-row">
-                                                <label class="flexible-label">Departure: </label>
-                                                <select ng-model="search.startRange" class="form-control">
-                                                    <option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>
-                                                </select>
-                                            </div>
-                                            <div class="flex flex-row">
-                                                <label class="flexible-label">Return: </label>
-                                                <select ng-model="search.endRange" class="form-control">
-                                                    <option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div ng-if="rangeLabel === 'Dates'" class="flex">
-                                            <div class="flex flex-row">
-                                                <label class="flexible-label">Departure: </label>
-
-                                                <select ng-model="search.startRange" class="form-control">
-                                                    <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
-                                                </select>
-                                            </div>
-                                            <div class="flex flex-row">
-                                                <label class="flexible-label">Return: </label>
-                                                <select ng-model="search.endRange" class="form-control">
-                                                    <option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div ng-if="rangeLabel === 'Within Range'" class="duration-wr">
-                                            <label class="flexible-label">Duration: </label>
-                                            <input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="search.duration" ng-change="changeRange()">
-                                            <span class="nights">Nights</span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">-->
-                    <div class="icon icon-calender"></div>
-                </div>
-                <div class="search-field right col-sm-2 col-xs-12 ">
-                    <!--<label for="guests">Travelers</label>-->
-                    <!--<div class="guests-search">-->
-                        <!--<input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">-->
-                    <!--</div>-->
-                    <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
-                        <button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>
-                    </a>
-                    <!--<div class="icon icon-man-small"></div>-->
-                </div>
-                <div class="no-padding col-sm-4 col-xs-12 visible-xs">
-                    <button class="search" ng-click="searchSwap($event)">Search</button>
-                </div>
-            </div>
         </div>
+    </div>
+    <div class="section featured-homes">
+
     </div>
     <div class="section featured-homes" id="featuredHomes">
         <div class="title swappers">

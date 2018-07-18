@@ -46,6 +46,18 @@
 				position: fixed;
 				width: 100%;
 			}
+			.login-area {
+				float: left;
+				.login{
+					color: #ffffff;
+					a{
+						color: #ffffff;
+					}
+				}
+				.underlined{
+					border-bottom: 2px solid #ffffff;
+				}
+			}
 			.logo{
 				display: none;
 			}
@@ -91,17 +103,27 @@
 				-moz-box-shadow: none;
 				box-shadow: none;
 			}
+			.logo{
+				display: block;
+			}
 			.login-area{
+				float: right;
 				margin:0;
 				margin-top: 8px;
 				.login{
-					color: rgba(14,93,124,1);
+					color: #0E5D7C;
 					&:focus{
 						outline: none;
 					}
+					a{
+						 color: #0E5D7C;
+					 }
 				}
 				.underlined{
-					border-bottom: 2px solid rgba(14,93,124,0.4);
+					border-bottom: 2px solid #0E5D7C;
+				}
+				a{
+					color: #0E5D7C;
 				}
 			}
 			.pac-item{
@@ -268,7 +290,7 @@
 				margin-top: 0 !important;
 			}
 			.login{
-				color: rgba(14,93,124,1);
+				color: #0E5D7C;
 				padding: 16px;
 				font-size: 16px;
 				cursor: pointer;
