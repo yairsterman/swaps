@@ -10,7 +10,7 @@
                 <!--<div class="start-swapping">Start Swapping</div>-->
                 <div class="row search-area">
                     <div class="search-field left col-sm-12 col-xs-12">
-                        <label class="where-label" for="searchCity">Where would you like to go?</label>
+                        <label class="where-label" for="searchCity">Where would you like to swap homes?</label>
                         <div class="search-input">
                             <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
                             <div class="icon icon-infocenter"></div>
@@ -100,7 +100,27 @@
         </div>
     </div>
     <div class="section featured-homes">
-
+        <div class="what-is-swaps" scroll-animate>
+            <div class="row full-width">
+                <div class="col-md-4 col-xs-12 full-height">
+                    <div class="photo">
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <div class="explanation-text">
+                        <div class="line line-1">
+                            Swaps is about creating a home swapping solution for travelers around the world.
+                        </div>
+                        <div class="line line-2">
+                            Our platform offers wanderers at heart an, easy, safe, and cheap way to live their dreams and travel anywhere.
+                        </div>
+                        <div class="line line-3">
+                            It’s easy - You stay at their home, they stay at yours.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="section featured-homes" id="featuredHomes">
         <div class="title swappers">
@@ -118,17 +138,6 @@
             </div>
         </div>
     </div>
-    <div class="section featured-homes" id="instagram">
-        <div class="title swappers">
-            <span scroll-on-click>Check us out on Instagram</span>
-            <div class="swappers-border" scroll-animate></div>
-        </div>
-        <div class="mg-0 row instagram-row">
-            <div class= "col-sm-3 col-xs-12" ng-repeat="image in [1,2,3,4] ">
-                <div class="instagram-image" style="background-image: url({{featured[image]}})"></div>
-            </div>
-        </div>
-    </div>
     <div class="how-it-works">
         <div class="inner-section row" scroll-animate>
             <div class="title">How does it work?</div>
@@ -139,7 +148,7 @@
                 </div>
                 <div class="ticket-title">It's Easy!</div>
                 <div class="how-inner-sentences first" scroll-animate>
-                    List details about your home and travel plans, find other Swappers, and set up a perfect home swap.
+                    List your home, find other Swappers or enter your travel plans so they can find you, and set up a perfect home swap
                 </div>
             </div>
             <div class="how-inner-ticket col-sm-4 col-xs-12">
@@ -148,8 +157,7 @@
                 </div>
                 <div class="ticket-title">It's Secure!</div>
                 <div class="how-inner-sentences second" scroll-animate>
-                    Swappers set aside a security deposit for safety.
-                    <strong> The entire security deposit is returned to you after your trip</strong>
+                    Your trip and your home are important to us, and we offer unique plans to cover you in cases of property damages or cancellations
                 </div>
             </div>
             <div class="how-inner-ticket col-sm-4 col-xs-12">
@@ -157,7 +165,7 @@
                     <div class="description-icon icon icon-money" scroll-animate></div>
                 </div>
                 <div class="ticket-title">It's Cheap!</div>
-                <div class="how-inner-sentences third" scroll-animate>Save a ton of money and find a home wherever you go! </div>
+                <div class="how-inner-sentences third" scroll-animate>Save money for the important things in life and start experiencing the world. Signing up is completely free, and your first Swap is on us!</div>
             </div>
             <div class="col-xs-12" >
                 <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
@@ -165,37 +173,50 @@
             </div>
         </div>
     </div>
-    <div class="title swappers" id="featuredDestinations">
-        <span scroll-on-click>Featured Destinations</span>
-        <div class="swappers-border" scroll-animate></div>
-    </div>
-    <div class="section featured-destinations" ng-click="searchSwap($event)">
-        <div class="columns col-30">
-            <div class="city he-60"
-                 ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">
+    <div class="section featured-homes" id="instagram">
+        <div class="title swappers">
+            <span scroll-on-click>Check us out on Instagram</span>
+            <div class="swappers-border" scroll-animate></div>
+        </div>
+        <div class="mg-0 row instagram-row">
+            <div class= "col-sm-3 col-xs-12" ng-repeat="image in [1,2,3,4] ">
+                <div class="instagram-image" style="background-image: url({{featured[image]}})">
 
-                <div class="city-text">{{cities[0].name}}</div>
-            </div>
-            <div class="city he-40"
-                 ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">
-                <div class="city-text">{{cities[1].name}}</div>
-            </div>
-        </div>
-        <div class="columns col-70">
-            <div class="city he-40"
-                 ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">
-                <div class="city-text">{{cities[2].name}}</div>
-            </div>
-            <div class="city he-60 width-60 "
-                 ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">
-                <div class="city-text">{{cities[3].name}}</div>
-            </div>
-            <div class="city he-60 width-40"
-                 ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">
-                <div class="city-text">{{cities[4].name}}</div>
+                </div>
             </div>
         </div>
     </div>
+    <!--<div class="title swappers" id="featuredDestinations">-->
+        <!--<span scroll-on-click>Featured Destinations</span>-->
+        <!--<div class="swappers-border" scroll-animate></div>-->
+    <!--</div>-->
+    <!--<div class="section featured-destinations" ng-click="searchSwap($event)">-->
+        <!--<div class="columns col-30">-->
+            <!--<div class="city he-60"-->
+                 <!--ng-mouseout="changeImageBack(0)" style="background-image: url({{featured[0]}})">-->
+
+                <!--<div class="city-text">{{cities[0].name}}</div>-->
+            <!--</div>-->
+            <!--<div class="city he-40"-->
+                 <!--ng-mouseout="changeImageBack(1)" style="background-image: url({{featured[1]}})">-->
+                <!--<div class="city-text">{{cities[1].name}}</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="columns col-70">-->
+            <!--<div class="city he-40"-->
+                 <!--ng-mouseout="changeImageBack(2)" style="background-image: url({{featured[2]}})">-->
+                <!--<div class="city-text">{{cities[2].name}}</div>-->
+            <!--</div>-->
+            <!--<div class="city he-60 width-60 "-->
+                 <!--ng-mouseout="changeImageBack(3)" style="background-image: url({{featured[3]}})">-->
+                <!--<div class="city-text">{{cities[3].name}}</div>-->
+            <!--</div>-->
+            <!--<div class="city he-60 width-40"-->
+                 <!--ng-mouseout="changeImageBack(4)" style="background-image: url({{featured[4]}})">-->
+                <!--<div class="city-text">{{cities[4].name}}</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="join-now" ng-if="false">
         <div class="bg-image">
             <div class="bottom-title">What are you waiting for? Start Swapping today!</div>

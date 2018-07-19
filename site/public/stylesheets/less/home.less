@@ -14,7 +14,12 @@
 	z-index: 1;
 	background-color: white;
 	height: 100%;
-
+	@media @tablet {
+		background-size: auto;
+	}
+	@media @mobile {
+		background-size: auto;
+	}
 	.ranges {
 		background: red;
 		ul li:last-of-type {
@@ -92,7 +97,7 @@
 			}
 		}
 		&.featured-homes{
-			min-height: 40vw;
+			//min-height: 40vw;
 			//background: -moz-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,1) 45%); /* FF3.6-15 */
 			//background: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 45%); /* Chrome10-25,Safari5.1-6 */
 			//background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 45%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -102,6 +107,67 @@
 				//background: -webkit-linear-gradient(top, rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 15%); /* Chrome10-25,Safari5.1-6 */
 				//background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 15%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 				//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+			}
+			.what-is-swaps{
+				margin-left: ~'calc(4vw - 15px)';
+				margin-right: ~'calc(4vw - 15px)';
+				padding: 4vw 15px;
+				height: 100%;
+				display: flex;
+				align-items: stretch;
+				@media @mobile {
+					margin: 0;
+				}
+				.full-height{
+					height: 100%;
+				}
+				.photo{
+					background-image: url('../../images/static/what-is-swaps.jpeg');
+					background-position: top;
+					background-size: cover;
+					background-repeat: no-repeat;
+					box-shadow: inset 0px 0px 4px 2px rgba(255,255,255,1);
+					height: 100%;
+				}
+				.explanation-text{
+					.line{
+						opacity: 0;
+						padding-bottom: 60px;
+						font-weight: 500;
+						font-size: 24px;
+						color: #848a91;
+						&.line-2{
+							margin-left: 70px;
+						}
+						&.line-3{
+							padding-bottom: 0;
+							margin-left: 140px;
+						}
+					}
+				}
+				&.animated{
+					.photo{
+						animation: fade-scale 6s forwards;
+						-webkit-animation: fade-scale 6s forwards;
+					}
+					.explanation-text{
+						.line-1{
+							animation: fade-right 1s forwards;
+							-webkit-animation: fade-right 1s forwards;
+							animation-delay: 1s;
+						}
+						.line-2{
+							animation: fade-right 1s forwards;
+							-webkit-animation: fade-right 1s forwards;
+							animation-delay: 1.5s;
+						}
+						.line-3{
+							animation: fade-right 1s forwards;
+							-webkit-animation: fade-right 1s forwards;
+							animation-delay: 2s;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -251,6 +317,10 @@
 	.find-swap {
 		width: 40%;
 		margin-top: 16vw;
+		@media @tablet {
+			width: 50%;
+			left: 0;
+		}
 		@media @mobile {
 			width: 100%;
 			left: 0;
@@ -450,13 +520,13 @@
 			opacity: 0;
 			animation: fade-up 1s forwards;
 			-webkit-animation: fade-up 1s forwards;
-			animation-delay: 3s;
+			animation-delay: 2.5s;
 		}
 		.search-input{
 			opacity: 0;
 			animation: fade-up 1s forwards;
 			-webkit-animation: fade-up 1s forwards;
-			animation-delay: 3.5s;
+			animation-delay: 3s;
 		}
 		label{
 			color: #ffffff;
@@ -558,14 +628,14 @@
 	}
 	
     .how-it-works {
-      	background-image: url("../../images/static/beach.jpg");
+      	background-image: url("../../images/static/home.jpg");
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center;
 		background-attachment: fixed;
 		align-content: center;
 		padding: 0 8vw;
-		height: 53vw;
+		height: 56vw;
 		transition: 1.6s ease;
 		overflow: hidden;
 		@media @mobile {
@@ -758,7 +828,7 @@
 		margin-left: ~'calc(4vw - 15px)';
 		margin-right: ~'calc(4vw - 15px)';
 		padding: 0 15px;
-		max-height: 380px;
+		max-height: 390px;
 		overflow: hidden;
 		@media @mobile {
 			max-height: none;
@@ -1213,4 +1283,27 @@
 		width: 8%;
 	}
 }
+
+@keyframes fade-scale {
+	0% {
+		opacity:0;
+		transform: scale(1.1);
+	}
+	100% {
+		opacity:1;
+		transform: scale(1);
+	}
+}
+
+@-webkit-keyframes fade-scale{
+	0% {
+		opacity:0;
+		transform: scale(1.1);
+	}
+	100% {
+		opacity:1;
+		transform: scale(1);
+	}
+}
+
 
