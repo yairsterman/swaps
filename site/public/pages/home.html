@@ -15,7 +15,7 @@
                             <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
                             <div class="icon icon-infocenter"></div>
                             <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
-                                <button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>
+                                <button class="search" ng-click="searchSwap($event)">Search</button>
                             </a>
                         </div>
                     </div>
@@ -99,14 +99,14 @@
         <!--</div>-->
         </div>
     </div>
-    <div class="section featured-homes">
+    <div class="section featured-homes what-is">
         <div class="what-is-swaps" scroll-animate>
             <div class="row full-width">
-                <div class="col-md-4 col-xs-12 full-height">
+                <div class="col-sm-5 col-xs-0 full-height hidden-xs">
                     <div class="photo">
                     </div>
                 </div>
-                <div class="col-md-8 col-xs-12">
+                <div class="col-sm-7 col-xs-12">
                     <div class="explanation-text">
                         <div class="line line-1">
                             Swaps is about creating a home swapping solution for travelers around the world.
@@ -179,7 +179,7 @@
             <div class="swappers-border" scroll-animate></div>
         </div>
         <div class="mg-0 row instagram-row">
-            <div class= "col-sm-3 col-xs-12" ng-repeat="image in [1,2,3,4] ">
+            <div class= "col-sm-3 col-xs-12" ng-repeat="image in [0,1,2,3] " ng-click="link('instagram')">
                 <div class="instagram-image" style="background-image: url({{featured[image]}})">
 
                 </div>

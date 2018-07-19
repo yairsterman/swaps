@@ -14,27 +14,27 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
     $scope.duration = $rootScope.search.duration;
-    $scope.rangeLabel = 'Dates';
+    // $scope.rangeLabel = 'Dates';
 
     $scope.cities = [
         {
             "name": "Venice",
-            "normal": "../images/cities/updated/venice.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-1.jpg",
             "faded": "../images/cities/updated/venice2.jpg"
         },
         {
             "name": "Miami",
-            "normal": "../images/cities/updated/miami.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-2.jpg",
             "faded": "../images/cities/updated/miami2.jpg"
         },
         {
             "name": "London",
-            "normal": "../images/cities/updated/london.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-3.jpg",
             "faded": "../images/cities/updated/london2.jpg"
         },
         {
             "name": "Sydney",
-            "normal": "../images/cities/updated/sydney.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-4.jpg",
             "faded": "../images/cities/updated/sydney2.jpg"
         },
         {
