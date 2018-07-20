@@ -388,19 +388,19 @@ module.exports.cancelRequest = function(requestId, userId, message){
  */
 function sendRefundTransactions(transaction1, transaction2, user1, user2, declined){
     let dfr = Q.defer();
-    if(declined){
+    // if(declined){
         return dfr.resolve();
-    }
+    // }
 
-    transactionService.refund(transaction1, user1._id)
-    .then(function(){
-        return transactionService.refund(transaction2, user2._id);
-    })
-    .then(function(){
-        dfr.resolve();
-    },function(err){
-        dfr.reject(err);
-    });
+    // transactionService.refund(transaction1, user1._id)
+    // .then(function(){
+    //     return transactionService.refund(transaction2, user2._id);
+    // })
+    // .then(function(){
+    //     dfr.resolve();
+    // },function(err){
+    //     dfr.reject(err);
+    // });
 
     return dfr.promise;
 }
