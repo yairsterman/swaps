@@ -1,18 +1,23 @@
 @import 'media.less';
 
 .header{
-	background-color: #fff;
-	height: 70px;
 	&.default-header{
-		background-color: #ffffff;
+		background-color: transparent;
 	}
 	.navbar{
 	    margin-bottom: 0;
-		position: relative;
 		z-index: 999;
+		background-color: transparent;
+		height: 70px;
+		position: relative;
+		width: 100%;
+		top: 0;
 		&.no-opacity{
 			opacity: 0;
 		}
+		&.home-header {
+			 position: absolute;
+		 }
 		&.sticky{
 			position: fixed;
 			width: 100%;
@@ -32,16 +37,45 @@
 			}
 		}
 		&.navbar-default {
-			background-color: #fff;
+			background-color: transparent;
 			border-bottom: 1px solid #eeeeee;
 			//border: 0;
 			border: none;
 			-webkit-box-shadow: none;
 			box-shadow: none;
 			border-radius: 0;
+			.login-area {
+				float: left;
+				.login{
+					color: #ffffff;
+					a{
+						color: #ffffff;
+					}
+				}
+				.underlined{
+					border-bottom: 2px solid #ffffff;
+				}
+			}
+			.logo{
+				display: none;
+			}
 			@media @mobile {
 				position: fixed;
-				width: 100%;
+				background-color: #ffffff;
+				.login-area {
+					.login{
+						color: #0E5D7C;
+						a{
+							color: #0E5D7C;
+						}
+					}
+					.underlined{
+						border-bottom: 2px solid #0E5D7C;
+					}
+				}
+				.logo{
+					display: block;
+				}
 			}
 			.navbar-collapse {
 				border: 0;
@@ -80,22 +114,35 @@
 			-webkit-box-shadow: 0px 4px 12px -8px rgba(0,0,0,0.5);
 			-moz-box-shadow: 0px 4px 12px -8px rgba(0,0,0,0.5);
 			box-shadow: 0px 4px 12px -8px rgba(0,0,0,0.5);
+			@media @mobile {
+				position: relative;
+			}
 			&.no-shadow{
 				-webkit-box-shadow: none;
 				-moz-box-shadow: none;
 				box-shadow: none;
 			}
+			.logo{
+				display: block;
+			}
 			.login-area{
+				float: right;
 				margin:0;
 				margin-top: 8px;
 				.login{
-					color: rgba(14,93,124,1);
+					color: #0E5D7C;
 					&:focus{
 						outline: none;
 					}
+					a{
+						 color: #0E5D7C;
+					 }
 				}
 				.underlined{
-					border-bottom: 2px solid rgba(14,93,124,0.4);
+					border-bottom: 2px solid #0E5D7C;
+				}
+				a{
+					color: #0E5D7C;
 				}
 			}
 			.pac-item{
@@ -262,7 +309,7 @@
 				margin-top: 0 !important;
 			}
 			.login{
-				color: rgba(14,93,124,1);
+				color: #0E5D7C;
 				padding: 16px;
 				font-size: 16px;
 				cursor: pointer;
