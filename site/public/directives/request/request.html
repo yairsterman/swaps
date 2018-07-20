@@ -89,9 +89,9 @@
     <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
         <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
         <div class="dates"></div>
-        <div class="type">Payment</div>
-        <div class="amount">${{depositPlan.night}} Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>
-        <div class="total">Total Payment: <strong>${{totalPayment}}</strong></div>
+        <!--<div class="type">Payment</div>-->
+        <!--<div class="amount">${{depositPlan.night}} Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>-->
+        <!--<div class="total">Total Payment: <strong>${{totalPayment}}</strong></div>-->
         <div class="type">Deposit</div>
         <div class="amount">${{depositPlan.week}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
         <div class="total">Total Deposit: <strong>${{totalDeposit}}</strong></div>
