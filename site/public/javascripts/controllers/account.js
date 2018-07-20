@@ -2,7 +2,7 @@ var acc = null;
 swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
-    $scope.homepage = false;
+    $rootScope.homepage = false;
     $rootScope.searchPage = false;
     $scope.editing = false;
     $scope.send = {message : ''};
