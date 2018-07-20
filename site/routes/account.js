@@ -265,8 +265,8 @@ router.post('/add-travel-info', function (req, res, next) {
     let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
     let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
     let rangeLabel = info.rangeLabel;
-    let startRange = parseInt(info.startRange);
-    let endRange = parseInt(info.endRange);
+    let startRange = info.startRange?parseInt(info.startRange):null;
+    let endRange = info.endRange?parseInt(info.endRange):null;
 
     geocoder.geocode(where).then(function (geo) {
 
