@@ -296,7 +296,7 @@ swapsApp.directive('datepicker', function() {
 
                 var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
 
-                if(!travelingDates.includes(thisCompare)){
+                if(scope.start && !travelingDates.includes(thisCompare)){
                     return true;
                 }
             }
