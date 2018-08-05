@@ -12,7 +12,7 @@
                     <div class="search-field left col-sm-12 col-xs-12">
                         <label class="where-label" for="searchCity">Where would you like to swap homes?</label>
                         <div class="search-input">
-                            <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true">
+                            <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true" auto-search="autoSearch()">
                             <div class="icon icon-infocenter"></div>
                             <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
                                 <button class="search" ng-click="searchSwap($event)">Search</button>

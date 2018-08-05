@@ -1,6 +1,9 @@
 swapsApp.directive('autocomplete', function() {
     return {
         require: 'ngModel',
+        scope:{
+            autoSearch: '&?',
+        },
         link: function(scope, element, attrs, model) {
             var options = {
                 types: attrs.city?['(regions)']:['address']
@@ -15,8 +18,8 @@ swapsApp.directive('autocomplete', function() {
                     else{
                         model.$setViewValue(gPlace.getPlace().name);
                     }
-                    if(scope.$parent.autoSearch){
-                        scope.$parent.autoSearch();
+                    if(scope.autoSearch){
+                        scope.autoSearch();
                     }
                 });
             });

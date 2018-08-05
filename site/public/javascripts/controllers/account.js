@@ -30,6 +30,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         },1000);
     }
 
+    $('.fb-messenger-icon').addClass('hide');
+
     $('input[name="datefilter"]').daterangepicker({
           autoApply: true,
           opens: 'center'
@@ -75,6 +77,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     });
 
     $scope.go = function(path){
+        $('.fb-messenger-icon').removeClass('hide');
      	$location.url('/' + path);
    	}
 
