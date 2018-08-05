@@ -158,5 +158,54 @@
     })();
 </script>
 
+<!--==========messenger widget==========-->
+<style>
+    .fb_hidden{ display: none; }
+    .fb-messenger-btn{ z-index:9998; }
+    .fb-widget{ position:absolute; top:80px; width:250px;    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08); height:320px; margin-left:auto; margin-right:auto; left:0; right:0; border:none; border-radius:3px; }
+    .fb-text-icon{ position:fixed; right:60px; bottom:20px; z-index:9997; width:120px; }
+    .fb-messenger-icon{ position:fixed; right:12px; bottom:12px; width:60px; z-index:9997; cursor: pointer; transition: 0.3s ease; }
+    .fb-messenger-icon:hover{ -webkit-transform: scale(0.8);-ms-transform: scale(0.92);transform: scale(0.92);transition: 0.3s ease;}
+    .fb-box{position: fixed; background: #F9F9F9; height: 100%; width: 100%; bottom:0; z-index:9998;  }
+    .fb-x{ opacity: 0.5; height: 15px;position: absolute;right: 15px;top:15px; cursor:pointer;-webkit-transition: -webkit-transform .2s ease-in-out;transition: transform .2s ease-in-out;}
+    .fb-x:hover{ opacity: 1; -webkit-transform: rotate(90deg); transform:rotate(90deg);}
+    .by{top:410px;display: block;width:100px;height:auto;opacity: 0.7;position: absolute;margin-left:auto; margin-right:auto; left:0; right:0; }
+    @media(min-width:768px) {
+        .fb-widget{ position:absolute; top:15px!important; box-shadow: 0 14px 28px rgba(0,0,0,0), 0 10px 10px rgba(0,0,0,0);}
+        .fb-box{  margin-right:5px; background: white; bottom:90px; right:20px; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22); width:280px; height:380px; border-radius:3px; }
+        .fb-x{ display: none; }
+        .by{top:345px;}
+    }
+</style>
+
+<!--pop up button-->
+<div id="fb-messenger-btn" class="fb-messenger-btn">
+    <!--pop-up box-->
+    <div id="fb-side-pop" class="fb_hidden fb-box">
+        <img class="fb-x" src="https://wonder-solve.com/assets/images/Pop/closeb.png" alt="close-icon">
+        <iframe id="fb_iframe" title="fb:page Facebook Social Plugin" class="fb-widget" src="https://www.facebook.com/v2.7/plugins/page.php?adapt_container_width=true&amp;app_id=1852423625014087&amp;channel=http://staticxx.facebook.com/connect/xd_arbiter/r/ao6eUeuGXQq.js?version=42%23cb=f2e7f31ef1f77f4&amp;domain=wonder-solve.com&amp;origin=http://wonder-solve.com/f10d6823be05b5c&amp;relation=parent.parent&amp;container_width=0&amp;height=320&amp;hide_cover=true&amp;href=https://www.facebook.com/swapshome//&amp;locale=en_US&amp;sdk=joey&amp;show_facepile=true&amp;small_header=true&amp;tabs=messages&amp;width=250">
+        </iframe>
+        <!--Please do not remove Wonder’s branding-->
+        <a href="https://wonder-solve.com" target="_blank"><img src="https://wonder-solve.com/assets/images/Pop/by.svg" class="by" alt="Powered by Wonder"></a>
+    </div>
+    <img class="fb-text-icon" src="https://wonder-solve.com/assets/images/Pop/text.svg" alt="text-icon">
+    <img class="fb-messenger-icon" src="https://wonder-solve.com/assets/images/Pop/messenger-icon.png" alt="messenger-icon">
+</div>
+
+<script>
+    function toggleTheWidget() {
+        var fb_pop = document.getElementById('fb-side-pop');
+        fb_pop.classList.toggle('fb_hidden');
+    }
+    var fb_btn = document.getElementById('fb-messenger-btn');
+    if (fb_btn.addEventListener) {
+        fb_btn.addEventListener('click', function () { toggleTheWidget() })
+    } else {
+        //back sopport for IE 9 and older
+        fb_btn.attachEvent('onclick', toggleTheWidget());
+    }
+</script>
+<!--==========messenger widget end==========-->
+
 </body>
 </html>
