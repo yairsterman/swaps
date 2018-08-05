@@ -1,0 +1,13 @@
+<div class="join-us-page">
+    <div class="top-corner icon icon-delete" ng-click="modelInstance.close()"></div>
+    <div class="cancel-swap">
+        <div class="title">
+            send {{profile.firstName}} a message
+        </div>
+        <div class="section">
+            <textarea class="form-control" rows="4" ng-model="message.message" placeholder="Hey {{profile.firstName}}!..."></textarea>
+        </div>
+        <div class="error">{{error}}</div>
+    </div>
+    <div class="btn-primary ok-btn" ng-click="sendMessage()" ng-disabled="sending">{{sending?'Sending...':'Send'}}</div>
+</div>

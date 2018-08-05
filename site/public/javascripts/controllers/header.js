@@ -90,6 +90,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	$scope.go = function(path){
         $(window).unbind('scroll');
         $('.navbar').removeClass('sticky');
+        $('.fb-messenger-icon').removeClass('hide');
         $rootScope.searchPage = false;
         if(path == 'account/messages'){
             $scope.unread = 0;

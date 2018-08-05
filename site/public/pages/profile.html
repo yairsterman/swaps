@@ -70,6 +70,13 @@
                         <div class="req-sent" ng-show="requestSent">
                             Request Sent
                         </div>
+                        <div class="empty-space">
+                        </div>
+                        <input type="button" class="btn btn-primary btn-swap invert-btn" value="Send Message"
+                               ng-click="openMessage()" ng-hide="messageSent">
+                        <div class="req-sent" ng-show="messageSent">
+                            Message Sent
+                        </div>
                     </div>
                     <!--<div class="not-charged" ng-hide="requestSent">-->
                         <!--You won't be charged yet-->
@@ -218,7 +225,29 @@
                                       readonly="true"></checkbox>
                         </div>
                     </div>
+
                     <hr>
+
+                    <div class="row"  ng-if="user && profile.travelingInformation.length > 0">
+                        <div class="col-sm-2 col-xs-12 left-side-description">Travel dates</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
+                            <div class="travel-info row" ng-repeat="info in profile.travelingInformation" ng-if="(info.destination && info.destination.country == user.country) || !info.destination">
+                                <div class="travel-city col-sm-5 col-xs-12">
+                                    {{info.destination?info.destination.city?info.destination.city:info.destination.country:'Anywhere'}}
+                                </div>
+                                <div class="travel-dates col-sm-7 col-xs-12">
+                                    <div ng-if="info.departure">
+                                        <div class="travel-date">{{info.departure | date: 'MMM d'}} - {{info.returnDate | date: 'MMM d'}}</div>
+                                    </div>
+                                    <div ng-if="!info.departure">
+                                        <div class="travel-date">Anytime</div>
+                                    </div>
+                                    <div class="icon icon-calender" ng-model="filter.date" read-only="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr ng-if="user && profile.travelingInformation.length > 0">
 
                     <!--</div>-->
                     <div class="map-section">
@@ -260,15 +289,17 @@
                         </div>
                     </div>
 
-                    <div class="row comments-show" ng-if="profile.reviews.length > 0">
+                    <div class="comments-show" ng-if="profile.reviews.length > 0">
                         <hr>
-                        <div class="col-sm-2 col-xs-12  left-side-description">
-                            Reviews
-                        </div>
-                        <div class="col-sm-8 col-xs-12">
-                            <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
-                                <review-elm is-profile="true" commenter="commenter"></review-elm>
-                                <hr style="clear: both;">
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-12  left-side-description">
+                                Reviews
+                            </div>
+                            <div class="col-sm-8 col-xs-12">
+                                <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
+                                    <review-elm is-profile="true" commenter="commenter"></review-elm>
+                                    <hr style="clear: both;">
+                                </div>
                             </div>
                         </div>
                     </div>

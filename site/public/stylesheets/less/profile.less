@@ -89,6 +89,9 @@
 				width: 100%;
 				font-size: 18px;
 			}
+			.empty-space{
+				margin-top: 20px;
+			}
 			.swap{
 				background-color: white;
 				margin-bottom: 15px;
@@ -305,7 +308,7 @@
 				position: fixed;
 				bottom: 10px;
 				right: 10px;
-				z-index: 12;
+				z-index: 9999;
 			}
 			.btn-swap{
 				font-size: 16px;
@@ -410,7 +413,26 @@
 			.right-side-elaboration {
 				font-size: 16px;
 				color: #616161;
-
+				.travel-info{
+					font-size: 20px;
+					@media @mobile {
+						font-size: 16px;
+					}
+					@media @tablet {
+						font-size: 18px;
+					}
+					.travel-city{
+						font-weight: 500;
+					}
+				}
+				.travel-dates{
+					display: flex;
+					align-items: center;
+					.icon{
+						margin-left: 10px;
+						cursor: pointer;
+					}
+				}
 				@media @mobile {
 					font-size: 14px;
 				}

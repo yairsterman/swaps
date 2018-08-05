@@ -13,6 +13,9 @@ swapsApp.directive('datepicker', function() {
             findTravel: '=?',
             notSwapping: '=?',
             setUpSwap: '=?',
+            readOnly: '=?',
+            start: '=?',
+            end: '=?',
         },
         link: function(scope, element, attrs, model) {
 
@@ -41,47 +44,65 @@ swapsApp.directive('datepicker', function() {
             if(scope.findTravel){ //from profile or set up swap page
                 findTravelInfo();
             }
-            else{ //from home page
-                // setting daterangepicker causes date to default to today,
-                // so save the dates that are set and override the defaults
-                scope.currentDatesWhen = scope.swapDates.when;
-                scope.currentDates = scope.swapDates.date;
-                element.daterangepicker({
-                    autoApply: true,
-                    opens: 'right',
-                    startDate: now,
-                    locale: {
-                        format: scope.localeFormat,
-                        customRangeLabel: "Dates",
-                    },
-                    minDate: formatDate(new Date(minDate), scope.localeFormat),
-                    ranges: {
-                        'Weekends': [minDate, next4weeks],
-                        'Within Range': [minDate, next2Months],
-                    },
-                    showCustomRangeLabel: true,
-                    alwaysShowCalendars: true,
-                    autoUpdateInput: true
-                });
-                element.on('apply.daterangepicker', function(ev, picker) {
-                    scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
-                    if(picker.chosenLabel == 'Weekends'){
-                        scope.swapDates.rangeLabel = 'Weekends'
-                    }
-                    else if(picker.chosenLabel == 'Within Range') {
-                        scope.swapDates.rangeLabel = 'Within Range';
-                        if(!scope.currentDatesWhen) {
-	                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
+            else{
+                if(scope.readOnly){
+                    travelingDates = travelingDates.concat(getDatesBetween(scope.start, scope.end));
+                    element.daterangepicker({
+                        autoApply: true,
+                        opens: 'center',
+                        startDate: formatDate(new Date(scope.start), scope.localeFormat),
+                        endDate: formatDate(new Date(scope.end), scope.localeFormat),
+                        isInvalidDate: function(arg){
+                            return isInvalidDateReadOnly(arg);
+                        },
+                        locale: {
+                            format: scope.localeFormat,
                         }
-                    }
-                    else if(picker.chosenLabel == 'Dates') {
-                        scope.swapDates.rangeLabel = 'Dates';
-                    }
-                    scope.swapDates.startRange = undefined;
-                    scope.swapDates.endRange = undefined;
-                });
-                scope.swapDates.when= scope.currentDatesWhen;
-                scope.swapDates.date= scope.currentDates;
+                    });
+                }
+                else{
+                    //from home page
+                    // setting daterangepicker causes date to default to today,
+                    // so save the dates that are set and override the defaults
+                    scope.currentDatesWhen = scope.swapDates.when;
+                    scope.currentDates = scope.swapDates.date;
+                    element.daterangepicker({
+                        autoApply: true,
+                        opens: 'right',
+                        startDate: now,
+                        locale: {
+                            format: scope.localeFormat,
+                            customRangeLabel: "Dates",
+                        },
+                        minDate: formatDate(new Date(minDate), scope.localeFormat),
+                        ranges: {
+                            'Weekends': [minDate, next4weeks],
+                            'Within Range': [minDate, next2Months],
+                        },
+                        showCustomRangeLabel: true,
+                        alwaysShowCalendars: true,
+                        autoUpdateInput: true
+                    });
+                    element.on('apply.daterangepicker', function(ev, picker) {
+                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
+                        if(picker.chosenLabel == 'Weekends'){
+                            scope.swapDates.rangeLabel = 'Weekends'
+                        }
+                        else if(picker.chosenLabel == 'Within Range') {
+                            scope.swapDates.rangeLabel = 'Within Range';
+                            if(!scope.currentDatesWhen) {
+                                scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
+                            }
+                        }
+                        else if(picker.chosenLabel == 'Dates') {
+                            scope.swapDates.rangeLabel = 'Dates';
+                        }
+                        scope.swapDates.startRange = undefined;
+                        scope.swapDates.endRange = undefined;
+                    });
+                    scope.swapDates.when= scope.currentDatesWhen;
+                    scope.swapDates.date= scope.currentDates;
+                }
             }
 
             function setDates(){
@@ -114,7 +135,8 @@ swapsApp.directive('datepicker', function() {
                 }
                 if(!scope.userCity || !scope.profile.travelingInformation || scope.profile.travelingInformation.length === 0){
                     scope.notSwapping = true;
-                    options.endDate = minDate;
+                    options.maxDate = maxDate;
+                    // options.endDate = minDate;
                 }
                 else{
                     options.maxDate = maxDate;
@@ -163,6 +185,9 @@ swapsApp.directive('datepicker', function() {
                 if(scope.user){
                     scope.userCity = scope.user.city;
                 }
+                //-----------
+                openAllDates = true;
+                //-----------------
                 if(scope.userCity && scope.profile.travelingInformation && scope.profile.travelingInformation.length > 0){
                     for(var i = 0; i < scope.profile.travelingInformation.length; i++){
                         if(!scope.profile.travelingInformation[i].destination || (scope.profile.travelingInformation[i].destination && scope.profile.travelingInformation[i].destination.city == scope.userCity)){ // if cities match or user chose Anywhere as destination
@@ -260,6 +285,18 @@ swapsApp.directive('datepicker', function() {
                 }
                 // not in other users' traveling dates
                 if(!openAllDates && !travelingDates.includes(thisCompare)){
+                    return true;
+                }
+            }
+
+            function isInvalidDateReadOnly(date){
+                var thisMonth = date._d.getMonth()+1;   // Months are 0 based
+                var thisDate = date._d.getDate();
+                var thisYear = date._d.getYear()+1900;   // Years are 1900 based
+
+                var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
+
+                if(!travelingDates.includes(thisCompare)){
                     return true;
                 }
             }

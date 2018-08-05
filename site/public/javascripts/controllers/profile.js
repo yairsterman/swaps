@@ -76,13 +76,42 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
     }
 
+    $scope.openMessage = function(){
+        if(!$rootScope.user || !$rootScope.user._id){
+            $scope.openLogin();
+        }
+        else{
+            $scope.modelInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '../../pages/components/message.html',
+                size: 'sm',
+                controller: 'profileController',
+                resolve: {
+                    name: function () {
+                        return $scope.profile.firstName;
+                    }
+                },
+                scope:$scope
+            });
+        }
+    }
+
     $scope.sendMessage = function(){
+        if($scope.sending){
+           return;
+        }
+        $scope.sending = true;
         var message = $scope.message.message;
         $scope.message.message = '';
         MessageService.sendMessage($rootScope.user, $scope.profile._id, message).then(function(data){
             $scope.messageSent = true;
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
+            $scope.modelInstance.close();
+        },function(){
+            $scope.error = 'Message not sent';
+        }).finally(function(){
+            $scope.sending = false;
         });
     }
 
