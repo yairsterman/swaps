@@ -19,22 +19,22 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.cities = [
         {
             "name": "Venice",
-            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-1.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/home/instagram-01.jpg",
             "faded": "../images/cities/updated/venice2.jpg"
         },
         {
             "name": "Miami",
-            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-2.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/home/instagram-2.jpg",
             "faded": "../images/cities/updated/miami2.jpg"
         },
         {
             "name": "London",
-            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-3.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/home/instagram-3.jpg",
             "faded": "../images/cities/updated/london2.jpg"
         },
         {
             "name": "Sydney",
-            "normal": "https://res.cloudinary.com/swaps/image/upload/v1532026923/home/instagram-4.jpg",
+            "normal": "https://res.cloudinary.com/swaps/image/upload/home/instagram-4.jpg",
             "faded": "../images/cities/updated/sydney2.jpg"
         },
         {
@@ -109,6 +109,11 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
         e.preventDefault();
         $scope.go(`travelers${$rootScope.search.where?'/'+$rootScope.search.where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}${$scope.rangeLabel?'&label='+$scope.rangeLabel + '&startRange=' + $rootScope.search.startRange + '&endRange=' + $rootScope.search.endRange:''}`);
 
+    }
+
+    $scope.autoSearch = function(){
+        var where = $rootScope.search.where;
+        $scope.go(`travelers${where?'/'+where:''}?dates=${$rootScope.search.when}&guests=${$rootScope.search.guests}`);
     }
 
     $scope.go = function(path){
@@ -259,14 +264,16 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
                             },500)
                         }
                     } else {
-                        $('.navbar').removeClass('opacity');
-                        $timeout(function(){
-                            if($('.navbar').hasClass('opacity')){
-                                $('.navbar').removeClass('opacity');
-                            }
-                            $('.navbar').removeClass('navbar-other');
-                            $('.navbar').removeClass('sticky');
-                        },500);
+                        if(!$rootScope.user || !$rootScope.user._id) {
+                            $('.navbar').removeClass('opacity');
+                            $timeout(function(){
+                                if($('.navbar').hasClass('opacity')){
+                                    $('.navbar').removeClass('opacity');
+                                }
+                                $('.navbar').removeClass('navbar-other');
+                                $('.navbar').removeClass('sticky');
+                            },500);
+                        }
                     }
                 });
                 // var fixmeHomes = $('#featuredHomes').offset().top;
@@ -288,6 +295,24 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
             }
         }, 100);
     }
+
+    $scope.$watch('user', function(){
+        if($scope.user && $scope.user._id){
+            if(!$('.navbar').hasClass('navbar-other')){
+                $('.navbar').addClass('navbar-other');
+                $('.navbar').addClass('sticky');
+                $('.navbar').addClass('opacity');
+                $('.navbar').removeClass('no-opacity');
+            }
+        }
+        else{
+            if($('.navbar').hasClass('navbar-other')){
+                $('.navbar').removeClass('navbar-other');
+                $('.navbar').removeClass('sticky');
+                $('.navbar').removeClass('opacity');
+            }
+        }
+    });
 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;

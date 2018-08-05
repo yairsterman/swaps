@@ -131,7 +131,7 @@
         </div>
         <div class="travelers-list">
             <div class="mg-0 row">
-                <div class= "traveler-col col-sm-4 col-xs-12" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}">
+                <div class= "traveler-col col-sm-4 col-xs-12 {{'traveler'+$index}}" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}" scroll-animate>
                     <!--<div class="push-pin icon {{$index==0?'icon-pin-green':$index==1?'icon-pin-blue':$index==2?'icon-pin-red':''}}"></div>-->
                     <swapper-home traveler="traveler"></swapper-home>
                 </div>
@@ -179,8 +179,8 @@
             <div class="swappers-border" scroll-animate></div>
         </div>
         <div class="mg-0 row instagram-row">
-            <div class= "col-sm-3 col-xs-12" ng-repeat="image in [0,1,2,3] " ng-click="link('instagram')">
-                <div class="instagram-image" style="background-image: url({{featured[image]}})">
+            <div class= "instagram-col col-sm-3 col-xs-12" ng-repeat="image in [0,1,2,3] " ng-click="link('instagram')">
+                <div class="instagram-image {{'instagram-image'+$index}}" style="background-image: url({{featured[image]}})" scroll-animate>
 
                 </div>
             </div>
