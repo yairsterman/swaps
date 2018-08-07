@@ -1,4 +1,4 @@
-swapsApp.controller('mainController', function($scope, $rootScope, $location, Utils, $uibModal, $window, UsersService, AccountService, $interval) {
+swapsApp.controller('mainController', function($scope, $rootScope, $location, Utils, $uibModal, $window, $timeout,UsersService, AccountService, $interval) {
 
     $rootScope.homepage = false;
     $rootScope.searchPage = false;
@@ -19,6 +19,12 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
             scope:$scope
         });
     }
+
+    $scope.showSecuritySection = function(){
+        $timeout(function(){
+            $("html").animate({scrollTop: $("#securityDeposit").offset().top}, "fast");
+        },300)
+    };
 
     $rootScope.isMobile = (/android|webos|iphone|ipad|ipod|blackberry|windows phone/).test(navigator.userAgent.toLowerCase()) || $window.outerWidth < 641;
 
