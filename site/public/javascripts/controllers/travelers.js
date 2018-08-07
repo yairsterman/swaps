@@ -18,7 +18,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $scope.appliedFilters = false;
     $anchorScroll();
 
-    $scope.filter.guests = parseInt($routeParams.guests);
+    $scope.filter.guests = $routeParams.guests?parseInt($routeParams.guests):2;
     $scope.filter.when = $routeParams.dates != 'undefined'?$routeParams.dates:undefined;
     $scope.filter.rangeLabel = $routeParams.label;
     $scope.filter.startRange = $routeParams.startRange;
