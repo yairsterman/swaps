@@ -15,6 +15,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $scope.modelFormat = 'MM/DD/YYYY';
     var filter = {};
     $scope.pageSize = 12;
+    $scope.appliedFilters = false;
     $anchorScroll();
 
     $scope.filter.guests = parseInt($routeParams.guests);
@@ -396,7 +397,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
           });
           $scope.travelers = travelers;
           countPages();
-          if($scope.travelers.length == 0 && !$scope.failedCity){
+          if($scope.travelers.length === 0 && !$scope.failedCity && $scope.filter.amenities.length === 0 && $scope.filter.room.length === 0 && !$scope.appliedFilters){
               $scope.failedCity = $scope.city;
               if($rootScope.user && $rootScope.user._id){
                   $scope.loggedIn = true;
@@ -420,6 +421,9 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
                   }
               });
               $scope.city = undefined;
+              $scope.filter = {};
+              $scope.appliedFilters = false;
+              $scope.filter.guests = 1;
               getTravelers(page);
           }
           $scope.loading = false;

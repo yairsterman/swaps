@@ -48,8 +48,8 @@ swapsApp.directive('datepicker', function() {
                 if(scope.readOnly){
                     travelingDates = travelingDates.concat(getDatesBetween(scope.start, scope.end));
                     element.daterangepicker({
-                        autoApply: true,
-                        opens: 'center',
+                        autoApply: false,
+                        opens: 'left',
                         startDate: formatDate(new Date(scope.start), scope.localeFormat),
                         endDate: formatDate(new Date(scope.end), scope.localeFormat),
                         isInvalidDate: function(arg){

@@ -84,7 +84,7 @@
             <textarea id="about" rows="3" cols="20" class="form-control send-text {{messageError?'error':''}}" ng-model="send.message" placeholder="Hey {{profile.firstName}}! ...">
                           </textarea>
         </div>
-        <input type="button" class="btn btn-primary btn-swap" value="Go to Payment" ng-click="showPayment()">
+        <input type="button" class="btn btn-primary btn-swap" value="Continue" ng-click="showPayment()">
     </div>
     <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
         <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>

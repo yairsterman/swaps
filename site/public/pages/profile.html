@@ -160,31 +160,25 @@
                             </div>
                             <div class="simple-apt-info">
                                 <div class="home-info">
-                                    <div class="icon icon-man hidden-xs"></div>
-                                    <div class="icon icon-man-small visible-xs"></div>
+                                    <div class="icon icon-man"></div>
                                     <div class="swapper-count simple-apt-info-content">{{profile.apptInfo.guests}}
                                         {{profile.apptInfo.guests > 1?'Guests':'Guest'}}
                                     </div>
                                 </div>
                                 <div class="home-info">
-                                    <div class="icon icon-door hidden-xs"></div>
-                                    <div class="icon icon-door-small visible-xs"></div>
+                                    <div class="icon icon-door"></div>
                                     <div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}}
                                         {{profile.apptInfo.rooms > 1?'Rooms':'Room'}}
                                     </div>
                                 </div>
-                                <!--The following line is to fix the bootstrap grid on small screens-->
-                                <div class="clearfix visible-xs"></div>
                                 <div class="home-info">
-                                    <div class="icon icon-bed hidden-xs"></div>
-                                    <div class="icon icon-bed-small visible-xs"></div>
+                                    <div class="icon icon-bed"></div>
                                     <div class="bath-count simple-apt-info-content">{{profile.apptInfo.beds}}
                                         {{profile.apptInfo.beds > 1?'Beds':'Bed'}}
                                     </div>
                                 </div>
                                 <div class="home-info">
-                                    <div class="icon icon-duck hidden-xs"></div>
-                                    <div class="icon icon-duck-small visible-xs"></div>
+                                    <div class="icon icon-duck"></div>
                                     <div class="room-count simple-apt-info-content">{{profile.apptInfo.baths}}
                                         {{profile.apptInfo.baths > 1?'Baths':'Bath'}}
                                     </div>
@@ -232,10 +226,10 @@
                         <div class="col-sm-2 col-xs-12 left-side-description">Travel dates</div>
                         <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
                             <div class="travel-info row" ng-repeat="info in profile.travelingInformation" ng-if="(info.destination && info.destination.country == user.country) || !info.destination">
-                                <div class="travel-city col-sm-5 col-xs-12">
+                                <div class="travel-city col-xs-6">
                                     {{info.destination?info.destination.city?info.destination.city:info.destination.country:'Anywhere'}}
                                 </div>
-                                <div class="travel-dates col-sm-7 col-xs-12">
+                                <div class="travel-dates col-xs-6">
                                     <div ng-if="info.departure">
                                         <div class="travel-date">{{info.departure | date: 'MMM d'}} - {{info.returnDate | date: 'MMM d'}}</div>
                                     </div>

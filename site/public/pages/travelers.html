@@ -66,7 +66,7 @@
                         <input type="number" class="form-control guests" id="guests" placeholder="1" ng-model="filter.guests" min="1" max="8">
                     </div>
                     <div class="apply col-xs-7">
-                        <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="getPage(1)" ng-disabled="loading">
+                        <input type="button" class="btn-primary btn-apply" value="Apply" ng-click="appliedFilters=true;getPage(1)" ng-disabled="loading">
                     </div>
                 </div>
             </div>
@@ -125,6 +125,9 @@
                     <div class="mg-0 row" ng-if="!loading">
                         <div class= "traveler-col col-sm-6 col-xs-12" ng-repeat="traveler in travelers" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
                               <swapper-home traveler="traveler"></swapper-home>
+                        </div>
+                        <div class="title" ng-if="travelers.length === 0 && !failedCity">
+                            Sorry we couldn't find a home with these specific filters, <br>try widening your search
                         </div>
                     </div>
                     <div class="traveler-pagination" ng-if="!loading && totalUsers >= pageSize">

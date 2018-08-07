@@ -369,6 +369,9 @@
 			.simple-apt-info {
 				display: flex;
 				padding-top: 10px;
+				@media @mobile {
+					justify-content: space-between;
+				}
 				.home-info{
 					display: flex;
 					align-items: center;
@@ -377,10 +380,15 @@
 						margin-left: -6px;
 					}
 					@media @mobile {
-						padding-right: 10px;
+						padding-right: 6px;
 						margin-right: 0;
-						.icon-man-small{
-							margin-left: -4px;
+						.icon-man{
+							margin-left: -6px;
+							margin-right: -4px;
+						}
+						.icon-door{
+							margin-left: -6px;
+							margin-right: -2px;
 						}
 					}
 				}
@@ -389,7 +397,7 @@
 					color: #616161;
 					padding-left: 10px;
 					@media @mobile {
-						font-size: 10px;
+						font-size: 12px;
 						padding-left: 6px;
 					}
 				}
