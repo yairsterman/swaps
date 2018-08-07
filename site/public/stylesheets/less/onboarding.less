@@ -108,16 +108,14 @@
       max-width: 700px !important;
       color: black !important;
       .tooltiptext {
-        visibility: hidden;
+        visibility: visible;
         width: 120px;
         background-color: black;
         color: #fff;
         text-align: center;
         border-radius: 6px;
         padding: 5px 0;
-
-        position: absolute;
-        z-index: 1;
+        z-index: 10000;
       }
       &:hover{
         .tooltiptext {

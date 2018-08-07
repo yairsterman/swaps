@@ -109,7 +109,7 @@
                 <div ng-if="!user.facebookId">
                     <div class="row">
                         <div class="col-sm-4 col-xs-12 form-group">
-                            <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="Choose a picture of yourself" data-placement="bottom" tooltip>Profile Picture:
+                            <label class="control-label listing-label" for="profile-pic" uib-tooltip="Choose a picture of yourself" tooltip-placement="bottom" tooltip>Profile Picture:
                             </label>
                             <div class="upload-profile-image" style="background-image: url({{user.image}})">
                                 <input class="cloudinary-fileupload profile-upload" id="profile-pic" data-ng-init="initUploadProfileButton()" data-cloudinary-field="image_id"
@@ -119,7 +119,7 @@
                             </div>
                         </div>
                         <div class="col-sm-8 col-xs-12 form-group">
-                            <label class="control-label listing-label" for="profile-pic" data-toggle="tooltip" title="This will be used to show your age" data-placement="right" tooltip>Birthday:
+                            <label class="control-label listing-label" for="profile-pic" uib-tooltip="This will be used to show your age" tooltip-placement="right" tooltip>Birthday:
                             </label>
                             <input class="datepicker form-control" name="birthday" ng-model="user.birthday" birthday="user.birthday" birthday-picker>
                         </div>
@@ -148,13 +148,13 @@
                     <!--</div>-->
                 <!--</div>-->
                 <div class="form-group">
-                    <label class="control-label listing-label" for="address" data-toggle="tooltip" title="Where you live" data-placement="right" tooltip>Address:
+                    <label class="control-label listing-label" for="address" uib-tooltip="Where you live" tooltip-placement="right" tooltip>Address:
                         <span class="explanation"></span>
                     </label>
                     <input class="form-control" id="address" type="text" placeholder="Enter Your home address" is-focused="!isInFocus && (!user.address || user.address == '')" ng-blur="isInFocus = 'title'" ng-model="user.address" autocomplete>
                 </div>
                 <div class="form-group">
-                    <label class="control-label listing-label" for="title" data-toggle="tooltip" title="A short description of your home" data-placement="right" tooltip>Home Title:
+                    <label class="control-label listing-label" for="title" uib-tooltip="A short description of your home" tooltip-placement="right" tooltip>Home Title:
                         <span class="explanation"></span>
                     </label>
                     <div class="">
@@ -162,7 +162,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label listing-label" data-toggle="tooltip" title="The type of room you are offering" data-placement="right" tooltip>Room Type:<br>
+                    <label class="control-label listing-label" uib-tooltip="The type of room you are offering" tooltip-placement="right" tooltip>Room Type:<br>
                         <span class="explanation"></span>
                     </label>
                     <div class="">
@@ -210,7 +210,7 @@
         <!--</div>-->
         <div class="basic" ng-if="phase == 'basic'">
             <div class="form-group">
-                <label class="control-label listing-label" data-toggle="tooltip" title="Essential information about you home" data-placement="right" tooltip>Basics:
+                <label class="control-label listing-label" uib-tooltip="Essential information about you home" tooltip-placement="right" tooltip>Basics:
                     <span class="explanation"></span>
                 </label>
                 <div class="">
@@ -218,7 +218,7 @@
                         <div class="col-sm-3 col-xs-3  basics">
                             <div class="name-with-icon">
                                 <div class="icon icon-man-small hidden-xs"></div>
-                                <div class="basics-name" data-toggle="tooltip" title="How many guests can your home accommodate" data-placement="right" tooltip>Guests</div>
+                                <div class="basics-name" uib-tooltip="How many guests can your home accommodate" tooltip-placement="right" tooltip>Guests</div>
                             </div>
                             <input class="form-control" id="swappers" type="number" min="1" max="8"
                                    ng-model="user.apptInfo.guests">
@@ -252,7 +252,7 @@
             </div>
             <div class="info-section rules">
                 <div class="form-group row">
-                    <label class="control-label listing-label" data-toggle="tooltip" title="Things you have in your home" data-placement="right" tooltip>Facilities:
+                    <label class="control-label listing-label" uib-tooltip="Things you have in your home" tooltip-placement="right" tooltip>Facilities:
                         <span class="explanation"></span>
                     </label>
                     <div class="">
