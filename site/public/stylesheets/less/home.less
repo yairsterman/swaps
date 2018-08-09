@@ -166,6 +166,10 @@
 						font-size: 24px;
 						font-weight: 300;
 						color: #333;
+						@media @desktop {
+							font-size: 20px;
+							padding-bottom: 70px;
+						}
 						@media @mobile {
 							font-size: 18px;
 							padding-bottom: 60px;
@@ -720,12 +724,19 @@
 		background-position: center;
 		background-attachment: fixed;
 		align-content: center;
-		padding: 0 8vw;
-		height: 56vw;
-		transition: 1.6s ease;
-		overflow: hidden;
+		//padding: 0 8vw;
+		//height: 56vw;
+		//transition: 1.6s ease;
+		//overflow: hidden;
 		@media @mobile {
 			height: auto;
+		}
+		.how-it-works-cover{
+			background-color: #ffffff;
+			padding: 0 8vw;
+			height: 56vw;
+			overflow: hidden;
+			transition: 0.3s ease;
 		}
 		.inner-section{
 			background-color: rgba(255,255,255,0.9);

@@ -56,7 +56,7 @@ function swapperHomeController($scope, $rootScope, $location, $uibModal, Account
         if($scope.adding){
             return;
         }
-        if(!$rootScope.user._id){
+        if(!$rootScope.user || !$rootScope.user._id){
             $scope.openLogin();
             return;
         }

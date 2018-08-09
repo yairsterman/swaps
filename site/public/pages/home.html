@@ -141,37 +141,39 @@
         </div>
     </div>
     <div class="how-it-works">
-        <div class="inner-section row" scroll-animate>
-            <div class="title">How does it work?</div>
-            <div class="sub-title">Swapping homes is easy, secure, and cheap</div>
-            <div class="how-inner-ticket col-sm-4 col-xs-12">
-                <div class="join">
-                    <div class="description-icon icon icon-house" scroll-animate></div>
+        <div class="how-it-works-cover" bind-scroll-opacity>
+            <div class="inner-section row" scroll-animate>
+                <div class="title">How does it work?</div>
+                <div class="sub-title">Swapping homes is easy, secure, and cheap</div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="join">
+                        <div class="description-icon icon icon-house" scroll-animate></div>
+                    </div>
+                    <div class="ticket-title">It's Easy!</div>
+                    <div class="how-inner-sentences first" scroll-animate>
+                        List your home, find other Swappers or enter your travel plans so they can find you, and set up a perfect home swap
+                    </div>
                 </div>
-                <div class="ticket-title">It's Easy!</div>
-                <div class="how-inner-sentences first" scroll-animate>
-                    List your home, find other Swappers or enter your travel plans so they can find you, and set up a perfect home swap
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="join">
+                        <div class="description-icon icon icon-keys" scroll-animate></div>
+                    </div>
+                    <div class="ticket-title">It's Secure!</div>
+                    <div class="how-inner-sentences second" scroll-animate>
+                        Your trip and your home are important to us, and we offer unique plans to cover you in cases of property damages or cancellations
+                    </div>
                 </div>
-            </div>
-            <div class="how-inner-ticket col-sm-4 col-xs-12">
-                <div class="join">
-                    <div class="description-icon icon icon-keys" scroll-animate></div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="join">
+                        <div class="description-icon icon icon-money" scroll-animate></div>
+                    </div>
+                    <div class="ticket-title">It's Cheap!</div>
+                    <div class="how-inner-sentences third" scroll-animate>Save money for the important things in life and start experiencing the world. Signing up is completely free, and your first Swap is on us!</div>
                 </div>
-                <div class="ticket-title">It's Secure!</div>
-                <div class="how-inner-sentences second" scroll-animate>
-                    Your trip and your home are important to us, and we offer unique plans to cover you in cases of property damages or cancellations
+                <div class="col-xs-12" >
+                    <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
+                    <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
                 </div>
-            </div>
-            <div class="how-inner-ticket col-sm-4 col-xs-12">
-                <div class="join">
-                    <div class="description-icon icon icon-money" scroll-animate></div>
-                </div>
-                <div class="ticket-title">It's Cheap!</div>
-                <div class="how-inner-sentences third" scroll-animate>Save money for the important things in life and start experiencing the world. Signing up is completely free, and your first Swap is on us!</div>
-            </div>
-            <div class="col-xs-12" >
-                <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
-                <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
             </div>
         </div>
     </div>

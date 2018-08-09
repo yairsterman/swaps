@@ -86,7 +86,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         return $scope.checkedRoomTypes.includes(index);
     }
 
-    $scope.$watch('filter.when', function(){
+    $scope.$watch('filter.rangeLabel', function(oldval, newval ){
         if(!$scope.filter.when){
             return;
         }

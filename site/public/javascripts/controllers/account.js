@@ -23,6 +23,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         init();
     }
     else{
+        $scope.openLogin();
         $timeout(function(){
             if(!($rootScope.user && $rootScope.user._id)){
                 $location.url('/');
