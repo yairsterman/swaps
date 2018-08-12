@@ -374,4 +374,19 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     }
 
+    this.sendInvites = function(emails) {
+        var defer = $q.defer();
+        $http.post('/account/sendInvites', {emails:emails}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject('Something went wrong');
+        });
+        return defer.promise;
+    }
+
 });

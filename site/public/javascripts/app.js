@@ -56,6 +56,10 @@ $routeProvider
         templateUrl: '/pages/verify-email.html',
         controller: 'verifyEmailController'
     })
+    .when('/invite-friends', {
+        templateUrl : '/pages/invite-friends.html',
+        controller  : 'inviteFriendsController'
+    })
     .when('/review/:token', {
         templateUrl : '/pages/review.html',
         controller  : 'reviewController'

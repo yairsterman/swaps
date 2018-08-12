@@ -1,0 +1,104 @@
+@import 'media.less';
+
+.invite-friends{
+  background-color: #ffffff;
+  padding: 0 20% 60px 20%;
+  min-height: 83vh;
+  position: relative;
+  .title{
+    text-align: center;
+    padding: 40px 0 25px 0;
+    font-size: 32px;
+    color: #848a91;
+    font-weight: 300;
+  }
+  .underline{
+    border-bottom: 2px solid rgba(14,93,124,0.5);
+    padding-top: 8px;
+    width: 12%;
+    margin: auto;
+  }
+  .text{
+    font-size: 18px;
+    font-weight: 300;
+    &.link{
+      padding: 20px 0;
+      color: #0e5d7c;
+      word-break: break-all;
+    }
+  }
+  .btn-primary{
+    width: 200px;
+    text-align: center;
+    padding: 5px;
+    font-size: 18px;
+    border-radius: 4px;
+  }
+  .referral-link{
+    margin: 20px 0;
+    border: 1px solid rgba(132,138,145, 0.5);
+    padding: 20px;
+    .send-emails{
+      display: flex;
+      align-items: stretch;
+    }
+    .or{
+      text-align: center;
+      font-size: 18px;
+      font-weight: 300;
+      padding: 15px;
+    }
+    .share-link{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 300;
+      .share-text{
+        margin-right:10px;
+        width:20%;
+      }
+      .copy-link{
+        display: flex;
+        align-items: stretch;
+        width:80%;
+        .copy{
+          margin-left: -1px;
+          border-radius: 0;
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+          background-color: grey;
+          border-color: grey;
+          &:hover{
+            background-color: dimgrey;
+          }
+        }
+      }
+      .facebook-post{
+        position: relative;
+        background-color: #3B5998;
+        color: white;
+        padding-left: 18px;
+        .fa-facebook-square{
+          position: absolute;
+          left: 40px;
+          top: 7px;
+        }
+      }
+    }
+  }
+  .loader-container{
+    padding: 100px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.8);
+    transition: 1.5s ease;
+    z-index: 7;
+    &.disappear{
+      opacity: 0;
+      z-index: -1;
+    }
+  }
+}

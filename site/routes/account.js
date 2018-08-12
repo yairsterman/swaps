@@ -737,6 +737,22 @@ router.get('/getReferralToken', function (req, res, next) {
     res.json({token: token});
 });
 
+router.post('/sendInvites', function (req, res, next) {
+    if(!req.body.emails || req.body.emails == ''){
+        error.message = 'No emails supplied';
+        return res.json(error);
+    }
+    let emails = req.body.emails.trim();
+    emails = emails.split(',');
+    if(emails.length == 0){
+        error.message = 'No emails supplied';
+        return res.json(error);
+    }
+    let link = config.baseUrl + '/login?external=true&referer=' + utils.createReferralToken(req.user._id.toString());
+    EmailService.sendMail(emails, 'Invitation to join Swaps', emailMessages.invitation(req.user, link));
+    res.json({})
+});
+
 function completeReferral(user) {
 
     let dfr = Q.defer();

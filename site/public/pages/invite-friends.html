@@ -1,0 +1,58 @@
+<div class="invite-friends" ng-init="init()">
+    <div ng-if="user._id">
+        <div class="loader-container {{loading?'':'disappear'}}" >
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+        </div>
+        <div class="permanent-info">
+            <div class="title">
+                Invite friends to Swaps
+                <div class="underline">
+
+                </div>
+            </div>
+        </div>
+        <div class="text">
+            Invite your friends to Swaps and get up to $50 in Swap Credits!
+            <br>You can invite your friends via email, or share your referral code on Facebook or Twitter.
+        </div>
+        <div class="referral-link">
+            <div class="send-emails">
+                <input class="form-control" type="text" placeholder="Enter email addresses comma separated" ng-model="inputs.emails">
+                <div class="btn-primary invert-btn" ng-click="sendInvites();" ng-disabled="sending">Send Invites</div>
+            </div>
+            <div class="or">
+                or
+            </div>
+            <div class="share-link">
+                <div class="share-text">
+                    Share your link:
+                </div>
+
+                <div class="copy-link">
+                    <input class="form-control" type="text" ng-model="referralLink" id="referralLink">
+                    <div class="btn-primary copy" ng-click="copyText('referralLink')">Copy</div>
+                </div>
+                <!--<div class="btn-primary facebook-post" ng-click="postFacebook()">-->
+                    <!--Facebook<i class="fa fa-facebook-square"></i>-->
+                <!--</div>-->
+            </div>
+            <div class="text" ng-if="referralError">
+                Couldn't get referral link please try again later
+            </div>
+        </div>
+        <div class="text">
+            When a friend signs up through your referral, you’ll get $10 when they post their home on Swaps, and $40 when they complete their first Swap.
+            <br><br>
+            Your Swap Credit balance will automatically appear on the checkout page in the form of a coupon.
+        </div>
+    </div>
+    <div ng-if="!user._id">
+        <div class="title">
+            Please log in
+        </div>
+    </div>
+</div>
