@@ -5,6 +5,9 @@
   padding: 0 20% 60px 20%;
   min-height: 83vh;
   position: relative;
+  @media @mobile {
+    padding: 15px;
+  }
   .title{
     text-align: center;
     padding: 40px 0 25px 0;
@@ -41,6 +44,15 @@
     .send-emails{
       display: flex;
       align-items: stretch;
+      @media @mobile {
+        flex-direction: column;
+      }
+      .send-invites-btn{
+        @media @mobile {
+          margin-top: 10px;
+          width: auto;
+        }
+      }
     }
     .or{
       text-align: center;
@@ -54,14 +66,23 @@
       justify-content: space-between;
       font-size: 18px;
       font-weight: 300;
+      @media @mobile {
+        flex-direction: column;
+      }
       .share-text{
         margin-right:10px;
         width:20%;
+        @media @mobile {
+          width:auto;
+        }
       }
       .copy-link{
         display: flex;
         align-items: stretch;
         width:80%;
+        @media @mobile {
+          width:auto;
+        }
         .copy{
           margin-left: -1px;
           border-radius: 0;
