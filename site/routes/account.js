@@ -141,7 +141,6 @@ router.post('/edit-listing', function (req, res, next) {
     dfr.promise.then(function () {
         let toUpdate = {$set: update};
         findOneAndUpdate(id, toUpdate, res);
-
     }, function (err) {
         error.message = err;
         return res.json(error);
@@ -711,14 +710,73 @@ router.get('/verifyEmail', function (req, res, next) {
                     return res.json(error);
                 }
                 EmailService.sendMail([user.email], 'Email verified', emailMessages.emailVerified(user));
+                //completeReferral(user)
                 return res.json({verified: true});
             });
         });
 
     });
-
-
 });
+
+router.post('/setReferral', function (req, res, next) {
+    if((req.user.referredBy && req.user.referredBy.user) || !req.body.token){
+        return;
+    }
+
+    jwt.verify(req.body.token, config.jwtSecret, function (err, decoded) {
+        let id = decoded.id;
+
+        let toUpdate = {referredBy: {user: id, complete: false}};
+        findOneAndUpdate(req.user._id, toUpdate, res);
+
+    });
+});
+
+router.get('/getReferralToken', function (req, res, next) {
+    let token = utils.createReferralToken(req.user._id.toString());
+    res.json({token: token});
+});
+
+function completeReferral(user) {
+
+    let dfr = Q.defer();
+
+    if(!isProfileComplete(user) || !user.referredBy || user.referredBy.complete){
+        return dfr.resolve();
+    }
+
+    User.findOne({_id: user.referredBy.user}, function (err, referrer) {
+        if (err) {
+            error.message = err;
+            dfr.reject(error);
+        }
+        if (!referrer) {
+            error.message = 'No user found';
+            dfr.reject(error);
+        }
+        if(!referrer.refers){
+            user.refers = [];
+        }
+        referrer.refers.push(user._id);
+        referrer.save(function (err) {
+            if (err) {
+                error.message = 'Failed to save user, please try again';
+                dfr.reject(error);
+            }
+            user.referredBy.complete = true;
+            user.save(function (err) {
+                if (err) {
+                    error.message = 'Failed to save user, please try again';
+                    dfr.reject(error);
+                }
+                EmailService.sendMail([referrer.email], 'Referral complete', emailMessages.referralComplete(referrer, user));
+                dfr.resolve();
+            });
+        });
+    });
+
+    return dfr.promise;
+}
 
 
 function findOneAndUpdate(id, toUpdate, res) {
@@ -740,10 +798,18 @@ function findOneAndUpdate(id, toUpdate, res) {
                 return dfr.reject(error);
             }
             res.json(user);
+            completeReferral(user);
             dfr.resolve();
         });
 
     return dfr.promise;
+}
+
+function isProfileComplete(user) {
+    return user.address && user.address != ''
+            && user.email && user.email != '' // && user.verifications.email == true
+            && user.apptInfo.title != ''
+            && user.photos.length > 0
 }
 
 function isNumeric(n) {

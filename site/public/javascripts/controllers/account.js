@@ -23,9 +23,9 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         init();
     }
     else{
-        $scope.openLogin();
         $timeout(function(){
             if(!($rootScope.user && $rootScope.user._id)){
+                $scope.openLogin();
                 $location.url('/');
             }
         },1000);
@@ -326,6 +326,28 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       $scope.user = $rootScope.user;
       setPhotoGalery();
     }
+
+    $scope.getReferralToken = function(){
+        $scope.loading = true;
+        $scope.referralError = false;
+        AccountService.getReferralToken().then(function(token){
+            $scope.referralToken = token;
+        },function(err){
+            $scope.referralError = true;
+        }).finally(function(){
+            $scope.loading = false;
+        });
+    };
+
+    $scope.copyText = function(id){
+        var copyText = document.getElementById(id);
+        var temp_input = $("<input>");
+        $("body").append(temp_input);
+        temp_input.val(copyText.innerText).select();
+        document.execCommand("copy");
+        temp_input.remove();
+
+    };
 
     $scope.openConversation = function(chat, $index){
         $scope.currentConversation = null;

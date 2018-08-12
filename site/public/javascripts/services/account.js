@@ -344,4 +344,34 @@ swapsApp.service('AccountService', function($http, $q){
         return defer.promise;
     }
 
+    this.setReferral = function(token) {
+        var defer = $q.defer();
+        $http.post('/account/setReferral',{token: token}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject('Something went wrong');
+        });
+        return defer.promise;
+    }
+
+    this.getReferralToken = function() {
+        var defer = $q.defer();
+        $http.get('/account/getReferralToken').then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data.token);
+            }
+        }, function(err){
+            defer.reject('Something went wrong');
+        });
+        return defer.promise;
+    }
+
 });

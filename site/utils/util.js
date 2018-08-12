@@ -23,6 +23,12 @@ module.exports.createVerifyToken = function(email){
     }, config.jwtSecret);
 };
 
+module.exports.createReferralToken = function(id){
+    return jwt.sign({
+        id: id,
+    }, config.jwtSecret);
+};
+
 module.exports.randomPassword = function () {
     let chars = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let pass = "";

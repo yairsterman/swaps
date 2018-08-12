@@ -148,6 +148,15 @@ var messages = {
             '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
+    referralComplete: function(referrer, user){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Referral complete </div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + referrer.firstName + ', Thanks for referring your friend '+user.firstName+' to Swaps<br>' +
+            'we are glad to inform you that they have completed filling their profile!<br>' +
+            'as a token of our gratitude we will add credit to your account' +
+            '<br><br>Keep on spreading the word!</div>' +
+            '</div>' + SIGNITURE + STYLE + '</div>'
+    },
+
     userInterested: function(email, city){
         return '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">New user left his email: ' + email + ', searched for: '+ city+'</div>'
     }

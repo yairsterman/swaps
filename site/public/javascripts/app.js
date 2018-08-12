@@ -37,7 +37,8 @@ $routeProvider
     })
     .when('/travelers/:city?', {
         templateUrl : '/pages/travelers.html',
-        controller  : 'travelersController'
+        controller  : 'travelersController',
+        reloadOnSearch: false
     })
     .when('/tips-for-trips', {
         templateUrl : '/pages/blog.html',

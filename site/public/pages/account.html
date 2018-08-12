@@ -24,6 +24,9 @@
                     <li class="single-link {{activeTab == 'reviews'?'active':''}}"><a href=""
                                                                                       ng-click="go('account/reviews')">Reviews</a>
                     </li>
+                    <li class="single-link {{activeTab == 'invite-friends'?'active':''}}"><a href=""
+                                                                                      ng-click="go('account/invite-friends')">Invite Friends</a>
+                    </li>
                     <!--<li class="single-link {{activeTab == 'pricing'?'active':''}}"><a href=""-->
                                                                                            <!--ng-click="go('account/pricing')">Pricing</a></li>-->
 
@@ -501,6 +504,37 @@
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="invite-friends-tab" ng-if="activeTab == 'invite-friends'" ng-init="getReferralToken()">
+                    <div class="loader-container {{loading?'':'disappear'}}" >
+                        <div class="cssload-loader">
+                            <div class="cssload-inner cssload-one"></div>
+                            <div class="cssload-inner cssload-two"></div>
+                            <div class="cssload-inner cssload-three"></div>
+                        </div>
+                    </div>
+                    <div class="permanent-info">
+                        <div class="title">
+                            Invite friends to Swaps
+                            <div class="underline">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="referral-link">
+                        <div class="text">
+                            Send the link below to your friends so they can join Swaps
+                        </div>
+                        <div class="text link" id="referralLink" ng-if="!referralError">
+                            http://localhost:3000/login?external=true&referer={{referralToken}}
+                        </div>
+                        <div class="text" ng-if="referralError">
+                            Couldn't get referral link please try again later
+                        </div>
+                        <div class="btn-primary invert-btn" ng-click="copyText('referralLink')" ng-disabled="loading">
+                            Copy link
+                        </div>
+                    </div>
                 </div>
                 <!--<div class="pricing-tab" ng-if="activeTab == 'pricing'">-->
                     <!--<div class="payment-plan">-->

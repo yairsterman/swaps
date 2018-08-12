@@ -84,6 +84,7 @@ const visibleUserData = {
         community:true,
         verifications: true,
         facebookId: true,
+        referredBy: true,
     }
 };
 

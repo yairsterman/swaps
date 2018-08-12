@@ -78,6 +78,11 @@ var UserSchema = new Schema({
     community: {type: Schema.Types.ObjectId, ref: 'Community' },
     paymentInfo: {},
     transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
+    referredBy: {
+        user: {type: Schema.Types.ObjectId, ref: 'User' },
+        complete: { type: Boolean, default: false }
+    },
+    refers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     deposit: Number,
     featured: Boolean,
     updated_at: { type: Date, default: Date.now },
