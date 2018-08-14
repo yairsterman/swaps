@@ -719,12 +719,15 @@ router.get('/verifyEmail', function (req, res, next) {
 });
 
 router.post('/setReferral', function (req, res, next) {
-    if((req.user.referredBy && req.user.referredBy.user) || !req.body.token || (req.user.localId || req.user.googleId || req.user.facebookId)){
-        return;
+    if((req.user.referredBy && req.user.referredBy.user) || !req.body.token ){
+        return res.json({});
     }
 
     jwt.verify(req.body.token, config.jwtSecret, function (err, decoded) {
         let id = decoded.id;
+        if(req.user._id == id){
+            return res.json({});
+        }
 
         let toUpdate = {referredBy: {user: id, complete: false}};
         findOneAndUpdate(req.user._id, toUpdate, res);

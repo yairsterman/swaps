@@ -311,15 +311,15 @@
                     <div class="swap-dates">
                         <swaps swaps="user.travelingInfo" popup="true" onboarding="true" close-model="closeModel()"></swaps>
                     </div>
-                    <div class="start-button end swap-dates-end">
-                        <div class="sub-title">
-                            No plans yet?<br>
-                            See what else we have to offer
-                        </div>
-                        <div class="complete-btn btn btn-primary" ng-click="go('travelers')">
-                            Search for Swap!
-                        </div>
-                    </div>
+                    <!--<div class="start-button end swap-dates-end">-->
+                        <!--<div class="sub-title">-->
+                            <!--No plans yet?<br>-->
+                            <!--See what else we have to offer-->
+                        <!--</div>-->
+                        <!--<div class="complete-btn btn btn-primary" ng-click="go('travelers')">-->
+                            <!--Search for Swap!-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div ng-if="!profileComplete()">
                     <div class="main-title">
@@ -330,6 +330,7 @@
                         You need to complete your profile in order to send and receive swap requests
                     </div>
                 </div>
+                <invite-friends></invite-friends>
             </div>
         </div>
     </div>

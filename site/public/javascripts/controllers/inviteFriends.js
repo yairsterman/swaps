@@ -11,7 +11,7 @@ swapsApp.controller('inviteFriendsController', function($scope, $rootScope, $rou
         AccountService.getReferralToken().then(function(token){
             $scope.referralToken = token;
             // $scope.referralLink = 'http://localhost:3000/login?external=true&referer=' + token;
-            $scope.referralLink = 'http://swapshome.com/login?external=true&referer=' + token;
+            $scope.referralLink = 'https://swapshome.com/login?external=true&referer=' + token;
         },function(err){
             $scope.referralError = true;
         }).finally(function(){

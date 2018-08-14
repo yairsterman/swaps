@@ -1,0 +1,22 @@
+<div class="invite-friends-dir">
+    <div class="title">
+        Get Swap Credits!
+    </div>
+    <div class="sub-title">
+        Up to $50 for every friend you invite
+    </div>
+    <a class="log-in-link" href="/invite-friends">
+        <div class="link" ng-if="$root.user._id">
+            Click here to invite your friends
+        </div>
+        <div ng-if="!$root.user._id">
+            <div class="link">
+                Log in to invite friends
+            </div>
+            <div class="text">
+                Don’t have an account? <span class="link">Join now</span>
+            </div>
+        </div>
+    </a>
+
+</div>
