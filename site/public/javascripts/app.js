@@ -5,7 +5,8 @@ swapsApp.config(function($routeProvider, $locationProvider) {
 $routeProvider
     .when('/', {
         templateUrl : '/pages/home.html',
-        controller  : 'homeController'
+        controller  : 'homeController',
+        reloadOnSearch: false
     })
     .when('/profile/:id', {
         templateUrl : '/pages/profile.html',
@@ -58,7 +59,8 @@ $routeProvider
     })
     .when('/invite-friends', {
         templateUrl : '/pages/invite-friends.html',
-        controller  : 'inviteFriendsController'
+        controller  : 'inviteFriendsController',
+        reloadOnSearch: false
     })
     .when('/review/:token', {
         templateUrl : '/pages/review.html',
