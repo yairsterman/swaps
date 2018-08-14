@@ -1,6 +1,8 @@
 swapsApp.controller('inviteFriendsController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
 
     $scope.user = $rootScope.user;
+    $rootScope.homepage = false;
+    $rootScope.searchPage = false;
     $scope.inputs = {};
 
     $scope.getReferralToken = function(){

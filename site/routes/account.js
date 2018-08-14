@@ -719,7 +719,7 @@ router.get('/verifyEmail', function (req, res, next) {
 });
 
 router.post('/setReferral', function (req, res, next) {
-    if((req.user.referredBy && req.user.referredBy.user) || !req.body.token){
+    if((req.user.referredBy && req.user.referredBy.user) || !req.body.token || (req.user.localId || req.user.googleId || req.user.facebookId)){
         return;
     }
 

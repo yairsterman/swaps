@@ -28,7 +28,6 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.loginCallBack = function(){
         UsersService.getUser().then(function(data){
             $rootScope.user = data.data;
-            $rootScope.$broadcast('login-success');
             $scope.loggedIn = true;
             if(!$scope.externalLogin)
                 $scope.modelInstance.close();
@@ -37,6 +36,7 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
                     AccountService.setReferral($location.search().referer);
                 }
             }
+            $rootScope.$broadcast('login-success');
             if(!$rootScope.profileComplete()) {
                 $scope.modelInstance = $uibModal.open({
                     animation: !$scope.externalLogin,
