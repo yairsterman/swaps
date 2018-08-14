@@ -719,13 +719,13 @@ router.get('/verifyEmail', function (req, res, next) {
 });
 
 router.post('/setReferral', function (req, res, next) {
-    if((req.user.referredBy && req.user.referredBy.user) || !req.body.token ){
+    if(!req.body.token || (req.user.referredBy && req.user.referredBy.user)){
         return res.json({});
     }
 
     jwt.verify(req.body.token, config.jwtSecret, function (err, decoded) {
         let id = decoded.id;
-        if(req.user._id == id){
+        if(!id || req.user._id == id){
             return res.json({});
         }
 
@@ -777,6 +777,7 @@ function completeReferral(user) {
             user.refers = [];
         }
         referrer.refers.push(user._id);
+        referrer.credit = typeof referrer.credit == 'undefined'?10:referrer.credit + 10;
         referrer.save(function (err) {
             if (err) {
                 error.message = 'Failed to save user, please try again';

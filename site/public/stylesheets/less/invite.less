@@ -1,7 +1,12 @@
 @import 'media.less';
 
 .invite-friends{
-  background-color: #ffffff;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0e5d7c+40,0b8f4c+100 */
+  background: rgb(14,93,124); /* Old browsers */
+  background: -moz-linear-gradient(-55deg, rgba(14,93,124,1) 40%, rgba(11,143,76,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-55deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(145deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#0b8f4c',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   padding: 60px 20%;
   min-height: 83vh;
   position: relative;
@@ -9,19 +14,20 @@
     padding: 15px;
   }
   .information-area{
-    border: 1px solid #0B8F4C;
-    padding: 24px;
-    background-color: #f3f4f5;
+    position: relative;
+    padding: 26px;
+    background-color: #ffffff;
+    box-shadow: 5px 4px 12px 2px rgba(0,0,0,0.5);
+    border-radius: 10px;
     @media @mobile {
       padding: 14px;
     }
   }
   .title{
     text-align: center;
-    padding: 40px 0 25px 0;
-    font-size: 32px;
-    color: #848a91;
-    font-weight: 300;
+    padding: 25px 0;
+    font-size: 36px;
+    color: #0e5d7c;
     @media @mobile {
       font-size: 22px;
     }
@@ -34,7 +40,7 @@
   }
   .text{
     font-size: 18px;
-    font-weight: 300;
+    line-height: 1.4;
     @media @mobile {
       font-size: 16px;
     }
@@ -150,10 +156,10 @@
   border: 1px solid #0B8F4C;
   padding: 14px;
   background-color: #ffffff;
-  .title{
+  .invite-friends-title{
     font-size: 22px;
   }
-  .sub-title{
+  .invite-friends-sub-title{
     font-size: 18px;
     font-weight: 300;
   }

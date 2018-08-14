@@ -80,8 +80,9 @@ var UserSchema = new Schema({
     transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
     referredBy: {
         user: {type: Schema.Types.ObjectId, ref: 'User' },
-        complete: { type: Boolean, default: false }
+        complete: Boolean
     },
+    credit: Number,
     refers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     deposit: Number,
     featured: Boolean,

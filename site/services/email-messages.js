@@ -13,10 +13,10 @@ const INVITE_FRIENDS = config.baseUrl + '/invite-friends';
 
 const SIGNITURE = '<div class="swaps-signature" style="padding:6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
     '<div>Tel Aviv, Israel</div></div>';
-const INVITE = '<div class="swaps-invite" style="text-align:center; background-color: #ffffff; border: 1px solid #0B8F3C; padding:2vw 6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="'+INVITE_FRIENDS+'">'+
-    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 22px;color: #333333;">Get Swap Credits!</div>' +
-    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;font-weight:300;color: #333333;">Up to $50 for every friend you invite</div>' +
-    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #0e5d7c;">Log in to invite friends</div>' +
+const INVITE = '<div class="swaps-invite" style="text-align:center; background: rgb(14,93,124); background: -moz-linear-gradient(-55deg, rgba(14,93,124,1) 40%, rgba(11,143,76,1) 100%);  background: -webkit-linear-gradient(-55deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); background: linear-gradient(145deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); border: 1px solid #0B8F3C; padding:2vw 6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="'+INVITE_FRIENDS+'">'+
+    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 22px;color: #ffffff;">Get Swap Credits!</div>' +
+    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #ffffff;">Up to $50 for every friend you invite</div>' +
+    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #FACC5C;">Log in to invite friends</div>' +
     ' </a></div></div>';
 const TOP = `<div class="swaps-logo" style="width:100px; height: 100px; margin:auto; padding: 20px 0;"><img style="width:100px; height: 100px;" src="${LOGO}"></div>`;
 const STYLE = '<style type="text/css">' +
