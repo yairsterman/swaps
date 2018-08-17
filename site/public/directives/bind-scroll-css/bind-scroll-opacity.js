@@ -11,13 +11,20 @@ swapsApp.directive('bindScrollOpacity', function() {
             var elemTop = elm.offset().top;
             var elemBottom = elemTop + elm.innerHeight();
 
-            var size = elemBottom - elemTop;
+            var size = elemBottom - elemTop + 100;
 
             var percentage = (docViewBottom - elemTop) / (size);
 
-            if((elemTop <= docViewBottom) && (docViewBottom < elemBottom) && (percentage > 0.3)){
+            if((elemTop <= docViewBottom) && (docViewBottom < elemBottom + 100) && (percentage > 0.4)){
 
-                elm.css({'background-color':'rgba(255,255,255,'+(1 - (Math.pow((percentage - 0.3)/ 0.6,2)))+')'});
+                // elm.css({'background-color':'rgba(255,255,255,'+ (1 - (percentage - 0.3)/ 0.7) +')'});
+                elm.css({'background-color':'rgba(255,255,255,0)'});
+            }
+
+            if((elemTop <= docViewBottom) && (docViewBottom < elemBottom + 100) && (percentage < 0.4)){
+
+                // elm.css({'background-color':'rgba(255,255,255,'+ (1 - (percentage - 0.3)/ 0.7) +')'});
+                elm.css({'background-color':'rgba(255,255,255,1)'});
             }
 
 
