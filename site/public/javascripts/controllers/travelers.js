@@ -201,6 +201,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.nextPage = function(){
+        $anchorScroll();
         scrollToTop();
         if($scope.page + 1 < $scope.totalPages){
             getTravelers($scope.page + 1);
@@ -208,6 +209,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.prevPage = function(){
+        $anchorScroll();
         scrollToTop();
         if($scope.page + 1 > 1){
             getTravelers($scope.page - 1);
@@ -215,6 +217,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     $scope.getPage = function(page){
+        $anchorScroll();
         $('.travelers-dropdown.open').removeClass('open');
         scrollToTop();
         getTravelers(parseInt(page) - 1);
