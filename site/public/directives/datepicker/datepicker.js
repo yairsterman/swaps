@@ -99,6 +99,7 @@ swapsApp.directive('datepicker', function() {
                         }
                         scope.swapDates.startRange = undefined;
                         scope.swapDates.endRange = undefined;
+                        scope.$parent.$apply();
                     });
                     scope.swapDates.when= scope.currentDatesWhen;
                     scope.swapDates.date= scope.currentDates;

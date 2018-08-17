@@ -30,6 +30,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
 
     $scope.go = function(path){
         $(window).unbind('scroll');
+        $('.navbar').removeClass('sticky');
         $location.url('/' + path);
     }
 

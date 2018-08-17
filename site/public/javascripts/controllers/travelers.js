@@ -86,7 +86,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         return $scope.checkedRoomTypes.includes(index);
     }
 
-    $scope.$watch('filter.rangeLabel', function(oldval, newval ){
+    $scope.$watchGroup(['filter.rangeLabel','filter.when'], function(oldval, newval ){
         if(!$scope.filter.when){
             return;
         }
@@ -110,7 +110,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
             }
             $scope.getPage(1);
         },500);
-    });
+    },true);
 
     $scope.changeRange = function () {
         if($scope.filter.duration) {
