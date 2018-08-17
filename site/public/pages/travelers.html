@@ -1,5 +1,5 @@
 <div class="travelers-page">
-    <div class="filters">
+    <div class="filters {{showFilters?'show-filters':''}}">
         <button class="filter-button date-button {{filter.when?'active':''}}">
             <i class="fa fa-times" ng-click="removeDates()" ng-if="filter.when"></i>
             <div class="filter-dates" ng-model="filter.date" id="searchDate" name="searchDate" ng-model="filter.date" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="dropdown">
+        <div class="dropdown no-position">
             <button class="filter-button dropdown-toggle facilities {{checkedAmenities.length > 0?'active':''}}" type="button" id="filterAmenities" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-times" ng-click="removeFacilities()" ng-if="checkedAmenities.length > 0"></i>
                 <div class="icon icon-TV"></div>
@@ -111,6 +111,7 @@
         </div>
 
     </div>
+    <div class="toggle-filters visible-xs" ng-click="toggleFilters()">{{showFilters?'Hide':'Show'}} Filters</div>
     <div class="people-and-map">
         <div class="">
             <div class="row mg-0">

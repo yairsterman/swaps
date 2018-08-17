@@ -16,6 +16,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     var filter = {};
     $scope.pageSize = 12;
     $scope.appliedFilters = false;
+    $scope.showFilters = false;
     $anchorScroll();
 
     $scope.filter.guests = $routeParams.guests?parseInt($routeParams.guests):2;
@@ -43,9 +44,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $location.url('/' + path);
     }
 
-    $scope.openFilters = function(){
-         $mdSidenav('right').toggle();
-         $scope.filtersOpen = !$scope.filtersOpen;
+    $scope.toggleFilters = function(){
+        $scope.showFilters = !$scope.showFilters;
     }
 
     $scope.checkAmenity = function(index, event){

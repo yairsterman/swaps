@@ -10,6 +10,18 @@
 		font-weight: 500;
 		margin-left: -15px;
 	}
+	.toggle-filters{
+		font-size: 16px;
+		text-align: center;
+		padding: 10px;
+		border-bottom: 1px solid #eee;
+		margin-bottom: 10px;
+	}
+	.no-position{
+		@media @mobile {
+			position: unset;
+		}
+	}
 	.filters{
 		position: relative;
 		display: flex;
@@ -22,10 +34,23 @@
 		-webkit-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		-moz-box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
 		box-shadow: 0px 8px 10px -10px rgba(0,0,0,0.39);
+		@media @tablet {
+			height: 7vw;
+		}
 		@media @mobile {
-			height: auto;
+			height: 0;
+			overflow: hidden;
 			display: flex;
 			flex-wrap: wrap;
+			padding: 0;
+		}
+		&.show-filters{
+
+			@media @mobile {
+				height: auto;
+				overflow: visible;
+				padding: 5px 15px;
+			}
 		}
 		.filter-button{
 			position: relative;
@@ -373,7 +398,8 @@
 			height: 60vw;
 		}
 		@media @mobile {
-			height: 600px;
+			height: auto;
+			min-height: 600px;
 		}
 		.loader-container{
 			padding: 100px;
