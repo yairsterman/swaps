@@ -784,6 +784,7 @@ function completeReferral(user) {
                 dfr.reject(error);
             }
             user.referredBy.complete = true;
+            user.credit = typeof user.credit == 'undefined'?10:user.credit + 10;
             user.save(function (err) {
                 if (err) {
                     error.message = 'Failed to save user, please try again';

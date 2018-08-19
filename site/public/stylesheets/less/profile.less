@@ -91,6 +91,9 @@
 			}
 			.empty-space{
 				margin-top: 20px;
+				@media @mobile {
+					margin-top: 5px;
+				}
 			}
 			.swap{
 				background-color: white;
@@ -168,6 +171,11 @@
 					}
 				}
 				.req-swap{
+					@media @mobile {
+						position: fixed;
+						bottom: 10px;
+						z-index: 10000;
+					}
 					.btn-swap{
 						width: 100%;
 						font-size: 18px;
@@ -855,6 +863,11 @@
 			}
 			.req-swap{
 				padding: 10px 20%;
+				@media @mobile {
+					position: fixed;
+					bottom: 10px;
+					z-index: 10000;
+				}
 				.req-sent{
 					text-align: center;
 					font-size: 20px;

@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="profile-description col-sm-3 col-xs-12 fix-scroll hidden-xs">
+            <div class="profile-description col-sm-3 col-xs-12 fix-scroll">
                 <div class="profile-name">
                     <div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
                     <div class="name-occupation">
@@ -92,51 +92,58 @@
                 </div>
                 <div class="end-of-profile"></div>
             </div>
-            <div class="visible-xs">
-                <div class="mobile-request">
-                    <input type="button" class="btn btn-primary btn-swap" value="Swap"
-                           ng-click="openRequest()">
-                </div>
-            </div>
         </div>
     </div>
     <div class="main-section container-fluid">
         <div class="row">
             <!--Left section-->
-            <div class="appt-slider-and-profpic visible-xs">
-                <div class="profile-description">
-                    <div class="profile-name">
-                        <div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>
-                        <div class="name-occupation">
-                            <div class="name">
-                                {{profile.firstName}}
-                            </div>
-                            <div class="occupation">
-                                <span ng-if="profile.birthday">{{age}}</span> <span ng-if="profile.occupation">• {{profile.occupation}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swap">
-                        <div class="favorite">
-                            <div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">
-                                <div class="icon icon-heart-white sharing"></div>
-                                Save
-                            </div>
-                            <div class="btn btn-primary btn-swap share-btn" ng-if="isFavorite()" ng-click="removeFromFavorites()">
-                                <div class="icon icon-heart-white sharing"></div>
-                                Unsave
-                            </div>
-                            <div class="btn btn-primary btn-swap share-btn" ng-click="share()">
-                                <div class="icon icon-envelope-white sharing"></div>
-                                Share
-                            </div>
-                        </div>
-
-                        <!--<div class="deposit">Payment Plan - {{data.securityDeposit[profile.deposit].displayName}}-->
+            <!--<div class="appt-slider-and-profpic visible-xs">-->
+                <!--<div class="profile-description">-->
+                    <!--<div class="profile-name">-->
+                        <!--<div class="circle-profile-pic" style="background-image:url('{{profile.image}}')"></div>-->
+                        <!--<div class="name-occupation">-->
+                            <!--<div class="name">-->
+                                <!--{{profile.firstName}}-->
+                            <!--</div>-->
+                            <!--<div class="occupation">-->
+                                <!--<span ng-if="profile.birthday">{{age}}</span> <span ng-if="profile.occupation">• {{profile.occupation}}</span>-->
+                            <!--</div>-->
                         <!--</div>-->
-                    </div>
-                </div>
-            </div>
+                    <!--</div>-->
+                    <!--<div class="swap">-->
+                        <!--<div class="favorite">-->
+                            <!--<div class="btn btn-primary btn-swap share-btn" ng-if="!isFavorite()" ng-click="addToFavorites()">-->
+                                <!--<div class="icon icon-heart-white sharing"></div>-->
+                                <!--Save-->
+                            <!--</div>-->
+                            <!--<div class="btn btn-primary btn-swap share-btn" ng-if="isFavorite()" ng-click="removeFromFavorites()">-->
+                                <!--<div class="icon icon-heart-white sharing"></div>-->
+                                <!--Unsave-->
+                            <!--</div>-->
+                            <!--<div class="btn btn-primary btn-swap share-btn" ng-click="share()">-->
+                                <!--<div class="icon icon-envelope-white sharing"></div>-->
+                                <!--Share-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="req-swap">-->
+                            <!--<input type="button" class="btn btn-primary btn-swap" value="Request Swap"-->
+                                   <!--ng-click="openRequest()" ng-hide="requestSent">-->
+                            <!--<div class="req-sent" ng-show="requestSent">-->
+                                <!--Request Sent-->
+                            <!--</div>-->
+                            <!--<div class="empty-space">-->
+                            <!--</div>-->
+                            <!--<input type="button" class="btn btn-primary btn-swap invert-btn" value="Send Message"-->
+                                   <!--ng-click="openMessage()" ng-hide="messageSent">-->
+                            <!--<div class="req-sent" ng-show="messageSent">-->
+                                <!--Message Sent-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;<div class="deposit">Payment Plan - {{data.securityDeposit[profile.deposit].displayName}}&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="apt-description col-sm-9 col-xs-12">
                 <div class="caption-upto-separator">
                     <div class="row">

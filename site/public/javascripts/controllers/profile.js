@@ -41,15 +41,26 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             });
         }
         else{
-            if($rootScope.isMobile){
-                $scope.chooseDates = true;
+            // if($rootScope.isMobile){
+            //     $scope.chooseDates = true;
+            // }
+            $scope.chooseDates = false;
+            if((!$scope.swap.from || !$scope.swap.to || $scope.swap.from == $scope.swap.to || !$scope.canSendRequest.status)){
+                if($rootScope.isMobile){
+                    $scope.chooseDates = true;
+                }
+                else{
+                    $scope.noDates = true;
+                    return;
+                }
             }
-            if(!$rootScope.isMobile && (!$scope.swap.from || !$scope.swap.to || $scope.swap.from == $scope.swap.to || !$scope.canSendRequest.status)){
-                $scope.noDates = true;
-                return;
-            }
-            if(!$rootScope.isMobile && (!$scope.swap.guests || $scope.swap.guests < 1)){
-                return;
+            if((!$scope.swap.guests || $scope.swap.guests < 1)){
+                if($rootScope.isMobile){
+                    $scope.chooseDates = true;
+                }
+                else{
+                    return;
+                }
             }
             $scope.modelInstance = $uibModal.open({
                 animation: true,

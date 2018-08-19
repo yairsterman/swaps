@@ -10,6 +10,12 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
         $scope.absUrl = $location.absUrl() + '&';
     }
 
+    if($rootScope.externalLogin){
+        if($location.search().referer){
+            $scope.referrer = true;
+        }
+    }
+
     $scope.getInitialPhase = function(){
         var initialPhase = 'onSignup';
         $scope.phase = 'onSignup';
