@@ -251,11 +251,46 @@
 				}
 	    	}
 	    	.display-photos{
+				position: relative;
     	    	.text{
     	    		padding: 15px;
 	    	    	font-size: 16px;
 					text-align: center;
     	    	}
+				.drag-hover{
+					position: absolute;
+					top: 0;
+					z-index: 11;
+					height: 0 !important;
+					padding: 10%;
+					margin: .25% !important;
+					width: 24.5%;
+					opacity: 0;
+					animation: drag 3.5s forwards;
+					-webkit-animation: drag 3.5s forwards;
+					animation-delay: 2s;
+					.drag-img{
+						background-position: center;
+						background-size: cover;
+						position: absolute;
+						top: 0;
+						left: 0;
+						height: 100%;
+						width: 100%;
+						opacity: 0.8;
+						z-index: 10;
+					}
+					.drag-cursor{
+						background-image: url("../../images/hand.png");
+						background-size: cover;
+						width: 32px;
+						height: 32px;
+						position: absolute;
+						z-index: 11;
+						top: 45%;
+						left: 43%;
+					}
+				}
 	    	    &.no-photos{
 	    	    	.no-image{
 	    	    		width: 200px;
@@ -1052,5 +1087,57 @@
 .tooltip-inner {
 	background-color: #0E5D7C !important;
 	color: white !important;
+}
+
+@keyframes drag {
+	0% {
+		opacity: 1;
+		left: 0;
+	}
+	15% {
+		left: 14%;
+	}
+	30% {
+		left: 2%;
+	}
+	45% {
+		left: 14%;
+		opacity: 1;
+	}
+	99% {
+		left: 14%;
+		opacity: 0;
+	}
+	100% {
+		display: none;
+		opacity: 0;
+		z-index: -1;
+	}
+}
+
+@-webkit-keyframes drag{
+	0% {
+		opacity: 1;
+		left: 0;
+	}
+	15% {
+		left: 14%;
+	}
+	30% {
+		left: 2%;
+	}
+	45% {
+		left: 14%;
+		opacity: 1;
+	}
+	99% {
+		left: 14%;
+		opacity: 0;
+	}
+	100% {
+		display: none;
+		opacity: 0;
+		z-index: -1;
+	}
 }
 

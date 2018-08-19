@@ -132,6 +132,10 @@
                                     on-delete="deletePhoto(img, cb)"
                                     on-close="galeryClosed()"
                             ></ng-image-gallery>
+                            <div class="drag-hover hidden-xs" ng-if="user.photos.length > 1 && !dragAnimation">
+                                <div class="drag-img" style="background-image: url({{user.photos[0]}})"></div>
+                                <div class="drag-cursor"></div>
+                            </div>
                             <div class="upload-photos btn btn-primary btn-edit" data-ng-init="initUploadButton()" ng-if="user.photos.length < 8">
                                 Upload Photos
                                 <input class="cloudinary-fileupload" data-cloudinary-field="image_id"

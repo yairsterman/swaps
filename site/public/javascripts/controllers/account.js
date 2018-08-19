@@ -1,5 +1,5 @@
 var acc = null;
-swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
+swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $window, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
     $rootScope.homepage = false;
@@ -18,6 +18,16 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.day = DAY;
 
     const SUCCESS = 'Changes saved successfully';
+
+    $scope.dragAnimation = $window.localStorage.getItem('dragAnimation');
+
+    if($scope.activeTab == 'listing' && !$rootScope.isMobile){
+        $timeout(function(){
+            $window.localStorage.setItem('dragAnimation',true);
+            $scope.dragAnimation = true;
+        }, 5500);
+    }
+
 
     if($rootScope.user && $rootScope.user._id) {
         init();
@@ -301,6 +311,16 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
           alert("You can only have 8 images");
        }
     }
+
+    // $scope.showDragAnimation = function(){
+    //     if($scope.user.photos.length > 1){
+    //         $window.localStorage.setItem('dragAnimation',true);
+    //
+    //         $timeout(function(){
+    //             $scope.dragAnimation = true;
+    //         }, 3500);
+    //     }
+    // }
 
     $scope.deletePhoto = function(img, cb){
         if($scope.saving){
