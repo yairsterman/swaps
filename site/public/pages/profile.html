@@ -51,9 +51,12 @@
                     <div class="swap-info">
                         <div class="search-field">
                             <label for="swapDates">When</label>
-                            <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
-                                   user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
-                                   not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" ng-cloak>
+                            <div class="dates-search">
+                                <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                                       user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
+                                       not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" ng-cloak readonly>
+                                <div class="icon icon-calender" ></div>
+                            </div>
                         </div>
                         <div class="search-field">
                             <label for="guests">Travelers</label>
@@ -222,7 +225,7 @@
 
                     <hr>
 
-                    <div class="row"  ng-if="user && profile.travelingInformation.length > 0">
+                    <div class="row traveling-information"  ng-if="user && user.city && profile.travelingInformation.length > 0">
                         <div class="col-sm-2 col-xs-12 left-side-description">Travel dates</div>
                         <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
                             <div class="travel-info row" ng-repeat="info in profile.travelingInformation" ng-if="(info.destination && info.destination.country == user.country) || !info.destination">
@@ -236,7 +239,12 @@
                                     <div ng-if="!info.departure">
                                         <div class="travel-date">Anytime</div>
                                     </div>
-                                    <div class="icon icon-calender" ng-model="filter.date" read-only="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker></div>
+                                    <div class="icon icon-calender" ng-model="filter.date" read-only="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" parent-el="'traveling-information'" datepicker></div>
+                                </div>
+                            </div>
+                            <div class="travel-info row" ng-if="!isTravelingToCity()">
+                                <div class="travel-city col-xs-12">
+                                    No plans to travel to {{user.city}}
                                 </div>
                             </div>
                         </div>

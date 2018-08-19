@@ -227,12 +227,14 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("border","1px solid rgba(13, 134, 234, 0.8)");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","500 !important");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("transform","scale(1.0)");
+        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").parent().css("z-index", google.maps.Marker.MAX_ZINDEX + 1);
     }
 
     $scope.shrinkImage = function(imageSrc){
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("border","1px solid rgba(13, 134, 234, 0)");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("z-index","100 !important");
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").css("transform","scale(0.75)");
+        $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").parent().css("z-index", google.maps.Marker.MAX_ZINDEX - 1);
     }
 
     function setMapOnAll(map) {
@@ -278,11 +280,13 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
 
         google.maps.event.addListener(marker, 'mouseover', function(event){
             $scope.currentApptPhoto = marker.photos[0];
+            marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
             scrollToProfile(marker.id);
         });
 
         google.maps.event.addListener(marker, 'mouseout', function(){
             $('#swappers').stop();
+            marker.setZIndex(google.maps.Marker.MAX_ZINDEX - 1);
             infoWindow.close($scope.map, marker);
         });
 

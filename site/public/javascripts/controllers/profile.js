@@ -238,6 +238,16 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.user = $rootScope.user;
         });
     };
+
+    $scope.isTravelingToCity = function(){
+        var isTraveling = false;
+        $scope.profile.travelingInformation.forEach(function(info){
+            if((info.destination && info.destination.country == $scope.user.country) || !info.destination){
+                isTraveling = true;
+            }
+        });
+        return isTraveling;
+    }
     
     function checkRequestSent(){
         AccountService.getRequests().then(function(requests){

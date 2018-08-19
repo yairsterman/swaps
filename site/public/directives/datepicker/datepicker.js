@@ -16,12 +16,14 @@ swapsApp.directive('datepicker', function() {
             readOnly: '=?',
             start: '=?',
             end: '=?',
+            parentEl: '=?',
         },
         link: function(scope, element, attrs, model) {
 
             var confirmedDates = [];
             var travelingDates = [];
             var today = (new Date()).getTime();
+            var tomorrow = formatDate(new Date((new Date()).setDate((new Date()).getDate() + 1)), scope.localeFormat);
             var minDate = today;
             var maxDate = today;
             var openAllDates = scope.setUpSwap || false;
@@ -52,12 +54,13 @@ swapsApp.directive('datepicker', function() {
                         opens: 'left',
                         startDate: formatDate(new Date(scope.start), scope.localeFormat),
                         endDate: formatDate(new Date(scope.end), scope.localeFormat),
-                        isInvalidDate: function(arg){
-                            return isInvalidDateReadOnly(arg);
-                        },
+                        // isInvalidDate: function(arg){
+                        //     return isInvalidDateReadOnly(arg);
+                        // },
                         locale: {
                             format: scope.localeFormat,
-                        }
+                        },
+                        parentEl: '.' + scope.parentEl
                     });
                 }
                 else{
@@ -117,7 +120,8 @@ swapsApp.directive('datepicker', function() {
                         return isInvalidDate(arg);
                     },
                     minDate: minDate,
-                    startDate: minDate,
+                    startDate: tomorrow,
+                    endDate: tomorrow,
                 };
                 if(scope.setUpSwap){
                     // setting daterangepicker causes date to default to today,
@@ -189,27 +193,27 @@ swapsApp.directive('datepicker', function() {
                 //-----------
                 openAllDates = true;
                 //-----------------
-                if(scope.userCity && scope.profile.travelingInformation && scope.profile.travelingInformation.length > 0){
-                    for(var i = 0; i < scope.profile.travelingInformation.length; i++){
-                        if(!scope.profile.travelingInformation[i].destination || (scope.profile.travelingInformation[i].destination && scope.profile.travelingInformation[i].destination.city == scope.userCity)){ // if cities match or user chose Anywhere as destination
-                            if(!scope.profile.travelingInformation[i].departure){ // if user has chosen anytime then open all dates
-                                openAllDates = true;
-                                break;
-                            }
-                            if(minDate > scope.profile.travelingInformation[i].departure){ // find min date in travel info
-                                minDate = scope.profile.travelingInformation[i].departure;
-                                if(minDate < today){
-                                    minDate = today;
-                                }
-                            }
-                            if(maxDate < scope.profile.travelingInformation[i].returnDate){// find max date in travel info
-                                maxDate = scope.profile.travelingInformation[i].returnDate
-                            }
-                            // add all traveling dates to array
-                            travelingDates = travelingDates.concat(getDatesBetween(scope.profile.travelingInformation[i].departure, scope.profile.travelingInformation[i].returnDate));
-                        }
-                    }
-                }
+                // if(scope.userCity && scope.profile.travelingInformation && scope.profile.travelingInformation.length > 0){
+                //     for(var i = 0; i < scope.profile.travelingInformation.length; i++){
+                //         if(!scope.profile.travelingInformation[i].destination || (scope.profile.travelingInformation[i].destination && scope.profile.travelingInformation[i].destination.city == scope.userCity)){ // if cities match or user chose Anywhere as destination
+                //             if(!scope.profile.travelingInformation[i].departure){ // if user has chosen anytime then open all dates
+                //                 openAllDates = true;
+                //                 break;
+                //             }
+                //             if(minDate > scope.profile.travelingInformation[i].departure){ // find min date in travel info
+                //                 minDate = scope.profile.travelingInformation[i].departure;
+                //                 if(minDate < today){
+                //                     minDate = today;
+                //                 }
+                //             }
+                //             if(maxDate < scope.profile.travelingInformation[i].returnDate){// find max date in travel info
+                //                 maxDate = scope.profile.travelingInformation[i].returnDate
+                //             }
+                //             // add all traveling dates to array
+                //             travelingDates = travelingDates.concat(getDatesBetween(scope.profile.travelingInformation[i].departure, scope.profile.travelingInformation[i].returnDate));
+                //         }
+                //     }
+                // }
                 if(openAllDates){ //set maxDate to false in order to stop looking for minDate
                     maxDate = false;
                 }
