@@ -29,7 +29,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     $scope.openRequest = function(){
         $scope.noDates = false;
         if(!$rootScope.user || !$rootScope.user._id){
-            $scope.openLogin();
+            var title = 'You must log in to request swap';
+            $scope.openLogin(title);
         }
         else if(!$scope.profileComplete()){
             $scope.modelInstance = $uibModal.open({
@@ -61,24 +62,21 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         }
     }
 
-    $scope.openLogin = function(signin){
+    $scope.openLogin = function(title){
+        $scope.title = title;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/login/login.html',
             size: 'sm',
             controller: 'loginController',
-            resolve: {
-                signin: function () {
-                    return signin;
-                }
-            },
             scope:$scope
         });
     }
 
     $scope.openMessage = function(){
         if(!$rootScope.user || !$rootScope.user._id){
-            $scope.openLogin();
+            var title = 'You must log in to send message';
+            $scope.openLogin(title);
         }
         else{
             $scope.modelInstance = $uibModal.open({
