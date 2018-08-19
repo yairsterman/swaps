@@ -760,7 +760,7 @@ function completeReferral(user) {
 
     let dfr = Q.defer();
 
-    if(!isProfileComplete(user) || !user.referredBy || user.referredBy.complete){
+    if(!isProfileComplete(user) || !user.referredBy || !user.referredBy.user || user.referredBy.complete){
         return dfr.resolve();
     }
 
@@ -774,7 +774,7 @@ function completeReferral(user) {
             dfr.reject(error);
         }
         if(!referrer.refers){
-            user.refers = [];
+            referrer.refers = [];
         }
         referrer.refers.push(user._id);
         referrer.credit = typeof referrer.credit == 'undefined'?10:referrer.credit + 10;
