@@ -1,4 +1,5 @@
 <div class="invite-friends" ng-init="init()">
+    <div class="background-friends">
     <div class="information-area" ng-if="user._id">
         <div class="loader-container {{loading?'':'disappear'}}" >
             <div class="cssload-loader">
@@ -15,9 +16,9 @@
                 </div>
             </div>
         </div>
-        <div class="text">
+        <div class="text text-align-center">
             Invite your friends to Swaps and get up to $50 in Swap Credits!
-            <br>You can invite your friends via email, or share your referral code.
+            <br>You can invite your friends via email, or share your referral link.
         </div>
         <div class="referral-link">
             <div class="send-emails">
@@ -54,5 +55,6 @@
         <div class="title">
             Please log in
         </div>
+    </div>
     </div>
 </div>

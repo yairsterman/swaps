@@ -1,17 +1,26 @@
 @import 'media.less';
 
 .invite-friends{
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0e5d7c+40,0b8f4c+100 */
-  background: rgb(14,93,124); /* Old browsers */
-  background: -moz-linear-gradient(-55deg, rgba(14,93,124,1) 40%, rgba(11,143,76,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(-55deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(145deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#0b8f4c',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-  padding: 60px 20%;
-  min-height: 83vh;
+  background-image: url("../../images/static/friends.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 90vh;
   position: relative;
-  @media @mobile {
-    padding: 15px;
+  .background-friends{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0e5d7c+40,0b8f4c+100 */
+    background: rgb(14,93,124); /* Old browsers */
+    background: -moz-linear-gradient(-55deg, rgba(14,93,124,0.8) 40%, rgba(11,143,76,0.8) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-55deg, rgba(14,93,124,0.8) 40%,rgba(11,143,76,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(145deg, rgba(14,93,124,0.8) 40%,rgba(11,143,76,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e5d7c', endColorstr='#0b8f4c',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    padding: 100px 20%;
+    @media @mobile {
+      padding: 15px;
+    }
   }
   .information-area{
     position: relative;
@@ -41,6 +50,9 @@
   .text{
     font-size: 18px;
     line-height: 1.4;
+    &.text-align-center{
+      text-align: center;
+    }
     @media @mobile {
       font-size: 16px;
     }
