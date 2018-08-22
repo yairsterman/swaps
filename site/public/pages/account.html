@@ -123,7 +123,7 @@
                         </div>
                         <div class="display-photos" ng-if="user.photos.length > 0">
                             <div class="text" ng-if="user.photos.length < 3">
-                                You don't have enough photos of your listing, you must have at least 3 photo.
+                                Homes with 3 or more photos are far more likely to get viewed.
                             </div>
                             <ng-image-gallery
                                     images="images"
@@ -132,7 +132,7 @@
                                     on-delete="deletePhoto(img, cb)"
                                     on-close="galeryClosed()"
                             ></ng-image-gallery>
-                            <div class="drag-hover hidden-xs" ng-if="user.photos.length > 1 && !dragAnimation">
+                            <div class="drag-hover hidden-xs {{!dragAnimation?'animate':''}}" ng-if="user.photos.length > 1">
                                 <div class="drag-img" style="background-image: url({{user.photos[0]}})"></div>
                                 <div class="drag-cursor"></div>
                             </div>

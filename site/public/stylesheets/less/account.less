@@ -257,6 +257,12 @@
 	    	    	font-size: 16px;
 					text-align: center;
     	    	}
+                &:hover{
+                  .drag-hover{
+                    animation: drag 3.5s forwards;
+                    -webkit-animation: drag 3.5s forwards;
+                  }
+                }
 				.drag-hover{
 					position: absolute;
 					top: 0;
@@ -266,9 +272,11 @@
 					margin: .25% !important;
 					width: 24.5%;
 					opacity: 0;
-					animation: drag 3.5s forwards;
-					-webkit-animation: drag 3.5s forwards;
-					animation-delay: 2s;
+                    &.animate{
+                      animation: drag 3.5s forwards;
+                      -webkit-animation: drag 3.5s forwards;
+                      animation-delay: 2s;
+                    }
 					.drag-img{
 						background-position: center;
 						background-size: cover;

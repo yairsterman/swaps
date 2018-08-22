@@ -21,13 +21,6 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.dragAnimation = $window.localStorage.getItem('dragAnimation');
 
-    if($scope.activeTab == 'listing' && !$rootScope.isMobile){
-        $timeout(function(){
-            $window.localStorage.setItem('dragAnimation',true);
-            $scope.dragAnimation = true;
-        }, 5500);
-    }
-
 
     if($rootScope.user && $rootScope.user._id) {
         init();
@@ -55,6 +48,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             var plan = parseInt($routeParams.plan);
             $scope.edit.deposit = plan;
             $scope.focusPlan = true;
+        }
+        if($scope.activeTab == 'listing' && !$rootScope.isMobile && $scope.user.photos.length > 1){
+            $timeout(function(){
+                $window.localStorage.setItem('dragAnimation',true);
+                $scope.dragAnimation = true;
+            }, 5500);
         }
     }
 
