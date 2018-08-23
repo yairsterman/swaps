@@ -23,3 +23,19 @@ swapsApp.directive('scrollToTop', function() {
     }
 });
 
+swapsApp.directive('scrollAction', function() {
+    return {
+        restrict: 'A',
+        scope:{
+            action: '&?'
+        },
+        link: function(scope, $elm) {
+            $elm.scroll(function() {
+                if($elm.scrollTop() >= ($elm[0].scrollHeight - $elm[0].offsetHeight) ){
+                    scope.action();
+                }
+            })
+        }
+    }
+});
+

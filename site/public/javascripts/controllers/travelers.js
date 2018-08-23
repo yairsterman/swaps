@@ -411,7 +411,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
               }
               $scope.modelInstance = $uibModal.open({
                   animation: true,
-                  templateUrl: '../../pages/components/join-us.html',
+                  templateUrl: '../../pages/popups/join-us.html',
                   size: 'md',
                   windowClass: 'request-modal',
                   scope: $scope
@@ -420,7 +420,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
                   if(!$scope.signingin && !$rootScope.user){
                       $scope.modelInstance = $uibModal.open({
                           animation: true,
-                          templateUrl: '../../pages/components/leave-email.html',
+                          templateUrl: '../../pages/popups/leave-email.html',
                           size: 'md',
                           windowClass: 'request-modal',
                           scope: $scope
@@ -455,6 +455,10 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         getTravelers(0);
 	});
 
+    $scope.$on('auth-return', function(event, args) {
+        $scope.user = $rootScope.user;
+    });
+
 
     $scope.carouselPrev = function (identifyier, event) {
         event.preventDefault();
@@ -467,6 +471,20 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         event.stopPropagation();
         $('#myCarousel' + identifyier).carousel('next');
     };
+
+    $scope.openHelpSearch = function(){
+        if($scope.user || $scope.page > 0 || $scope.firedHelpSearch){
+            return;
+        }
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../pages/popups/help-search.html',
+            size: 'md',
+            windowClass: 'request-modal',
+            scope: $scope
+        });
+        $scope.firedHelpSearch = true;
+    }
 
 
 }]);

@@ -34,6 +34,10 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
         $location.url('/' + path);
     }
 
+    $scope.$on('auth-return', function(event, args) {
+        $scope.user = $rootScope.user;
+    });
+
     $scope.link = function(link){
         switch(link){
             case 'facebook':
