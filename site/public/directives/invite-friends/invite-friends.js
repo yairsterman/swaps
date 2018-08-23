@@ -3,6 +3,7 @@ swapsApp.directive('inviteFriends', function() {
         restrict: 'E',
         controller: inviteFriends,
         scope: {
+            helpGrow: '=?',
             closeModal: '&?'
         },
         templateUrl: '../../directives/invite-friends/invite-friends.html'

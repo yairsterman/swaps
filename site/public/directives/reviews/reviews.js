@@ -27,4 +27,8 @@ function swapperReview($scope, $rootScope, $location) {
         }
         return ret;
     };
+
+    $scope.readMore = function(){
+        $scope.showAll = true;
+    }
 }

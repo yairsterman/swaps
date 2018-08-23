@@ -1,34 +1,38 @@
 <div class="join-us-page">
     <div class="top-corner icon icon-delete" ng-click="modelInstance.close()"></div>
-    <div class="cancel-swap">
-        <div class="title">
-            Sorry, we couldn't find a place in {{failedCity.split(',')[0]}}
-        </div>
-        <div class="sub-title">
-            <div class="section">
-                <div class="icon-wrapper">
-                    <div class="icon icon-plus1"></div>
-                </div>
-                <span class="sub-title">
-Swaps is growing quickly and we are looking for travelers from all over the world to help us create a home swapping community                </span>
+    <div class="">
+        <div ng-if="!loggedIn">
+            <div class="title">
+                Sorry, we couldn't find a place in {{failedCity.split(',')[0]}}
             </div>
-            <div class="section">
-                <div class="icon-wrapper">
-                    <div class="icon icon-target"></div>
-                </div>
-                <span class="sub-title">
-List your home, find other Swappers or enter your travel plans so they can find you, and we we’ll get started on setting up a perfect home swap for you                </span>
+            <div class="sub-title">
+                Can’t find what you’re looking for?
             </div>
-            <div class="section">
-                <div class="icon-wrapper">
-                    <div class="icon icon-house"></div>
-                </div>
-                <span class="sub-title">
-                   The more people join us on our journey, the easier it will be for you to find a Swap! Sign up now - It’s completely free, and your first Swap is on us!
-                </span>
+            <div class="secondary-title">
+                We’ll take it from here!
+            </div>
+            <div class="sub-title">
+                Leave us some details about your home and trip,<br>
+                and we’ll get back to you with a match in no time
+            </div>
+            <div class="btn-primary ok-btn" ng-click="signin();openLogin(true);modelInstance.close({$value: true})">Find me a Swap!</div>
+            <div class="sub-title">
+                Oh, by the way, your first Swap is free
+            </div>
+            <div class="link" ng-click="signin();openLogin(true);modelInstance.close({$value: true})" >
+                Sign up now!
             </div>
         </div>
+        <div ng-if="loggedIn">
+            <div class="title" ng-if="loggedIn">
+                Oh man, there are no Swappers in {{failedCity.split(',')[0]}} yet
+            </div>
+
+            <div class="pa-55">
+
+            </div>
+            <invite-friends help-grow="true"></invite-friends>
+        </div>
+
     </div>
-    <div class="btn-primary ok-btn" ng-click="signin();openLogin(true);modelInstance.close({$value: true})" ng-if="!loggedIn">Join Swaps</div>
-    <div class="btn-primary ok-btn" ng-click="modelInstance.close()" ng-if="loggedIn">Continue</div>
 </div>

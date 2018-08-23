@@ -320,6 +320,19 @@
                                 Reviews
                             </div>
                             <div class="col-sm-8 col-xs-12">
+                                <div class="number-of-reviews">
+                                    <div>
+                                        {{profile.reviews.length}} {{profile.reviews.length == 1?'Review':'Reviews'}}
+                                    </div>
+                                    <div class="rating">
+                                        <span class="icon icon-star-large"></span>
+                                        <span class="icon {{profile.rating > 1?profile.rating < 2?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                        <span class="icon {{profile.rating > 2?profile.rating < 3?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                        <span class="icon {{profile.rating > 3?profile.rating < 4?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                        <span class="icon {{profile.rating > 4?profile.rating < 5?'icon-halfstar-large':'icon-star-large':'icon-emptystar-large'}}"></span>
+                                        <!--<span class="number-reviews">{{profile.comments.length}}</span>-->
+                                    </div>
+                                </div>
                                 <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
                                     <review-elm is-profile="true" commenter="commenter"></review-elm>
                                     <hr style="clear: both;">
