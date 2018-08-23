@@ -110,6 +110,17 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
         return (swap.departure);
     };
 
+    $scope.setAllowViewHome = function(){
+        $scope.user.allowViewHome = !$scope.user.allowViewHome;
+        AccountService.setAllowViewHome($scope.user.allowViewHome).then(function(data){
+            $rootScope.user = data;
+            updateUser();
+        },function(err){
+            $scope.user.allowViewHome = !$scope.user.allowViewHome;
+            showAlert('Error setting open to suggestions', true);
+        });
+    }
+
     function updateUser(){
         $scope.user = $rootScope.user;
         $scope.swaps = $scope.user.travelingInformation;
@@ -176,6 +187,15 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
             },300);
         }
     };
+
+    function showAlert(msg, error){
+        if(!error){
+            alertify.success(msg);
+        }
+        else{
+            alertify.error(msg);
+        }
+    }
 
 });
 

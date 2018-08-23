@@ -168,4 +168,18 @@
             <input type="button" class="btn btn-primary btn-send" value="ADD" ng-click="add()" ng-disabled="saving || editing" disabled="{{saving || editing}}">
         </div>
     </div>
+    <div class="row search-area">
+        <div class="search-field col-xs-12">
+            <div class="checkbox-wrapper">
+                <div class="single-checkbox">
+                    <div class="things-checkbox" ng-click="setAllowViewHome()">
+                        <div class="check icon icon-check {{user.allowViewHome?'checked':''}}"></div>
+                    </div>
+                    <div class="text">
+                        Open to other swap suggestions
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

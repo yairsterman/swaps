@@ -756,6 +756,16 @@ router.post('/sendInvites', function (req, res, next) {
     res.json({})
 });
 
+router.post('/setAllowViewHome', function (req, res, next) {
+
+    let id = req.user._id;
+    let allow = req.body.allowViewHome;
+
+    let toUpdate = {$set: {'allowViewHome': allow}};
+
+    findOneAndUpdate(id, toUpdate, res);
+});
+
 function completeReferral(user) {
 
     let dfr = Q.defer();

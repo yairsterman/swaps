@@ -147,6 +147,7 @@ const requestStatus ={
     pending: 0,
     confirmed: 1,
     canceled: 2,
+    complete: 3,
 };
 
 const requestType ={

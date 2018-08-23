@@ -212,21 +212,6 @@ swapsApp.service('AccountService', function($http, $q){
         var defer = $q.defer();
         $http.post('/auth/signup', credentials).then(function(data){
             if(data.data.error){
-                defer.reject(data.data.error);
-            }
-            else{
-                defer.resolve(data.data);
-            }
-        }, function(data){
-            defer.reject(data.data.message);
-        });
-        return defer.promise;
-    };
-
-    this.emailSignup = function(credentials) {
-        var defer = $q.defer();
-        $http.post('/auth/signup', credentials).then(function(data){
-            if(data.data.error){
                 defer.reject(data.data.message);
             }
             else{
@@ -377,6 +362,21 @@ swapsApp.service('AccountService', function($http, $q){
     this.sendInvites = function(emails) {
         var defer = $q.defer();
         $http.post('/account/sendInvites', {emails:emails}).then(function(data){
+            if(data.data.error){
+                defer.reject(data.data.message);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        }, function(err){
+            defer.reject('Something went wrong');
+        });
+        return defer.promise;
+    }
+
+    this.setAllowViewHome = function(allowViewHome) {
+        var defer = $q.defer();
+        $http.post('/account/setAllowViewHome', {allowViewHome:allowViewHome}).then(function(data){
             if(data.data.error){
                 defer.reject(data.data.message);
             }
