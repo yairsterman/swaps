@@ -43,23 +43,24 @@ router.get('/getUsers', function(req, res, next) {
             params['apptInfo.roomType'] = {'$in':room};
         }
         // if users' country was specified, find only users traveling to the same country
-        if(destination){
-            // if searching by user's current location then find user's by city
-            if(req.query.destination){
-                or.push({"travelingInformation.destination.city": {$regex: destination, $options: 'i'}});
-            }
-            else{
-                or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
-            }
-            or.push({"travelingInformation.destination": null});
-        }
+        // if(destination){
+        //     // if searching by user's current location then find user's by city
+        //     if(req.query.destination){
+        //         or.push({"travelingInformation.destination.city": {$regex: destination, $options: 'i'}});
+        //     }
+        //     else{
+        //         or.push({"travelingInformation.destination.country": {$regex: destination, $options: 'i'}});
+        //     }
+        //     or.push({"travelingInformation.destination": null});
+        //     params["$or"] = or;
+        // }
         // if no user is logged in or country is not filled, find all users traveling
-        else{
-            or.push({"travelingInformation.0": {$exists:true}});
-        }
-        // or who allowed to view home
-        or.push({allowViewHome: true});
-        params["$or"] = or;
+        // else{
+        //     or.push({"travelingInformation.0": {$exists:true}});
+        // }
+        // // or who allowed to view home
+        // or.push({allowViewHome: true});
+        // params["$or"] = or;
 
         if(geo){
             params.country = {$regex: geo.country, $options: 'i'};

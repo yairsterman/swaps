@@ -48,13 +48,13 @@
                     <!--<div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}-->
                     <!--</div>-->
                     <hr>
-                    <div class="swap-info">
+                    <div class="swap-info {{!profile.allowViewHome && profile.travelingInformation.length == 0?'disabled':''}}">
                         <div class="search-field">
                             <label for="swapDates">When</label>
                             <div class="dates-search">
                                 <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                        user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
-                                       not-swapping="notSwapping" data="data" ng-disabled="requestSent" disabled="{{requestSent}}" datepicker ng-if="ready" ng-cloak readonly>
+                                       not-swapping="notSwapping" data="data" ng-disabled="requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)" disabled="{{requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)}}" datepicker ng-if="ready" ng-cloak readonly>
                                 <div class="icon icon-calender" ></div>
                             </div>
                         </div>
@@ -62,12 +62,12 @@
                             <label for="guests">Travelers</label>
                             <div class="guests-search">
                                 <input type="number" class="form-control guests dates {{!swap.guests || swap.guests < 1?'error':''}}" id="guests" ng-model="swap.guests"
-                                       min="1" max="8" ng-disabled="requestSent" disabled="{{requestSent}}">
+                                       min="1" max="8" ng-disabled="requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)" disabled="{{requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)}}" ng-disabled="!profile.allowViewHome && profile.travelingInformation.length == 0">
                             </div>
                         </div>
                     </div>
                     <hr>
-                    <div class="req-swap">
+                    <div class="req-swap" ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
                         <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
                                ng-click="openRequest()" ng-hide="requestSent">
                         <div class="req-sent" ng-show="requestSent">
@@ -81,9 +81,9 @@
                             Message Sent
                         </div>
                     </div>
-                    <!--<div class="not-charged" ng-hide="requestSent">-->
-                        <!--You won't be charged yet-->
-                    <!--</div>-->
+                    <div class="not-charged"  ng-if="!profile.allowViewHome && profile.travelingInformation.length == 0">
+                        User is currently not accepting requests
+                    </div>
                 </div>
                 <div class="" ng-if="user._id == profile._id">
                     <a href="/account/edit">
@@ -246,17 +246,32 @@
                                     <div ng-if="!info.departure">
                                         <div class="travel-date">Anytime</div>
                                     </div>
-                                    <div class="icon icon-calender" ng-model="filter.date" read-only="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" parent-el="'traveling-information'" datepicker></div>
+                                    <div class="icon icon-calender" ng-if="info.departure" ng-model="filter.date" read-only="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" parent-el="'traveling-information'" datepicker></div>
                                 </div>
                             </div>
-                            <div class="travel-info row" ng-if="!isTravelingToCity()">
+                            <div class="travel-info row" ng-if="profile.allowViewHome">
+                                <div class="travel-city col-xs-12">
+                                    Open to swap suggestions
+                                </div>
+                            </div>
+                            <div class="travel-info row" ng-if="!isTravelingToCity() && !profile.allowViewHome">
                                 <div class="travel-city col-xs-12">
                                     No plans to travel to {{user.city}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr ng-if="user && profile.travelingInformation.length > 0">
+                    <div class="row traveling-information" ng-if="user && user.city && profile.travelingInformation.length == 0 && profile.allowViewHome">
+                        <div class="col-sm-2 col-xs-12 left-side-description">Travel dates</div>
+                        <div class="col-sm-8 col-xs-12 right-side-elaboration read-more-activation">
+                            <div class="travel-info row">
+                                <div class="travel-city col-xs-12">
+                                    Open to swap suggestions
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr ng-if="user && profile.travelingInformation.length > 0 || (user && user.city && profile.travelingInformation.length == 0 && profile.allowViewHome)">
 
                     <!--</div>-->
                     <div class="map-section">
