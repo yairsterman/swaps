@@ -3,7 +3,7 @@
         <div class="main-title">
             Tips for Trips
         </div>
-        <div class="post-excerpt" ng-repeat="post in posts">
+        <div class="post-excerpt" ng-repeat="post in posts | orderBy: '-date'">
             <div class="row post-content">
                 <div class="col-md-6 col-xs-12">
                     <div class="main-photo " style="background-image: url({{post.photo}})">
