@@ -8,6 +8,8 @@ let moment = require('moment');
 
 let geocoder = require('./geocoderService');
 
+const WEEK = 1000 * 60 * 60 * 24 * 7;
+
 // Filter all returned users by the given filter params
 module.exports.sortUsers = function (req, users, options){
 
@@ -62,7 +64,7 @@ function findMatches(user, users){
                             _id: _user._id,
                             city: _user.city,
                             country: _user.country,
-                            travelPlan: {fullDestination: _info.fullDestination, dates:_info.dates, overlappingDays : getOverlappingDays(_info, info) }
+                            travelPlan: {fullDestination: _info.fullDestination, dates:_info.dates, overlappingDays : getOverlappingDays(_info, info), isWithinMonth: isWithinRange(info,_info,4),isWithinWeek: isWithinRange(info,_info,1) }
                         });
                     }
                 });
@@ -177,6 +179,21 @@ function getDaysBetween(first, second){
     if(first - second < 0)
         return 0;
     return Math.floor(( first - second ) / 86400000); // devide by days 24 * 60 * 60 * 1000
+}
+
+/**
+ * Find if the dates are within a given number of weeks range.
+ *
+ * @param dateRange1 - the departure and returnDate of first date range
+ * @param dateRange2 - the departure and returnDate of second date range
+ * @param numOfWeeks - number of weeks
+ * @return {boolean} - if within two week range
+ */
+function isWithinRange(dateRange1, dateRange2, numOfWeeks){
+    if(!dateRange1.departure || !dateRange2.departure || !dateRange1.returnDate || !dateRange2.returnDate){
+        return false;
+    }
+    return (dateRange2.returnDate <= dateRange1.returnDate && dateRange1.departure - numOfWeeks * WEEK <= dateRange2.returnDate) || (dateRange2.departure >= dateRange1.departure && dateRange1.returnDate + numOfWeeks * WEEK >= dateRange2.departure)
 }
 
 function filterGuests(req, user, destination){
