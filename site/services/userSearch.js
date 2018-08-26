@@ -29,6 +29,49 @@ module.exports.sortUsers = function (req, users, options){
     return users.sort(function(a, b){
         return b.relevance - a.relevance;
     });
+};
+
+module.exports.findMatchingTravelers = function (users){
+
+    let filteredUsers = [];
+
+    users.forEach((user) => {
+        findMatches(user, users);
+    });
+    filteredUsers = users.filter(u => {
+        return u.travelingInformation.length > 0;
+    });
+    return filteredUsers;
+};
+
+function findMatches(user, users){
+    user.travelingInformation.forEach((info) => {
+        info._doc.matches = [];
+        users.forEach((_user) => {
+            if(_user._id == user._id){
+                return;
+            }
+            // check first if the user's traveling destination is the same as the other user's address
+            if(info.destination && ((info.destination.city && matchPlaces(_user, info.destination) === 1) || (!info.destination.city && info.destination.country && matchPlaces(_user, info.destination) >= 0.3))){
+                _user.travelingInformation.forEach((_info) => {
+                    if(_info.destination && ((_info.destination.city && matchPlaces(user, _info.destination) === 1)
+                        || (!_info.destination.city && _info.destination.country && matchPlaces(user, _info.destination) >= 0.3))){
+                        info._doc.matches.push({
+                            firstName: _user.firstName,
+                            lastName: _user.lastName,
+                            _id: _user._id,
+                            city: _user.city,
+                            country: _user.country,
+                            travelPlan: {fullDestination: _info.fullDestination, dates:_info.dates, overlappingDays : getOverlappingDays(_info, info) }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    user.travelingInformation =  user.travelingInformation.filter(info => {
+        return info._doc.matches.length > 0;
+    });
 }
 
 function matchPlaces(user, geo){

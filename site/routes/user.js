@@ -129,6 +129,45 @@ router.get('/get-all-users-admin', function(req, res, next) {
         });
 });
 
+router.get('/searchTravelInformation', function(req, res, next) {
+    let password = req.query.password;
+    if(password !== config.ADMIN_PASSWORD){
+        error.message = "No Access";
+        res.json(error);
+        return;
+    }
+
+    let params = {};
+    setRequiredParams(params);
+    params['travelingInformation.0'] = {$exists: true};// at least 1 travel plan
+    let projection = {
+        firstName: true,
+        lastName: true,
+        city : true,
+        country: true,
+        'travelingInformation.fullDestination' : true,
+        'travelingInformation.returnDate' : true,
+        'travelingInformation.departure' : true,
+        'travelingInformation.dates' : true,
+        'travelingInformation.guests' : true,
+        'travelingInformation.destination' : true
+        // travelingInformation: {
+        //     fullDestination: true,
+        //     returnDate: true,
+        //     departure: true,
+        //     dates: true,
+        //     guests: true,
+        // }
+    };
+    User.find(params,projection)
+        .exec(function (err, users) {
+            if (err) return next(err);
+
+            users = UserSearch.findMatchingTravelers(users);
+            res.json({users: users});
+        });
+});
+
 router.get('/get-featured-users', function(req, res, next) {
     let params = {};
     setRequiredParams(params);
