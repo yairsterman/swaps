@@ -45,6 +45,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
             $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
             initialPhase = 'about';
         }
+        $scope.user.thingsToDo = $scope.user.thingsToDo.length>0?$scope.user.thingsToDo:[1,4,11,12,13];
         $scope.phase = initialPhase;
         $location.search('phase',initialPhase);
         getInitialFocus();
@@ -76,6 +77,7 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     $scope.next = function(){
         if($scope.phase == 'onSignup'){
             $scope.phase = 'about';
+            $scope.user.thingsToDo = $scope.user.thingsToDo.length>0?$scope.user.thingsToDo:[1,4,11,12,13];
             $location.search('phase',$scope.phase);
             return;
         }

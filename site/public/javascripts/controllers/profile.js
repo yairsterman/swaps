@@ -200,7 +200,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.$on('auth-return', function(event, args) {
         $scope.user = $rootScope.user;
-        setUserData();
+        init();
     });
 
     $rootScope.$on('geolocation-complete', function(event, args) {
@@ -273,12 +273,6 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
     }
 
-    var myoverlay = new google.maps.OverlayView();
-    myoverlay.draw = function () {
-        //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
-        this.getPanes().markerLayer.id='iconsLayer';
-    };
-
     function setMapRadius(){
         var mapOptions = {
             zoom: 14,
@@ -300,6 +294,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             center: {lat:parseFloat($scope.profile.location.lat), lng:parseFloat($scope.profile.location.long)},
             radius: 500
         });
+
+        var myoverlay = new google.maps.OverlayView();
+        myoverlay.draw = function () {
+            //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
+            this.getPanes().markerLayer.id='iconsLayer';
+        };
 
         myoverlay.setMap($scope.map);
     }
@@ -345,11 +345,13 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         // marker.content = '<img src=' + info.photos[0].getUrl() + '></img>' + '<div>' + info.name + '</div>';
 
         google.maps.event.addListener(marker, 'mouseover', function(event){
+            marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
             infoWindow.setContent(info.name);
             infoWindow.open($scope.map, this);
         });
 
         google.maps.event.addListener(marker, 'mouseout', function(){
+            marker.setZIndex(100);
             infoWindow.close($scope.map, marker);
         });
 
