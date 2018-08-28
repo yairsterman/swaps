@@ -26,7 +26,7 @@ swapsApp.controller('inviteFriendsController', function($scope, $rootScope, $rou
     };
 
     $scope.sendInvites = function(){
-        if($scope.sending){
+        if($scope.sending || !$scope.inputs.emails || $scope.inputs.emails == ''){
             return;
         }
         $scope.sending = true;
@@ -66,7 +66,14 @@ swapsApp.controller('inviteFriendsController', function($scope, $rootScope, $rou
             $scope.getReferralToken();
         }
         else{
-            $scope.openLogin();
+            AccountService.getUser().then(function(user){
+                $scope.user = user;
+                $scope.getReferralToken();
+            }, function(){
+                if(!($scope.user && $scope.user._id)){
+                    $scope.openLogin();
+                }
+            });
         }
     }
 

@@ -23,7 +23,7 @@
         <div class="referral-link">
             <div class="send-emails">
                 <input class="form-control" type="text" placeholder="Enter email addresses comma separated" ng-model="inputs.emails">
-                <div class="btn-primary invert-btn send-invites-btn" ng-click="sendInvites();" ng-disabled="sending">Send Invites</div>
+                <div class="btn-primary invert-btn send-invites-btn {{sending || !inputs.emails || inputs.emails == ''?'disabled':''}}" ng-click="sendInvites();" ng-disabled="sending || !inputs.emails || inputs.emails == ''">Send Invites</div>
             </div>
             <div class="or">
                 or
