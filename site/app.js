@@ -23,6 +23,7 @@ let login = require('./routes/login');
 let community = require('./routes/community');
 let blog = require('./routes/blog');
 let review = require('./routes/review');
+let MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
@@ -36,16 +37,8 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(cookieParser());
+app.use(cookieParser('1234567890'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(session({ 
-    secret: '1234567890',
-    cookie: { maxAge: 3600000*24*365 },
-    resave: true,
-    saveUninitialized: false}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // load mongoose package
 const mongoose = require('mongoose');
@@ -53,15 +46,31 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // connect to MongoDB
 
-// mongoose.connect(config.mongoUrl)
-//     .then(() =>  console.log('connection succesful'))
-// .catch((err) => console.error(err));
-
 mongoose.connect(config.mongoUrl,{useMongoClient: true}).then(function () {
     console.log('connection successful');
 }).catch(function (err) {
     console.error(err);
 });
+
+
+const db = mongoose.connection;
+
+app.use(session({ 
+    secret: '1234567890',
+    cookie: { secure: false, maxAge: 3600000*24*365 },
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: db })
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// mongoose.connect(config.mongoUrl)
+//     .then(() =>  console.log('connection succesful'))
+// .catch((err) => console.error(err));
+
 
 app.use(function(req, res, next) {
      res.header('Access-Control-Allow-Origin', req.headers.origin);

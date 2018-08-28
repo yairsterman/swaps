@@ -1,4 +1,4 @@
-swapsApp.service('AccountService', function($http, $q){
+swapsApp.service('AccountService', function($http, $rootScope, $q){
 
     this.editProfile = function(user) {
         var defer = $q.defer();
@@ -387,6 +387,22 @@ swapsApp.service('AccountService', function($http, $q){
             defer.reject('Something went wrong');
         });
         return defer.promise;
-    }
+    };
+
+    this.getUser = function() {
+        var defer = $q.defer();
+        $http.get('/user/get-user').then(function(data){
+            if(data.data.error){
+                defer.reject();
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        },
+        function(){
+            defer.reject();
+        });
+        return defer.promise;
+    };
 
 });

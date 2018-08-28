@@ -9,6 +9,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.swap = {};
     $scope.showSwapsTab = 'set';
     $scope.numOfFiles = 0;
+    $scope.edit = {};
 
 
     $scope.select = {};
@@ -23,15 +24,19 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
 
     if($rootScope.user && $rootScope.user._id) {
+        $scope.user = $rootScope.user;
         init();
     }
     else{
-        $timeout(function(){
+        AccountService.getUser().then(function(user){
+            $scope.user = user;
+            init();
+        }, function(){
             if(!($rootScope.user && $rootScope.user._id)){
                 $scope.openLogin();
                 $location.url('/');
             }
-        },1000);
+        });
     }
 
     $('.fb-messenger-icon').addClass('hide');
