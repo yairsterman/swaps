@@ -71,9 +71,9 @@ function findMatches(user, users){
             }
         });
     });
-    user.travelingInformation =  user.travelingInformation.filter(info => {
-        return info._doc.matches.length > 0;
-    });
+    // user.travelingInformation =  user.travelingInformation.filter(info => {
+    //     return info._doc.matches.length > 0;
+    // });
 }
 
 function matchPlaces(user, geo){
