@@ -22,6 +22,8 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $anchorScroll();
 
+    $('.fb-messenger-icon').addClass('hide');
+
     $scope.go = function(path){
       $location.url('/' + path);
     }
