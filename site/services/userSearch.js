@@ -97,8 +97,8 @@ function getHighestTravelScore(user, geo, searchDates, req){
     let placesRelevancePercent = 80;
     let datesRelevancePercent = 20;
     let placesAndDatesRelevance = 60;
-    let fromRelevance = 0.4;
-    let toRelevance = 0.6;
+    let fromRelevance = 0.5;
+    let toRelevance = 0.5;
 
     // match search address and user address
     let from = matchPlaces(user, geo);
