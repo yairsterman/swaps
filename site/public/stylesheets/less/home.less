@@ -6,7 +6,6 @@
 	//background: -webkit-linear-gradient(top, rgba(14,93,124,1) 4%, rgba(255,255,255,1) 18%); /* Chrome10-25,Safari5.1-6 */
 	//background: linear-gradient(to bottom, rgba(14,93,124,1) 4%, rgba(255,255,255,1) 18%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0072bf', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-	//background-image: url('../../images/static/beach.jpg');
 	//background-position: top;
 	//background-size: contain;
 	//background-repeat: no-repeat;
@@ -77,7 +76,7 @@
 	.section{
 		padding-bottom: 4vw;
 		&.main-section{
-			background-image: url('https://res.cloudinary.com/swaps/image/upload/v1532026685/home/beach.jpg');
+			background-image: url('../../images/static/home/beach.jpg');
 			background-position: top;
 			background-size: cover;
 			background-repeat: no-repeat;
@@ -121,7 +120,7 @@
 				padding: 0;
 			}
 			.what-is-swaps{
-				background-image: url('https://res.cloudinary.com/swaps/image/upload/home/what-is-swaps.jpg');
+				background-image: url('../../images/static/home/what-is-swaps.jpg');
 				background-position: left;
 				background-size: 840px;
 				background-repeat: no-repeat;
@@ -130,14 +129,14 @@
 					background-size:cover;
 				}
 				.what-is-swaps-gradient{
-					background: -moz-linear-gradient(left, rgba(207,222,228,0) 10%, rgba(207,222,228,1) 46%, rgba(207,222,228,1) 100%); /* FF3.6-15 */
-					background: -webkit-linear-gradient(left, rgba(207,222,228,0) 10%,rgba(207,222,228,1) 46%,rgba(207,222,228,1) 100%); /* Chrome10-25,Safari5.1-6 */
-					background: linear-gradient(to right, rgba(207,222,228,0) 10%,rgba(207,222,228,1) 46%,rgba(207,222,228,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+					background: -moz-linear-gradient(left, rgba(255,255,255,0) 10%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+					background: -webkit-linear-gradient(left, rgba(255,255,255,0) 10%,rgba(255,255,255,1) 62%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+					background: linear-gradient(to right, rgba(255,255,255,0) 10%,rgba(255,255,255,1) 62%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00cfdee4', endColorstr='#cfdee4',GradientType=1 ); /* IE6-9 */
 					@media @mobile {
-						background: -moz-linear-gradient(left, rgba(207,222,228,0) 0.9,  rgba(207,222,228,1) 100%); /* FF3.6-15 */
-						background: -webkit-linear-gradient(left, rgba(207,222,228,0.9) 0, rgba(207,222,228,1) 100%); /* Chrome10-25,Safari5.1-6 */
-						background: linear-gradient(to right, rgba(207,222,228,0.9) 0, rgba(207,222,228,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+						background: -moz-linear-gradient(left, rgba(255,255,255,0.9),  rgba(255,255,255,1) 100%); /* FF3.6-15 */
+						background: -webkit-linear-gradient(left, rgba(255,255,255,0.9) 0, rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+						background: linear-gradient(to right, rgba(255,255,255,0.9) 0, rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 						filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00cfdee4', endColorstr='#cfdee4',GradientType=1 ); /* IE6-9 */
 					}
 				}
@@ -152,7 +151,7 @@
 					}
 				}
 				.photo{
-					background-image: url('https://res.cloudinary.com/swaps/image/upload/v1532026634/home/what-is-swaps.jpg');
+					background-image: url('../../images/static/home/what-is-swaps.jpg');
 					background-position: top;
 					background-size: cover;
 					background-repeat: no-repeat;
@@ -160,10 +159,18 @@
 					height: 100%;
 				}
 				.explanation-text{
+					background: -webkit-linear-gradient(left, rgba(207,222,228,1) 0, rgba(255,255,255,1) 100%);
+					background: -moz-linear-gradient(left, rgba(207,222,228,1) 0, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+					background: linear-gradient(to right, rgba(207,222,228,1) 0, rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+					padding: 20px;
+					border-radius: 14px;
+					box-shadow: -4px 2px 12px -8px rgba(0,0,0,0.5);
+					-webkit-box-shadow: -4px 2px 12px -8px rgba(0,0,0,0.5);
 					.line{
-						font-family: 'Jua', sans-serif;
+						font-family: 'Lato', sans-serif;
 						opacity: 0;
-						padding-bottom: 85px;
+						padding-bottom: 70px;
 						font-size: 24px;
 						font-weight: 300;
 						color: #333;
@@ -176,14 +183,14 @@
 							padding-bottom: 60px;
 						}
 						&.line-2{
-							margin-left: 70px;
+							margin-left: 50px;
 							@media @mobile {
 								margin-left: 0;
 							}
 						}
 						&.line-3{
 							padding-bottom: 0;
-							margin-left: 140px;
+							margin-left: 100px;
 							@media @mobile {
 								margin-left: 0;
 							}
@@ -719,7 +726,7 @@
 	}
 	
     .how-it-works {
-      	background-image: url("https://res.cloudinary.com/swaps/image/upload/v1532026544/home/how-it-works.jpg");
+      	background-image: url("../../images/static/home/how-it-works.jpg");
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center;

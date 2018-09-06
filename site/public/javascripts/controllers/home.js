@@ -207,6 +207,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     }
 
     $scope.openLogin = function(signin){
+        $scope.signin = signin;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/login/login.html',

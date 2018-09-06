@@ -128,7 +128,6 @@ swapper-home{
         white-space: nowrap;
         color: #484848;
         max-height: 25px;
-        display: flex;
         align-items: center;
       }
       .apt-sub-title {
@@ -158,9 +157,12 @@ swapper-home{
       //justify-content: space-between;
       padding-top: 10px;
       color: #616161;
+      @media  @desktop, @tablet, @mobile{
+        padding-top: 8px;
+      }
       .tiny-text {
         padding-right: 18px;
-        font-size: 14px;
+        font-size: 12px;
         display: flex;
         align-items: center;
         &.man{
@@ -168,7 +170,7 @@ swapper-home{
         }
         @media  @desktop, @tablet, @mobile{
           font-size: 11px;
-          padding-right: 14px;
+          padding-right: 12px;
         }
         .icon{
           margin-right: 0;
