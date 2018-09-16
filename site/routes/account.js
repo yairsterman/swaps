@@ -616,6 +616,7 @@ router.put('/add-favorite', function (req, res, next) {
         })
         .then(function (favorite) {
             if (favorite) {
+                EmailService.sendMail([favorite.email], 'Match Found', emailMessages.matchFound(user));
                 res.json({user: user, isMatch: true});
             }
             else {

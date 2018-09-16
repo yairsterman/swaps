@@ -9,6 +9,7 @@ const LOGO = 'http://res.cloudinary.com/swaps/image/upload/v1529335715/logo/logo
 const REVIEW = config.baseUrl + '/review/';
 const VERIFY_EMAIL = config.baseUrl + '/verify-email/';
 const INVITE_FRIENDS = config.baseUrl + '/invite-friends';
+const PROFILE = config.baseUrl + '/profile/';
 
 
 const SIGNITURE = '<div class="swaps-signature" style="padding:6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="https://swapshome.com">Swapshome.com</a></div>' +
@@ -110,6 +111,14 @@ var messages = {
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You have a new message from ' + swapper.firstName + ' </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You can view this message in your Swaps inbox.</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">My Messages</div></a>' +
+            '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
+    },
+
+    matchFound: function(user){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Match Found!</div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You and another Swapper have liked each others homes,</div>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Why waste time? set up a Swap now.</div>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + PROFILE + user._id + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View Swapper</div></a>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
