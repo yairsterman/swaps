@@ -33,7 +33,12 @@
             <div class="icon icon-friends-small"></div>
         </div>
         <div class="favorite">
-            <div class="icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)"></div>
+            <div class="heart-shape" ng-if="!isFavorite()"></div>
+            <div class="icon {{isFavorite()?'icon-heart':'icon-heart-empty'}} {{addedFavorite?'pulse':''}}" ng-click="setFavorite($event)">
+                <div class="icon icon-heart-white" ng-if="isFavorite()">
+
+                </div>
+            </div>
         </div>
         <!--CAROUSEL END-->
         <div class="user-info">
