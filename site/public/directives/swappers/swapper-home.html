@@ -17,10 +17,10 @@
                     </div>
                 </div>
                 <!-- Carousel controls -->
-                <div class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
+                <div ng-if="traveler.photos.length > 1" class="carousel-control left" data-slide="prev" ng-click="carouselPrev(traveler._id,$event)">
                     <span class="carousel-control-arrow glyphicon glyphicon-menu-left"></span>
                 </div>
-                <div class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
+                <div ng-if="traveler.photos.length > 1" class="carousel-control right" data-slide="next" ng-click="carouselNext(traveler._id,$event)">
                     <span class="carousel-control-arrow glyphicon glyphicon-menu-right"></span>
                 </div>
             </div>
