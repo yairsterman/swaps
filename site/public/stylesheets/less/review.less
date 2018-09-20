@@ -1,16 +1,49 @@
 @import 'media.less';
 
 .review-page{
+
   background-color: #ffffff;
+  padding: 40px 0;
   .review-area{
-    width:60%;
+    width: 80%;
     margin: auto;
     @media @mobile {
       width: auto;
     }
+    .title{
+      padding: 0 0 10px 0;
+      font-size: 26px;
+      text-align: center;
+      font-weight: 300;
+    }
+    .sub-title{
+      text-align: center;
+      padding: 15px 0 10px 0;
+      font-size: 20px;
+    }
+    .explanation{
+      font-size: 14px;
+    }
     .review-stars {
-      float: right;
+      margin: 15px;
       display: flex;
+      justify-content: center;
+      .icon{
+        margin: 0 3px;
+        outline: none;
+      }
+    }
+    .send-review{
+      text-align: center;
+      .review{
+        margin-top: 10px;
+        font-size: 18px;
+      }
+      .btn-swap{
+        margin: 15px auto;
+        font-size: 20px;
+        padding: 5px 25px;
+      }
     }
   }
 }

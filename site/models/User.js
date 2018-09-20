@@ -44,15 +44,7 @@ var UserSchema = new Schema({
     requests: [{ type: Schema.Types.ObjectId, ref: 'Request' }],
     notifications: Array,
     messages: Array,
-    reviews: [{
-        rating: Number,
-        name: String,
-        city: String,
-        review: String,
-        image: String,
-        _id: String,
-        date: String
-    }],
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     photos: Array,
     favorites: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     thingsToDo: Array,

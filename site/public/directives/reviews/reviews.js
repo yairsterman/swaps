@@ -3,7 +3,7 @@ swapsApp.directive('reviewElm', function() {
         restrict: 'E',
         controller: swapperReview,
         scope: {
-            commenter: '=',
+            review: '=',
             isProfile: '='
         },
         templateUrl: '../../directives/reviews/reviews.html'

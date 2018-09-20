@@ -230,6 +230,10 @@ router.get('/get-profile', function(req, res, next) {
             path: 'community',
             select: 'name _id',
         })
+        .populate({
+            path: 'reviews',
+            populate: {path: 'reviewer', select: 'firstName image city country'},
+        })
         .exec(function (err, user) {
             if (err) return next(err);
             console.log(user);

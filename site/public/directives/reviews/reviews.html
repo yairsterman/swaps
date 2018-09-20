@@ -1,30 +1,30 @@
 <!--The directive for profile page:-->
 
-<div class="col-md-2 commenter-photo" style="background-image: url('{{commenter.image}}')">
+<div class="col-md-2 commenter-photo" style="background-image: url('{{review.reviewer.image}}')">
 </div>
 <div class="col-md-10 commenter-comment-section">
 
     <div class="review-stars">
         <span class="icon icon-star"></span>
-        <span class="icon {{commenter.rating > 1?commenter.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-        <span class="icon {{commenter.rating > 2?commenter.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-        <span class="icon {{commenter.rating > 3?commenter.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
-        <span class="icon {{commenter.rating > 4?commenter.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{review.rating > 1?review.rating < 2?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{review.rating > 2?review.rating < 3?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{review.rating > 3?review.rating < 4?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
+        <span class="icon {{review.rating > 4?review.rating < 5?'icon-halfstar':'icon-star':'icon-emptystar'}}"></span>
     </div>
 
-    <div class="commenter-name">{{commenter.name}}</div>
+    <div class="commenter-name">{{review.reviewer.firstName}}</div>
 
     <div class="commenter-country-and-age">
-        {{commenter.city}}, {{commenter.date}}
+        {{review.reviewer.city}}, {{review.date | date : 'MMMM dd'}}
     </div>
     <div class="commenter-comment" ng-if="!showAll">
 
-        {{commenter.review | limitTo: 240}}
-        <span ng-if="commenter.review.length > 240">... <span class="read-more" ng-click="readMore()">Read More</span></span>
+        {{review.review | limitTo: 240}}
+        <span ng-if="review.review.length > 240">... <span class="read-more" ng-click="readMore()">Read More</span></span>
     </div>
     <div class="commenter-comment" ng-if="showAll">
 
-        {{commenter.review}}
+        {{review.review}}
     </div>
 </div>
 

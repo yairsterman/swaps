@@ -33,6 +33,8 @@ let config = {
 
     saltRounds: 10,
 
+    EXPIRED_TOKEN: '*EXPIRED*',
+
     // mongoUrl: 'mongodb://18.221.167.219/test', // for dev
     mongoUrl: 'mongodb://127.0.0.1/test', // for production
 

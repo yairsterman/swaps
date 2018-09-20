@@ -333,8 +333,8 @@
                                         <!--<span class="number-reviews">{{profile.comments.length}}</span>-->
                                     </div>
                                 </div>
-                                <div class="comment" ng-repeat="commenter in profile.reviews | limitTo:3">
-                                    <review-elm is-profile="true" commenter="commenter"></review-elm>
+                                <div class="comment" ng-repeat="review in profile.reviews | limitTo:3">
+                                    <review-elm is-profile="true" review="review"></review-elm>
                                     <hr style="clear: both;">
                                 </div>
                             </div>

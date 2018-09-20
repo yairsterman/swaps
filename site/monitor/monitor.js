@@ -5,7 +5,8 @@ let functions = require('./functions');
 //connect to mongoDB
 //todo: remove when merging with app.js so we don't connect twice
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoUrl).then(function () {
+
+mongoose.connect(config.mongoUrl,{useMongoClient: true}).then(function () {
     console.log('connection successful');
 }).catch(function (err) {
     console.error(err);
@@ -27,11 +28,11 @@ let schedule = require('node-schedule');
 //  # │ │ │ │ │ │
 //  # * * * * * *
 
-schedule.scheduleJob('0 23 * * *', functions.updateTravelingInformation);
-schedule.scheduleJob('0 23 * * *', functions.emailPassedPendingRequests);
-schedule.scheduleJob('0 23 * * *', functions.PendingRequestsReminder);
-schedule.scheduleJob('0 23 * * *', functions.emailConfirmedRequests);
-schedule.scheduleJob('0 23 * * *', functions.emailReview);
+// schedule.scheduleJob('0 23 * * *', functions.updateTravelingInformation);
+// schedule.scheduleJob('0 23 * * *', functions.emailPassedPendingRequests);
+// schedule.scheduleJob('0 23 * * *', functions.PendingRequestsReminder);
+// schedule.scheduleJob('0 23 * * *', functions.emailConfirmedRequests);
+// schedule.scheduleJob('0 23 * * *', functions.emailReview);
 functions.emailReview(); // for testing...
 
 // module.exports = monitor;

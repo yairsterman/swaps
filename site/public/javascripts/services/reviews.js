@@ -1,4 +1,4 @@
-swapsApp.service('ReviewsService', function($http, $q) {
+swapsApp.service('ReviewsService', function($http, $q, ) {
 
     this.verifyToken = function(token) {
         var defer = $q.defer();
@@ -19,7 +19,7 @@ swapsApp.service('ReviewsService', function($http, $q) {
         var defer = $q.defer();
         $http.post('review/postReview', {review: review, rating: rating, token: token}).then(function(data){
             if(data.data.error){
-                defer.reject(data.data.error);
+                defer.reject(data.data);
             }
             else{
                 defer.resolve(data.data);
@@ -29,4 +29,21 @@ swapsApp.service('ReviewsService', function($http, $q) {
         });
         return defer.promise;
     };
+
+    this.getUser = function() {
+        var defer = $q.defer();
+        $http.get('/user/get-user').then(function(data){
+            if(data.data.error){
+                defer.reject(null);
+            }
+            else{
+                defer.resolve(data.data);
+            }
+        },
+        function(){
+            defer.reject(null);
+        });
+        return defer.promise;
+    };
+
 });
