@@ -150,11 +150,11 @@ module.exports.emailReview = function () {
                 if (err) return err;
                 let user1 = user[0];
                 let user2 = user[1];
-                if(user[0]._id == request.user2){
+                if(user[0]._id.toString() == request.user2.toString()){
                     user2 = user[0];
                     user1 = user[1];
                 }
-                // if (!request.tokenUser1) {
+                if (!request.tokenUser1) {
                     let t1 = jwt.sign({
                         expiresIn: moment(new Date()).add(7, 'days').utc().valueOf(),
                         reqId: request.id,
@@ -169,45 +169,45 @@ module.exports.emailReview = function () {
 
                     request.update({tokenUser1: t1, tokenUser2: t2}).then(function () {
                         if (user1.email) {
-                            email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, t1));
+                            // email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, t1));
                             console.log("email sent");
-                            // email.sendMail([user1.email], 'Review your Swap', emailMessages.review(user2, t1));
+                            email.sendMail([user1.email], 'Review your Swap', emailMessages.review(user2, t1));
                         }
                         if (user2.email) {
-                            email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user1, t2));
+                            // email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user1, t2));
                             console.log("email sent");
-                            // email.sendMail([user2.email], 'Review your Swap', emailMessages.review(user1, t2));
+                            email.sendMail([user2.email], 'Review your Swap', emailMessages.review(user1, t2));
                         }
                     });
-                // }
-                // else {
-                //     switch (diff) {
-                //         case 3:
-                //             if (request.tokenUser2 && request.tokenUser2 != !config.EXPIRED_TOKEN) {
-                //                 if (user2.email) {
-                //                     email.sendMail(['yair@swapshome.com'], 'Review Swap Reminder', emailMessages.reviewReminder(user1, request.tokenUser2));
-                //                     console.log("email sent");
-                //                     // email.sendMail([user2.email], 'Review your Swap', emailMessages.review(user1, t2));
-                //                 }
-                //             }
-                //             if (request.tokenUser1 && request.tokenUser1 != !config.EXPIRED_TOKEN) {
-                //                 if (user1.email) {
-                //                     email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, request.tokenUser1));
-                //                     console.log("email sent");
-                //                     // email.sendMail([user1.email], 'Review your Swap', emailMessages.review(user2, t1));
-                //                 }
-                //             }
-                //             break;
-                //         case 4:
-                //             request.update({tokenUser1: config.EXPIRED_TOKEN, tokenUser2: config.EXPIRED_TOKEN, status: data.getRequestStatus().complete})
-                //                 .then(function(){
-                //
-                //                 });
-                //             break;
-                //         default:
-                //             break;
-                //     }
-                // }
+                }
+                else {
+                    switch (diff) {
+                        case 3:
+                            if (request.tokenUser2 && request.tokenUser2 != !config.EXPIRED_TOKEN) {
+                                if (user2.email) {
+                                    email.sendMail(['yair@swapshome.com'], 'Review Swap Reminder', emailMessages.reviewReminder(user1, request.tokenUser2));
+                                    console.log("email sent");
+                                    // email.sendMail([user2.email], 'Review your Swap', emailMessages.review(user1, t2));
+                                }
+                            }
+                            if (request.tokenUser1 && request.tokenUser1 != !config.EXPIRED_TOKEN) {
+                                if (user1.email) {
+                                    email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, request.tokenUser1));
+                                    console.log("email sent");
+                                    // email.sendMail([user1.email], 'Review your Swap', emailMessages.review(user2, t1));
+                                }
+                            }
+                            break;
+                        case 4:
+                            request.update({tokenUser1: config.EXPIRED_TOKEN, tokenUser2: config.EXPIRED_TOKEN, status: data.getRequestStatus().complete})
+                                .then(function(){
+
+                                });
+                            break;
+                        default:
+                            break;
+                    }
+                }
             });
         })
     });
