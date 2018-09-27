@@ -316,12 +316,12 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 location: location,
                 radius: '1500',
                 query: name,
-                rankBy: google.maps.places.RankBy.DISTANCE
+                rankBy: google.maps.places.RankBy.PROMINENCE
             };
             service.textSearch(request, function (results, status) {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < 3; i++) {
-                        createMarker(results[i], img);
+                        createMarker(results[i], img, name);
                     }
                 }
             });
@@ -330,8 +330,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     var infoWindow = new google.maps.InfoWindow();
+    var googleSearchMapUrl = 'https://www.google.com/maps/search/?api=1';
 
-    var createMarker = function (info, img){
+    var createMarker = function (info, img, query){
 
         var marker = new google.maps.Marker({
             map: $scope.map,
@@ -339,12 +340,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             // animation: google.maps.Animation.DROP,
             icon: {url:img, size:new google.maps.Size(35,35)},
             title: info.address,
+            url: googleSearchMapUrl + '&query=' + query + '&query_place_id=' + info.place_id,
             optimized: false
         });
 
         marker.id = info.id;
-
-        // marker.content = '<img src=' + info.photos[0].getUrl() + '></img>' + '<div>' + info.name + '</div>';
 
         google.maps.event.addListener(marker, 'mouseover', function(event){
             marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
@@ -355,6 +355,14 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         google.maps.event.addListener(marker, 'mouseout', function(){
             marker.setZIndex(100);
             infoWindow.close($scope.map, marker);
+        });
+
+        google.maps.event.addListener(marker, 'click', function(){
+            var a = document.createElement("a");
+            a.id = "tempA";
+            a.target = "_blank";
+            a.href = marker.url;
+            a.click();
         });
 
     }
