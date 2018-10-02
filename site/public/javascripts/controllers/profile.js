@@ -307,8 +307,15 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     function setUpMarkers(){
+        let thingsToDo = [];
+        if(!$scope.user || !$scope.user._id){
+            thingsToDo = [1,4,11,12,13];
+        }
+        else{
+            thingsToDo = $scope.user.thingsToDo;
+        }
         var service = new google.maps.places.PlacesService($scope.map);
-        $scope.user.thingsToDo.forEach(function(value){
+        thingsToDo.forEach(function(value){
             var location = new google.maps.LatLng($scope.profile.location.lat, $scope.profile.location.long);
             var name = $scope.data.thingsToDo[value].name;
             var img = $scope.data.thingsToDo[value].img;
@@ -378,6 +385,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 setUserData();
             }
             else{
+                setUpMarkers();
                 $scope.ready = true;
             }
         });
