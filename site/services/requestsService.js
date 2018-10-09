@@ -40,7 +40,7 @@ module.exports.sendRequest = function(params) {
     let dfr = Q.defer();
     try {
         if (params.dates) {
-            dates = params.dates.split('-'); // dates are in format '11/11/2011-12/12/2012'
+            dates = params.dates.split('-'); // dates are in format 'MM/DD/YYYY-MM/DD/YYYY'
             departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
             returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
             nights = util.calculateNightsBetween(departure, returnDate);
@@ -59,8 +59,7 @@ module.exports.sendRequest = function(params) {
                 status: Data.getRequestStatus().pending,
                 guests: guests,
                 nights: nights,
-                plan: params.plan,
-                transactionId: params.transactionId,
+                plan: params.plan
             };
             return saveRequest(requestDetails);
         })
@@ -95,6 +94,50 @@ module.exports.sendRequest = function(params) {
     } catch(e){
         dfr.reject(e);
     }
+    return dfr.promise;
+};
+
+module.exports.accept = function(params) {
+
+    let dfr = Q.defer();
+    let recipient = {};
+    let sender = {};
+    let dates = {};
+    let nights;
+
+    try {
+        let now = moment.utc().valueOf();
+        let newMessage = {
+            date: now,
+            isRequest: false,
+            message: 'Swap request accepted'
+        };
+
+        acceptRequest(params).then(function (result) {
+            sender = result.sender;
+            recipient = result.recipient;
+            dates = result.dates;
+            nights = result.nights;
+
+            return MessageService.saveMessage(recipient._id, sender._id, recipient._id, newMessage, false);
+        })
+        .then(function () {
+            if(params.message){
+                newMessage.message =  `${recipient.firstName} accepted to swap for ${nights} ${(nights > 1 ? ' Nights' : ' Night')}<br>` +
+                    `Check in: ${dates[0]} <br>` +
+                    `Check out: ${dates[1]} <br> ${params.message}`;
+            }
+            return MessageService.saveMessage(sender._id, recipient._id, recipient._id, newMessage, true);
+        })
+        .then(function () {
+            dfr.resolve();
+        }, function (err) {
+            dfr.reject(err);
+        });
+    } catch(e){
+        dfr.reject(e);
+    }
+
     return dfr.promise;
 };
 
@@ -150,7 +193,6 @@ module.exports.confirm = function(params) {
  * @param departure - departue date
  * @param returnDate - return date
  * @param status - request status
- * @param transaction - transaction id of the sender
  */
 function saveRequest(requestDetails){
     let defferd = Q.defer();
@@ -158,9 +200,10 @@ function saveRequest(requestDetails){
     let request = new Request({
         user1: requestDetails.senderId,
         user2: requestDetails.recipientId,
-        checkin: requestDetails.departure,
-        checkout : requestDetails.returnDate,
-        verifyTransactionUser1: requestDetails.transactionId,
+        proposition: {
+            checkin: requestDetails.departure,
+            checkout : requestDetails.returnDate,
+        },
         guests1: requestDetails.guests,
         nights: requestDetails.nights,
         plan: requestDetails.plan,
@@ -195,6 +238,89 @@ function saveRequest(requestDetails){
 }
 
 /**
+ * Accept the request and save the new data on the request model
+ *
+ * @param params - requestId, guests, transactionId
+ */
+function acceptRequest(params){
+    let guests = params.guests;
+    let departure;
+    let returnDate;
+    let dates;
+    let nights;
+    let result = {};
+    let sender = {};
+    let recipient = {};
+
+    let dfr = Q.defer();
+    try {
+        if (params.dates) {
+            dates = params.dates.split('-'); // dates are in format 'MM/DD/YYYY-MM/DD/YYYY'
+            departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
+            returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
+            nights = util.calculateNightsBetween(departure, returnDate);
+        }
+        else {
+            error.message = "No dates specified";
+            return dfr.reject(error);
+        }
+
+        Request.findOne({_id: params.requestId})
+            // populate both users to get their information
+            .populate({
+                path: 'user1'
+            })
+            .populate({
+                path: 'user2'
+            })
+            .exec(function (err, request) {
+                if (err || !request) {
+                    let msg = err;
+                    if (!request) {
+                        msg = 'No relevant request found';
+                    }
+                    dfr.reject(msg);
+                }
+                else {
+                    checkAvailability(request.user1, request.user2, departure, returnDate)
+                        .then(function () {
+                            let set = {
+                                guests2: guests,
+                                verifyTransactionUser2: params.transactionId, // user2 is accepting
+                                checkin: departure,
+                                checkout : returnDate,
+                                nights : nights,
+                                status: Data.getRequestStatus().accepted
+                            };
+
+                            sender = request.user1;
+                            recipient = request.user2;
+                            result = {
+                                sender: sender,
+                                recipient: recipient,
+                                nights: nights,
+                                dates: dates,
+                            };
+
+                            return Request.update({_id: request._id}, {$set: set});
+                        })
+                        .then(function(){
+                            email.sendMail([sender.email],'Swap Accepted', emailMessages.requestAccepted(sender, recipient, dates));
+                            email.sendMail([recipient.email],'Swap Accepted', emailMessages.requestAccepted(recipient, sender, dates));
+
+                            dfr.resolve(result);
+                        }, function (err) {
+                            dfr.reject(err);
+                        });
+                }
+            });
+    } catch(e){
+        dfr.reject(e);
+    }
+    return dfr.promise;
+}
+
+/**
  * Confirm the request and save the new data on the request model
  *
  * @param info - verifyTransactionUser2, transactionUser1, transactionUser2, requestId
@@ -203,7 +329,7 @@ function confirmRequest(info){
     let deferd = Q.defer();
 
     let set = {
-        verifyTransactionUser2: info.verifyTransactionUser2,
+        verifyTransactionUser1: info.verifyTransactionUser1,
         transactionUser1: info.transactionUser1,
         transactionUser2: info.transactionUser2,
         status: Data.getRequestStatus().confirmed
@@ -330,45 +456,45 @@ module.exports.cancelRequest = function(requestId, userId, message){
             //refund transactions
             return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
         })
-            .then(function(){
-                //update request
-                return Request.update({_id: requestId}, {$set: {status: Data.getRequestStatus().canceled}});
-            })
-            .then(function(updated){
-                if (!updated.ok) {
-                    defer.reject("Request not updated");
-                }
-                // update users requests
-                else {
-                    return removeCanceledRequest(user1, requestId);
-                }
-            })
-            .then(function(){
-                return removeCanceledRequest(user2, requestId);
-            })
-            .then(function(){
-                defer.resolve();
-                if(declined){
-                    email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
+        .then(function(){
+            //update request
+            return Request.update({_id: requestId}, {$set: {status: Data.getRequestStatus().canceled}});
+        })
+        .then(function(updated){
+            if (!updated.ok) {
+                defer.reject("Request not updated");
+            }
+            // update users requests
+            else {
+                return removeCanceledRequest(user1, requestId);
+            }
+        })
+        .then(function(){
+            return removeCanceledRequest(user2, requestId);
+        })
+        .then(function(){
+            defer.resolve();
+            if(declined){
+                email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
+            }
+            else{
+                let sender;
+                let recipient;
+                if((user1._id).toString() == userId.toString()){
+                    sender = user1;
+                    recipient = user2;
                 }
                 else{
-                    let sender;
-                    let recipient;
-                    if((user1._id).toString() == userId.toString()){
-                        sender = user1;
-                        recipient = user2;
-                    }
-                    else{
-                        sender = user2;
-                        recipient = user1;
-                    }
-                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
-                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                    sender = user2;
+                    recipient = user1;
                 }
-            },function(err){
-                error.message = err;
-                defer.reject(error);
-            });
+                email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
+                email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+            }
+        },function(err){
+            error.message = err;
+            defer.reject(error);
+        });
     } catch(e){
         defer.reject(e);
     }
@@ -414,47 +540,47 @@ function chargeUsers(params){
     let dfr = Q.defer();
 
     let requestId = params.requestId;
-    let tokenUser2 = params.token;
+    let tokenUser1 = params.token;
     let expdate = params.expdate;
-    let guests2 = params.guests;
-    let verifyTransactionUser2 = params.transactionId;
+    let verifyTransactionUser1 = params.transactionId;
     let transactionUser1;
     let transactionUser2;
 
     getRequest(requestId).then(function(request){
         let user1 = request.user1;
         let user2 = request.user2;
-        let tokenUser1 = request.verifyTransactionUser1.token;
-        let index1 = request.verifyTransactionUser1.index;
+        let tokenUser2 = request.verifyTransactionUser2.token;
+        let index2 = request.verifyTransactionUser2.index;
         let guests1 = request.guests1;
+        let guests2 = request.guests2;
         let nights = request.nights;
         let plan = request.plan;
 
         let payment = {
             plan: plan,
-            guests: guests1,
+            guests: guests2,
             nights: nights,
         };
 
         checkAvailability(user1._id, user2._id, request.checkin, request.checkout)
         .then(function() {
-            if(user1.community && user1.community.discount)
-                payment.discount = user1.community.discount;
-            return transactionService.chargeRequest(tokenUser1, index1, user1, payment, user1.email);
-        })
-        .then(function(transactionId){
-            transactionUser1 = transactionId;
-            payment.guests = guests2;
             if(user2.community && user2.community.discount)
                 payment.discount = user2.community.discount;
-            // we still have the expiration date of the confirming user
-            return transactionService.chargeRequest(tokenUser2, null, user2, payment, user2.email, expdate);
+            return transactionService.chargeRequest(tokenUser2, index2, user2, payment, user2.email);
         })
         .then(function(transactionId){
             transactionUser2 = transactionId;
+            payment.guests = guests1;
+            if(user1.community && user1.community.discount)
+                payment.discount = user1.community.discount;
+            // we still have the expiration date of the confirming user
+            return transactionService.chargeRequest(tokenUser1, null, user1, payment, user1.email, expdate);
+        })
+        .then(function(transactionId){
+            transactionUser1 = transactionId;
             let results = {
                 requestId: requestId,
-                verifyTransactionUser2: verifyTransactionUser2,
+                verifyTransactionUser1: verifyTransactionUser1,
                 transactionUser1: transactionUser1,
                 transactionUser2: transactionUser2,
             };

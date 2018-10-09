@@ -6,6 +6,13 @@ var schema = new Schema({
     user2: { type: Schema.Types.ObjectId, ref: 'User' },
     checkin: Number,
     checkout: Number,
+    proposition:{
+        checkin: Number,
+        checkout: Number,
+        rangeLabel : String,
+        startRange: Number,
+        endRange: Number,
+    },
     nights: Number,
     plan: Number,
     guests1: Number,

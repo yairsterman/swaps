@@ -145,15 +145,17 @@ const houseRules = [
 
 const requestStatus ={
     pending: 0,
-    confirmed: 1,
-    canceled: 2,
-    complete: 3,
+    accepted: 1,
+    confirmed: 2,
+    canceled: 3,
+    complete: 4,
 };
 
 const requestType ={
     request: 0,
-    confirm: 1,
-    cancel: 2,
+    accept: 1,
+    confirm: 2,
+    cancel: 3,
 };
 
 const visibleRequestData ={

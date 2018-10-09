@@ -46,11 +46,11 @@ router.post('/success', function(req, res, next) {
     transactionsService.createAndSaveToUser(params, requestDetails.user1) // save transaction in db and save id to user.transactions
     .then(function ({transactionId, token}){
         requestDetails.transactionId = transactionId;
-        //see whether this is a first request or a confirmation
-        if(req.body.requestType == Data.getRequestType().request){
-            return requestsService.sendRequest(requestDetails);
+        //see whether this is a request acceptance or a confirmation
+        if(req.body.requestType == Data.getRequestType().accept){
+            return requestsService.accept(requestDetails);
         }
-        else {
+        else{
             requestDetails.token = token;
             requestDetails.expdate = expdate;
             return requestsService.confirm(requestDetails);

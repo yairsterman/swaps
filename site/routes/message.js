@@ -50,6 +50,24 @@ router.post('/sendMessage', function(req, res, next) {
 	});
 });
 
+router.post('/sendRequest', function(req, res) {
+    requestsService.sendRequest(req.body).then(function(){
+        User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
+            .populate({
+                path: 'community',
+                select: 'name _id',
+            })
+            .exec(function (err, user) {
+                if (err) return next(err);
+                res.json(user);
+            });
+        },
+        function(err){
+            error.message = err;
+            res.json(error);
+        });
+});
+
 router.post('/cancelRequest', function(req, res) {
     let requestId = req.body.requestId;
     let message = req.body.message;
@@ -135,83 +153,6 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 	return defferd.promise;
 }
 
-function cancelRequest(senderId, recipientId, departure, returnDate, message){
-    var deferd = Q.defer();
-    let declined = false;
-    let sender = {};
-    let recipient = {};
-    User.findOne({_id: senderId})
-        .then(function (_sender) {
-            sender = _sender;
-            if (!sender._id){
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else {
-                var requestIndex = findRequest(sender.requests, recipientId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                	if(sender.requests[requestIndex].status === Data.getRequestStatus().pending){
-						declined = true;
-					}
-                    sender.requests[requestIndex].status = Data.getRequestStatus().canceled;
-                    return User.update({_id: sender._id}, {$set: {requests: sender.requests}});
-                }
-            }
-        })
-        .then(function (updated) {
-            if (!updated.ok) {
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else {
-                return User.findOne({_id: recipientId});
-            }
-        })
-        .then(function(_recipient){
-            recipient = _recipient;
-            if (!recipient._id){
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else{
-                var requestIndex = findRequest(recipient.requests, senderId, departure, returnDate);
-                if(requestIndex == -1){
-                    error.message = "no request found";
-                    throw new Error(error.message);
-                }
-                else{
-                    recipient.requests[requestIndex].status = Data.getRequestStatus().canceled;
-                    return User.update({_id: recipient._id}, {$set: {requests: recipient.requests}});
-                }
-            }
-        })
-        .then(function (updated) {
-            if (!updated.ok){
-                console.log("Request not sent" + err);
-                error.message = "Request not sent";
-                throw new Error(error.message);
-            }
-            else{
-                console.log("updated DB");
-                if(declined){
-                    email.sendMail([recipient.email],'Swap Declined', emailMessages.declined(recipient, sender, message));
-				}
-				else{
-                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
-                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
-                }
-                deferd.resolve();
-            }
-        },function(err){
-            deferd.reject(err);
-		});
-    return deferd.promise;
-}
-
 function markedMessageRead(senderId, recipientId){
     var deferd = Q.defer();
     User.findOne({_id: senderId})
@@ -294,79 +235,5 @@ function findRequest(requests, id, departure, returnDate){
     return -1;
 }
 
-function checkAvailability(senderId, recipientId, departure, returnDate){
-	var dfr = Q.defer();
-    User.findOne({_id: senderId})
-	.then(function (sender){
-		if(checkConfirmationDates(sender.requests, departure, returnDate)){
-			return User.findOne({_id: recipientId})
-		}
-		else{
-            throw USER_UNAVAILABLE;
-		}
-	})
-	.then(function(recipient){
-        if(checkConfirmationDates(recipient.requests, departure, returnDate)){
-            dfr.resolve();
-        }
-        else{
-            throw REQUEST_UNAVAILABLE;
-        }
-	},function(err){
-        dfr.reject(err);
-	});
-	return dfr.promise;
-}
-
-function checkConfirmationDates(requests, departure, returnDate){
-	var confirmations = requests.filter(function(request){
-		return request.status == Data.getRequestStatus().confirmed;
-	});
-	var available = true;
-    confirmations.every(function(confirmation){
-    	if((confirmation.departure >= departure && confirmation.departure <= returnDate)
-            || (confirmation.returnDate >= departure && confirmation.returnDate <= returnDate)
-		       || (returnDate >= confirmation.departure && returnDate <= confirmation.returnDate)){
-            available = false;
-    		return false;
-		}
-		else{
-    		return true;
-		}
-	});
-    return available;
-}
-
-function updateDates(travelingInfo, travelingDest, departure, returnDate){
-	var _travelingInfo = travelingInfo;
-    _travelingInfo.forEach(function(info, index){
-    	if(departure <= info.departure && info.returnDate <= returnDate){
-            travelingInfo.splice(index, 1);
-            if (travelingDest.indexOf(info.destination) != -1) {
-                travelingDest.splice(travelingDest.indexOf(info.destination), 1);
-            }
-            return;
-		}
-		if(departure <= info.departure && returnDate <= info.returnDate){
-            travelingInfo[index].departure = returnDate + 1000*60*60*24; // set the new departure date to a day after the end of the confirmed dates
-            travelingInfo[index].dates = dateFormat(travelingInfo[index].departure, 'mmm dd') + ' - ' + dateFormat(travelingInfo[index].returnDate, 'mmm dd');
-            return;
-		}
-		if(departure >= info.departure && departure <= info.returnDate){
-            travelingInfo[index].returnDate = departure - 1000*60*60*24; // set the new return date to a day before the first confirmed date
-            travelingInfo[index].dates = dateFormat(travelingInfo[index].departure, 'mmm dd') + ' - ' + dateFormat(travelingInfo[index].returnDate, 'mmm dd');
-            return;
-        }
-	});
-    return {_travelingInfo, travelingDest};
-}
-
-function calculateNightsBetween(date1, date2) {
-    var DAYS = 1000 * 60 * 60 * 24;
-    var date1_ms = date1;
-    var date2_ms = date2;
-    var difference_ms = Math.abs(date1_ms - date2_ms);
-    return Math.ceil(difference_ms / DAYS);
-}
 
 module.exports = router;
