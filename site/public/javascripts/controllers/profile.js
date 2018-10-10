@@ -29,49 +29,32 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.openRequest = function(){
-        $scope.noDates = false;
-        if(!$rootScope.user || !$rootScope.user._id){
-            var title = 'You must log in to request swap';
-            $scope.openLogin(title);
-        }
-        else if(!$scope.profileComplete()){
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/onboarding/onboarding.html',
-                size: 'lg',
-                controller: 'onboardingController',
-            });
+        $scope.swap = {};
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+    }
+
+    $scope.proposeSwap = function(){
+        if($rootScope.user && $rootScope.user._id){
+            MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(){
+                $scope.requestComplete = true;
+                $scope.requestSent = true;
+                $timeout(function(){
+                    $scope.modelInstance.close();
+                },4000);
+            })
         }
         else{
-            // if($rootScope.isMobile){
-            //     $scope.chooseDates = true;
-            // }
-            $scope.chooseDates = false;
-            if((!$scope.swap.from || !$scope.swap.to || $scope.swap.from == $scope.swap.to || !$scope.canSendRequest.status)){
-                if($rootScope.isMobile){
-                    $scope.chooseDates = true;
-                }
-                else{
-                    $scope.noDates = true;
-                    return;
-                }
-            }
-            if((!$scope.swap.guests || $scope.swap.guests < 1)){
-                if($rootScope.isMobile){
-                    $scope.chooseDates = true;
-                }
-                else{
-                    return;
-                }
-            }
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/request/request.html',
-                size: 'sm',
-                windowClass: 'request-modal',
-                controller: 'requestController',
-                scope: $scope
-            });
+            $scope.modelInstance.close();
+            $scope.requestPending = true;
+            var title = 'Log in so ' + $scope.profile.firstName + ' can see your proposal';
+            $scope.openLogin(title);
         }
     }
 
@@ -198,6 +181,9 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;
         setUserData();
+        if($scope.requestPending){
+            $scope.proposeSwap();
+        }
     });
 
     $scope.$on('auth-return', function(event, args) {

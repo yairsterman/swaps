@@ -1,5 +1,6 @@
 let jwt = require('jsonwebtoken');
 let config = require('../config.js');
+let data = require('../user_data/data');
 
 const PASSWORD_LENGTH = 8;
 
@@ -38,4 +39,13 @@ module.exports.randomPassword = function () {
     }
     return pass;
 };
+
+module.exports.getRangeText = function(range){
+    if(range.rangeLabel == 'Date Range'){
+        return `for ${range.startRange !== range.endRange?range.startRange  +' - ' + range.endRange:range.startRange} ${range.endRange > 1?' Nights':' Night'}`
+    }
+    if(range.rangeLabel == 'Weekends'){
+        return `on a ${data.getWeekendStart()[range.startRange].displayName} to ${data.getWeekendEnd()[range.endRange].displayName} weekend sometime in the next 4 weeks`
+    }
+}
 

@@ -51,6 +51,7 @@ router.post('/sendMessage', function(req, res, next) {
 });
 
 router.post('/sendRequest', function(req, res) {
+	req.body.user1 = req.user._id;
     requestsService.sendRequest(req.body).then(function(){
         User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
             .populate({

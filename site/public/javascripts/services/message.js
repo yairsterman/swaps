@@ -15,13 +15,15 @@ swapsApp.service('MessageService', function($http, $q){
         });
    };
 
-    this.sendRequest = function(user, recipient, message, dates, guests) {
+    this.sendRequest = function(recipient, swap) {
         var data = {
-            user: user,
-            recipientId: recipient,
-            dates: dates,
-            message: message,
-            guests: guests
+            user2: recipient,
+            dates: swap.when,
+            message: swap.message,
+            guests: swap.guests,
+            rangeLabel: swap.rangeLabel,
+            startRange: swap.startRange,
+            endRange: swap.endRange,
         };
         var dfr = $q.defer();
         $http.post('message/sendRequest', data).then(function(res){

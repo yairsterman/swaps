@@ -75,12 +75,11 @@ swapsApp.directive('datepicker', function() {
                         startDate: now,
                         locale: {
                             format: scope.localeFormat,
-                            customRangeLabel: "Dates",
+                            customRangeLabel: "Date Range",
                         },
                         minDate: formatDate(new Date(minDate), scope.localeFormat),
                         ranges: {
                             'Weekends': [minDate, next4weeks],
-                            'Within Range': [minDate, next2Months],
                         },
                         showCustomRangeLabel: true,
                         alwaysShowCalendars: true,
@@ -91,14 +90,11 @@ swapsApp.directive('datepicker', function() {
                         if(picker.chosenLabel == 'Weekends'){
                             scope.swapDates.rangeLabel = 'Weekends'
                         }
-                        else if(picker.chosenLabel == 'Within Range') {
-                            scope.swapDates.rangeLabel = 'Within Range';
+                        else if(picker.chosenLabel == 'Date Range') {
+                            scope.swapDates.rangeLabel = 'Date Range';
                             if(!scope.currentDatesWhen) {
                                 scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
                             }
-                        }
-                        else if(picker.chosenLabel == 'Dates') {
-                            scope.swapDates.rangeLabel = 'Dates';
                         }
                         scope.swapDates.startRange = undefined;
                         scope.swapDates.endRange = undefined;
@@ -130,9 +126,8 @@ swapsApp.directive('datepicker', function() {
 
                     options.ranges =  {
                         'Weekends': [minDate, next4weeks],
-                        'Within Range': [minDate, next2Months],
                     };
-                    options.locale.customRangeLabel = "Dates";
+                    options.locale.customRangeLabel = "Date Range";
                     options.autoUpdateInput = true;
                     options.showCustomRangeLabel = true;
                     options.alwaysShowCalendars = true;
@@ -150,19 +145,23 @@ swapsApp.directive('datepicker', function() {
                 element.on('apply.daterangepicker', function(ev, picker) {
                     if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
                         if(scope.setUpSwap){
-                            scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
-                            if(picker.chosenLabel == 'Weekends'){
-                                scope.swapDates.rangeLabel = 'Weekends'
+                            if(picker.startDate.format('MM/DD/YYYY') === picker.endDate.format('MM/DD/YYYY')){
+                                scope.swapDates.when = undefined;
                             }
-                            else if(picker.chosenLabel == 'Within Range') {
-                                scope.swapDates.rangeLabel = 'Within Range';
-                                if(!scope.currentDatesWhen) {
-                                    scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
+                            else{
+                                scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+                                if(picker.chosenLabel == 'Weekends'){
+                                    scope.swapDates.rangeLabel = 'Weekends'
+                                }
+                                else if(picker.chosenLabel == 'Date Range') {
+                                    scope.swapDates.rangeLabel = 'Date Range';
+                                    if(!scope.currentDatesWhen) {
+                                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
+                                    }
                                 }
                             }
-                            else if(picker.chosenLabel == 'Dates') {
-                                scope.swapDates.rangeLabel = 'Dates';
-                            }
+                            scope.swapDates.from = picker.startDate.format(scope.modelFormat);
+                            scope.swapDates.to = picker.endDate.format(scope.modelFormat);
                             scope.swapDates.startRange = undefined;
                             scope.swapDates.endRange = undefined;
                         }

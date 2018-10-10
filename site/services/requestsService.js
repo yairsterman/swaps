@@ -36,6 +36,7 @@ module.exports.sendRequest = function(params) {
     let newMessage;
     let dates;
     let nights;
+    let range = {rangeLabel: params.rangeLabel, startRange: params.startRange, endRange: params.endRange};
 
     let dfr = Q.defer();
     try {
@@ -56,6 +57,9 @@ module.exports.sendRequest = function(params) {
                 recipientId: recipientId,
                 departure: departure,
                 returnDate: returnDate,
+                rangeLabel : params.rangeLabel,
+                startRange: params.startRange,
+                endRange: params.endRange,
                 status: Data.getRequestStatus().pending,
                 guests: guests,
                 nights: nights,
@@ -67,13 +71,13 @@ module.exports.sendRequest = function(params) {
             email.sendMail([recipient.email], 'New Swap Request!', emailMessages.request(recipient, sender, {
                 departure: departure,
                 returnDate: returnDate
-            }, nights, params.message));
+            }, range, guests, params.message));
 
             email.sendMail([sender.email], 'Swap Request Sent', emailMessages.requestSent(sender, recipient));
 
-            message = 'SWAP REQUEST:<br>' + sender.firstName + ' Requested to swap for ' + nights + (nights > 1 ? ' Nights' : ' Night') + '<br>' +
-                'Check in: ' + dates[0] + '<br>' +
-                'Check out: ' + dates[1] + '<br>' +
+            message = 'SWAP REQUEST:<br>' + sender.firstName + ' proposed to swap ' + util.getRangeText(range) + '<br>' +
+                'Between: ' + dates[0] + '<br>' +
+                'and: ' + dates[1] + '<br>' +
                 (params.message ? sender.firstName + ' Says: ' + params.message : '') + '<br>';
             newMessage = {
                 id: sender._id,
@@ -201,6 +205,9 @@ function saveRequest(requestDetails){
         user1: requestDetails.senderId,
         user2: requestDetails.recipientId,
         proposition: {
+            rangeLabel : requestDetails.rangeLabel,
+            startRange: requestDetails.startRange,
+            endRange: requestDetails.endRange,
             checkin: requestDetails.departure,
             checkout : requestDetails.returnDate,
         },

@@ -48,37 +48,17 @@
                     <!--<div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}-->
                     <!--</div>-->
                     <hr>
-                    <div class="swap-info {{!profile.allowViewHome && profile.travelingInformation.length == 0?'disabled':''}}">
-                        <div class="search-field">
-                            <label for="swapDates">When</label>
-                            <div class="dates-search">
-                                <input type="text" class="form-control dates {{noDates?'error':''}}" id="swapDates" name="swapDates" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
-                                       user-city="userCity" locale-format="localeFormat" model-format="modelFormat" can-send-request="canSendRequest" find-travel="true"
-                                       not-swapping="notSwapping" data="data" ng-disabled="requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)" disabled="{{requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)}}" datepicker ng-if="ready" ng-cloak readonly>
-                                <div class="icon icon-calender" ></div>
-                            </div>
-                        </div>
-                        <div class="search-field">
-                            <label for="guests">Travelers</label>
-                            <div class="guests-search">
-                                <input type="number" class="form-control guests dates {{!swap.guests || swap.guests < 1?'error':''}}" id="guests" ng-model="swap.guests"
-                                       min="1" max="8" ng-disabled="requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)" disabled="{{requestSent || (!profile.allowViewHome && profile.travelingInformation.length == 0)}}" ng-disabled="!profile.allowViewHome && profile.travelingInformation.length == 0">
-                            </div>
-                        </div>
+                    <div class="not-charged">
+                        Send {{profile.firstName}} a swap proposition with the dates you would like to swap and the number of travelers.
                     </div>
                     <hr>
                     <div class="req-swap" ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
-                        <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
+                        <input type="button" class="btn btn-primary btn-swap" value="Propose Swap"
                                ng-click="openRequest()" ng-hide="requestSent">
                         <div class="req-sent" ng-show="requestSent">
                             Request Sent
                         </div>
                         <div class="empty-space">
-                        </div>
-                        <input type="button" class="btn btn-primary btn-swap invert-btn" value="Send Message"
-                               ng-click="openMessage()" ng-hide="messageSent">
-                        <div class="req-sent" ng-show="messageSent">
-                            Message Sent
                         </div>
                     </div>
                     <div class="not-charged"  ng-if="!profile.allowViewHome && profile.travelingInformation.length == 0">
