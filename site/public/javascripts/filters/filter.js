@@ -38,7 +38,7 @@ angular.module('filters', [])
             td.setSeconds(0, 0);
 
             var locale = "en-us";
-            var month = td.toLocaleString(locale, { month: "short" });
+            var month = td.toLocaleString(locale, { month: "long" });
 
             if (d.getTime() == td.getTime())
                 return "Today";

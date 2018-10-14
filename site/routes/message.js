@@ -20,11 +20,11 @@ const USER_UNAVAILABLE = {code:409, msg:'You have already booked these dates'};
 const REQUEST_UNAVAILABLE = {code:411, msg:'The dates you requested have already been booked by the user'};
 
 router.post('/sendMessage', function(req, res, next) {
-	var recipientId = req.body.recipientId;
-	var sender = req.user;
-	var message = req.body.message;
-	var now = Date.now();
-	var newMessage = {
+	let recipientId = req.body.recipientId;
+    let sender = req.user;
+    let message = req.body.message;
+    let now = Date.now();
+    let newMessage = {
 				date: now,
 				isRequest: false,
 				message: message
@@ -82,8 +82,8 @@ router.post('/cancelRequest', function(req, res) {
 });
 
 router.post('/readMessage', function(req, res) {
-    var recipientId = req.body.recipientId;
-    var senderId = req.user._id;
+    let recipientId = req.body.recipientId;
+    let senderId = req.user._id;
     markedMessageRead(senderId, recipientId).then(function(){
             res.json({status: 'success', message: 'read'});
         },
@@ -93,7 +93,7 @@ router.post('/readMessage', function(req, res) {
 });
 
 function saveMessage(senderId, recipientId, messageId, message, markedRead){
-	var defferd = Q.defer();
+    let defferd = Q.defer();
 	message.id = messageId;
 	User.findOne({_id: senderId}, function (err, sender) {
 		if (err){
@@ -109,10 +109,10 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 					}
 					else{
 						if(user){
-							var messages = user.messages;
-							var index = -1;
+                            let messages = user.messages;
+                            let index = -1;
 							// find messages by sender
-							for(var i = 0; i < messages.length; i++){
+							for(let i = 0; i < messages.length; i++){
 								if(messages[i].id.toString() === sender._id.toString()){
 									messages[i].messages.push(message);
 									messages[i].read = markedRead;
@@ -125,6 +125,7 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 								messages.unshift({
 									id: sender._id,
 									image: sender.image,
+									city: sender.city + ', ' + sender.country,
 									name: sender.firstName,
 									read: markedRead,
 									messages: [message]
@@ -155,7 +156,7 @@ function saveMessage(senderId, recipientId, messageId, message, markedRead){
 }
 
 function markedMessageRead(senderId, recipientId){
-    var deferd = Q.defer();
+    let deferd = Q.defer();
     User.findOne({_id: senderId})
         .then(function (sender) {
             if (!sender._id){
@@ -163,7 +164,7 @@ function markedMessageRead(senderId, recipientId){
                 throw new Error(error.message);
             }
             else {
-                var messageIndex = findMessage(sender.messages, recipientId);
+                let messageIndex = findMessage(sender.messages, recipientId);
                 if(messageIndex == -1){
                     error.message = "no request found";
                     throw new Error(error.message);
@@ -189,7 +190,7 @@ function markedMessageRead(senderId, recipientId){
                 throw new Error(error.message);
             }
             else{
-                var messageIndex = findMessage(recipient.messages, senderId);
+                let messageIndex = findMessage(recipient.messages, senderId);
                 if(messageIndex == -1){
                     error.message = "no request found";
                     throw new Error(error.message);
@@ -217,8 +218,8 @@ function markedMessageRead(senderId, recipientId){
 }
 
 function findMessage(messages, id){
-	for(var i = 0; i < messages.length; i++){
-		var message = messages[i];
+	for(let i = 0; i < messages.length; i++){
+        let message = messages[i];
 		if(message.id == id){
 			return i;
 		}

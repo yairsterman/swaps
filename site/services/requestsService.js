@@ -76,8 +76,8 @@ module.exports.sendRequest = function(params) {
             email.sendMail([sender.email], 'Swap Request Sent', emailMessages.requestSent(sender, recipient));
 
             message = 'SWAP REQUEST:<br>' + sender.firstName + ' proposed to swap ' + util.getRangeText(range) + '<br>' +
-                'Between: ' + dates[0] + '<br>' +
-                'and: ' + dates[1] + '<br>' +
+                'From: ' + dates[0] + '<br>' +
+                'To: ' + dates[1] + '<br>' +
                 (params.message ? sender.firstName + ' Says: ' + params.message : '') + '<br>';
             newMessage = {
                 id: sender._id,

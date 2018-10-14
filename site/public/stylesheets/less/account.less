@@ -383,7 +383,6 @@
 	    }
 	    .messages{
 			margin: 0 -15px;
-			display: flex;
 			@media @mobile {
 				display: block;
 				position: relative;
@@ -394,14 +393,15 @@
 				font-size: 18px;
 			}
 	    	.all-messages{
-				background-color: #F9F6F1;
-				padding-top: 35px;
-				width: 50%;
+				background-color: #ffffff;
+				margin: 35px;
 				position: relative;
 				z-index: 2;
+				border: 1px solid rgba(0,0,0,0.1);
 				@media @mobile {
 					width: 100%;
 					position: absolute;
+					margin:0;
 				}
 				.messages-scroll{
 					height: 450px;
@@ -420,14 +420,14 @@
 						margin-bottom: 5px;
 					}
 				}
-				.not-read{
+				.read{
 					opacity: 0.6;
 				}
 	    		.messages-list{
 	    			.single-message{
-						background-color: #F9F6F1;
-						padding: 5px;
-						height: 70px;
+						background-color: #ffffff;
+						padding: 10px;
+						height: 80px;
 						transition: ease .4s;
 						overflow: hidden;
 						border-bottom: 1px solid #d3d3d3;
@@ -437,9 +437,6 @@
 						&.opened{
 							background-color: #d3d3d3;
 						}
-						&:first-child{
-							border-top: 1px solid #d3d3d3;
-						}
 	    				&:hover{
 							background-color: #edefed;
 	    				}
@@ -447,7 +444,7 @@
 							outline: none;
 						}
 						.names{
-							width:100%;
+							width: 100%;
 						}
 	    				.photo{
 	    					background-position: center;
@@ -497,12 +494,23 @@
 						    color: black;
 						    font-weight: 500;
     					}
+						.city{
+							height: 16px;
+							overflow: hidden;
+							display: -webkit-box;
+							-webkit-line-clamp: 1;
+							-webkit-box-orient: vertical;
+							text-overflow: ellipsis;
+							white-space: normal;
+						}
 						.last-massage{
 							display: flex;
 							align-items: center;
 						}
 						.unread{
-							float: right;
+							position: absolute;
+							left: -5px;
+							top: 16px;
 							.circle{
 								width:10px;
 								height:10px;
@@ -516,46 +524,76 @@
     					}
 	    				.message{
 	    					padding: 0 10px;
+							height: 40px;
+							.message-info{
+								height: 100%;
+								.message-column{
+									height: 100%;
+									display: flex;
+									flex-direction: column;
+									justify-content: space-between;
+									overflow: hidden;
+									text-overflow: ellipsis;
+								}
+							}
 	    					.open-con-col{
 	    						display: flex;
 							    flex-direction: row-reverse;
 							    align-items: flex-end;
 	    					}
 	    					.date{
-	    						text-align: right;
 	    					}
-	    					.bottom{
-	    						padding-top: 6px;
-							    overflow: hidden;
-							    .text{
-									text-overflow: ellipsis;
-									overflow: hidden;
-									white-space: normal;
-									display: -webkit-box;
-									-webkit-line-clamp: 1;
-									-webkit-box-orient: vertical;
-									font-size: 14px;
-									@media @mobile {
-										font-size: 12px;
-									}
-							    }
-							    .arrow{
-							    	float:right;
-						    	    display: flex;
-									align-items: center;
-									height: 100%;
-								    .icon-chevron-down{
-								    	transform: scale(0.3);
-								    	cursor: pointer;
-								    }
+							.text{
+								text-overflow: ellipsis;
+								overflow: hidden;
+								white-space: normal;
+								display: -webkit-box;
+								-webkit-line-clamp: 1;
+								-webkit-box-orient: vertical;
+								font-size: 14px;
+								@media @mobile {
+									font-size: 12px;
+								}
+							}
+							.arrow{
+								float:right;
+								display: flex;
+								align-items: center;
+								height: 100%;
+								.icon-chevron-down{
+									transform: scale(0.3);
+									cursor: pointer;
+								}
 
-							    }
-								.request{
-									@media @mobile {
-										font-size: 12px;
+							}
+							.request{
+								.request-status-button{
+									width: 100px;
+									margin: auto;
+									font-weight: 500;
+									padding: 2px 10px;
+									color: #ffffff;
+									transition: 0.3s ease;
+									&.accept{
+										background-color: #22A854;
+										&:hover{
+											background-color: #00762C;
+										}
+									}
+									&.confirm{
+										background-color: #4D5CAB;
+										&:hover{
+											background-color: #30429F;
+										}
+									}
+									&:focus{
+										outline: none;
 									}
 								}
-	    					}
+								@media @mobile {
+									font-size: 12px;
+								}
+							}
 	    				}
 	    			}
 	    		}
