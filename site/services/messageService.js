@@ -11,7 +11,7 @@ let error = {
 };
 
 module.exports.saveMessage = function(senderId, recipientId, messageId, message, markedRead){
-    var defferd = Q.defer();
+    let defferd = Q.defer();
     message.id = messageId;
     User.findOne({_id: senderId}, function (err, sender) {
         if (err){
@@ -27,10 +27,10 @@ module.exports.saveMessage = function(senderId, recipientId, messageId, message,
                     }
                     else{
                         if(user){
-                            var messages = user.messages;
-                            var index = -1;
+                            let messages = user.messages;
+                            let index = -1;
                             // find messages by sender
-                            for(var i = 0; i < messages.length; i++){
+                            for(let i = 0; i < messages.length; i++){
                                 if(messages[i].id.toString() === sender._id.toString()){
                                     messages[i].messages.push(message);
                                     messages[i].read = markedRead;
@@ -43,6 +43,7 @@ module.exports.saveMessage = function(senderId, recipientId, messageId, message,
                                 messages.unshift({
                                     id: sender._id,
                                     image: sender.image,
+                                    city: sender.city + ', ' + sender.country,
                                     name: sender.firstName,
                                     read: markedRead,
                                     messages: [message]

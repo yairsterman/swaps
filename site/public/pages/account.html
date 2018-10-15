@@ -317,36 +317,34 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-3 hidden-xs">
-                                                    <div class="message-column">
-                                                        <div class="request"
-                                                             ng-if="requestStatus(message.id) != -1">
-                                                            <div ng-switch="requestStatus(message.id)">
-                                                                <div ng-switch-when="0">
-                                                                    <div class="request-status" ng-if="getRequest(message.id).user1 == null">
-                                                                        Request Pending
-                                                                    </div>
-                                                                    <div class="btn request-status-button accept" ng-if="getRequest(message.id).user1 != null" ng-click="requestAction(message.id)">
-                                                                        Accept
-                                                                    </div>
+                                                <div class="col-sm-3 hidden-xs message-info">
+                                                    <div class="request"
+                                                         ng-if="requestStatus(message.id) != -1">
+                                                        <div class="message-column" ng-switch="requestStatus(message.id)">
+                                                            <div ng-switch-when="0">
+                                                                <div class="request-status" ng-if="getRequest(message.id).user1 == null">
+                                                                    Request Pending
                                                                 </div>
-                                                                <div ng-switch-when="1">
-                                                                    <div class="request-status" ng-if="getRequest(message.id).user1 != null">
-                                                                        Awaiting Confirmation
-                                                                    </div>
-                                                                    <div class="btn request-status-button confirm" ng-if="getRequest(message.id).user1 == null" ng-click="requestAction(message.id)">
-                                                                        Confirm
-                                                                    </div>
-                                                                </div>
-                                                                <div ng-switch-when="2">
-                                                                    <div class="request-status">
-                                                                        Confirmed
-                                                                    </div>
+                                                                <div class="btn request-status-button accept" ng-if="getRequest(message.id).user1 != null" ng-click="acceptRequest($event, message.id)">
+                                                                    Accept
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="request-dates">
-                                                            {{getRequest(message.id).proposition.checkin | date: 'MMM dd'}} - {{getRequest(message.id).proposition.checkout | date: 'MMM dd'}}
+                                                            <div ng-switch-when="1">
+                                                                <div class="request-status" ng-if="getRequest(message.id).user1 != null">
+                                                                    Awaiting Confirmation
+                                                                </div>
+                                                                <div class="btn request-status-button confirm" ng-if="getRequest(message.id).user1 == null" ng-click="confirmRequest(message.id)">
+                                                                    Confirm
+                                                                </div>
+                                                            </div>
+                                                            <div ng-switch-when="2">
+                                                                <div class="request-status">
+                                                                    Confirmed
+                                                                </div>
+                                                            </div>
+                                                            <div class="request-dates" uib-tooltip="{{getRequest(message.id).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(message.id).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(message.id).proposition.endRange].displayName+ ' Weekend within this range.':(getRequest(message.id).proposition.startRange != getRequest(message.id).proposition.endRange?getRequest(message.id).proposition.startRange+' - ' +getRequest(message.id).proposition.endRange:getRequest(message.id).proposition.startRange) + ' nights within this range.'}}" tooltip-placement="left" tooltip>
+                                                                {{getRequest(message.id).proposition.checkin | date: 'MMM dd'}} - {{getRequest(message.id).proposition.checkout | date: 'MMM dd'}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -13,9 +13,10 @@ swapsApp.directive('datepicker', function() {
             findTravel: '=?',
             notSwapping: '=?',
             setUpSwap: '=?',
-            readOnly: '=?',
+            readOnlyCheck: '=?',
             start: '=?',
             end: '=?',
+            request: '=?',
             parentEl: '=?',
         },
         link: function(scope, element, attrs, model) {
@@ -47,7 +48,7 @@ swapsApp.directive('datepicker', function() {
                 findTravelInfo();
             }
             else{
-                if(scope.readOnly){
+                if(scope.readOnlyCheck){
                     travelingDates = travelingDates.concat(getDatesBetween(scope.start, scope.end));
                     element.daterangepicker({
                         autoApply: true,
@@ -116,8 +117,8 @@ swapsApp.directive('datepicker', function() {
                         return isInvalidDate(arg);
                     },
                     minDate: minDate,
-                    startDate: tomorrow,
-                    endDate: tomorrow,
+                    startDate: dateGreaterThan(minDate,tomorrow)?minDate:tomorrow,
+                    endDate: dateGreaterThan(minDate,tomorrow)?minDate:tomorrow,
                 };
                 if(scope.setUpSwap){
                     // setting daterangepicker causes date to default to today,
@@ -144,20 +145,19 @@ swapsApp.directive('datepicker', function() {
                 element.daterangepicker(options);
                 element.on('apply.daterangepicker', function(ev, picker) {
                     if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
+                        if(picker.startDate.format('MM/DD/YYYY') === picker.endDate.format('MM/DD/YYYY')){
+                            scope.swapDates.when = undefined;
+                            return;
+                        }
                         if(scope.setUpSwap){
-                            if(picker.startDate.format('MM/DD/YYYY') === picker.endDate.format('MM/DD/YYYY')){
-                                scope.swapDates.when = undefined;
+                            scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+                            if(picker.chosenLabel == 'Weekends'){
+                                scope.swapDates.rangeLabel = 'Weekends'
                             }
-                            else{
-                                scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
-                                if(picker.chosenLabel == 'Weekends'){
-                                    scope.swapDates.rangeLabel = 'Weekends'
-                                }
-                                else if(picker.chosenLabel == 'Date Range') {
-                                    scope.swapDates.rangeLabel = 'Date Range';
-                                    if(!scope.currentDatesWhen) {
-                                        scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
-                                    }
+                            else if(picker.chosenLabel == 'Date Range') {
+                                scope.swapDates.rangeLabel = 'Date Range';
+                                if(!scope.currentDatesWhen) {
+                                    scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
                                 }
                             }
                             scope.swapDates.from = picker.startDate.format(scope.modelFormat);
@@ -166,6 +166,8 @@ swapsApp.directive('datepicker', function() {
                             scope.swapDates.endRange = undefined;
                         }
                         else{
+                            scope.swapDates.when = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+
                             scope.swapDates.from = picker.startDate.format(scope.modelFormat);
                             scope.swapDates.to = picker.endDate.format(scope.modelFormat);
                             if(scope.canSendRequest){
@@ -173,6 +175,9 @@ swapsApp.directive('datepicker', function() {
                             }
                             scope.$apply();
                         }
+                    }
+                    else{
+                        scope.swapDates.when = undefined;
                     }
                 });
                 if(scope.setUpSwap){
@@ -291,6 +296,19 @@ swapsApp.directive('datepicker', function() {
                 if(!openAllDates && !travelingDates.includes(thisCompare)){
                     return true;
                 }
+
+                // when accepting a proposed swap date, invalidate all dates that are out of the proposed range
+                if(scope.request){
+                    var time = Date.UTC(thisYear, thisMonth - 1, thisDate);
+                    if(scope.request.proposition.rangeLabel == 'Weekends'){
+                        var weekDay = date._d.getDay();
+                        return scope.data.weekendEnd[scope.request.proposition.startRange].calendarDay === 6?weekDay < scope.data.weekendStart[scope.request.proposition.startRange].calendarDay: scope.data.weekendEnd[scope.request.proposition.endRange].calendarDay < weekDay && weekDay < scope.data.weekendStart[scope.request.proposition.startRange].calendarDay
+                            || (time < scope.request.proposition.checkin || time > scope.request.proposition.checkout)
+                    }
+                    else if(scope.request.proposition.rangeLabel == 'Date Range'){ // range label is 'Date Range'
+                        return time < scope.request.proposition.checkin || time > scope.request.proposition.checkout;
+                    }
+                }
             }
 
             function isInvalidDateReadOnly(date){
@@ -320,6 +338,15 @@ swapsApp.directive('datepicker', function() {
                     }
                 }
 
+                // if accepting request check if the number of
+                // nights chosen is within the proposed number of nights
+                if(scope.request && !clearInput){
+                    if(scope.request.proposition.rangeLabel == 'Date Range'){
+                        clearInput = chosenDates.length < scope.request.proposition.startRange
+                            || chosenDates.length > scope.request.proposition.endRange;
+                    }
+                }
+
                 // If a disabled date is in between the bounds, clear the range.
                 if(clearInput){
 
@@ -333,6 +360,14 @@ swapsApp.directive('datepicker', function() {
 
                 }
                 return clearInput;
+            }
+
+            function dateGreaterThan(first, second){
+                var date_1 = new Date(first).setFullYear(new Date().getFullYear());
+                var date_2 = new Date(second).setFullYear(new Date().getFullYear());
+
+                return date_1 > date_2;
+
             }
         }
     };

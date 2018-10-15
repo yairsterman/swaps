@@ -516,6 +516,45 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         return null;
     };
 
+    $scope.acceptRequest = function(event, id){
+        event.stopPropagation();
+        if($scope.saving){
+            return;
+        }
+        $scope.saving = true;
+        var request = $scope.getRequest(id);
+        if(!request){
+            showAlert('Could not get request', true);
+            return;
+        }
+        var userId = request.user1?request.user1._id:request.user2._id;
+        $scope.swap.from = request.proposition.checkin;
+        $scope.swap.to = request.proposition.checkout;
+        UsersService.getProfile(userId).then(function(data){
+            $scope.saving = false;
+            $scope.profile = data.data;
+            $scope.requestId = request._id;
+            $scope.chooseDates = true;
+            $scope.accepting = request;
+            $scope.modelInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '../../directives/request/request.html',
+                size: 'sm',
+                windowClass: 'request-modal',
+                controller: 'requestController',
+                scope: $scope
+            });
+            $scope.modelInstance.closed.then(function(){
+                $scope.user = $rootScope.user;
+                updateUser();
+            },function(){
+                $scope.saving = false;
+            });
+        },function(){
+            $scope.saving = false;
+        })
+    }
+
     $scope.trustAsHtml = function(html) {
         return $sce.trustAsHtml(html);
     }

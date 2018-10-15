@@ -222,14 +222,14 @@ const months = [
 ]
 
 const weekendStart = [
-    {id: 0, value:"Thu", displayName: "Thursday"},
-    {id: 1, value:"Fri", displayName: "Friday"}
+    {id: 0, calendarDay: 4, value:"Thu", displayName: "Thursday"},
+    {id: 1, calendarDay: 5, value:"Fri", displayName: "Friday"}
 ]
 
 const weekendEnd = [
-    {id: 0, value:"Sat", displayName: "Saturday"},
-    {id: 1, value:"Sun", displayName: "Sunday"},
-    {id: 2, value:"Mon", displayName: "Monday"}
+    {id: 0, calendarDay: 6, value:"Sat", displayName: "Saturday"},
+    {id: 1, calendarDay: 0, value:"Sun", displayName: "Sunday"},
+    {id: 2, calendarDay: 1, value:"Mon", displayName: "Monday"}
 ]
 
 const flexibleDates = [

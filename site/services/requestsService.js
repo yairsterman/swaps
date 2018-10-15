@@ -45,6 +45,10 @@ module.exports.sendRequest = function(params) {
             departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
             returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
             nights = util.calculateNightsBetween(departure, returnDate);
+            // if chose exact dates
+            if(nights == range.startRange){
+                range.rangeLabel = 'Exact Dates';
+            }
         }
         else {
             error.message = "No dates specified";
@@ -57,9 +61,9 @@ module.exports.sendRequest = function(params) {
                 recipientId: recipientId,
                 departure: departure,
                 returnDate: returnDate,
-                rangeLabel : params.rangeLabel,
-                startRange: params.startRange,
-                endRange: params.endRange,
+                rangeLabel : range.rangeLabel,
+                startRange: range.startRange,
+                endRange: range.endRange,
                 status: Data.getRequestStatus().pending,
                 guests: guests,
                 nights: nights,

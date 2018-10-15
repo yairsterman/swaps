@@ -19,16 +19,30 @@
     </div>
     <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete || isMatch">
         <div class="title">
-            {{confirmation?'Confirm Swap':'Propose a Swap!'}}
+            {{confirmation?'Confirm Swap':accepting?'Accept Swap':'Propose a Swap!'}}
             <div class="underline"></div>
         </div>
-        <div class="sub-title center">
+        <div class="sub-title center" ng-if="!confirmation && !accepting">
             Choose the dates you would like to propose to swap and the number of travelers you'll be.
+        </div>
+        <div class="sub-title center" ng-if="accepting && accepting.proposition.rangeLabel != 'Exact Dates'">
+            {{profile.firstName}} proposed to swap on flexible dates.<br>
+            Choose {{accepting.proposition.rangeLabel == 'Weekends'?'A weekend (' +data.weekendStart[accepting.proposition.startRange].displayName + ' - ' + data.weekendEnd[accepting.proposition.endRange].displayName + ')':(accepting.proposition.startRange != accepting.proposition.endRange?accepting.proposition.startRange + ' - ' + accepting.proposition.endRange :accepting.proposition.startRange) + (accepting.proposition.startRange> 1?' nights':' nights')}}
+            within the proposed dates, from {{accepting.proposition.checkin | date: 'MMM dd'}}  to {{accepting.proposition.checkout | date: 'MMM dd'}}
+        </div>
+        <div class="sub-title center" ng-if="accepting && accepting.proposition.rangeLabel == 'Exact Dates'">
+            {{profile.firstName}} proposed to swap from {{accepting.proposition.checkin | date: 'MMM dd'}}  to {{accepting.proposition.checkout | date: 'MMM dd'}}.<br>
         </div>
         <div class="single-swap add-swap">
             <div class="row search-area">
                 <div class="search-field when transition-ease col-sm-9 col-xs-12">
-                    <div class="row xs-flex">
+                    <div class="{{accepting.proposition.rangeLabel == 'Exact Dates'?'accepting-dates':''}}" ng-if="accepting">
+                        <input type="text" class="form-control no-border {{datesError?'error':''}}" ng-focus="datesError=false" placeholder="Select Dates" id="searchDate" name="searchDate" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                               user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="accepting.proposition.rangeLabel != 'Exact Dates'" set-up-swap="false" datepicker
+                               data="data" request="accepting" read-only-check="accepting.proposition.rangeLabel == 'Exact Dates'" start="accepting.proposition.checkin" end="accepting.proposition.checkout" parent-el="'accepting-dates'">
+                        <div class="glyphicon glyphicon glyphicon-remove {{swap.when?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="swap.dates"></div>
+                    </div>
+                    <div class="row xs-flex" ng-if="!confirmation && !accepting">
                         <div class="{{swap.when?'col-xs-7 col-sm-7':'col-sm-12'}}">
                             <input type="text" class="form-control no-border {{datesError?'error':''}}" ng-focus="datesError=false" placeholder="Select Dates" id="searchDateAdd" name="searchDateAdd" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
@@ -103,7 +117,8 @@
             <textarea id="about" rows="3" cols="20" class="form-control send-text {{messageError?'error':''}}" ng-model="send.message" ng-focus="messageError=false" placeholder="Hey {{profile.firstName}}! ...">
                           </textarea>
         </div>
-        <input type="button" class="btn btn-primary btn-swap" value="Propose Swap" ng-click="checkSwap()">
+        <input type="button" class="btn btn-primary btn-swap" value="Propose Swap" ng-click="checkSwap()" ng-if="!confirmation && !accepting">
+        <input type="button" class="btn btn-primary btn-swap" value="Accept Swap" ng-click="showPayment()" ng-if="confirmation || accepting">
     </div>
     <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
         <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
@@ -129,7 +144,7 @@
         </div>
     </div>
     <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
-        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="dates" message="send.message" guests="swap.guests" plan="profile.deposit" request-type="confirmation?data.requestType.confirm:data.requestType.request" request-id="requestId"></payment>
+        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="dates" message="send.message" guests="swap.guests" plan="profile.deposit" request-type="confirmation?data.requestType.confirm:data.requestType.accept" request-id="requestId"></payment>
         <div class="loader-wrapper" ng-if="processing">
             <div class="loader">
 

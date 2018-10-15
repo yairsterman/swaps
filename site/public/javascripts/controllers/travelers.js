@@ -293,8 +293,8 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         google.maps.event.addListener(marker, 'click', function(){
             $location.url('/' + marker.url);
             var a = document.createElement("a");
-            a.id = "tempA"
-            a.target = "_self";
+            a.id = "tempA";
+            a.target = "_blank";
             a.href = "https://swapshome.com/" + marker.url; // change to actual url
             a.click();
         });

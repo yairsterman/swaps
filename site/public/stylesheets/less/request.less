@@ -76,6 +76,31 @@
             outline: none;
           }
         }
+        .accepting-dates{
+          position: relative;
+          .daterangepicker{
+            table{
+              position: relative;
+            }
+            tbody{
+              &::after {
+                content: ""; position: absolute; top: 40px; right: 0; bottom: 0; left: 0;
+              }
+              td{
+                color: #999;
+                &.in-range{
+                  color: #333;
+                }
+                &.start-date, &.end-date{
+                  color: #fff;
+                }
+              }
+            }
+            &::before {
+              border-color: #fff;
+            }
+          }
+        }
       }
     }
     .guests-search{
