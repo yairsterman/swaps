@@ -40,7 +40,7 @@
                         <input type="text" class="form-control no-border {{datesError?'error':''}}" ng-focus="datesError=false" placeholder="Select Dates" id="searchDate" name="searchDate" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
                                user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="accepting.proposition.rangeLabel != 'Exact Dates'" set-up-swap="false" datepicker
                                data="data" request="accepting" read-only-check="accepting.proposition.rangeLabel == 'Exact Dates'" start="accepting.proposition.checkin" end="accepting.proposition.checkout" parent-el="'accepting-dates'">
-                        <div class="glyphicon glyphicon glyphicon-remove {{swap.when?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="swap.dates"></div>
+                        <div class="glyphicon glyphicon glyphicon-remove {{swap.when?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="swap.dates && accepting.proposition.rangeLabel != 'Exact Dates'"></div>
                     </div>
                     <div class="row xs-flex" ng-if="!confirmation && !accepting">
                         <div class="{{swap.when?'col-xs-7 col-sm-7':'col-sm-12'}}">

@@ -258,8 +258,15 @@ swapper-home{
   border-left-color: #0E5D7C !important;
 }
 .tooltip{
-  .tooltip-arrow{
-    border-color: #0E5D7C !important;
+  &.left{
+    .tooltip-arrow{
+      border-left-color: #0E5D7C !important;
+    }
+  }
+  &.right{
+    .tooltip-arrow{
+      border-right-color: #0E5D7C !important;
+    }
   }
 }
 .tooltip-inner {

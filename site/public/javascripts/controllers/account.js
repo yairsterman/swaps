@@ -1,7 +1,8 @@
 var acc = null;
-swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $window, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
+swapsApp.controller('accountController', function($scope, $rootScope, $routeParams, $route, $window, $interval, $timeout, $document, $location, $uibModal, alertify, AccountService, MessageService, UsersService, $sce) {
     acc = $scope;
     $scope.activeTab = $routeParams.tab;
+    $scope.messageId = $routeParams.id;
     $rootScope.homepage = false;
     $rootScope.searchPage = false;
     $scope.editing = false;
@@ -59,6 +60,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
                 $window.localStorage.setItem('dragAnimation',true);
                 $scope.dragAnimation = true;
             }, 5500);
+        }
+        if($scope.activeTab == 'messages' && $scope.messageId){
+            var message = $scope.findMessage($scope.messageId);
+            $scope.openConversation(message);
         }
     }
 
@@ -351,26 +356,47 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       setPhotoGalery();
     }
 
-    $scope.openConversation = function(chat, $index){
-        $scope.currentConversation = null;
-        $scope.currentConversation = chat;
-        $scope.currentConversationId = chat.id;
+    $scope.openConversation = function(conversation){
         $scope.conversationIsOpen = true;
-        $scope.send.message = '';
-        $scope.messageIndex = $index;
-        $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
-        $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
-        $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
-        if(!$scope.currentConversation.read){
-            MessageService.readMessage($scope.user, $scope.currentConversationId).then(function(data){
-                if(!data.error){
-                    $scope.currentConversation.read = true;
-                    scrollMessagesToTop();
-                }
-            });
-        }
-        $scope.messageOpened = true;
-        scrollMessagesToTop();
+        $location.path('account/messages/'+conversation.id);
+        var id = conversation.id;
+        $scope.loading = true;
+        UsersService.getProfile(id).then(function(data){
+            $scope.profile = data;
+            $scope.currentConversation = null;
+            $scope.currentConversationId = id;
+            $scope.currentConversation = conversation;
+            $scope.send.message = '';
+            $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
+            $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
+            $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
+            if(!$scope.currentConversation.read){
+                MessageService.readMessage($scope.user, $scope.currentConversationId).then(function(data){
+                    if(!data.error){
+                        $scope.currentConversation.read = true;
+                        scrollMessagesToTop();
+                    }
+                });
+            }
+            $scope.messageOpened = true;
+            scrollMessagesToTop();
+        },function(){
+            $scope.conversationIsOpen = false;
+        }).finally(function(){
+            $scope.loading = false;
+        });
+    };
+
+    $scope.findMessage = function(id){
+        var foundMessage = null;
+        $scope.user.messages.every(function(message){
+            if(message.id == id){
+                foundMessage = message;
+                return false;
+            }
+            return true;
+        });
+        return foundMessage;
     }
 
     $scope.closeMessage = function(){
@@ -574,22 +600,13 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.saving = false;
         $scope.focusPlan=false;
         $scope.edit = angular.copy($scope.user);
+        $scope.requests = $scope.user.requests;
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){
             $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
             $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
             $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
         }
-        AccountService.getRequests().then(function(requests){
-            $scope.requests = requests;
-            if($scope.currentConversationId){
-                $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
-                $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
-                $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;
-            }
-        },function(err){
-            showAlert('Error getting requests', true);
-        });
     }
 
     function showAlert(msg, error){

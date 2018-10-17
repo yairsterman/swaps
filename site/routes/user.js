@@ -216,6 +216,12 @@ router.get('/get-user', function(req, res, next) {
             path: 'community',
             select: 'name _id',
         })
+        .populate({
+            path: 'requests',
+            match: {status: {$ne: Data.getRequestStatus().canceled}},
+            select: Data.getRequestData(),
+            populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
+        })
         .exec(function (err, user) {
             if (err) return next(err);
             res.json(user);

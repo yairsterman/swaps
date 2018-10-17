@@ -165,7 +165,9 @@ const visibleRequestData ={
     verifyTransactionUser2: false,
 };
 
-const requestData = 'firstName image photos _id apptInfo country city reviews rating occupation';
+const requestUserData = 'firstName image photos _id apptInfo country city reviews rating occupation';
+
+const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status';
 
 
 const transactionType = {
@@ -317,6 +319,10 @@ data.getData = function(){
 
 data.getRequestType = function(){
     return requestType;
+};
+
+data.getRequestUserData = function(){
+    return requestUserData;
 };
 
 data.getRequestData = function(){

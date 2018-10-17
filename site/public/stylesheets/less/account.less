@@ -568,6 +568,21 @@
 							}
 							.request{
 								height: 100%;
+								.request-status{
+									font-weight: 500;
+									&.pending{
+										color: #E8B32F;
+									}
+									&.awaiting-approval{
+										color: #4D5CAB;
+									}
+									&.confirmation{
+										color: #22A854;
+									}
+									&.confirmed{
+										color: #0E5D7C;
+									}
+								}
 								.request-status-button{
 									width: 100px;
 									margin: auto;
@@ -576,13 +591,13 @@
 									line-height: 1.2;
 									color: #ffffff;
 									transition: 0.3s ease;
-									&.accept{
+									&.confirm{
 										background-color: #22A854;
 										&:hover{
 											background-color: #00762C;
 										}
 									}
-									&.confirm{
+									&.accept{
 										background-color: #4D5CAB;
 										&:hover{
 											background-color: #30429F;
@@ -600,131 +615,134 @@
 	    			}
 	    		}
 	    	}
-			.message-area{
-				background-color: #ffffff;
-				width: 50%;
-				transition: 0.4s ease;
-				transform: translate(0);
-				z-index: 1;
-				position: relative;
-				@media @mobile {
-					width: 100%;
-					transition: 0.2s ease;
+			.message-profile{
+				.swapper-details{
+					padding-top: 15px;
+					padding-left: 15px;
+				}
+				.message-area{
+					background-color: #ffffff;
+					transition: 0.4s ease;
 					transform: translate(0);
-					z-index: 3;
-				}
-				&.mobile-no-width{
-					transform: translate(-100%);
+					z-index: 1;
+					position: relative;
 					@media @mobile {
+						width: 100%;
+						transition: 0.2s ease;
+						transform: translate(0);
+						z-index: 3;
+					}
+					&.mobile-no-width{
 						transform: translate(-100%);
+						@media @mobile {
+							transform: translate(-100%);
+						}
 					}
-				}
-				.top-corner{
+					.top-corner{
 
-				}
-				.conversation-profile{
-					background-color: #F9F6F1;
-					height: 70px;
-					display: flex;
-					align-items: center;
-					border-left: 1px solid lightgray;
-					.name{
-						padding-left: 10px;
-						font-size: 14px;
-						color: black;
-						font-weight: 500;
 					}
-					.photo{
-						background-position: center;
-						background-repeat: no-repeat;
-						background-size: cover;
-						border-radius: 50%;
-						height: 50px;
-						width: 50px;
-						transition: ease 0.6s;
-						margin-left: 5px;
-					}
-				}
-				.conversation-messages{
-					overflow-y: scroll;
-					height: 450px;
-					@media @mobile {
-						height: 350px;
-					}
-					.con-message{
-						transition: ease 0.4s;
-						padding: 10px 12px;
-						margin: 5px 10px;
-						background-color: ghostwhite;
-						border-radius: 25px;
-						width: 75%;
-						font-size: 14px;
-						line-height: 20px;
-						float:left;
-						&.user-message{
-							color: #fff;
-							background-color: cornflowerblue;
-							float: right;
+					.conversation-messages{
+						overflow-y: scroll;
+						height: 450px;
+						@media @mobile {
+							height: 350px;
 						}
-						&.request{
-							//border: 3px solid #00bc00;
-							//-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0px 0px 8px 6px rgba(0, 188, 0,.6);
-							//box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0px 0px 8px 6px rgba(0, 188, 0, .6);
-						}
-					}
-				}
-
-				.send-message{
-					display: flex;
-					align-items: stretch;
-					.send-text{
-						font-size: 14px;
-					}
-					.btn-primary{
-						font-size: 16px;
-					}
-					.btn-send{
-						font-size: 16px;
-					}
-					.btn-swap{
-						background-color: white;
-						color: #333;
-						transition: 0.3s ease;
-						&:hover{
-							color: white;
-							background-color: #0E5D7C;
-						}
-						&.btn-pending{
-							opacity: 0.5;
-							&:hover{
-								background-color: white;
-								color: #333;
+						.conversation-message{
+							float:left;
+							display: flex;
+							width: 100%;
+							.conversation{
+								transition: ease 0.4s;
+								padding: 10px 12px;
+								margin: 5px 10px;
+								background-color: ghostwhite;
+								border-radius: 25px;
+								width: 75%;
+								font-size: 14px;
+								line-height: 20px;
 							}
-						}
-						&.btn-confirm{
-							background-color: white;
-							color: #333;
-							&::after{
-								content: "";
-								position: absolute;
-								top: -110%;
-								left: -210%;
-								width: 200%;
-								height: 200%;
-								opacity: 0;
-								transform: rotate(30deg);
-								&:hover{
-									opacity: 1;
-									top: -30%;
-									left: -30%;
-									transition-property: left, top, opacity;
-									transition-duration: 0.7s, 0.7s, 0.15s;
-									transition-timing-function: ease;
+							&.request{
+								//border: 3px solid #00bc00;
+								//-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0px 0px 8px 6px rgba(0, 188, 0,.6);
+								//box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0px 0px 8px 6px rgba(0, 188, 0, .6);
+							}
+							.photo{
+								background-position: center;
+								background-repeat: no-repeat;
+								background-size: cover;
+								border-radius: 50%;
+								height: 50px;
+								width: 50px;
+								transition: ease 0.6s;
+								margin-left: 5px;
+								margin-top: 5px;
+							}
+							&.user-message{
+								float: right;
+								flex-direction: row-reverse;
+								.conversation{
+									color: #fff;
+									background-color: #3E839D;
+								}
+								.photo{
+									margin: 5px 5px 0 0;
 								}
 							}
 						}
-						&.btn-confirmed{
-							opacity: 0.5;
+					}
+
+					.send-message{
+						display: flex;
+						align-items: stretch;
+						.send-text{
+							font-size: 14px;
+						}
+						.btn-primary{
+							font-size: 16px;
+						}
+						.btn-send{
+							font-size: 16px;
+						}
+						.btn-swap{
+							background-color: white;
+							color: #333;
+							transition: 0.3s ease;
+							&:hover{
+								color: white;
+								background-color: #0E5D7C;
+							}
+							&.btn-pending{
+								opacity: 0.5;
+								&:hover{
+									background-color: white;
+									color: #333;
+								}
+							}
+							&.btn-confirm{
+								background-color: white;
+								color: #333;
+								&::after{
+									content: "";
+									position: absolute;
+									top: -110%;
+									left: -210%;
+									width: 200%;
+									height: 200%;
+									opacity: 0;
+									transform: rotate(30deg);
+									&:hover{
+										opacity: 1;
+										top: -30%;
+										left: -30%;
+										transition-property: left, top, opacity;
+										transition-duration: 0.7s, 0.7s, 0.15s;
+										transition-timing-function: ease;
+									}
+								}
+							}
+							&.btn-confirmed{
+								opacity: 0.5;
+							}
 						}
 					}
 				}
@@ -1130,8 +1148,15 @@
 	border-left-color: #0E5D7C !important;
 }
 .tooltip{
-	.tooltip-arrow{
-		border-color: #0E5D7C !important;
+	&.left{
+		.tooltip-arrow{
+			border-left-color: #0E5D7C !important;
+		}
+	}
+	&.right{
+		.tooltip-arrow{
+			border-right-color: #0E5D7C !important;
+		}
 	}
 }
 .tooltip-inner {

@@ -10,12 +10,18 @@ swapsApp.service('UsersService', function($http, $q){
    };
 
    this.getProfile = function(id) {
-      return $http.get('user/get-profile?id=' + id).then(function(data){
-           return data;
-        },
-        function(){
-             console.log("error")
-        });
+       var defer = $q.defer();
+       $http.get('user/get-profile?id=' + id).then(function(data){
+           if(data.data.error){
+               defer.reject(data.data.error);
+           }
+           else{
+               defer.resolve(data.data);
+           }
+       }, function(err){
+           defer.reject(err);
+       });
+       return defer.promise;
    };
 
     this.getUsers = function(filters) {

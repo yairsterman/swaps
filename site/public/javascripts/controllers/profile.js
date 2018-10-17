@@ -363,7 +363,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     function init(){
         $scope.ready = false;
         UsersService.getProfile($routeParams.id).then(function(data){
-            $scope.profile = data.data;
+            $scope.profile = data;
             $scope.age = getAge($scope.profile.birthday);
             setPhotoGalery();
             setMapRadius();

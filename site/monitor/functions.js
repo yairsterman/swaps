@@ -57,7 +57,7 @@ module.exports.emailPassedPendingRequests = function () {
         if (err) return err;
         let now = moment.utc().valueOf();
         requests.forEach(function (request) {
-            if (request.checkin < now) {
+            if (request.checkin < now) { // or a week after the request was sent
                 request.update({status: data.getRequestStatus().canceled}).then(function () {
                     User.findOne({_id: request.user1}, function (err, user) {
                         if (err) return err;
@@ -138,7 +138,7 @@ module.exports.emailConfirmedRequests = function () {
 
 
 /**
- * Find all swaps are completed
+ * Find all swaps that are completed and send a review email to both users
  */
 module.exports.emailReview = function () {
     let now = moment.utc().valueOf();

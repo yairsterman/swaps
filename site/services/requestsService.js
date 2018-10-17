@@ -95,7 +95,22 @@ module.exports.sendRequest = function(params) {
             return MessageService.saveMessage(recipientId, senderId, senderId, newMessage, true);
         })
         .then(function () {
-            dfr.resolve();
+            if(params.message){
+                newMessage = {
+                    id: senderId,
+                    date: now,
+                    isRequest: false,
+                    message: params.message
+                };
+                MessageService.saveMessage(senderId, recipientId, senderId, newMessage, false).then(function(){
+                    MessageService.saveMessage(recipientId, senderId, senderId, newMessage, true).then(function(){
+                        dfr.resolve();
+                    });
+                });
+            }
+            else{
+                dfr.resolve();
+            }
         }, function (err) {
             dfr.reject(err);
         });

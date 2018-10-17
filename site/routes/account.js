@@ -389,7 +389,9 @@ router.post('/delete-photo', function (req, res, next) {
                         })
                         .populate({
                             path: 'requests',
-                            match: {status: {$ne: Data.getRequestStatus().canceled}}
+                            match: {status: {$ne: Data.getRequestStatus().canceled}},
+                            select: Data.getRequestData(),
+                            populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
                         })
                         .exec(function (err, _user) {
                             if (err) {
@@ -563,12 +565,12 @@ router.get('/get-requests', function (req, res, next) {
         .populate({
             path: 'user1',
             match: {_id: {$ne: id}}, // no need to populate user's own document
-            select: Data.getRequestData(),
+            select: Data.getRequestUserData(),
         })
         .populate({
             path: 'user2',
             match: {_id: {$ne: id}}, // no need to populate user's own document
-            select: Data.getRequestData(),
+            select: Data.getRequestUserData(),
         })
         .exec(function (err, requests) {
             if (err) {
@@ -599,7 +601,9 @@ router.put('/add-favorite', function (req, res, next) {
                     })
                     .populate({
                         path: 'requests',
-                        match: {status: {$ne: Data.getRequestStatus().canceled}}
+                        match: {status: {$ne: Data.getRequestStatus().canceled}},
+                        select: Data.getRequestData(),
+                        populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
                     })
                     .exec();
             }
@@ -817,6 +821,12 @@ function findOneAndUpdate(id, toUpdate, res) {
         .populate({
             path: 'community',
             select: 'name _id',
+        })
+        .populate({
+            path: 'requests',
+            match: {status: {$ne: Data.getRequestStatus().canceled}},
+            select: Data.getRequestData(),
+            populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
         })
         .exec(function (err, user) {
             if (err) {

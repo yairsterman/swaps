@@ -12,7 +12,7 @@ $routeProvider
         templateUrl : '/pages/profile.html',
         controller  : 'profileController'
     })
-    .when('/account/:tab', {
+    .when('/account/:tab/:id?', {
         templateUrl : '/pages/account.html',
         controller  : 'accountController'
     })

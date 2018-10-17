@@ -52,7 +52,7 @@ swapsApp.directive('datepicker', function() {
                     travelingDates = travelingDates.concat(getDatesBetween(scope.start, scope.end));
                     element.daterangepicker({
                         autoApply: true,
-                        opens: 'left',
+                        opens: 'center',
                         startDate: formatDate(new Date(scope.start), scope.localeFormat),
                         endDate: formatDate(new Date(scope.end), scope.localeFormat),
                         // isInvalidDate: function(arg){
@@ -63,6 +63,7 @@ swapsApp.directive('datepicker', function() {
                         },
                         parentEl: '.' + scope.parentEl
                     });
+                    scope.swap.when = true; // to allow accepting a request with exact dates
                 }
                 else{
                     //from home page
