@@ -357,39 +357,80 @@
 
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" ng-if="!loading">
                                 <div class="col-sm-5">
                                     <div class="swapper-details">
                                         <swapper-home traveler="profile"></swapper-home>
                                     </div>
                                 </div>
                                 <div class="col-sm-7">
-                                    <div class="message-area {{messageOpened?'':'mobile-no-width'}}">
-                                        <div class="icon icon-delete top-corner visible-xs" ng-click="closeMessage()"></div>
-                                        <div class="conversation-messages" id="{{currentConversationId}}">
-                                            <div class="conversation-message {{conversation.id == user._id?'user-message':''}} {{conversation.isRequest?'request':''}}"
-                                                 ng-repeat="conversation in currentConversation.messages">
-                                                <div class="photo" style="background-image:url('{{conversation.id==user._id?user.image:profile.image}}')">
+                                    <div class="messages-and-status">
+                                        <!--<div class="glyphicon glyphicon-menu-right top-corner" ng-click="closeMessage()"></div>-->
+                                        <div class="status">
+                                            <div class="set-swap" ng-if="!getRequest(currentConversationId)">
+                                                <div class="btn btn-primary btn-swap" ng-click="setSwap(currentConversationId)" ng-disabled="saving">
+                                                    Propose Swap
                                                 </div>
-                                                <div class="conversation">
-                                                    <div class="text" ng-bind-html="trustAsHtml(conversation.message)">
+                                            </div>
+                                            <div class="" ng-switch="requestStatus(currentConversationId)">
+                                                <div ng-switch-when="0">
+                                                    <div class="request-status pending" ng-if="getRequest(currentConversationId).user1 == null">
+                                                        Request pending
                                                     </div>
-                                                    <div class="date">
-                                                        {{conversation.date | dateFilter}}
+                                                    <div class="btn request-status-button approve" ng-if="getRequest(currentConversationId).user1 != null" ng-click="approveRequest($event, currentConversationId)">
+                                                        Approve
+                                                    </div>
+                                                </div>
+                                                <div ng-switch-when="1">
+                                                    <div class="request-status confirmation" ng-if="getRequest(currentConversationId).user1 != null">
+                                                        Awaiting Confirmation
+                                                    </div>
+                                                    <div class="btn request-status-button confirm" ng-if="getRequest(currentConversationId).user1 == null" ng-click="confirmRequest(currentConversationId)">
+                                                        Confirm
+                                                    </div>
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    <div class="request-status">
+                                                        Confirmed
+                                                    </div>
+                                                </div>
+                                                <div class="row dates-and-cancel" ng-if="getRequest(currentConversationId)">
+                                                    <div class="col-sm-8 col-xs-12">
+                                                        <div class="request-dates">
+                                                            {{getRequest(currentConversationId).proposition.checkin | date: 'MMMM dd, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'MMMM dd, yyyy'}}
+                                                        </div>
+                                                        <div class="request-dates" ng-if="getRequest(currentConversationId).proposition.rangeLabel != 'Exact Dates'">
+                                                            <strong>Flexible dates:</strong> {{getRequest(currentConversationId).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(currentConversationId).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(currentConversationId).proposition.endRange].displayName+ ' Weekend within this range.':(getRequest(currentConversationId).proposition.startRange != getRequest(currentConversationId).proposition.endRange?getRequest(currentConversationId).proposition.startRange+' - ' +getRequest(currentConversationId).proposition.endRange:getRequest(currentConversationId).proposition.startRange) + ' nights within this range.'}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 col-xs-12">
+                                                        <div class="cancel-request" ng-click="cancelRequest(getRequest(currentConversationId))">
+                                                            {{requestStatus(currentConversationId) == 0 && getRequest(currentConversationId).user1 != null?'Decline request':'Cancel request'}}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="send-message" ng-if="conversationIsOpen">
-                                            <input type="button"
-                                                   class="btn btn-primary btn-swap {{currentConversationStatus == 0?requestSentByMe?'btn-pending':'btn-confirm':''}} {{currentConversationStatus == 1?'btn-confirmed':''}}"
-                                                   value="{{currentConversationStatus == 0?requestSentByMe?'Pending':'Confirm':currentConversationStatus == 1?'Confirmed':'Swap'}}"
-                                                   ng-disabled="(currentConversationRequest && currentConversationRequest.user2 && currentConversationStatus != 2) || saving || (currentConversationRequest  && currentConversationStatus == 1)" disabled="{{(currentConversationRequest && currentConversationRequest.user2 && currentConversationStatus != -1) || saving}}"
-                                                   ng-click="currentConversationStatus == 0?confirmRequest(currentConversation):setSwap(currentConversation)">
-                                            <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message">
-                          </textarea>
-                                            <input type="button" class="btn btn-primary btn-send" value="Send"
-                                                   ng-click="sendMessage()" ng-disabled="send.message == '' " disabled="{{send.message == ''}}">
+                                        <div class="message-area">
+                                            <div class="conversation-messages" id="{{currentConversationId}}">
+                                                <div class="conversation-message {{conversation.id == user._id && !conversation.isRequest?'user-message':''}} {{conversation.isRequest?'request':''}}"
+                                                     ng-repeat="conversation in currentConversation.messages">
+                                                    <div class="photo" style="background-image:url('{{conversation.id==user._id?user.image:profile.image}}')" ng-if="!conversation.isRequest">
+                                                    </div>
+                                                    <div class="conversation">
+                                                        <div class="text" ng-bind-html="trustAsHtml(conversation.message)">
+                                                        </div>
+                                                        <div class="date">
+                                                            {{conversation.date | dateFilter}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="send-message">
+                                                <textarea rows="2" cols="20" class="form-control send-text" ng-model="send.message"></textarea>
+                                                <input type="button" class="btn btn-primary btn-send" value="Send"
+                                                       ng-click="sendMessage()" ng-disabled="send.message == '' " disabled="{{send.message == ''}}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

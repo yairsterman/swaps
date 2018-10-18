@@ -81,8 +81,7 @@ module.exports.sendRequest = function(params) {
 
             message = 'SWAP REQUEST:<br>' + sender.firstName + ' proposed to swap ' + util.getRangeText(range) + '<br>' +
                 'From: ' + dates[0] + '<br>' +
-                'To: ' + dates[1] + '<br>' +
-                (params.message ? sender.firstName + ' Says: ' + params.message : '') + '<br>';
+                'To: ' + dates[1] + '<br>';
             newMessage = {
                 id: sender._id,
                 date: now,

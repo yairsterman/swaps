@@ -23,49 +23,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.dragAnimation = $window.localStorage.getItem('dragAnimation');
 
-
-    if($rootScope.user && $rootScope.user._id) {
-        $scope.user = $rootScope.user;
-        init();
-    }
-    else{
-        AccountService.getUser().then(function(user){
-            $scope.user = user;
-            init();
-        }, function(){
-            if(!($rootScope.user && $rootScope.user._id)){
-                $scope.openLogin();
-                $location.url('/');
-            }
-        });
-    }
-
     $('.fb-messenger-icon').addClass('hide');
 
     $('input[name="datefilter"]').daterangepicker({
           autoApply: true,
           opens: 'center'
       });
-
-    function init(){
-        updateUser();
-        setPhotoGalery();
-        if($scope.activeTab == 'listing' && $routeParams.plan){
-            var plan = parseInt($routeParams.plan);
-            $scope.edit.deposit = plan;
-            $scope.focusPlan = true;
-        }
-        if($scope.activeTab == 'listing' && !$rootScope.isMobile && $scope.user.photos.length > 1){
-            $timeout(function(){
-                $window.localStorage.setItem('dragAnimation',true);
-                $scope.dragAnimation = true;
-            }, 5500);
-        }
-        if($scope.activeTab == 'messages' && $scope.messageId){
-            var message = $scope.findMessage($scope.messageId);
-            $scope.openConversation(message);
-        }
-    }
 
     var autocomplete;
     var address = {
@@ -171,7 +134,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.cancelRequest = function(requestInfo){
-        var decline = requestInfo.status == 0 && requestInfo.user1
+        var decline = requestInfo.status == 0 && requestInfo.user1;
         $scope.saving = true;
         $scope.modelInstance = $uibModal.open({
             animation: true,
@@ -400,42 +363,51 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.closeMessage = function(){
-        $scope.messageOpened = false;
+        $scope.conversationIsOpen = false;
+        $location.path('account/messages');
     }
 
     $scope.sendMessage = function(){
         var message = $scope.send.message;
         $scope.send.message = '';
-        // var user = {_id:"590adf696da18fbca10e82be",image:"http://localhost:3000/images/static/profile3.jpg",firstName:"Wan Ung",lastName:"Kuen"};
         MessageService.sendMessage($scope.user, $scope.currentConversationId, message).then(function(data){
             if(!data.error){
                 $rootScope.user = data.data;
                 $scope.user = $rootScope.user;
-                $scope.currentConversation.messages.push({message:message,id:$scope.user._id});
+                $scope.currentConversation = $scope.findMessage($scope.currentConversationId);
                 scrollMessagesToTop();
             }
         });
     }
 
-    $scope.setSwap = function(message){
+    $scope.setSwap = function(id){
+        if($scope.saving ){
+           return;
+        }
         $scope.saving = true;
-        UsersService.getProfile(message.id).then(function(data){
-            $scope.profile = data.data;
-            $scope.chooseDates = true;
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/request/request.html',
-                size: 'sm',
-                windowClass: 'request-modal',
-                controller: 'requestController',
-                scope: $scope
-            });
-            $scope.modelInstance.closed.then(function(){
-                $scope.user = $rootScope.user;
-                updateUser();
-            },function(){
-                $scope.saving = false;
-            });
+        $scope.swap = {};
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+        $scope.modelInstance.closed.then(function(){
+            $scope.saving = false;
+        },function(){
+            $scope.saving = false;
+        });
+    }
+
+    $scope.proposeSwap = function(){
+        MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(){
+            $scope.requestComplete = true;
+            $scope.requestSent = true;
+            $timeout(function(){
+                $scope.modelInstance.close();
+            },4000);
         })
     }
 
@@ -542,7 +514,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         return null;
     };
 
-    $scope.acceptRequest = function(event, id){
+    $scope.approveRequest = function(event, id){
         event.stopPropagation();
         if($scope.saving){
             return;
@@ -553,32 +525,26 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             showAlert('Could not get request', true);
             return;
         }
-        var userId = request.user1?request.user1._id:request.user2._id;
         $scope.swap.from = request.proposition.checkin;
         $scope.swap.to = request.proposition.checkout;
-        UsersService.getProfile(userId).then(function(data){
-            $scope.saving = false;
-            $scope.profile = data.data;
-            $scope.requestId = request._id;
-            $scope.chooseDates = true;
-            $scope.accepting = request;
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/request/request.html',
-                size: 'sm',
-                windowClass: 'request-modal',
-                controller: 'requestController',
-                scope: $scope
-            });
-            $scope.modelInstance.closed.then(function(){
-                $scope.user = $rootScope.user;
-                updateUser();
-            },function(){
-                $scope.saving = false;
-            });
+        $scope.saving = false;
+        $scope.requestId = request._id;
+        $scope.chooseDates = true;
+        $scope.accepting = request;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+        $scope.modelInstance.closed.then(function(){
+            $scope.user = $rootScope.user;
+            updateUser();
         },function(){
             $scope.saving = false;
-        })
+        });
     }
 
     $scope.trustAsHtml = function(html) {
@@ -620,6 +586,42 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     $scope.orderByDate = function(conversation){
         return -(conversation.messages[conversation.messages.length -1].date);
+    }
+
+    function init(){
+        updateUser();
+        setPhotoGalery();
+        if($scope.activeTab == 'listing' && $routeParams.plan){
+            var plan = parseInt($routeParams.plan);
+            $scope.edit.deposit = plan;
+            $scope.focusPlan = true;
+        }
+        if($scope.activeTab == 'listing' && !$rootScope.isMobile && $scope.user.photos.length > 1){
+            $timeout(function(){
+                $window.localStorage.setItem('dragAnimation',true);
+                $scope.dragAnimation = true;
+            }, 5500);
+        }
+        if($scope.activeTab == 'messages' && $scope.messageId){
+            var message = $scope.findMessage($scope.messageId);
+            $scope.openConversation(message);
+        }
+    }
+
+    if($rootScope.user && $rootScope.user._id) {
+        $scope.user = $rootScope.user;
+        init();
+    }
+    else{
+        AccountService.getUser().then(function(user){
+            $scope.user = user;
+            init();
+        }, function(){
+            if(!($rootScope.user && $rootScope.user._id)){
+                $scope.openLogin();
+                $location.url('/');
+            }
+        });
     }
 
 });
