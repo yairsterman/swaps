@@ -39,3 +39,15 @@ swapsApp.directive('scrollAction', function() {
     }
 });
 
+swapsApp.directive('afterRender', ['$timeout', function ($timeout) {
+    var def = {
+        restrict: 'A',
+        terminal: true,
+        transclude: false,
+        link: function (scope, element, attrs) {
+            $timeout(scope.$eval(attrs.afterRender), 10);  //Calling a scoped method
+        }
+    };
+    return def;
+}]);
+

@@ -1,9 +1,9 @@
 <div class="payment-wrapper">
-    <iframe ng-src="{{iframeSrc}}" class="tranzilla">
-        <div class="loader-wrapper">
-            <div class="loader">
-
-            </div>
-        </div>
+    <iframe ng-src="{{iframeSrc}}" class="tranzilla" id="tranzilla">
     </iframe>
+    <div class="loader-wrapper" ng-if="loading">
+        <div class="loader">
+
+        </div>
+    </div>
 </div>

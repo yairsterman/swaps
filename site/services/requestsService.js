@@ -131,7 +131,7 @@ module.exports.accept = function(params) {
         let now = moment.utc().valueOf();
         let newMessage = {
             date: now,
-            isRequest: false,
+            isRequest: true,
             message: 'Swap request accepted'
         };
 
@@ -140,19 +140,35 @@ module.exports.accept = function(params) {
             recipient = result.recipient;
             dates = result.dates;
             nights = result.nights;
+            newMessage.message =  `${recipient.firstName} accepted to swap for ${nights} ${(nights > 1 ? ' Nights' : ' Night')}<br>` +
+                `Check in: ${dates[0]} <br>` +
+                `Check out: ${dates[1]} <br>`;
 
             return MessageService.saveMessage(recipient._id, sender._id, recipient._id, newMessage, false);
         })
         .then(function () {
-            if(params.message){
-                newMessage.message =  `${recipient.firstName} accepted to swap for ${nights} ${(nights > 1 ? ' Nights' : ' Night')}<br>` +
-                    `Check in: ${dates[0]} <br>` +
-                    `Check out: ${dates[1]} <br> ${params.message}`;
-            }
             return MessageService.saveMessage(sender._id, recipient._id, recipient._id, newMessage, true);
         })
         .then(function () {
-            dfr.resolve();
+            if(params.message){
+                newMessage = {
+                    id: recipient._id,
+                    date: now,
+                    isRequest: false,
+                    message: params.message
+                };
+                MessageService.saveMessage(recipient._id, sender._id, recipient._id, newMessage, false)
+                .then(function(){
+                    return MessageService.saveMessage(sender._id, recipient._id, recipient._id, newMessage, true);
+                }).then(function(){
+                    dfr.resolve();
+                },function(){
+                    dfr.resolve();
+                });
+            }
+            else{
+                dfr.resolve();
+            }
         }, function (err) {
             dfr.reject(err);
         });
@@ -330,8 +346,8 @@ function acceptRequest(params){
                             return Request.update({_id: request._id}, {$set: set});
                         })
                         .then(function(){
-                            email.sendMail([sender.email],'Swap Accepted', emailMessages.requestAccepted(sender, recipient, dates));
-                            email.sendMail([recipient.email],'Swap Accepted', emailMessages.requestAccepted(recipient, sender, dates));
+                            email.sendMail([sender.email],'Swap Accepted', emailMessages.requestAccepted(sender, recipient, dates, params.message));
+                            email.sendMail([recipient.email],'Swap Accepted', emailMessages.requestAcceptanceSent(recipient, sender, dates));
 
                             dfr.resolve(result);
                         }, function (err) {

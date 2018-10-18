@@ -144,7 +144,7 @@
         </div>
     </div>
     <div class="payment-area {{payment?'show-payment':''}}" ng-hide="requestComplete">
-        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="dates" message="send.message" guests="swap.guests" plan="profile.deposit" request-type="confirmation?data.requestType.confirm:data.requestType.accept" request-id="requestId"></payment>
+        <payment ng-if="payment" data="data" deposit="totalDeposit" pay="totalPayment" user-id="userId" recipient-id="recipientId" dates="dates" message="send.message" guests="swap.guests" plan="user.deposit" request-type="confirmation?data.requestType.confirm:data.requestType.accept" request-id="requestId"></payment>
         <div class="loader-wrapper" ng-if="processing">
             <div class="loader">
 
