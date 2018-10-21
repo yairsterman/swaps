@@ -352,6 +352,7 @@
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
+            this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
         }
 
         if (typeof cb === 'function') {
@@ -618,7 +619,7 @@
             this.renderCalendar('right');
 
             //highlight any predefined range matching the current start and end dates
-            this.container.find('.ranges li').removeClass('active');
+            // this.container.find('.ranges li').removeClass('active');
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
@@ -1203,22 +1204,13 @@
         clickRange: function(e) {
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
-            if (label == this.locale.customRangeLabel) {
-                this.showCalendars();
-            } else {
-                var dates = this.ranges[label];
-                this.startDate = dates[0];
-                this.endDate = dates[1];
-
-                if (!this.timePicker) {
-                    this.startDate.startOf('day');
-                    this.endDate.endOf('day');
-                }
-
-                if (!this.alwaysShowCalendars)
-                    this.hideCalendars();
-                this.clickApply();
-            }
+            this.container.find('.ranges li').removeClass('active');
+            e.target.setAttribute('class', 'active');
+            this.startDate = this.minDate;
+            this.endDate = this.minDate;
+            this.updateView();
+            this.showCalendars();
+            this.element.trigger('apply.daterangepicker', this);
         },
 
         clickPrev: function(e) {
@@ -1368,6 +1360,7 @@
         },
 
         calculateChosenLabel: function () {
+            return;
             var customRange = true;
             var i = 0;
             for (var range in this.ranges) {
