@@ -1202,12 +1202,16 @@
         },
 
         clickRange: function(e) {
+            // Updated and manipulated to suit swaps calendar with specific ranges
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             this.container.find('.ranges li').removeClass('active');
             e.target.setAttribute('class', 'active');
-            this.startDate = this.minDate;
-            this.endDate = this.minDate;
+            this.startDate = angular.copy(this.minDate);
+            this.endDate = angular.copy(this.startDate);
+            if(this.chosenLabel == 'Weekends'){
+                this.endDate.set('day', 8);
+            }
             this.updateView();
             this.showCalendars();
             this.element.trigger('apply.daterangepicker', this);

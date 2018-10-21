@@ -145,7 +145,7 @@ swapsApp.directive('datepicker', function() {
                 }
                 element.daterangepicker(options);
                 element.on('apply.daterangepicker', function(ev, picker) {
-                    if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'))){
+                    if(!checkClearInput(picker.startDate.format('MM/DD/YY'), picker.endDate.format('MM/DD/YY'), picker.chosenLabel)){
                         if(picker.startDate.format('MM/DD/YYYY') === picker.endDate.format('MM/DD/YYYY')){
                             scope.swapDates.when = undefined;
                             return;
@@ -324,7 +324,7 @@ swapsApp.directive('datepicker', function() {
                 }
             }
 
-            function checkClearInput(startDate, endDate){
+            function checkClearInput(startDate, endDate, rangeLabel){
                 // Compare the dates again.
                 var clearInput = false;
                 startDate = new Date(startDate).getTime();
@@ -345,6 +345,19 @@ swapsApp.directive('datepicker', function() {
                     if(scope.request.proposition.rangeLabel == 'Date Range'){
                         clearInput = (chosenDates.length - 1)  < scope.request.proposition.startRange
                             || (chosenDates.length - 1) > scope.request.proposition.endRange;
+                    }
+                }
+
+                // check if when choosing the weekend range, the range includes a weekend
+                if(rangeLabel && rangeLabel == 'Weekends'){
+                    if(chosenDates.length < 8){
+
+                        element.data('daterangepicker').setStartDate(new Date(startDate));
+                        element.data('daterangepicker').setEndDate(new Date(startDate + (8 * 24 * 60 * 60 * 1000)));
+
+                        // To clear input field and keep calendar opened.
+                        element.focus();
+                        return;
                     }
                 }
 

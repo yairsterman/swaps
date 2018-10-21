@@ -5,7 +5,7 @@
             <div class="filter-dates" ng-model="filter.date" id="searchDate" name="searchDate" ng-model="filter.date" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
                 <div class="icon icon-calender" ></div>
                 {{filter.when?filter.date:'Dates'}}
-                <span class="flexible-departure">{{filter.rangeLabel === 'Weekends'?'Next 4 weekends':filter.rangeLabel === 'Within Range'?'Within next 2 months':filter.rangeLabel === 'Dates' && filter.startRange != 0 ?data.flexibleDates[filter.startRange].value:''}}</span>
+                <span class="flexible-departure">{{filter.rangeLabel === 'Weekends'?'Weekends':filter.rangeLabel === 'Within Range'?'Within next 2 months':filter.rangeLabel === 'Dates' && filter.startRange != 0 ?data.flexibleDates[filter.startRange].value:''}}</span>
                 <span class="flexible-return">{{filter.rangeLabel === 'Dates' && filter.endRange != 0?data.flexibleDates[filter.endRange].value:''}}</span>
             </div>
             <div class="">

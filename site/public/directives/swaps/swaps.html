@@ -21,7 +21,7 @@
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                                    data="data" ng-disabled="saving || editingField != $index" disabled="{{saving || editingField != $index}}" ng-change="changeDates(swap)">
                             <div class="glyphicon glyphicon glyphicon-remove {{swap.rangeLabel?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="!saving && editingField == $index && swap.dates"></div>
-                            <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Next 4 weekends':swap.rangeLabel === 'Within Range'?'Within next 2 months':swap.rangeLabel === 'Dates' && swap.startRange != 0 ?data.flexibleDates[swap.startRange].value:''}}</span>
+                            <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Weekends':swap.rangeLabel === 'Within Range'?'Within next 2 months':swap.rangeLabel === 'Dates' && swap.startRange != 0 ?data.flexibleDates[swap.startRange].value:''}}</span>
                             <span class="flexible-return">{{swap.rangeLabel === 'Dates' && swap.endRange != 0?data.flexibleDates[swap.endRange].value:''}}</span>
                         </div>
                         <div class="{{swap.rangeLabel?'col-xs-5 col-sm-5':'col-xs-0'}}">
@@ -105,7 +105,7 @@
                                user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                                data="data"  ng-disabled="editing" disabled="{{editing}}" ng-change="changeDates(addSwap)">
                         <div class="glyphicon glyphicon glyphicon-remove {{addSwap.when?'':'pd-15'}}" ng-click="removeDates(addSwap)" ng-if="addSwap.dates"></div>
-                        <span class="flexible-departure">{{addSwap.rangeLabel === 'Weekends'?'Next 4 weekends':addSwap.rangeLabel === 'Within Range'?'Within next 2 months':addSwap.rangeLabel === 'Dates' && addSwap.startRange != 0 ?data.flexibleDates[addSwap.startRange].value:''}}</span>
+                        <span class="flexible-departure">{{addSwap.rangeLabel === 'Weekends'?'Weekends':addSwap.rangeLabel === 'Within Range'?'Within next 2 months':addSwap.rangeLabel === 'Dates' && addSwap.startRange != 0 ?data.flexibleDates[addSwap.startRange].value:''}}</span>
                         <span class="flexible-return">{{addSwap.rangeLabel === 'Dates' && addSwap.endRange != 0?data.flexibleDates[addSwap.endRange].value:''}}</span>
                     </div>
                     <div class="{{addSwap.when?'col-xs-5 col-sm-5':'col-xs-0'}}">

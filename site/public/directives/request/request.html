@@ -53,7 +53,7 @@
                                    user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
                                    data="data"  ng-change="changeDates(swap)">
                             <div class="glyphicon glyphicon glyphicon-remove {{swap.when?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="swap.dates"></div>
-                            <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Next 4 weekends':''}}</span>
+                            <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Weekends':''}}</span>
                         </div>
                         <div class="{{swap.when?'col-xs-5 col-sm-5':'col-xs-0'}} no-padding">
                             <div class="dropdown">

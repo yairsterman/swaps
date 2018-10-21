@@ -45,7 +45,7 @@ module.exports.getRangeText = function(range){
         return `on flexible dates, for ${range.startRange !== range.endRange?range.startRange  +' - ' + range.endRange:range.startRange} ${range.endRange > 1?' Nights':' Night'}`
     }
     if(range.rangeLabel == 'Weekends'){
-        return `on flexible dates, on a ${data.getWeekendStart()[range.startRange].displayName} to ${data.getWeekendEnd()[range.endRange].displayName} weekend within the next 4 weeks`
+        return `on flexible dates, on a ${data.getWeekendStart()[range.startRange].displayName} to ${data.getWeekendEnd()[range.endRange].displayName} weekend within the following range`
     }
     return '';
 }
