@@ -119,7 +119,7 @@ module.exports.sendRequest = function(params) {
     return dfr.promise;
 };
 
-module.exports.accept = function(params) {
+module.exports.accept = function(params, request) {
 
     let dfr = Q.defer();
     let recipient = {};
@@ -135,7 +135,7 @@ module.exports.accept = function(params) {
             message: 'Swap request accepted'
         };
 
-        acceptRequest(params).then(function (result) {
+        acceptRequest(params, request).then(function (result) {
             sender = result.sender;
             recipient = result.recipient;
             dates = result.dates;
@@ -190,8 +190,8 @@ module.exports.confirm = function(params) {
         let now = moment.utc().valueOf();
         let newMessage = {
             date: now,
-            isRequest: false,
-            message: 'Request Confirmed'
+            isConfirm: true,
+            message: 'Swap request confirmed'
         };
 
         chargeUsers(params).then(function (results) {
@@ -282,8 +282,9 @@ function saveRequest(requestDetails){
  * Accept the request and save the new data on the request model
  *
  * @param params - requestId, guests, transactionId
+ * @param request - the request object from DB
  */
-function acceptRequest(params){
+function acceptRequest(params, request){
     let guests = params.guests;
     let departure;
     let returnDate;
@@ -305,55 +306,40 @@ function acceptRequest(params){
             error.message = "No dates specified";
             return dfr.reject(error);
         }
+        checkAvailability(request.user1, request.user2, departure, returnDate)
+            .then(function () {
+                let set = {
+                    guests2: guests,
+                    verifyTransactionUser2: params.transactionId, // user2 is accepting
+                    checkin: departure,
+                    checkout : returnDate,
+                    nights : nights,
+                    status: Data.getRequestStatus().accepted
+                };
 
-        Request.findOne({_id: params.requestId})
-            // populate both users to get their information
-            .populate({
-                path: 'user1'
+                sender = request.user1;
+                recipient = request.user2;
+                result = {
+                    sender: sender,
+                    recipient: recipient,
+                    nights: nights,
+                    dates: dates,
+                };
+
+                return Request.update({_id: request._id}, {$set: set});
             })
-            .populate({
-                path: 'user2'
-            })
-            .exec(function (err, request) {
-                if (err || !request) {
-                    let msg = err;
-                    if (!request) {
-                        msg = 'No relevant request found';
-                    }
-                    dfr.reject(msg);
-                }
-                else {
-                    checkAvailability(request.user1, request.user2, departure, returnDate)
-                        .then(function () {
-                            let set = {
-                                guests2: guests,
-                                verifyTransactionUser2: params.transactionId, // user2 is accepting
-                                checkin: departure,
-                                checkout : returnDate,
-                                nights : nights,
-                                status: Data.getRequestStatus().accepted
-                            };
+            .then(function(){
 
-                            sender = request.user1;
-                            recipient = request.user2;
-                            result = {
-                                sender: sender,
-                                recipient: recipient,
-                                nights: nights,
-                                dates: dates,
-                            };
+                let messageDates = {
+                    departure: departure,
+                    returnDate: returnDate
+                };
+                email.sendMail([sender.email],'Swap Accepted', emailMessages.requestAccepted(sender, recipient, messageDates, guests, params.message));
+                email.sendMail([recipient.email],'Swap Accepted', emailMessages.requestAcceptanceSent(recipient, sender, messageDates));
 
-                            return Request.update({_id: request._id}, {$set: set});
-                        })
-                        .then(function(){
-                            email.sendMail([sender.email],'Swap Accepted', emailMessages.requestAccepted(sender, recipient, dates, params.message));
-                            email.sendMail([recipient.email],'Swap Accepted', emailMessages.requestAcceptanceSent(recipient, sender, dates));
-
-                            dfr.resolve(result);
-                        }, function (err) {
-                            dfr.reject(err);
-                        });
-                }
+                dfr.resolve(result);
+            }, function (err) {
+                dfr.reject(err);
             });
     } catch(e){
         dfr.reject(e);
@@ -484,6 +470,14 @@ module.exports.cancelRequest = function(requestId, userId, message){
     let transaction1 = {};
     let transaction2 = {};
     let declined = false;
+    let sender;
+    let recipient;
+    let now = moment.utc().valueOf();
+    let newMessage = {
+        date: now,
+        isCancel: true,
+        message: 'Swap request Canceled.'
+    };
 
     try{
         getConfirmedRequest(requestId).then(function(request){
@@ -491,7 +485,7 @@ module.exports.cancelRequest = function(requestId, userId, message){
             user2 = request.user2;
             transaction1 = request.transactionUser1;
             transaction2 = request.transactionUser1;
-            // if status s pending and the call came from user2 then send decline message
+            // if status is pending and the call came from user2 then send decline message
             declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
 
             //refund transactions
@@ -513,22 +507,41 @@ module.exports.cancelRequest = function(requestId, userId, message){
         .then(function(){
             return removeCanceledRequest(user2, requestId);
         })
+        .then(function () {
+            // send messages about the cancellation
+            if(declined){
+                newMessage.message = 'Swap request declined.';
+            }
+            if((user1._id).toString() == userId.toString()){
+                sender = user1;
+                recipient = user2;
+            }
+            else{
+                sender = user2;
+                recipient = user1;
+            }
+            return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
+        })
+        .then(function () {
+            return MessageService.saveMessage(recipient._id, sender._id, sender._id, newMessage, true);
+        })
+        .then(function () {
+            newMessage = {
+                date: now,
+                message: message
+            };
+
+            return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
+        })
+        .then(function () {
+            return MessageService.saveMessage(recipient._id, sender._id, sender._id, newMessage, true);
+        })
         .then(function(){
             defer.resolve();
             if(declined){
                 email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
             }
             else{
-                let sender;
-                let recipient;
-                if((user1._id).toString() == userId.toString()){
-                    sender = user1;
-                    recipient = user2;
-                }
-                else{
-                    sender = user2;
-                    recipient = user1;
-                }
                 email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
                 email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
             }

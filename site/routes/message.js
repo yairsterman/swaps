@@ -36,15 +36,26 @@ router.post('/sendMessage', function(req, res, next) {
         return saveMessage(recipientId, sender._id, sender._id, newMessage, true);
 	})
 	.then(function(){
-		User.findOne({_id: sender._id}, function (err, updatedUser) {
-			if (err){
-				console.log("couldn't find user but Message was sent" + err);
-				error.message = "couldn't find user but Message was sent";
-				res.json(error);
-			}
-			else{
-				res.json(updatedUser);
-			}
+		User.findOne({_id: sender._id})
+            .populate({
+                path: 'community',
+                select: 'name _id',
+            })
+            .populate({
+                path: 'requests',
+                match: {status: {$ne: Data.getRequestStatus().canceled}},
+                select: Data.getRequestData(),
+                populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: sender._id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: sender._id}} }]
+            })
+            .exec(function (err, user) {
+                if (err){
+                    console.log("couldn't find user but Message was sent" + err);
+                    error.message = "couldn't find user but Message was sent";
+                    res.json(error);
+                }
+                else{
+                    res.json(user);
+                }
 		});
 	},function(err){
 		res.json(err);
@@ -53,14 +64,24 @@ router.post('/sendMessage', function(req, res, next) {
 
 router.post('/sendRequest', function(req, res) {
 	req.body.user1 = req.user._id;
+	let id = req.user._id;
     requestsService.sendRequest(req.body).then(function(){
         User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
             .populate({
                 path: 'community',
                 select: 'name _id',
             })
+            .populate({
+                path: 'requests',
+                match: {status: {$ne: Data.getRequestStatus().canceled}},
+                select: Data.getRequestData(),
+                populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
+            })
             .exec(function (err, user) {
-                if (err) return next(err);
+                if (err){
+                    error.message = err;
+                    return res.json(error);
+                }
                 res.json(user);
             });
         },
@@ -75,11 +96,29 @@ router.post('/cancelRequest', function(req, res) {
     let message = req.body.message;
     let userId = req.user._id;
     requestsService.cancelRequest(requestId, userId, message).then(function(){
-		res.json({status: 'success', message: 'canceled'});
-	},
-	function(err){
-		res.json(err);
-	});
+        User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
+            .populate({
+                path: 'community',
+                select: 'name _id',
+            })
+            .populate({
+                path: 'requests',
+                match: {status: {$ne: Data.getRequestStatus().canceled}},
+                select: Data.getRequestData(),
+                populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: userId}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: userId}} }]
+            })
+            .exec(function (err, user) {
+                if (err){
+                    error.message = err;
+                    return res.json(error);
+                }
+                res.json(user);
+            });
+        },
+        function(err){
+            error.message = err;
+            res.json(error);
+        });
 });
 
 router.post('/readMessage', function(req, res) {
@@ -167,16 +206,6 @@ function findMessage(messages, id){
 		}
 	}
 	return -1;
-}
-
-function findRequest(requests, id, departure, returnDate){
-    for(var i = 0; i < requests.length; i++){
-        var request = requests[i];
-        if(request.userId == id.toString() && request.departure == departure && request.returnDate == returnDate){
-            return i;
-        }
-    }
-    return -1;
 }
 
 

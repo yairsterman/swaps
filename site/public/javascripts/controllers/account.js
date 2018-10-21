@@ -152,6 +152,8 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             scope:$scope
         })
         $scope.modelInstance.closed.then(function(){
+            $scope.user = $rootScope.user;
+            scrollMessagesToTop();
             updateUser();
         },function(){
             $scope.saving = false;
@@ -402,9 +404,14 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.proposeSwap = function(){
-        MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(){
+        MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(data){
+            $rootScope.user = data;
+            $scope.user = $rootScope.user;
             $scope.requestComplete = true;
             $scope.requestSent = true;
+            $scope.processing = false;
+            scrollMessagesToTop();
+            updateUser();
             $timeout(function(){
                 $scope.modelInstance.close();
             },4000);
@@ -541,6 +548,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
         $scope.modelInstance.closed.then(function(){
             $scope.user = $rootScope.user;
+            scrollMessagesToTop();
             updateUser();
         },function(){
             $scope.saving = false;
@@ -569,6 +577,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.requests = $scope.user.requests;
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){
+            $scope.currentConversation = $scope.findMessage($scope.currentConversationId);
             $scope.currentConversationRequest = $scope.getRequest($scope.currentConversationId);
             $scope.requestSentByMe = $scope.currentConversationRequest?!!$scope.currentConversationRequest.user2:false;
             $scope.currentConversationStatus = $scope.currentConversationRequest?$scope.currentConversationRequest.status:-1;

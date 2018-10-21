@@ -33,9 +33,14 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     $scope.checkSwap = function(){
+        if($scope.processing){
+           return;
+        }
         if(!validateRequest()){
             return;
         }
+        $scope.processing = true;
+
         $scope.swap.message = $scope.send.message;
         $scope.proposeSwap();
     }

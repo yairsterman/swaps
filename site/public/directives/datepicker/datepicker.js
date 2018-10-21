@@ -303,7 +303,7 @@ swapsApp.directive('datepicker', function() {
                     var time = Date.UTC(thisYear, thisMonth - 1, thisDate);
                     if(scope.request.proposition.rangeLabel == 'Weekends'){
                         var weekDay = date._d.getDay();
-                        return scope.data.weekendEnd[scope.request.proposition.startRange].calendarDay === 6?weekDay < scope.data.weekendStart[scope.request.proposition.startRange].calendarDay: scope.data.weekendEnd[scope.request.proposition.endRange].calendarDay < weekDay && weekDay < scope.data.weekendStart[scope.request.proposition.startRange].calendarDay
+                        return scope.data.weekendEnd[scope.request.proposition.endRange].calendarDay === 6?weekDay < scope.data.weekendStart[scope.request.proposition.startRange].calendarDay: scope.data.weekendEnd[scope.request.proposition.endRange].calendarDay < weekDay && weekDay < scope.data.weekendStart[scope.request.proposition.startRange].calendarDay
                             || (time < scope.request.proposition.checkin || time > scope.request.proposition.checkout)
                     }
                     else if(scope.request.proposition.rangeLabel == 'Date Range'){ // range label is 'Date Range'
@@ -343,8 +343,8 @@ swapsApp.directive('datepicker', function() {
                 // nights chosen is within the proposed number of nights
                 if(scope.request && !clearInput){
                     if(scope.request.proposition.rangeLabel == 'Date Range'){
-                        clearInput = chosenDates.length < scope.request.proposition.startRange
-                            || chosenDates.length > scope.request.proposition.endRange;
+                        clearInput = (chosenDates.length - 1)  < scope.request.proposition.startRange
+                            || (chosenDates.length - 1) > scope.request.proposition.endRange;
                     }
                 }
 

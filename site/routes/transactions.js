@@ -31,8 +31,6 @@ router.post('/notify', function(req, res, next) {
 router.post('/success', function(req, res, next) {
 
     let requestDetails = {
-        user1: req.body.user1,
-        user2: req.body.user2,
         dates: req.body.dates,
         guests: req.body.guests,
         message: req.body.message,
@@ -47,11 +45,11 @@ router.post('/success', function(req, res, next) {
         // populate both users to get their information
         .populate({
             path: 'user1',
-            select: '_id'
+            select: '_id email firstName city'
         })
         .populate({
             path: 'user2',
-            select: '_id'
+            select: '_id email firstName city'
         })
         .exec(function (err, request) {
             if (err || !request) {
@@ -70,7 +68,7 @@ router.post('/success', function(req, res, next) {
                     requestDetails.transactionId = transactionId;
                     //see whether this is a request acceptance or a confirmation
                     if(parseInt(req.body.requestType) == Data.getRequestType().accept){
-                        return requestsService.accept(requestDetails);
+                        return requestsService.accept(requestDetails, request);
                     }
                     else{
                         requestDetails.token = token;
