@@ -63,7 +63,9 @@ swapsApp.directive('datepicker', function() {
                         },
                         parentEl: '.' + scope.parentEl
                     });
-                    scope.swap.when = true; // to allow accepting a request with exact dates
+                    if(scope.swap){
+                        scope.swap.when = true; // to allow accepting a request with exact dates
+                    }
                 }
                 else{
                     //from home page

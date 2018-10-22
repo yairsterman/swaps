@@ -161,6 +161,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.isMatch = false;
     }
 
+    $scope.validateDates = function(){
+        $scope.datesError = false;
+    }
+
     function validateRequest(){
         $scope.datesError = $scope.guestsError =  $scope.messageError = false;
 

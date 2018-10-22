@@ -294,30 +294,57 @@
                                         </div>
                                         <div class="names">
                                             <div class="message row">
-                                                <div class="col-sm-3 col-xs-5 message-info">
+                                                <div class="col-sm-3 col-xs-4 message-info">
                                                     <div class="message-column">
                                                         <div class="name">
                                                             {{message.name}}
                                                         </div>
-                                                        <div class="city">
+                                                        <div class="city hidden-xs">
                                                             {{message.city}}
+                                                        </div>
+                                                        <div class="date {{message.read?'read':''}} visible-xs">
+                                                            {{message.messages[message.messages.length -1].date |
+                                                            dateFilter}}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6 col-xs-7 message-info">
+                                                <div class="col-sm-5 col-xs-8 message-info">
                                                     <div class="unread" ng-if="!message.read">
                                                         <div class="circle"></div>
                                                     </div>
                                                     <div class="message-column">
-                                                        <div class="date {{message.read?'read':''}}">
+                                                        <div class="date {{message.read?'read':''}} hidden-xs">
                                                             {{message.messages[message.messages.length -1].date |
                                                             dateFilter}}
+                                                        </div>
+                                                        <div class="request visible-xs"
+                                                             ng-if="requestStatus(message.id) != -1">
+                                                            <div class="" ng-switch="requestStatus(message.id)">
+                                                                <div ng-switch-when="0">
+                                                                    <div class="request-status {{getRequest(message.id).user1 == null?'pending':'awaiting-approval'}}">
+                                                                        {{getRequest(message.id).user1 == null?'Request pending':'Awaiting approval'}}
+                                                                    </div>
+                                                                </div>
+                                                                <div ng-switch-when="1">
+                                                                    <div class="request-status confirmation" ng-if="getRequest(message.id).user1 != null">
+                                                                        Awaiting Confirmation
+                                                                    </div>
+                                                                    <div class="btn request-status-button confirm" ng-if="getRequest(message.id).user1 == null" ng-click="confirmRequest(message.id)">
+                                                                        Confirm
+                                                                    </div>
+                                                                </div>
+                                                                <div ng-switch-when="2">
+                                                                    <div class="request-status">
+                                                                        Confirmed
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="text {{message.read?'read':''}}" ng-bind-html="trustAsHtml(message.messages[message.messages.length -1].message)">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-3 hidden-xs message-info">
+                                                <div class="col-sm-4 hidden-xs message-info">
                                                     <div class="request"
                                                          ng-if="requestStatus(message.id) != -1">
                                                         <div class="message-column" ng-switch="requestStatus(message.id)">
@@ -340,10 +367,10 @@
                                                                 </div>
                                                             </div>
                                                             <div class="request-dates" ng-if="requestStatus(message.id) == 0" uib-tooltip="{{getRequest(message.id).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(message.id).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(message.id).proposition.endRange].displayName+ ' Weekend within this range.':getRequest(message.id).proposition.rangeLabel == 'Date Range'?(getRequest(message.id).proposition.startRange != getRequest(message.id).proposition.endRange?getRequest(message.id).proposition.startRange+' - ' +getRequest(message.id).proposition.endRange:getRequest(message.id).proposition.startRange) + ' nights within this range.':'Exact dates'}}" tooltip-placement="left" tooltip>
-                                                                {{getRequest(message.id).proposition.checkin | date: 'MMM d'}} - {{getRequest(message.id).proposition.checkout | date: 'MMM d'}}
+                                                                {{getRequest(message.id).proposition.checkin | date: 'MMMM d'}} - {{getRequest(message.id).proposition.checkout | date: 'MMMM d'}}
                                                             </div>
                                                             <div class="request-dates" ng-if="requestStatus(message.id) > 0">
-                                                                {{getRequest(message.id).checkin | date: 'MMM d'}} - {{getRequest(message.id).checkout | date: 'MMM d'}}
+                                                                {{getRequest(message.id).checkin | date: 'MMMM d'}} - {{getRequest(message.id).checkout | date: 'MMMM d'}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -360,13 +387,13 @@
 
                                 </div>
                             </div>
-                            <div class="row" ng-if="!loading">
-                                <div class="col-sm-5">
+                            <div class="row mobile-messages" ng-if="!loading">
+                                <div class="col-sm-5 col-xs-12">
                                     <div class="swapper-details">
                                         <swapper-home traveler="profile"></swapper-home>
                                     </div>
                                 </div>
-                                <div class="col-sm-7">
+                                <div class="col-sm-7 col-xs-12">
                                     <div class="messages-and-status">
                                         <!--<div class="glyphicon glyphicon-menu-right top-corner" ng-click="closeMessage()"></div>-->
                                         <div class="status">
@@ -375,7 +402,7 @@
                                                     Propose Swap
                                                 </div>
                                             </div>
-                                            <div class="" ng-switch="requestStatus(currentConversationId)">
+                                            <div class="status-action" ng-switch="requestStatus(currentConversationId)">
                                                 <div ng-switch-when="0">
                                                     <div class="request-status pending" ng-if="getRequest(currentConversationId).user1 == null">
                                                         Request pending

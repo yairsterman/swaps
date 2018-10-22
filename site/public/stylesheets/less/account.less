@@ -399,8 +399,6 @@
 				z-index: 2;
 				border: 1px solid rgba(0,0,0,0.1);
 				@media @mobile {
-					width: 100%;
-					position: absolute;
 					margin:0;
 				}
 				.messages-scroll{
@@ -454,6 +452,10 @@
 							height: 50px;
 							width: 50px;
 							transition: ease 0.6s;
+							@media @mobile {
+								height: 40px;
+								width: 40px;
+							}
 							&:hover{
 								cursor: pointer;
 							}
@@ -532,7 +534,6 @@
 									display: flex;
 									flex-direction: column;
 									justify-content: space-between;
-									overflow: hidden;
 									text-overflow: ellipsis;
 								}
 							}
@@ -542,6 +543,9 @@
 							    align-items: flex-end;
 	    					}
 	    					.date{
+								@media @mobile {
+									font-size: 10px;
+								}
 	    					}
 							.text{
 								text-overflow: ellipsis;
@@ -568,6 +572,9 @@
 							}
 							.request{
 								height: 100%;
+								@media @mobile {
+									height: initial;
+								}
 								.request-status{
 									font-weight: 500;
 									&.pending{
@@ -616,6 +623,15 @@
 	    		}
 	    	}
 			.message-profile{
+				@media @mobile {
+					padding: 10px;
+				}
+				.mobile-messages{
+					@media @mobile {
+						display: flex;
+						flex-direction: column-reverse;
+					}
+				}
 				.loader-wrapper{
 					position: absolute;
 					background-color: rgba(255,255,255,.4);
@@ -627,9 +643,11 @@
 				.swapper-details{
 					padding-top: 15px;
 					padding-left: 15px;
+					@media @mobile {
+						padding: 0;
+					}
 				}
 				.message-area{
-					background-color: #ffffff;
 					transition: 0.4s ease;
 					transform: translate(0);
 					z-index: 1;
@@ -712,12 +730,16 @@
 								transition: ease 0.6s;
 								margin-left: 5px;
 								margin-top: 5px;
+								@media @mobile {
+									height: 40px;
+									width: 40px;
+								}
 							}
 							&.user-message{
 								float: right;
 								flex-direction: row-reverse;
 								.conversation{
-									background-color: #edefed;
+									background-color: #ffffff;
 								}
 								.photo{
 									margin: 5px 5px 0 0;
@@ -739,47 +761,6 @@
 							font-size: 18px;
 							width: 20%;
 						}
-						.btn-swap{
-							background-color: white;
-							color: #333;
-							transition: 0.3s ease;
-							&:hover{
-								color: white;
-								background-color: #0E5D7C;
-							}
-							&.btn-pending{
-								opacity: 0.5;
-								&:hover{
-									background-color: white;
-									color: #333;
-								}
-							}
-							&.btn-confirm{
-								background-color: white;
-								color: #333;
-								&::after{
-									content: "";
-									position: absolute;
-									top: -110%;
-									left: -210%;
-									width: 200%;
-									height: 200%;
-									opacity: 0;
-									transform: rotate(30deg);
-									&:hover{
-										opacity: 1;
-										top: -30%;
-										left: -30%;
-										transition-property: left, top, opacity;
-										transition-duration: 0.7s, 0.7s, 0.15s;
-										transition-timing-function: ease;
-									}
-								}
-							}
-							&.btn-confirmed{
-								opacity: 0.5;
-							}
-						}
 					}
 				}
 				.messages-and-status{
@@ -795,6 +776,11 @@
 								background-color: #227392;
 								border-color: #227392;
 							}
+						}
+					}
+					.status-action{
+						@media @mobile {
+							text-align: center;
 						}
 					}
 					.request-status{
@@ -828,6 +814,10 @@
 					.dates-and-cancel{
 						display: flex;
 						align-items: flex-end;
+						text-align: left;
+						@media @mobile {
+							display: block;
+						}
 					}
 					.request-status-button{
 						color: #ffffff;
