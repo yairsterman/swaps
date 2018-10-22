@@ -454,17 +454,22 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       }
     }
 
-    $scope.confirmRequest = function(requestInfo){
-        var request = requestInfo._id?requestInfo:$scope.getRequest(requestInfo.id);
+    $scope.confirmRequest = function(event ,id){
+        event.stopPropagation();
+        if($scope.saving){
+            return;
+        }
+        $scope.saving = true;
+        var request = $scope.getRequest(id);
         if(!request){
             showAlert('Could not get request', true);
             return;
         }
-        var userId = requestInfo._id?requestInfo.user1?requestInfo.user1._id:requestInfo.user2._id:requestInfo.id
         $scope.swap.from = request.checkin;
         $scope.swap.to = request.checkout;
-        UsersService.getProfile(userId).then(function(data){
-            $scope.profile = data.data;
+        UsersService.getProfile(id).then(function(data){
+            $scope.profile = data;
+            $scope.request = request;
             $scope.requestId = request._id;
             $scope.chooseDates = false;
             $scope.confirmation = true;

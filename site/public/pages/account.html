@@ -357,7 +357,7 @@
                                                                 <div class="request-status confirmation" ng-if="getRequest(message.id).user1 != null">
                                                                     Awaiting Confirmation
                                                                 </div>
-                                                                <div class="btn request-status-button confirm" ng-if="getRequest(message.id).user1 == null" ng-click="confirmRequest(message.id)">
+                                                                <div class="btn request-status-button confirm" ng-if="getRequest(message.id).user1 == null" ng-click="confirmRequest($event, message.id)">
                                                                     Confirm
                                                                 </div>
                                                             </div>
@@ -415,7 +415,7 @@
                                                     <div class="request-status confirmation" ng-if="getRequest(currentConversationId).user1 != null">
                                                         Awaiting Confirmation
                                                     </div>
-                                                    <div class="btn request-status-button confirm" ng-if="getRequest(currentConversationId).user1 == null" ng-click="confirmRequest(currentConversationId)">
+                                                    <div class="btn request-status-button confirm" ng-if="getRequest(currentConversationId).user1 == null" ng-click="confirmRequest($event, currentConversationId)">
                                                         Confirm
                                                     </div>
                                                 </div>
@@ -427,7 +427,7 @@
                                                 <div class="row dates-and-cancel" ng-if="getRequest(currentConversationId)">
                                                     <div class="col-sm-8 col-xs-12" ng-if="requestStatus(currentConversationId) == 0">
                                                         <div class="request-dates">
-                                                            {{getRequest(currentConversationId).proposition.checkin | date: 'MMMM d, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'MMMM d, yyyy'}}
+                                                            {{getRequest(currentConversationId).proposition.checkin | date: 'EEEE, MMMM d, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                         <div class="request-dates" ng-if="getRequest(currentConversationId).proposition.rangeLabel != 'Exact Dates'">
                                                             <strong>Flexible dates:</strong> {{getRequest(currentConversationId).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(currentConversationId).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(currentConversationId).proposition.endRange].displayName+ ' Weekend within this range.':(getRequest(currentConversationId).proposition.startRange != getRequest(currentConversationId).proposition.endRange?getRequest(currentConversationId).proposition.startRange+' - ' +getRequest(currentConversationId).proposition.endRange:getRequest(currentConversationId).proposition.startRange) + ' nights within this range.'}}
@@ -435,10 +435,10 @@
                                                     </div>
                                                     <div class="col-sm-8 col-xs-12" ng-if="requestStatus(currentConversationId) > 0">
                                                         <div class="request-dates">
-                                                            <strong>Check in: </strong> {{getRequest(currentConversationId).checkin | date: 'MMMM d, yyyy'}}
+                                                            <strong>Check in: </strong> {{getRequest(currentConversationId).checkin | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                         <div class="request-dates">
-                                                            <strong>Check out:</strong> {{getRequest(currentConversationId).checkout | date: 'MMMM d, yyyy'}}
+                                                            <strong>Check out:</strong> {{getRequest(currentConversationId).checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-xs-12">

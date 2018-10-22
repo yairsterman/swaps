@@ -33,12 +33,12 @@
         <div class="sub-title center" ng-if="accepting && accepting.proposition.rangeLabel != 'Exact Dates'">
             {{profile.firstName}} proposed to swap on flexible dates.<br>
             Choose {{accepting.proposition.rangeLabel == 'Weekends'?'A weekend (' +data.weekendStart[accepting.proposition.startRange].displayName + ' - ' + data.weekendEnd[accepting.proposition.endRange].displayName + ')':(accepting.proposition.startRange != accepting.proposition.endRange?accepting.proposition.startRange + ' - ' + accepting.proposition.endRange :accepting.proposition.startRange) + (accepting.proposition.startRange> 1?' nights':' nights')}}
-            within the proposed dates, from {{accepting.proposition.checkin | date: 'MMM dd'}}  to {{accepting.proposition.checkout | date: 'MMM dd'}}
+            within the proposed dates, from {{accepting.proposition.checkin | date: 'EEE, MMM dd'}}  to {{accepting.proposition.checkout | date: 'EEE, MMM dd'}}
         </div>
         <div class="sub-title center" ng-if="accepting && accepting.proposition.rangeLabel == 'Exact Dates'">
-            {{profile.firstName}} proposed to swap from {{accepting.proposition.checkin | date: 'MMM dd'}}  to {{accepting.proposition.checkout | date: 'MMM dd'}}.<br>
+            {{profile.firstName}} proposed to swap from {{accepting.proposition.checkin | date: 'EEE, MMM dd'}}  to {{accepting.proposition.checkout | date: 'EEE, MMM dd'}}.<br>
         </div>
-        <div class="single-swap add-swap">
+        <div class="single-swap add-swap" ng-if="!confirmation">
             <div class="row search-area">
                 <div class="search-field when transition-ease col-sm-9 col-xs-12">
                     <div class="{{accepting.proposition.rangeLabel == 'Exact Dates'?'accepting-dates':''}}" ng-if="accepting">
@@ -65,13 +65,13 @@
                                     <form name="rangeForm" class="range-wr" novalidate>
                                         <div ng-if="swap.rangeLabel === 'Weekends'" class="full-width">
                                             <div class="flex">
-                                                <label class="flexible-label">Departure: </label>
+                                                <label class="flexible-label">Check in: </label>
                                                 <select ng-model="swap.startRange" class="form-control">
                                                     <option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>
                                                 </select>
                                             </div>
                                             <div class="flex">
-                                                <label class="flexible-label">Return: </label>
+                                                <label class="flexible-label">Check out: </label>
                                                 <select ng-model="swap.endRange" class="form-control">
                                                     <option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>
                                                 </select>
@@ -117,13 +117,35 @@
             </div>
         </div>
 
-        <div class="sub-title send-message">
+        <div class="sub-title send-message" ng-if="!confirmation">
             <label for="about" class="small-text blue">Tell {{profile.firstName}} a little about your trip</label>
             <textarea id="about" rows="3" cols="20" class="form-control send-text {{messageError?'error':''}}" ng-model="send.message" ng-focus="messageError=false" placeholder="Hey {{profile.firstName}}! ...">
                           </textarea>
         </div>
+        <div class="confirmation" ng-if="confirmation">
+            <div class="sub-title">
+                Confirming swap with <strong>{{profile.firstName}}</strong> <br>from <strong>{{profile.city}}, {{profile.country}}</strong> <br>for<strong> {{request.nights}} {{request.nights>1?'nights':night}}</strong><br>
+
+                <div class="arrival-dates">
+                    <div class="dates">
+                        Check in: <strong> {{request.checkin | date: 'EEEE, MMMM d, yyyy'}}</strong><br>
+                        Check out: <strong> {{request.checkout | date: 'EEEE, MMMM d, yyyy'}}</strong><br>
+                    </div>
+                    <div class="accepting-dates" id="confirmDate" name="searchDate" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
+                         user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="false" set-up-swap="false" datepicker
+                         data="data" request="request" read-only-check="true" start="swap.from" end="swap.to">
+                        <div class="show-dates">
+                            Show Dates
+                        </div>
+                        <div class="icon icon-calender">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <input type="button" class="btn btn-primary btn-swap" value="Propose Swap" ng-click="checkSwap()" ng-if="!confirmation && !accepting">
-        <input type="button" class="btn btn-primary btn-swap" value="Accept Swap" ng-click="showPayment()" ng-if="confirmation || accepting">
+        <input type="button" class="btn btn-primary btn-swap" value="{{confirmation?'Confirm Swap':'Accept Swap'}}" ng-click="showPayment()" ng-if="confirmation || accepting">
     </div>
     <div class="payment-receipt {{receipt?'show-receipt':''}} {{payment?'hide-receipt':''}}" ng-hide="requestComplete">
         <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
@@ -134,7 +156,7 @@
         <div class="total">Total Payment: <strong>$0</strong></div>
         <div class="type">Deposit</div>
         <div class="amount">${{depositPlan.week}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
-        <div class="total">Total Deposit: <strong>${{totalDeposit}}</strong></div>
+        <div class="total"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i>Total Deposit: <strong>${{totalDeposit}}</strong></div>
         <div class="terms">
             By continuing to payment you agree to our <br><a class="link" href="https://swapshome.com/terms-and-conditions" target="_blank">Terms and Conditions</a>
             and <a class="link" href="https://swapshome.com/privacy-policy" target="_blank">Privacy Policy</a>

@@ -87,6 +87,24 @@
       position: relative;
     }
   }
+  .confirmation{
+    text-align: center;
+    .arrival-dates{
+      margin-top: 25px;
+      .accepting-dates{
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        .show-dates{
+          text-decoration: underline;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
   .title{
     font-weight: 300;
     color: #0E5D7C;
@@ -150,6 +168,11 @@
       padding: 10px;
       margin: 10px 10px 0 20px;
       border-top: 1px solid #bababa;
+      .fa{
+        font-size: 16px;
+        margin-right: 5px;
+        cursor: pointer;
+      }
     }
     .terms{
       text-align: center;
@@ -583,6 +606,26 @@
     }
   }
 }
+
+.tooltip{
+  font-size: 10px;
+  .tooltip-inner {
+    font-family: Lato;
+    background-color: white !important;
+    color: #ccc !important;
+  }
+  &.left{
+    .tooltip-arrow{
+      border-left-color: #0E5D7C !important;
+    }
+  }
+  &.right{
+    .tooltip-arrow{
+      border-right-color: #0E5D7C !important;
+    }
+  }
+}
+
 .daterangepicker{
   &.openscenter{
     table{
