@@ -647,15 +647,15 @@ function chargeUsers(params){
 }
 
 /**
- * Get a request that is still pending.
+ * Get a request that has been accepted.
  *
  * @param id - request ID
  */
 function getRequest(id){
     let dfr = Q.defer();
-    Request.findOne({_id: id, status: Data.getRequestStatus().pending})
+    Request.findOne({_id: id, status: Data.getRequestStatus().accepted})
         .populate({
-            path: 'verifyTransactionUser1',
+            path: 'verifyTransactionUser2',
         })
         .populate({
             path: 'user1',

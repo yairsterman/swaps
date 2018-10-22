@@ -224,7 +224,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
             })
         }
         if(event.data == 'fail'){
-            $scope.completeText = 'Sorry! the payment failed, please try again later';
+            $scope.completeText = 'Sorry! something went wrong, please try again later';
             $scope.$apply();
         }
     }

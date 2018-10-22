@@ -20,7 +20,7 @@ swapsApp.directive('payment', function() {
 });
 var payment = null;
 
-function paymentController($scope, $sce, $timeout){
+function paymentController($scope, $sce, $timeout, $http){
     payment = $scope;
     $scope.loading = true;
     // $scope.deposit =1;//TODO: Remove
@@ -28,6 +28,9 @@ function paymentController($scope, $sce, $timeout){
         $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+$scope.deposit+"&currency=2&cred_type=1&tranmode=VK&requestId="+$scope.requestId+"&dates="+$scope.dates+"&guests="+$scope.guests+"&message="+$scope.message+"&requestType="+$scope.requestType+"&plan="+$scope.plan+"&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Swap");
     }
     else if($scope.requestType == $scope.data.requestType.confirm){
+        $http.get("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+$scope.deposit+"&currency=2&cred_type=1&tranmode=VK&requestId="+$scope.requestId+"&guests="+$scope.guests+"&message="+$scope.message+"&requestType="+$scope.requestType+"&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Swap").then(function(data){
+            $scope.iframe = data;
+        })
         $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+$scope.deposit+"&currency=2&cred_type=1&tranmode=VK&requestId="+$scope.requestId+"&guests="+$scope.guests+"&message="+$scope.message+"&requestType="+$scope.requestType+"&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Swap");
     }
 

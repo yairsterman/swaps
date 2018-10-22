@@ -334,7 +334,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div ng-switch-when="2">
-                                                                    <div class="request-status">
+                                                                    <div class="request-status confirmed">
                                                                         Confirmed
                                                                     </div>
                                                                 </div>
@@ -362,8 +362,9 @@
                                                                 </div>
                                                             </div>
                                                             <div ng-switch-when="2">
-                                                                <div class="request-status">
+                                                                <div class="request-status confirmed">
                                                                     Confirmed
+                                                                    <div class="icon icon-check"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="request-dates" ng-if="requestStatus(message.id) == 0" uib-tooltip="{{getRequest(message.id).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(message.id).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(message.id).proposition.endRange].displayName+ ' Weekend within this range.':getRequest(message.id).proposition.rangeLabel == 'Date Range'?(getRequest(message.id).proposition.startRange != getRequest(message.id).proposition.endRange?getRequest(message.id).proposition.startRange+' - ' +getRequest(message.id).proposition.endRange:getRequest(message.id).proposition.startRange) + ' nights within this range.':'Exact dates'}}" tooltip-placement="left" tooltip>
@@ -420,8 +421,9 @@
                                                     </div>
                                                 </div>
                                                 <div ng-switch-when="2">
-                                                    <div class="request-status">
+                                                    <div class="request-status confirmed">
                                                         Confirmed
+                                                        <div class="icon icon-check"></div>
                                                     </div>
                                                 </div>
                                                 <div class="row dates-and-cancel" ng-if="getRequest(currentConversationId)">
