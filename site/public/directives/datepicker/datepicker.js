@@ -63,8 +63,8 @@ swapsApp.directive('datepicker', function() {
                         },
                         parentEl: '.' + scope.parentEl
                     });
-                    if(scope.swap){
-                        scope.swap.when = true; // to allow accepting a request with exact dates
+                    if(scope.swapDates){
+                        scope.swapDates.when = true; // to allow accepting a request with exact dates
                     }
                 }
                 else{
@@ -137,6 +137,10 @@ swapsApp.directive('datepicker', function() {
                     options.alwaysShowCalendars = true;
                     options.opens = 'right';
                 }
+                if(scope.request){
+                    options.startDate = new Date(scope.request.proposition.checkin);
+                    options.endDate = new Date(scope.request.proposition.checkin);
+                }
                 if(!scope.userCity || !scope.profile.travelingInformation || scope.profile.travelingInformation.length === 0){
                     scope.notSwapping = true;
                     options.maxDate = maxDate;
@@ -194,6 +198,9 @@ swapsApp.directive('datepicker', function() {
                 if(scope.user){
                     getUserConfirmedDates();
                 }
+                if(scope.profile){
+                    getProfileConfirmedDates();
+                }
                 if(scope.user){
                     scope.userCity = scope.user.city;
                 }
@@ -237,7 +244,15 @@ swapsApp.directive('datepicker', function() {
             function getUserConfirmedDates(){
                 scope.user.requests.forEach(function(request){
                     if(request.status === scope.data.requestStatus.confirmed){
-                        confirmedDates = confirmedDates.concat(getDatesBetween(request.departure, request.returnDate));
+                        confirmedDates = confirmedDates.concat(getDatesBetween(request.checkin, request.checkout));
+                    }
+                });
+            }
+
+            function getProfileConfirmedDates(){
+                scope.profile.requests.forEach(function(request){
+                    if(request.status === scope.data.requestStatus.confirmed){
+                        confirmedDates = confirmedDates.concat(getDatesBetween(request.checkin, request.checkout));
                     }
                 });
             }
@@ -327,6 +342,7 @@ swapsApp.directive('datepicker', function() {
             }
 
             function checkClearInput(startDate, endDate, rangeLabel){
+                scope.swapDates.error = false;
                 // Compare the dates again.
                 var clearInput = false;
                 startDate = new Date(startDate).getTime();
@@ -365,6 +381,7 @@ swapsApp.directive('datepicker', function() {
 
                 // If a disabled date is in between the bounds, clear the range.
                 if(clearInput){
+                    scope.swapDates.error = true;
 
                     // To clear selected range (on the calendar).
                     var currentDate = new Date(startDate);

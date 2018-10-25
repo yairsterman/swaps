@@ -240,6 +240,11 @@ router.get('/get-profile', function(req, res, next) {
             path: 'reviews',
             populate: {path: 'reviewer', select: 'firstName image city country'},
         })
+        .populate({
+            path: 'requests',
+            match: {status: Data.getRequestStatus().confirmed},
+            select: 'status checkin checkout'
+        })
         .exec(function (err, user) {
             if (err) return next(err);
             console.log(user);

@@ -17,12 +17,12 @@
         <input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="showRequest()">
 
     </div>
-    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete || isMatch">
-        <div class="loader-wrapper" ng-if="processing">
-            <div class="loader">
+    <div class="loader-wrapper" ng-if="processing">
+        <div class="loader">
 
-            </div>
         </div>
+    </div>
+    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete || isMatch">
         <div class="title">
             {{confirmation?'Confirm Swap':accepting?'Accept Swap':'Propose a Swap!'}}
             <div class="underline"></div>
@@ -32,8 +32,8 @@
         </div>
         <div class="sub-title center" ng-if="accepting && accepting.proposition.rangeLabel != 'Exact Dates'">
             {{profile.firstName}} proposed to swap on flexible dates.<br>
-            Choose {{accepting.proposition.rangeLabel == 'Weekends'?'A weekend (' +data.weekendStart[accepting.proposition.startRange].displayName + ' - ' + data.weekendEnd[accepting.proposition.endRange].displayName + ')':(accepting.proposition.startRange != accepting.proposition.endRange?accepting.proposition.startRange + ' - ' + accepting.proposition.endRange :accepting.proposition.startRange) + (accepting.proposition.startRange> 1?' nights':' nights')}}
-            within the proposed dates, from {{accepting.proposition.checkin | date: 'EEE, MMM dd'}}  to {{accepting.proposition.checkout | date: 'EEE, MMM dd'}}
+            <span class="{{swap.error?'proposition-error':''}}"> Choose {{accepting.proposition.rangeLabel == 'Weekends'?'A weekend (' +data.weekendStart[accepting.proposition.startRange].displayName + ' - ' + data.weekendEnd[accepting.proposition.endRange].displayName + ')':(accepting.proposition.startRange != accepting.proposition.endRange?accepting.proposition.startRange + ' - ' + accepting.proposition.endRange :accepting.proposition.startRange) + (accepting.proposition.startRange> 1?' nights':' nights')}}
+            within the proposed dates</span>, from {{accepting.proposition.checkin | date: 'EEE, MMM dd'}}  to {{accepting.proposition.checkout | date: 'EEE, MMM dd'}}
         </div>
         <div class="sub-title center" ng-if="accepting && accepting.proposition.rangeLabel == 'Exact Dates'">
             {{profile.firstName}} proposed to swap from {{accepting.proposition.checkin | date: 'EEE, MMM dd'}}  to {{accepting.proposition.checkout | date: 'EEE, MMM dd'}}.<br>

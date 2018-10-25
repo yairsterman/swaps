@@ -297,10 +297,18 @@ function acceptRequest(params, request){
     let dfr = Q.defer();
     try {
         if (params.dates) {
-            dates = params.dates.split('-'); // dates are in format 'MM/DD/YYYY-MM/DD/YYYY'
-            departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
-            returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
-            nights = util.calculateNightsBetween(departure, returnDate);
+            if(request.proposition.rangeLabel == 'Exact Dates'){
+                departure = request.proposition.checkin;
+                returnDate = request.proposition.checkout;
+                dates = [moment(request.proposition.checkin).utc().format("MM/DD/YYYY"), moment(request.proposition.checkout).utc().format("MM/DD/YYYY")];
+                nights = util.calculateNightsBetween(departure, returnDate);
+            }
+            else{
+                dates = params.dates.split('-'); // dates are in format 'MM/DD/YYYY-MM/DD/YYYY'
+                departure = moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf();
+                returnDate = moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf();
+                nights = util.calculateNightsBetween(departure, returnDate);
+            }
         }
         else {
             error.message = "No dates specified";

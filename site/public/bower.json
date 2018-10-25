@@ -44,5 +44,8 @@
         "jquery-ui": "*"
       }
     }
+  },
+  "resolutions": {
+    "moment": "~2.10.3"
   }
 }

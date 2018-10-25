@@ -23,6 +23,7 @@ const visibleUserData = {
         allowViewHome:true,
         deposit:true,
         community:true,
+        requests: true,
         rating:true
     },
     member: {
@@ -47,6 +48,7 @@ const visibleUserData = {
         allowViewHome:true,
         deposit:true,
         community:true,
+        requests: true,
         verifications: true,
         rating:true
     },

@@ -217,6 +217,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
                 $scope.completeText = 'Swap proposal accepted.';
             }
             $scope.$parent.requestSent = true;
+            $scope.processing = false;
             //get updated user
             UsersService.getUser($scope.user._id).then(function(data){
                 $rootScope.user = data.data;
