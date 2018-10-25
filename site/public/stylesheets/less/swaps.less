@@ -208,26 +208,22 @@
           }
         }
       }
-      .dropdown{
-        &.open{
-          .glyphicon{
-            transform: rotate(180deg);
-          }
-        }
+      .flex-column{
+        flex-direction: column;
       }
       .dropdown-menu{
         left:initial;
-        right: -5px;
+        right: 15px;
         margin-top: 0;
       }
       .range-wr {
-        min-width: 296px;
+        min-width: 260px;
         display: flex;
         align-items: center;
         padding: 0 10px;
         font-size: 16px;
         @media @mobile {
-          min-width: 280px;
+          min-width: 260px;
         }
         .flexible-label{
           display: inline;
@@ -256,20 +252,20 @@
           box-sizing: border-box;
           display: inline-block;
           border: 1px solid #ccc;
-          height: 24px;
+          height: 26px;
           min-width: 75px;
-          font-size: 12px;
+          font-size: 14px;
         }
         .duration-wr {
           input {
-            max-width: 100px;
+            max-width: 70px;
             margin: 0 10px;
             padding: 0 7px;
             box-sizing: border-box;
             display: inline-block;
             border: 1px solid #ccc;
-            height: 24px;
-            font-size: 12px;
+            height: 26px;
+            font-size: 14px;
           }
           .nights{
             font-weight: 300;
@@ -278,52 +274,57 @@
       }
     }
   }
+  .icon{
+    margin-right: 10px;
+  }
+  .no-padding{
+    padding: 0;
+  }
   .checkbox-wrapper{
+    padding: 5px 0;
     display: flex;
     flex-wrap: wrap;
   }
-  .single-checkbox{
+  .single-checkbox {
     display: flex;
     align-items: center;
     color: #0E5D7C;
     padding: 4px 0;
-    width: 50%;
-    &.not-included{
+    &.not-included {
       opacity: 0.4;
     }
-    .text{
+    .text {
       font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: baseline;
     }
-    .things-checkbox{
+    .things-checkbox {
       position: relative;
-      border: 1px solid rgba(14,93,124,0.4);
+      border: 1px solid rgba(14, 93, 124, 0.4);
       margin-right: 8px;
-      margin-top: 2px;
       width: 15px;
       height: 15px;
-      &:focus{
+      &:focus {
         outline: none;
       }
-      &.no-border{
+      &.no-border {
         border: none;
         cursor: auto;
       }
     }
-    .check{
+    .check {
       position: absolute;
       top: -8px;
       transform: scale(0);
       transition: 0.3s ease;
-      &:focus{
+      &:focus {
         outline: none;
       }
-      &.checked{
+      &.checked {
         transform: scale(1);
       }
     }
-  }
-  .icon{
-    margin-right: 10px;
   }
 }
 .action{

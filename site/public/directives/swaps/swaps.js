@@ -9,7 +9,9 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
 
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
-    $scope.rangeLabel = 'Dates';
+    $scope.rangeLabel = 'Date Range';
+
+    $scope.exactDates = true;
 
     $scope.popup?$scope.limit = 4:$scope.limit = $scope.swaps.length;
 
@@ -94,9 +96,11 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
     $scope.removeDates = function(swap){
         swap.dates = undefined;
         swap.when = undefined;
+        swap.from = undefined;
+        swap.to = undefined;
         swap.rangeLabel = undefined;
         swap.removeDates = true;
-    };
+    }
 
     $scope.close = function(){
         if($scope.closeModel){
@@ -131,12 +135,13 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
 
     $scope.changeRange = function (swap) {
         if(swap.duration) {
+            $scope.exactDates = false;
             var arr =  swap.duration.split('-');
             var min = Number(arr[0]);
             var max = Number(arr[1]);
             if(isNaN(min)){
-                swap.startRange = 6;
-                swap.endRange = 8;
+                swap.startRange = $scope.minNightsRange;
+                swap.endRange = $scope.maxNightsRange;
                 return;
             }
             if(min === max || isNaN(max)) {
@@ -146,11 +151,14 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
             if(min < 1){
                 min = 1;
             }
-            if(min > 58){
-                min = 58;
+            if(max < 1){
+                max = 1;
             }
-            if(max > 58){
-                max = 58;
+            if(min > $scope.maxNights){
+                min = $scope.maxNights;
+            }
+            if(max > $scope.maxNights){
+                max = $scope.maxNights;
             }
             if(min > max){
                 swap.startRange = max;
@@ -162,8 +170,8 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
         }
         else {
             // $scope.duration = '6-8';
-            swap.startRange = 6;
-            swap.endRange = 8;
+            swap.startRange = $scope.minNightsRange;
+            swap.endRange = $scope.maxNightsRange;
         }
 
     };
@@ -175,18 +183,39 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
                     swap.startRange = swap.startRange?swap.startRange.toString():$scope.data.weekendStart[0].id.toString();
                     swap.endRange = swap.endRange?swap.endRange.toString():$scope.data.weekendEnd[1].id.toString();
                 }
-                else if(swap.rangeLabel === 'Dates') {
-                    swap.startRange = swap.startRange?swap.startRange.toString():$scope.data.flexibleDates[0].id.toString();
-                    swap.endRange = swap.endRange?swap.endRange.toString():$scope.data.flexibleDates[0].id.toString();
-                }
-                else if(swap.rangeLabel === 'Within Range'){
-                    swap.startRange = swap.startRange?swap.startRange:6;
-                    swap.endRange = swap.endRange?swap.endRange:8;
-                    swap.duration = swap.startRange?swap.startRange+'-'+swap.endRange:'6-8';
+                else if(swap.rangeLabel === 'Date Range'){
+                    var start = new Date(swap.from);
+                    var end = new Date(swap.to);
+                    $scope.maxNights = calculateNightsBetween(start, end);
+                    $scope.maxNightsRange = $scope.maxNights > 8?8:$scope.maxNights;
+                    $scope.minNightsRange = $scope.maxNights === 1?1:$scope.maxNights === 2?2:$scope.maxNightsRange - 2;
+
+                    if($scope.exactDates){
+                        swap.startRange = $scope.maxNights;
+                        swap.endRange = $scope.maxNights;
+                    }
+                    else{
+                        swap.startRange = swap.startRange?swap.startRange:$scope.minNightsRange;
+                        swap.endRange = swap.endRange?swap.endRange:$scope.maxNightsRange;
+                    }
+                    swap.duration = $scope.minNightsRange+'-'+$scope.maxNightsRange;
                 }
             },300);
         }
     };
+
+    $scope.setExactDates = function(swap){
+        if($scope.exactDates){
+            swap.startRange = $scope.minNightsRange;
+            swap.endRange = $scope.maxNightsRange;
+            swap.duration = $scope.minNightsRange+'-'+$scope.maxNightsRange;
+            $scope.exactDates = false;
+            return;
+        }
+        swap.startRange = $scope.maxNights;
+        swap.endRange = $scope.maxNights;
+        $scope.exactDates = true;
+    }
 
     function showAlert(msg, error){
         if(!error){
@@ -195,6 +224,14 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
         else{
             alertify.error(msg);
         }
+    }
+
+    function calculateNightsBetween(date1, date2) {
+        var DAYS = 1000 * 60 * 60 * 24;
+        var date1_ms = date1.getTime();
+        var date2_ms = date2.getTime();
+        var difference_ms = Math.abs(date1_ms - date2_ms);
+        return Math.ceil(difference_ms / DAYS);
     }
 
 });
