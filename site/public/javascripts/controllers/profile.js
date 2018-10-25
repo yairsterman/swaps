@@ -45,6 +45,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(){
                 $scope.requestComplete = true;
                 $scope.requestSent = true;
+                $scope.processing = false;
                 $timeout(function(){
                     $scope.modelInstance.close();
                 },4000);
