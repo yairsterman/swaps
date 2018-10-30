@@ -5,7 +5,7 @@ const ACCOUNT = config.baseUrl + '/account/edit';
 const MY_SWAPS = config.baseUrl + '/account/upcoming-swaps';
 const SET_SWAPS = config.baseUrl + '/account/set-swap-dates';
 const SEARCH = config.baseUrl + '/travelers/Anywhere';
-const MESSAGES = config.baseUrl + '/account/messages';
+const MESSAGES = config.baseUrl + '/account/messages/';
 const LOGO = 'http://res.cloudinary.com/swaps/image/upload/v1529335715/logo/logo500.png';
 const REVIEW = config.baseUrl + '/review/';
 const VERIFY_EMAIL = config.baseUrl + '/verify-email/';
@@ -81,7 +81,7 @@ var messages = {
             (message?'<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;"><br><div class="message" style="font-size: 18px; color:black;">"' + message +'"</div><br></div>':'') +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You must confirm the swap in order to complete the process, then you can start getting ready for your trip</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES +  '/' + swapper._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Confirm Swap</div></a>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES  + swapper._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Confirm Swap</div></a>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
@@ -92,7 +92,7 @@ var messages = {
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Check out: <strong>' + new Date(dates.returnDate).toLocaleDateString("en-US",options) + '</strong></div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">We are now waiting for ' + swapper.firstName + ' to confirm the swap and then you\'ll be on your way.</div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;"></div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES + '/' + swapper._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Request status</div></a>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES  + swapper._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Request status</div></a>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
