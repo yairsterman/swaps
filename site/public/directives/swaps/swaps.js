@@ -184,6 +184,10 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
                     swap.endRange = swap.endRange?swap.endRange.toString():$scope.data.weekendEnd[1].id.toString();
                 }
                 else if(swap.rangeLabel === 'Date Range'){
+                    if(swap.departure){ // dates and ranges already set
+                        swap.duration = swap.startRange+'-'+swap.endRange;
+                        return;
+                    }
                     var start = new Date(swap.from);
                     var end = new Date(swap.to);
                     $scope.maxNights = calculateNightsBetween(start, end);

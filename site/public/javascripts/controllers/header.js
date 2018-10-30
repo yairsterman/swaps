@@ -64,7 +64,7 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 
     $scope.openSwapDates = function (){
         $scope.popup = true;
-        $scope.swaps = $scope.user.travelingInfo;
+        $scope.swaps = $scope.user.travelingInformation;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/swaps/swaps.html',
