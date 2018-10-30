@@ -47,16 +47,57 @@
 
                     <!--<div class="deposit">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}-->
                     <!--</div>-->
-                    <hr>
-                    <div class="not-charged">
-                        Send {{profile.firstName}} a swap proposition with the dates you would like to swap and the number of travelers.
-                    </div>
-                    <hr>
-                    <div class="req-swap" ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
+                    <div class="req-swap" ng-if="ready && (profile.allowViewHome || profile.travelingInformation.length > 0)">
+                        <hr>
+                        <div class="not-charged" ng-hide="requestSent">
+                            Send {{profile.firstName}} a swap proposition with the dates you would like to swap and the number of travelers.
+                        </div>
+                        <hr ng-hide="requestSent">
                         <input type="button" class="btn btn-primary btn-swap" value="Propose Swap"
                                ng-click="openRequest()" ng-hide="requestSent">
                         <div class="req-sent" ng-show="requestSent">
-                            Request Sent
+                            <div class="status-action" ng-switch="requestSent.status">
+                                <div ng-switch-when="0">
+                                    <div class="not-charged" ng-if="requestSent.user1 == null">
+                                        You have sent a swap proposition and now we are waiting for {{profile.firstName}} to respond.
+                                    </div>
+                                    <div class="not-charged" ng-if="requestSent.user1 != null">
+                                        {{profile.firstName}} has sent a swap proposition, approve the proposition and finalize the dates.
+                                    </div>
+                                    <hr>
+                                    <div class="request-status pending" ng-if="requestSent.user1 == null">
+                                        Request pending
+                                    </div>
+                                    <div class="btn request-status-button approve" ng-if="requestSent.user1 != null" ng-click="approveRequest($event)">
+                                        Approve
+                                    </div>
+                                </div>
+                                <div ng-switch-when="1">
+                                    <div class="not-charged" ng-if="requestSent.user1 == null">
+                                        {{profile.firstName}} has approved your swap proposition, confirm the swap in order to complete the process.
+                                    </div>
+                                    <div class="not-charged" ng-if="requestSent.user1 != null">
+                                        You have approved the swap proposition, we are now waiting for {{profile.firstName}} to confirm.
+                                    </div>
+                                    <hr>
+                                    <div class="request-status confirmation" ng-if="requestSent.user1 != null">
+                                        Awaiting Confirmation
+                                    </div>
+                                    <div class="btn request-status-button confirm" ng-if="requestSent.user1 == null" ng-click="confirmRequest($event)">
+                                        Confirm
+                                    </div>
+                                </div>
+                                <div ng-switch-when="2">
+                                    <div class="not-charged">
+                                        Swap confirmed, see your messages with {{profile.firstName}} for details.
+                                    </div>
+                                    <hr>
+                                    <div class="request-status confirmed">
+                                        Confirmed
+                                        <div class="icon icon-check"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="empty-space">
                         </div>

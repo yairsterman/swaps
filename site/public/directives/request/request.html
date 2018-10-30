@@ -17,12 +17,12 @@
         <input type="button" class="btn btn-primary btn-swap" value="Request Swap" ng-click="showRequest()">
 
     </div>
-    <div class="loader-wrapper" ng-if="processing">
+    <div class="loader-wrapper" ng-if="processing && !requestPending">
         <div class="loader">
 
         </div>
     </div>
-    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="requestComplete || isMatch">
+    <div class="request-swap {{receipt?'hide-request':''}}" ng-hide="processing || requestComplete || isMatch || requestPending">
         <div class="title">
             {{confirmation?'Confirm Swap':accepting?'Accept Swap':'Propose a Swap!'}}
             <div class="underline"></div>
@@ -179,7 +179,13 @@
         </div>
     </div>
     <div class="request-complete" ng-if="requestComplete">
-        <div class="title"> {{completeText}}</div>
+        <div class="complete-title"> {{completeText}}</div>
         <div class="btn-primary ok-btn" ng-click="close()">OK</div>
+    </div>
+    <div class="request-complete" ng-if="requestPending">
+        <div class="title"> You must log in in order to see if {{profile.firstName}} has responded</div>
+        <div class="btn-primary ok-btn login-btn" ng-click="close();openLogin()">Log in</div>
+        <div class="sub-title center">Don't have an account?</div>
+        <div class="btn-primary invert-btn ok-btn login-btn" ng-click="close();openLogin('Join Swaps',true )">Join</div>
     </div>
 </div>

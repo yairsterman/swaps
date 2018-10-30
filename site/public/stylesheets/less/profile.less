@@ -103,6 +103,9 @@
 				}
 				hr{
 					margin-top: 10px;
+					@media @mobile {
+						display: none;
+					}
 				}
 				.favorite{
 					display: flex;
@@ -198,6 +201,65 @@
 						text-align: center;
 						font-size: 18px;
 						font-weight: 300;
+						@media @mobile {
+							width: 100%;
+						}
+						.status-action{
+							@media @mobile {
+								text-align: center;
+							}
+						}
+						.request-status{
+							font-size: 18px;
+							font-weight: 500;
+							margin-bottom: 10px;
+							&.pending{
+								color: #E8B32F;
+							}
+							&.awaiting-approval{
+								color: #4D5CAB;
+							}
+							&.confirmation{
+								color: #22A854;
+							}
+							&.confirmed{
+								display: flex;
+								align-items: baseline;
+								justify-content: center;
+								color: #0E5D7C;
+								&.icon{
+									margin-top: -5px;
+									margin-left: 3px;
+								}
+							}
+						}
+						.request-status-button{
+							color: #ffffff;
+							font-size: 18px;
+							font-weight: 500;
+							margin-bottom: 10px;
+							width: 120px;
+							border: none;
+							transition: 0.3s ease;
+							@media @mobile {
+								margin: auto;
+							}
+							&:focus{
+								outline: none;
+							}
+							&.approve{
+								background-color: #4D5CAB;
+								&:hover{
+									background-color: #30429F;
+								}
+							}
+							&.confirm{
+								background-color: #22A854;
+								&:hover{
+									background-color: #00762C;
+								}
+							}
+						}
 					}
 				}
 				.not-charged{
@@ -205,6 +267,9 @@
 					text-align: center;
 					padding-top: 10px;
 					opacity: 0.8;
+					@media @mobile {
+						display: none;
+					}
 				}
 			}
 			.mutual-friends {

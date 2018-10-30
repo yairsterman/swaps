@@ -45,6 +45,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(){
                 $scope.requestComplete = true;
                 $scope.requestSent = true;
+                checkRequestSent();
                 $scope.processing = false;
                 $timeout(function(){
                     $scope.modelInstance.close();
@@ -52,15 +53,16 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             })
         }
         else{
-            $scope.modelInstance.close();
-            $scope.requestPending = true;
-            var title = 'Log in so ' + $scope.profile.firstName + ' can see your proposal';
-            $scope.openLogin(title);
+            $timeout(function(){
+                $scope.processing = false;
+                $scope.requestPending = true;
+            },1000);
         }
     }
 
-    $scope.openLogin = function(title){
+    $scope.openLogin = function(title, signin){
         $scope.title = title;
+        $scope.signin = signin;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/login/login.html',
@@ -246,20 +248,69 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
         return isTraveling;
     }
+
+    $scope.approveRequest = function(event){
+        event.stopPropagation();
+        if($scope.saving){
+            return;
+        }
+        $scope.saving = true;
+        var request = $scope.requestSent;
+        $scope.swap.from = request.proposition.checkin;
+        $scope.swap.to = request.proposition.checkout;
+        $scope.saving = false;
+        $scope.requestId = request._id;
+        $scope.chooseDates = true;
+        $scope.accepting = request;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+        $scope.modelInstance.closed.then(function(){
+            $scope.user = $rootScope.user;
+            setUserData();
+        },function(){
+            $scope.saving = false;
+        });
+    };
+
+    $scope.confirmRequest = function(event){
+        event.stopPropagation();
+        if($scope.saving){
+            return;
+        }
+        $scope.saving = true;
+        var request = $scope.requestSent;
+        $scope.swap.from = request.checkin;
+        $scope.swap.to = request.checkout;
+        $scope.request = request;
+        $scope.requestId = request._id;
+        $scope.chooseDates = false;
+        $scope.confirmation = true;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+        $scope.modelInstance.closed.then(function(){
+            $scope.user = $rootScope.user;
+            setUserData();
+        },function(){
+            $scope.saving = false;
+        });
+    };
     
     function checkRequestSent(){
-        AccountService.getRequests().then(function(requests){
-            $scope.user.requests = requests;
-            var requests = $scope.user.requests.filter(function (request) {
-                return request.status != $scope.data.requestStatus.canceled;
-            });
-            requests = requests.map(function(request){
-                return request.user1?request.user1._id:request.user2._id;
-            });
-            $scope.requestSent = requests.includes($scope.profile._id);
-        },function(err){
-            $scope.requestSent = false;
-        });
+        $scope.requestSent = $scope.user.requests.filter(function(request){
+            return request.user2?request.user2._id == $scope.profile._id:request.user1._id == $scope.profile._id;
+        })[0];
     }
 
     function setMapRadius(){

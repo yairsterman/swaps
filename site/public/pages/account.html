@@ -288,9 +288,11 @@
                                      ng-repeat="message in user.messages | orderBy: orderByDate | limitTo: 8 ">
                                     <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="openConversation(message)">
                                         <div class="">
-                                            <div class="photo" style="background-image:url('{{message.image}}')"
-                                                 ng-click="go('profile/'+message.id )">
-                                            </div>
+                                            <a href="{{'profile/'+message.id}}" >
+                                                <div class="photo" style="background-image:url('{{message.image}}')">
+
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="names">
                                             <div class="message row">
