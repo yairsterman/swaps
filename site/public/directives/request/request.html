@@ -43,14 +43,14 @@
                 <div class="search-field when transition-ease col-sm-9 col-xs-12">
                     <div class="{{accepting.proposition.rangeLabel == 'Exact Dates'?'accepting-dates':''}}" ng-if="accepting">
                         <input type="text" class="form-control no-border {{datesError?'error':''}}" ng-focus="validateDates()" placeholder="Select Dates" id="searchDate" name="searchDate" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
-                               user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="accepting.proposition.rangeLabel != 'Exact Dates'" set-up-swap="false" datepicker
+                               user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="accepting.proposition.rangeLabel != 'Exact Dates'" set-up-swap="false" datepicker readonly
                                data="data" request="accepting" read-only-check="accepting.proposition.rangeLabel == 'Exact Dates'" start="accepting.proposition.checkin" end="accepting.proposition.checkout" parent-el="'accepting-dates'">
                         <div class="glyphicon glyphicon glyphicon-remove {{swap.when?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="swap.dates && accepting.proposition.rangeLabel != 'Exact Dates'"></div>
                     </div>
                     <div class="row xs-flex" ng-if="!confirmation && !accepting">
                         <div class="{{swap.when?'col-xs-7 col-sm-7':'col-sm-12'}}">
                             <input type="text" class="form-control no-border {{datesError?'error':''}}" ng-focus="validateDates()" placeholder="Select Dates" id="searchDateAdd" name="searchDateAdd" ng-model="swap.dates" swap-dates="swap" user="user" profile="profile"
-                                   user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker
+                                   user-city="userCity" locale-format="localeFormat" model-format="modelFormat"  find-travel="true" set-up-swap="true" datepicker readonly
                                    data="data"  ng-change="changeDates(swap)">
                             <div class="glyphicon glyphicon glyphicon-remove {{swap.when?'':'pd-15'}}" ng-click="removeDates(swap)" ng-if="swap.dates"></div>
                             <span class="flexible-departure">{{swap.rangeLabel === 'Weekends'?'Weekends':''}}</span>
