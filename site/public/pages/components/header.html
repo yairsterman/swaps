@@ -57,6 +57,11 @@
 		    	Log In
                 <div class="underlined"></div>
             </div>
+            <div class="login sign-up credits" ng-if="user._id">
+                <div class="icon coins" uib-tooltip="you have {{user.credit}} travel points" tooltip-placement="bottom" tooltip>
+                    <div class="coins-amount">{{user.credit}}</div>
+                </div>
+            </div>
             <div class="login sign-up mail" ng-if="user._id" ng-click="go('account/messages')">
                 <div class="unread-messages" ng-if="unread > 0">{{unread}}</div>
                 <div class="icon icon-mail"></div>

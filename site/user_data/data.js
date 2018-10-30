@@ -84,6 +84,7 @@ const visibleUserData = {
         googleId: true,
         localId: true,
         community:true,
+        credit:true,
         verifications: true,
         facebookId: true,
         referredBy: true,
@@ -186,6 +187,8 @@ const transactionMode = {
     rejected: 3,
 };
 
+const creditPrice = 0.8;
+
 const genders =[
     {value:1, name:'Female'},
     {value:2, name:'Male'},
@@ -276,7 +279,8 @@ var dataForSite = {
     label: label,
     flexibleDates: flexibleDates,
     weekendEnd: weekendEnd,
-    weekendStart: weekendStart
+    weekendStart: weekendStart,
+    creditPrice: creditPrice,
 };
 
 data.getAmenities = function(){
@@ -358,6 +362,10 @@ data.getFlexibleDates = function(){
 
 data.getLabel = function(){
     return label;
+};
+
+data.creditPrice = function(){
+    return creditPrice;
 };
 
 

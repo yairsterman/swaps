@@ -1,0 +1,42 @@
+<div class="points-wrapper">
+    <div class="coins">
+
+    </div>
+    <div class="title">
+        You have <span class="user-credits">{{$root.user.credit}}</span> travel points
+    </div>
+    <div class="sub-title">
+        Travel points are used for closing a swap, Staying at someones home costs 5 points per night
+    </div>
+    <div class="buy-credits" ng-hide="pay">
+        <div class="title">
+            Get more points
+        </div>
+        <div class="choose-amount">
+            <div class="minus" ng-click="distractAmount()">
+                <i class="fa fa-minus"></i>
+            </div>
+            <div class="amount">
+                {{amount}}
+            </div>
+            <div class="plus" ng-click="addAmount()">
+                <i class="fa fa-plus"></i>
+            </div>
+        </div>
+        <div class="btn btn-primary btn-buy" ng-click="buyCredits()">
+            Buy
+        </div>
+    </div>
+    <div class="payment" ng-if="pay">
+        <div class="loader-wrapper" ng-if="loading">
+            <div class="loader">
+
+            </div>
+        </div>
+        <iframe ng-src="{{iframeSrc}}" ng-if="!loading" class="tranzila" id="tranzila">
+        </iframe>
+        <div class="btn btn-primary btn-buy" ng-if="pay" ng-click="back()">
+            Back
+        </div>
+    </div>
+</div>

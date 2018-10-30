@@ -15,8 +15,8 @@
                     <li class="single-link {{activeTab == 'set-swap-dates'?'active':''}}"><a href=""
                                                                                     ng-click="go('account/set-swap-dates')">Set Swap Dates</a>
                     </li>
-                    <li class="single-link {{activeTab == 'upcoming-swaps'?'active':''}}"><a href=""
-                                                                                    ng-click="go('account/upcoming-swaps')">Upcoming Swaps</a>
+                    <li class="single-link {{activeTab == 'points'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/points')">Travel Points</a>
                     </li>
                     <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
                                                                                            ng-click="go('account/homes-i-like')">Homes
@@ -484,6 +484,9 @@
                 <div class="swaps-and-requests" ng-if="activeTab == 'set-swap-dates'">
                     <div class="swap-title"></div>
                     <swaps swaps="user.travelingInformation"></swaps>
+                </div>
+                <div class="swaps-and-requests" ng-if="activeTab == 'points'">
+                    <points data="data"></points>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
                     <div class="loader" ng-if="saving"></div>

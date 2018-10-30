@@ -1,0 +1,73 @@
+@import 'media.less';
+.points-wrapper{
+  width: 500px;
+  margin: auto;
+  position: relative;
+  .title{
+    font-weight: 300;
+    color: #0e5d7c;
+    padding-top: 5px;
+    padding-bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+  }
+  .sub-title{
+    color: #616161;
+    font-size: 18px;
+    margin-bottom: 5px;
+    transition: 0.2s ease;
+    text-align: center;
+  }
+  .user-credits{
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .coins{
+    background-image: url("../../images/coins.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 80px;
+    height: 85px;
+    margin: auto;
+  }
+  .buy-credits{
+    padding-top: 15px;
+    width: 100%;
+    text-align: center;
+    .choose-amount{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .fa{
+        color: #0E5D7C;
+      }
+      .amount{
+        font-size: 26px;
+        font-weight: 600;
+        padding: 0 15px 10px 15px;
+      }
+    }
+    .btn-buy{
+      font-size: 20px;
+      font-weight: 500;
+      width: 100px;
+      margin: auto;
+    }
+  }
+  .payment{
+    position: relative;
+  }
+  .loader-wrapper{
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+    width: 100%;
+    height: 100%;
+    top: 0;
+  }
+  .tranzila{
+    border: none;
+    width: 100%;
+    height: 475px;
+  }
+}
