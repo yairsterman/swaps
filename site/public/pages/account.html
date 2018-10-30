@@ -392,13 +392,7 @@
                             </div>
                             <div class="row mobile-messages" ng-if="!loading">
                                 <div class="col-sm-5 col-xs-12">
-                                    <div class="swapper-details">
-                                        <swapper-home traveler="profile"></swapper-home>
-                                    </div>
-                                </div>
-                                <div class="col-sm-7 col-xs-12">
                                     <div class="messages-and-status">
-                                        <!--<div class="glyphicon glyphicon-menu-right top-corner" ng-click="closeMessage()"></div>-->
                                         <div class="status">
                                             <div class="set-swap" ng-if="!getRequest(currentConversationId)">
                                                 <div class="btn btn-primary btn-swap" ng-click="setSwap(currentConversationId)" ng-disabled="saving">
@@ -406,7 +400,7 @@
                                                 </div>
                                             </div>
                                             <div class="status-action" ng-switch="requestStatus(currentConversationId)">
-                                                <div ng-switch-when="0">
+                                                <div ng-switch-when="0" class="align-center">
                                                     <div class="request-status pending" ng-if="getRequest(currentConversationId).user1 == null">
                                                         Request pending
                                                     </div>
@@ -414,7 +408,7 @@
                                                         Approve
                                                     </div>
                                                 </div>
-                                                <div ng-switch-when="1">
+                                                <div ng-switch-when="1" class="align-center">
                                                     <div class="request-status confirmation" ng-if="getRequest(currentConversationId).user1 != null">
                                                         Awaiting Confirmation
                                                     </div>
@@ -422,14 +416,14 @@
                                                         Confirm
                                                     </div>
                                                 </div>
-                                                <div ng-switch-when="2">
+                                                <div ng-switch-when="2" class="align-center">
                                                     <div class="request-status confirmed">
                                                         Confirmed
                                                         <div class="icon icon-check"></div>
                                                     </div>
                                                 </div>
-                                                <div class="row dates-and-cancel" ng-if="getRequest(currentConversationId)">
-                                                    <div class="col-sm-8 col-xs-12" ng-if="requestStatus(currentConversationId) == 0">
+                                                <div class="dates-and-cancel" ng-if="getRequest(currentConversationId)">
+                                                    <div class="" ng-if="requestStatus(currentConversationId) == 0">
                                                         <div class="request-dates">
                                                             {{getRequest(currentConversationId).proposition.checkin | date: 'EEEE, MMMM d, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
@@ -437,7 +431,7 @@
                                                             <strong>Flexible dates:</strong> {{getRequest(currentConversationId).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(currentConversationId).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(currentConversationId).proposition.endRange].displayName+ ' Weekend within this range.':(getRequest(currentConversationId).proposition.startRange != getRequest(currentConversationId).proposition.endRange?getRequest(currentConversationId).proposition.startRange+' - ' +getRequest(currentConversationId).proposition.endRange:getRequest(currentConversationId).proposition.startRange) + ' nights within this range.'}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-8 col-xs-12" ng-if="requestStatus(currentConversationId) > 0">
+                                                    <div class="" ng-if="requestStatus(currentConversationId) > 0">
                                                         <div class="request-dates">
                                                             <strong>Check in: </strong> {{getRequest(currentConversationId).checkin | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
@@ -445,7 +439,7 @@
                                                             <strong>Check out:</strong> {{getRequest(currentConversationId).checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4 col-xs-12">
+                                                    <div class="">
                                                         <div class="cancel-request" ng-click="cancelRequest(getRequest(currentConversationId))">
                                                             {{requestStatus(currentConversationId) == 0 && getRequest(currentConversationId).user1 != null?'Decline request':'Cancel request'}}
                                                         </div>
@@ -453,6 +447,13 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="swapper-details">
+                                        <swapper-home traveler="profile"></swapper-home>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 col-xs-12">
+                                    <div class="messages-and-status">
                                         <div class="message-area">
                                             <div class="conversation-messages" id="{{currentConversationId}}">
                                                 <div class="conversation-message {{conversation.id == user._id && !conversation.isRequest && !conversation.isConfirm && !conversation.isCancel?'user-message':''}} {{conversation.isRequest?'request':''}} {{conversation.isConfirm?'confirm':''}} {{conversation.isCancel?'cancel':''}}"

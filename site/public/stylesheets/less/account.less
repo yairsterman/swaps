@@ -659,6 +659,7 @@
 					z-index: 1;
 					position: relative;
 					margin: 15px 0;
+					box-shadow: inset 4px 4px 12px -8px rgba(0,0,0,0.5);
 					@media @mobile {
 						width: 100%;
 						transition: 0.2s ease;
@@ -765,12 +766,15 @@
 						}
 						.btn-send{
 							font-size: 18px;
-							width: 20%;
+							widthcancel-request: 20%;
 						}
 					}
 				}
 				.messages-and-status{
 					margin-top: 15px;
+					.status{
+						padding-left: 15px;
+					}
 					.set-swap{
 						text-align: center;
 						.btn-swap{
@@ -817,15 +821,13 @@
 					}
 					.cancel-request{
 						font-size: 16px;
-						text-align: right;
 						color: #616161;
-						padding-right: 10px;
+						text-align: right;
+						padding-top: 10px;
 						opacity: 0.7;
 						text-decoration: underline;
 					}
 					.dates-and-cancel{
-						display: flex;
-						align-items: flex-end;
 						text-align: left;
 						@media @mobile {
 							display: block;
