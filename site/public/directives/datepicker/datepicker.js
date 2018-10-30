@@ -146,6 +146,9 @@ swapsApp.directive('datepicker', function() {
                     options.maxDate = maxDate;
                     // options.endDate = minDate;
                 }
+                if(scope.parentEl){
+                    options.parentEl = '.' + scope.parentEl;
+                }
                 else{
                     options.maxDate = maxDate;
                 }
