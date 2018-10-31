@@ -159,6 +159,7 @@ const requestType ={
     accept: 1,
     confirm: 2,
     cancel: 3,
+    creditPurchase: 4,
 };
 
 const visibleRequestData ={

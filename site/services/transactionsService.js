@@ -149,6 +149,7 @@ function refund(transaction, userId){
  * Create and save transaction in DB, then save transaction on user
  *
  * @param data - transaction data
+ * @param userId - the user invoking the transaction
  */
 function createAndSaveToUser (data, userId){
     let dfr = Q.defer();

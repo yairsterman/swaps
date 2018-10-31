@@ -3,17 +3,20 @@
 
     </div>
     <div class="title">
-        You have <span class="user-credits">{{$root.user.credit}}</span> travel points
+        You have <span class="user-credits">{{currentPoints.toFixed(0)}}</span> travel points
     </div>
-    <div class="sub-title">
-        Travel points are used for closing a swap, Staying at someones home costs 5 points per night
+    <div class="sub-title" ng-if="pay">
+        Get {{amount}} more Travel Points
     </div>
     <div class="buy-credits" ng-hide="pay">
+        <div class="sub-title">
+            Travel points can be traded in for nights at another Swapper's home, Staying at someones home costs 5 points per night.
+        </div>
         <div class="title">
             Get more points
         </div>
         <div class="choose-amount">
-            <div class="minus" ng-click="distractAmount()">
+            <div class="minus {{amount <= 1?'disabled':''}}" ng-click="distractAmount()">
                 <i class="fa fa-minus"></i>
             </div>
             <div class="amount">
@@ -23,8 +26,14 @@
                 <i class="fa fa-plus"></i>
             </div>
         </div>
-        <div class="btn btn-primary btn-buy" ng-click="buyCredits()">
+        <div class="coin-drop {{makeItRain?'show':''}}">
+
+        </div>
+        <div class="btn btn-primary btn-buy {{makeItRain?'glow':''}}" ng-click="buyCredits()">
             Buy
+        </div>
+        <div class="total-cost">
+            ${{(cost).toFixed(2)}}
         </div>
     </div>
     <div class="payment" ng-if="pay">

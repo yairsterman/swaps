@@ -486,7 +486,7 @@
                     <swaps swaps="user.travelingInformation"></swaps>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'points'">
-                    <points data="data"></points>
+                    <points data="data" ng-if="data && user._id"></points>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
                     <div class="loader" ng-if="saving"></div>
