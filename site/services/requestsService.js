@@ -135,6 +135,8 @@ module.exports.accept = function(params, request) {
             message: 'Swap request accepted'
         };
 
+
+
         acceptRequest(params, request).then(function (result) {
             sender = result.sender;
             recipient = result.recipient;
@@ -316,7 +318,10 @@ function acceptRequest(params, request){
         }
         else {
             error.message = "No dates specified";
-            return dfr.reject(error);
+            throw (error);
+        }
+        if(!request.oneWay && request.user2.credit < (Data.getCreditInfo().perNight * nights)){
+            throw (`You do not have enough travel points to trade in for this swap`);
         }
         checkAvailability(request.user1, request.user2, departure, returnDate)
             .then(function () {
@@ -672,15 +677,18 @@ function chargeCredits(params, request){
 
     if(request.oneWay){
         if(user1.credit < (Data.getCreditInfo().perNightOneWay * nights)){
-            return dfr.reject(`Insufficient points for ${user1.firstName}`);
+            dfr.reject(`Insufficient points for ${user1.firstName}`);
+            return dfr.promise;
         }
     }
     else{
         if(user1.credit < (Data.getCreditInfo().perNight * nights)){
-            return dfr.reject(`Insufficient points for ${user1.firstName}`);
+            dfr.reject(`Insufficient points for ${user1.firstName}`);
+            return dfr.promise;
         }
         if(user2.credit < (Data.getCreditInfo().perNight * nights)){
-            return dfr.reject(`Insufficient points for ${user2.firstName}`);
+            dfr.reject(`Insufficient points for ${user2.firstName}`);
+            return dfr.promise;
         }
     }
 

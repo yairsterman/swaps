@@ -1,22 +1,25 @@
-<div class="points-wrapper">
-    <div class="coins">
+<div class="points-wrapper {{request?'full-width':''}}">
+    <div class="coins {{request?'smaller':''}}" ng-hide="pay && request">
 
     </div>
-    <div class="title">
-        You have <span class="user-credits">{{currentPoints.toFixed(0)}}</span> travel points
+    <div class="title {{request?'smaller':''}}" ng-hide="pay && request">
+        You {{request?'only':''}} have <span class="user-credits">{{currentPoints.toFixed(0)}}</span> travel points
     </div>
-    <div class="sub-title" ng-if="pay">
+    <div class="sub-title" ng-if="pay && !request">
         Get {{amount}} more Travel Points
     </div>
     <div class="buy-credits" ng-hide="pay">
-        <div class="sub-title">
+        <div class="sub-title" ng-if="!request">
             Travel points can be traded in for nights at another Swapper's home, Staying at someones home costs 5 points per night.
+        </div>
+        <div class="sub-title" ng-if="request">
+            You must purchase at least {{missing}} more travel points in order to complete this action.
         </div>
         <div class="title">
             Get more points
         </div>
         <div class="choose-amount">
-            <div class="minus {{amount <= 1?'disabled':''}}" ng-click="subtractAmount()">
+            <div class="subtract {{missing?(amount <= missing?'disabled':''):amount <= 1?'disabled':''}}" ng-click="subtractAmount()">
                 <i class="fa fa-minus"></i>
             </div>
             <div class="amount">

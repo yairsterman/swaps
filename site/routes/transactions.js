@@ -44,7 +44,7 @@ router.post('/success', function(req, res, next) {
                 res.redirect('/success');
             },function (err){
                 console.log(err);
-                res.redirect('/fail');
+                res.redirect('/fail?'+err);
             });
     }
     else{
@@ -72,7 +72,7 @@ router.post('/success', function(req, res, next) {
             .exec(function (err, request) {
                 if (err || !request) {
                     let msg = err;
-                    return res.redirect('/fail');
+                    return res.redirect('/fail?'+err);
                 }
                 let actionUser = {};
                 if(parseInt(req.body.requestType) == Data.getRequestType().accept){
@@ -98,14 +98,14 @@ router.post('/success', function(req, res, next) {
                         res.redirect('/success');
                     },function (err){
                         console.log(err);
-                        res.redirect('/fail');
+                        res.redirect('/fail?'+err);
                     });
             });
     }
 });
 
 router.post('/fail', function(req, res, next) {
-    res.redirect('/fail?error number one');
+    res.redirect('/fail?fail');
 });
 
 

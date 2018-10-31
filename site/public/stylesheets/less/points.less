@@ -3,6 +3,9 @@
   width: 500px;
   margin: auto;
   position: relative;
+  &.full-width{
+    width: 100%;
+  }
   .title{
     font-weight: 300;
     color: #0e5d7c;
@@ -10,6 +13,9 @@
     padding-bottom: 30px;
     font-size: 24px;
     text-align: center;
+    &.smaller{
+      padding-bottom: 15px;
+    }
   }
   .sub-title{
     color: #616161;
@@ -30,6 +36,10 @@
     width: 80px;
     height: 85px;
     margin: auto;
+    &.smaller{
+      width: 60px;
+      height: 65px;
+    }
   }
   .coin-drop{
     background-image: url("../../images/coin-drop.gif");
@@ -59,14 +69,16 @@
       .amount{
         font-size: 26px;
         font-weight: 600;
-        padding: 0 15px 10px 15px;
+        padding: 0 15px 4px 15px;
+        margin: 0;
       }
     }
     .total-cost{
       font-size: 20px;
       color: #616161;
+      padding-top: 5px;
     }
-    .minus{
+    .subtract{
       &.disabled{
         opacity: 0.6;
       }

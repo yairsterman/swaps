@@ -30,6 +30,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
+        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $scope.user.credit < ($scope.data.creditInfo.perNight * $scope.numberOfNights)){
+            $scope.notEnoughCredits = true;
+            $scope.missing = ($scope.data.creditInfo.perNight * $scope.numberOfNights) - $scope.user.credit;
+        }
     }
 
     $scope.checkSwap = function(){
@@ -43,6 +47,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
 
         $scope.swap.message = $scope.send.message;
         $scope.proposeSwap();
+    }
+
+    $scope.hideBuyCredits = function(){
+        $scope.notEnoughCredits = false;
     }
 
     $scope.goToPayment = function(){
@@ -224,8 +232,12 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
                 $scope.user = $rootScope.user;
             })
         }
-        if(event.data == 'fail'){
-            $scope.completeText = 'Sorry! something went wrong, please try again later';
+        else{
+            if(event.data == 'fail'){
+                $scope.completeText = 'Sorry! something went wrong, please try again later';
+                $scope.$apply();
+            }
+            $scope.completeText = 'Sorry! This action cannot be completed: ' + decodeURI((event.data).substring(1));
             $scope.$apply();
         }
     }

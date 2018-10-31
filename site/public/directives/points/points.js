@@ -3,7 +3,11 @@ swapsApp.directive('points', function() {
         restrict: 'E',
         controller: pointsController,
         scope: {
-            data: '='
+            data: '=',
+            user: '=',
+            hideCredits: '&?',
+            request: '=?',
+            missing: '=?'
         },
         templateUrl: '../../directives/points/points.html'
     }
@@ -11,8 +15,8 @@ swapsApp.directive('points', function() {
 
 function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersService, alertify){
 
-    $scope.amount = 5;
-    $scope.cost = $scope.amount * $scope.data.creditsInfo.price;
+    $scope.amount = $scope.missing?$scope.missing:5;
+    $scope.cost = $scope.amount * $scope.data.creditInfo.price;
     $scope.currentPoints = $rootScope.user.credit;
 
     $scope.go = function(){
@@ -42,6 +46,12 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
     };
 
     $scope.subtractAmount = function(){
+        if($scope.missing){
+            if($scope.amount <= $scope.missing){
+                $scope.amount = $scope.missing;
+                return;
+            }
+        }
         if($scope.amount <= 1){
             $scope.amount = 1;
             return;
@@ -97,10 +107,16 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
                 $rootScope.user = data.data;
                 $scope.user = $rootScope.user;
                 $scope.smoothNumberTransition('currentPoints', $rootScope.user.credit, 1);
+                if($scope.missing){
+                    $scope.hideCredits();
+                }
             })
         }
         if(event.data == 'fail'){
             showAlert('Payment Failed!', true);
+            if($scope.missing){
+                $scope.hideCredits();
+            }
         }
         $scope.pay = false;
     }
