@@ -36,7 +36,7 @@ router.post('/success', function(req, res, next) {
         params.type = Data.getTransactionType().regular;
         transactionsService.createAndSaveToUser(params, req.body.user1) // save transaction in db and save id to user.transactions
             .then(function ({transactionId, token}){
-                let amount = Math.round(parseFloat(req.body.sum) / Data.creditPrice()); // get the exact amount of credits purchased
+                let amount = Math.round(parseFloat(req.body.sum) / Data.getCreditInfo().price); // get the exact amount of credits purchased
                 // let amount = 12; // TODO: for testing, REMOVE!!
                 return creditService.purchaseCredits(req.body.user1, amount);
             })
@@ -63,11 +63,11 @@ router.post('/success', function(req, res, next) {
         // populate both users to get their information
             .populate({
                 path: 'user1',
-                select: '_id email firstName city'
+                select: '_id email firstName city credit'
             })
             .populate({
                 path: 'user2',
-                select: '_id email firstName city'
+                select: '_id email firstName city credit'
             })
             .exec(function (err, request) {
                 if (err || !request) {
@@ -91,7 +91,7 @@ router.post('/success', function(req, res, next) {
                         else{
                             requestDetails.token = token;
                             requestDetails.expdate = expdate;
-                            return requestsService.confirm(requestDetails);
+                            return requestsService.confirm(requestDetails, request);
                         }
                     })
                     .then(function (){
@@ -105,7 +105,7 @@ router.post('/success', function(req, res, next) {
 });
 
 router.post('/fail', function(req, res, next) {
-    res.redirect('/fail');
+    res.redirect('/fail?error number one');
 });
 
 

@@ -179,7 +179,7 @@ module.exports.accept = function(params, request) {
     return dfr.promise;
 };
 
-module.exports.confirm = function(params) {
+module.exports.confirm = function(params, request) {
 
     let dfr = Q.defer();
     let recipient = {};
@@ -194,8 +194,12 @@ module.exports.confirm = function(params) {
             message: 'Swap request confirmed'
         };
 
-        chargeUsers(params).then(function (results) {
-            return confirmRequest(results);
+        chargeCredits(params, request).then(function () {
+            let info = {
+                requestId: request._id,
+                verifyTransactionUser1: params.transactionId
+            };
+            return confirmRequest(info);
         }).then(function (result) {
             sender = result.sender;
             recipient = result.recipient;
@@ -365,8 +369,6 @@ function confirmRequest(info){
 
     let set = {
         verifyTransactionUser1: info.verifyTransactionUser1,
-        transactionUser1: info.transactionUser1,
-        transactionUser2: info.transactionUser2,
         status: Data.getRequestStatus().confirmed
     };
 
@@ -655,6 +657,81 @@ function chargeUsers(params){
 }
 
 /**
+ * Charge the users credits and subtract the total from their current amount
+ *
+ * @param params
+ * @param request
+ */
+function chargeCredits(params, request){
+    let dfr = Q.defer();
+
+    let user1 = request.user1;
+    let user2 = request.user2;
+    let nights = request.nights;
+    let amount;
+
+    if(request.oneWay){
+        if(user1.credit < (Data.getCreditInfo().perNightOneWay * nights)){
+            return dfr.reject(`Insufficient points for ${user1.firstName}`);
+        }
+    }
+    else{
+        if(user1.credit < (Data.getCreditInfo().perNight * nights)){
+            return dfr.reject(`Insufficient points for ${user1.firstName}`);
+        }
+        if(user2.credit < (Data.getCreditInfo().perNight * nights)){
+            return dfr.reject(`Insufficient points for ${user2.firstName}`);
+        }
+    }
+
+    checkAvailability(user1._id, user2._id, request.checkin, request.checkout)
+        .then(function() {
+            if(request.oneWay){ // one way swap, only user1 is staying at user2
+                amount = -(Data.getCreditInfo().perNightOneWay * nights);
+            }
+            else{
+                amount = -(Data.getCreditInfo().perNight * nights);
+            }
+            return updateCredits(user1._id, amount);
+        })
+        .then(function(){
+            if(request.oneWay){ // user2 gets what's left from payment after the commission
+                amount = (Data.getCreditInfo().perNightOneWay - Data.getCreditInfo().oneWayCommission) * nights;
+            }
+            else{
+                amount = -(Data.getCreditInfo().perNight * nights);
+            }
+            return updateCredits(user2._id, amount);
+        })
+        .then(function(){
+            dfr.resolve();
+        },function(err){
+            dfr.reject(err);
+        });
+    return dfr.promise;
+}
+
+/**
+ * Update the user's credit balance
+ *
+ * @param id - user ID
+ * @param amount - the amount to increment the credits by (could be negative)
+ */
+function updateCredits(id, amount){
+    let dfr = Q.defer();
+    User.update({_id: id}, {$inc: {credit: amount}})
+        .then(function (updated) {
+            if (!updated.ok) {
+                dfr.reject('User not updated');
+            }
+            else {
+                dfr.resolve();
+            }
+        });
+    return dfr.promise;
+}
+
+/**
  * Get a request that has been accepted.
  *
  * @param id - request ID
@@ -668,12 +745,12 @@ function getRequest(id){
         .populate({
             path: 'user1',
             populate: {path: 'community'},
-            select: '_id community email'
+            select: '_id community email credit'
         })
         .populate({
             path: 'user2',
             populate: {path: 'community'},
-            select: '_id community email'
+            select: '_id community email credit'
         })
         .exec(function (err, request) {
             if (err || !request) {

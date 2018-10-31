@@ -188,7 +188,12 @@ const transactionMode = {
     rejected: 3,
 };
 
-const creditPrice = 0.8;
+const creditInfo = {
+    price: 0.8,
+    perNight: 5,
+    perNightOneWay: 10,
+    oneWayCommission: 5,
+};
 
 const genders =[
     {value:1, name:'Female'},
@@ -281,7 +286,7 @@ var dataForSite = {
     flexibleDates: flexibleDates,
     weekendEnd: weekendEnd,
     weekendStart: weekendStart,
-    creditPrice: creditPrice,
+    creditInfo: creditInfo,
 };
 
 data.getAmenities = function(){
@@ -365,8 +370,8 @@ data.getLabel = function(){
     return label;
 };
 
-data.creditPrice = function(){
-    return creditPrice;
+data.getCreditInfo = function(){
+    return creditInfo;
 };
 
 
