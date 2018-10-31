@@ -30,9 +30,9 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
-        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $scope.user.credit < ($scope.data.creditInfo.perNight * $scope.numberOfNights)){
+        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $rootScope.user.credit < ($scope.data.creditInfo.perNight * $scope.numberOfNights)){
             $scope.notEnoughCredits = true;
-            $scope.missing = ($scope.data.creditInfo.perNight * $scope.numberOfNights) - $scope.user.credit;
+            $scope.missing = ($scope.data.creditInfo.perNight * $scope.numberOfNights) - $rootScope.user.credit;
         }
     }
 
@@ -51,6 +51,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
 
     $scope.hideBuyCredits = function(){
         $scope.notEnoughCredits = false;
+        $scope.showPayment();
     }
 
     $scope.goToPayment = function(){
