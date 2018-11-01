@@ -483,7 +483,7 @@
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'set-swap-dates'">
                     <div class="swap-title"></div>
-                    <swaps swaps="user.travelingInformation"></swaps>
+                    <swaps swaps="user.travelingInformation" ng-if="user._id"></swaps>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'points'">
                     <points data="data" ng-if="data && user._id"></points>
@@ -654,7 +654,7 @@
                 <!--</div>-->
             </div>
         </div>
-        <div class="row display-flex" style="background-color: #ffffff">
+        <div class="row display-flex" style="background-color: #f9f6f1">
             <div class="col-sm-3 col-xs-0">
 
             </div>
