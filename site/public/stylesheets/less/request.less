@@ -142,6 +142,7 @@
     height: 100%;
     &.show-receipt{
       left:0;
+      position: relative;
     }
     &.hide-receipt{
       left: -100%;
@@ -171,35 +172,37 @@
       font-size: 16px;
       text-align: right;
       padding: 10px;
-      margin: 10px 10px 0 20px;
+      margin: 10px 10px 10px 20px;
       border-top: 1px solid #bababa;
-      .fa{
-        font-size: 16px;
-        margin-right: 5px;
-        cursor: pointer;
-      }
-      .tooltip{
-        font-size: 10px;
-        .tooltip-inner {
-          font-family: Lato;
-          background-color: #ccc !important;
-          color: #333 !important;
-        }
-        &.left{
-          .tooltip-arrow{
-            border-left-color: #ccc !important;
-          }
-        }
-        &.right{
-          .tooltip-arrow{
-            border-right-color: #ccc !important;
-          }
-        }
-      }
+    }
+    .fa{
+      font-size: 16px;
+      margin-left: 5px;
+      cursor: pointer;
     }
     .terms{
       text-align: center;
-      margin-top: 60px;
+      position: absolute;
+      width: 100%;
+      bottom: 60px;
+    }
+    .tooltip{
+      font-size: 10px;
+      .tooltip-inner {
+        font-family: Lato;
+        background-color: #ccc !important;
+        color: #333 !important;
+      }
+      &.left{
+        .tooltip-arrow{
+          border-left-color: #ccc !important;
+        }
+      }
+      &.right{
+        .tooltip-arrow{
+          border-right-color: #ccc !important;
+        }
+      }
     }
   }
   .payment-area{
@@ -590,24 +593,31 @@
     display: flex;
     flex-wrap: wrap;
   }
+  .deposit{
+    display: flex;
+    align-items: center;
+  }
   .single-checkbox{
     display: flex;
     align-items: center;
-    color: #0E5D7C;
+    color: #333333;
     padding: 4px 0;
     &.not-included{
       opacity: 0.4;
     }
     .text{
       font-size: 14px;
-      font-weight: bold;
       display: flex;
       align-items: baseline;
+    }
+    .explanation{
+      align-self: center;
+      margin-right: 10px;
     }
     .things-checkbox{
       position: relative;
       border: 1px solid rgba(14,93,124,0.4);
-      margin-right: 8px;
+      margin-right: 10px;
       width: 15px;
       height: 15px;
       &:focus{

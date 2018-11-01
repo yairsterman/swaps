@@ -26,7 +26,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.depositPlan = $scope.confirmation?$scope.data.securityDeposit[$scope.user.deposit]:$scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
         $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-        $scope.totalPayment = $scope.depositPlan.night * $scope.numberOfNights * $scope.swap.guests;
+        $scope.totalPayment = $scope.data.creditInfo.perNight * $scope.numberOfNights;
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
@@ -52,15 +52,59 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.hideBuyCredits = function(){
         $scope.notEnoughCredits = false;
         $scope.showPayment();
-    }
+    };
 
     $scope.goToPayment = function(){
-        $scope.payment = true;
-    }
+        if($scope.hasDeposit || ($scope.confirmation && $scope.request.deposit)){
+            $scope.payment = true;
+        }
+        else{
+            $scope.processing = true;
+            var action = MessageService.confirmRequest;
+            var data = {};
+
+            if($scope.accepting){
+                action = MessageService.acceptRequest;
+                data = {
+                    requestId: $scope.accepting._id,
+                    dates: $scope.dates,
+                    guests: $scope.swap.guests,
+                    message: $scope.send.message
+                }
+            }
+            else if($scope.request){
+                action = MessageService.confirmRequest;
+                data = {
+                    requestId: $scope.request._id,
+                }
+            }
+            else{
+                return;
+            }
+            action(data).then(function(res){
+                $rootScope.user = res;
+                $scope.user = $rootScope.user;
+                $scope.requestComplete = true;
+                if($scope.accepting){
+                    $scope.completeText = 'Swap proposal accepted.';
+                }
+                $scope.$parent.requestSent = true;
+                $scope.processing = false;
+            }, function(err){
+                $scope.requestComplete = true;
+                $scope.completeText = 'Sorry! This action cannot be completed: ' + err;
+
+            })
+        }
+    };
 
     $scope.close = function(){
         $scope.$dismiss();
-    }
+    };
+
+    $scope.setDeposit = function(){
+        $scope.hasDeposit = !$scope.hasDeposit;
+    };
 
     $scope.removeDates = function(swap){
         $scope.swap.dates = undefined;
@@ -222,6 +266,11 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     function receiveMessage(event) {
         $scope.requestComplete = true;
         if(event.data == 'success'){
+            if($scope.missing){ // returned from purchasing credits
+                $scope.processing = false;
+                $scope.requestComplete = false;
+                return;
+            }
             if($scope.accepting){
                 $scope.completeText = 'Swap proposal accepted.';
             }

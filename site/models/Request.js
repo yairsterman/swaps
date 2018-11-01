@@ -18,6 +18,7 @@ var schema = new Schema({
     guests1: Number,
     guests2: Number,
     oneWay: Boolean,
+    deposit: Boolean,
     verifyTransactionUser1: { type: Schema.Types.ObjectId, ref: 'Transaction' },
     verifyTransactionUser2: { type: Schema.Types.ObjectId, ref: 'Transaction' },
     transactionUser1: { type: Schema.Types.ObjectId, ref: 'Transaction' },

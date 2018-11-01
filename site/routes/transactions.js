@@ -53,6 +53,7 @@ router.post('/success', function(req, res, next) {
             guests: req.body.guests,
             message: req.body.message,
             plan: req.body.plan,
+            deposit: true,
             requestId: req.body.requestId
         };
 

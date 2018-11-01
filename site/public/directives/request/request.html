@@ -152,17 +152,33 @@
             <points data="data" user="user" request="true" missing="missing" hide-credits="hideBuyCredits()"></points>
         </div>
         <div ng-if="!notEnoughCredits">
-            <div class="deposit-plan">Security Deposit Plan - {{data.securityDeposit[profile.deposit].displayName}}</div>
+            <div class="deposit-plan">Travel Points Details</div>
             <div class="dates"></div>
-            <div class="type">Payment</div>
+            <div class="type">Travel points:</div>
             <!--<div class="amount">${{depositPlan.night}} Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>-->
-            <div class="amount">0 Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>
-            <div class="total">Total Payment: <strong>$0</strong></div>
-            <div class="type">Deposit</div>
-            <div class="amount">${{depositPlan.week}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
-            <div class="total"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i>Total Deposit: <strong>${{totalDeposit}}</strong></div>
+            <div class="amount">{{data.creditInfo.perNight}} Per Night X {{numberOfNights}} {{numberOfNights>1?'Nights':'Night'}}</div>
+            <div class="total">Total Points: <strong>{{totalPayment}}</strong></div>
+            <div class="checkbox-wrapper" ng-if="accepting">
+                <div class="single-checkbox">
+                    <div class="things-checkbox" ng-click="setDeposit()">
+                        <div class="check icon icon-check {{hasDeposit?'checked':''}}"></div>
+                    </div>
+                    <div class="text">
+                        I would like both sides to put down a weekly security deposit of ${{depositPlan.week}}
+                        <span class="explanation"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="text deposit" ng-if="confirmation && request.deposit">
+                {{profile.firstName}} has required for both of you to put down a weekly security deposit of ${{depositPlan.week}}
+                <span class="explanation"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i></span>
+            </div>
+            <div ng-if="hasDeposit || (confirmation && request.deposit)">
+                <div class="amount">${{depositPlan.week}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
+                <div class="total">Total Deposit: <strong>${{totalDeposit}}</strong></div>
+            </div>
             <div class="terms">
-                By continuing to payment you agree to our <br><a class="link" href="https://swapshome.com/terms-and-conditions" target="_blank">Terms and Conditions</a>
+                By continuing you agree to our <br><a class="link" href="https://swapshome.com/terms-and-conditions" target="_blank">Terms and Conditions</a>
                 and <a class="link" href="https://swapshome.com/privacy-policy" target="_blank">Privacy Policy</a>
             </div>
             <div class="buttons">

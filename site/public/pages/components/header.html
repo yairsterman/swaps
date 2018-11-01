@@ -58,9 +58,9 @@
                 <div class="underlined"></div>
             </div>
             <div class="login sign-up credits" ng-if="user._id" uib-tooltip="you have {{$root.user.credit}} travel points" tooltip-placement="bottom" tooltip>
-                <a href="/account/points" ng-click="go('account/points')">
-                    <div class="icon coins">
-                        <div class="coins-amount">{{$root.user.credit}}</div>
+                <a class="user-credits" href="/account/points" ng-click="go('account/points')">
+                    <div class="coins-amount">{{$root.user.credit}}</div>
+                    <div class="coins">
                     </div>
                 </a>
             </div>

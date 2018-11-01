@@ -135,8 +135,6 @@ module.exports.accept = function(params, request) {
             message: 'Swap request accepted'
         };
 
-
-
         acceptRequest(params, request).then(function (result) {
             sender = result.sender;
             recipient = result.recipient;
@@ -196,7 +194,7 @@ module.exports.confirm = function(params, request) {
             message: 'Swap request confirmed'
         };
 
-        chargeCredits(params, request).then(function () {
+        chargeCredits(request).then(function () {
             let info = {
                 requestId: request._id,
                 verifyTransactionUser1: params.transactionId
@@ -331,6 +329,7 @@ function acceptRequest(params, request){
                     checkin: departure,
                     checkout : returnDate,
                     nights : nights,
+                    deposit : params.deposit,
                     status: Data.getRequestStatus().accepted
                 };
 
@@ -664,10 +663,9 @@ function chargeUsers(params){
 /**
  * Charge the users credits and subtract the total from their current amount
  *
- * @param params
  * @param request
  */
-function chargeCredits(params, request){
+function chargeCredits(request){
     let dfr = Q.defer();
 
     let user1 = request.user1;

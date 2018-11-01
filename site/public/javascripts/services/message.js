@@ -40,14 +40,25 @@ swapsApp.service('MessageService', function($http, $q){
         return dfr.promise;
     };
 
-   this.confirmRequest = function(recipient, departure, returnDate) {
-        var data = {
-            recipientId: recipient,
-            departure: departure,
-            returnDate:returnDate
-        };
-       var dfr = $q.defer();
-       $http.post('message/confirmRequest', data).then(function(res){
+    this.acceptRequest = function(data) {
+        var dfr = $q.defer();
+        $http.post('message/acceptRequest', data).then(function(res){
+                if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
+                    dfr.reject(res.data.msg);
+                }
+                else{
+                    dfr.resolve(res.data);
+                }
+            },
+            function(err){
+                dfr.reject('Error processing request, Please try again later');
+            });
+        return dfr.promise;
+    };
+
+   this.confirmRequest = function(data) {
+        var dfr = $q.defer();
+        $http.post('message/confirmRequest', data).then(function(res){
                if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
                    dfr.reject(res.data.msg);
                }
@@ -58,7 +69,7 @@ swapsApp.service('MessageService', function($http, $q){
            function(err){
                dfr.reject('Error processing request, Please try again later');
            });
-       return dfr.promise;
+        return dfr.promise;
     };
 
     this.cancelRequest = function(requestId, message) {
