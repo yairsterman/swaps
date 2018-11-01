@@ -18,21 +18,25 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     $scope.swap.guests = 2;
     $scope.exactDates = true;
 
+    $scope.proposing = !$scope.confirmation && !$scope.accepting;
+
     $scope.showPayment = function(){
         if(!validateRequest()){
             return;
         }
+
         $scope.datesError = $scope.guestsError =  $scope.messageError = false;
         $scope.depositPlan = $scope.confirmation?$scope.data.securityDeposit[$scope.user.deposit]:$scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
         $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-        $scope.totalPayment = $scope.data.creditInfo.perNight * $scope.numberOfNights;
+        $scope.paymentPerNight = ($scope.confirmation && $scope.request.oneWay?$scope.data.creditInfo.perNightOneWay:$scope.accepting && $scope.accepting.oneWay?$scope.data.creditInfo.oneWayCommission:$scope.data.creditInfo.perNight);
+        $scope.totalPayment = $scope.paymentPerNight * $scope.numberOfNights;
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
-        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $rootScope.user.credit < ($scope.data.creditInfo.perNight * $scope.numberOfNights)){
+        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $rootScope.user.credit < ($scope.paymentPerNight * $scope.numberOfNights)){
             $scope.notEnoughCredits = true;
-            $scope.missing = ($scope.data.creditInfo.perNight * $scope.numberOfNights) - $rootScope.user.credit;
+            $scope.missing = ($scope.paymentPerNight * $scope.numberOfNights) - $rootScope.user.credit;
         }
     }
 
@@ -92,6 +96,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
                 $scope.processing = false;
             }, function(err){
                 $scope.requestComplete = true;
+                $scope.processing = false;
                 $scope.completeText = 'Sorry! This action cannot be completed: ' + err;
 
             })
@@ -104,6 +109,10 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
 
     $scope.setDeposit = function(){
         $scope.hasDeposit = !$scope.hasDeposit;
+    };
+
+    $scope.setOneWaySwap = function(){
+        $scope.swap.oneWay = !$scope.swap.oneWay;
     };
 
     $scope.removeDates = function(swap){

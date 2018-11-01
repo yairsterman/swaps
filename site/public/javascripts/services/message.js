@@ -24,15 +24,17 @@ swapsApp.service('MessageService', function($http, $q){
             rangeLabel: swap.rangeLabel,
             startRange: swap.startRange,
             endRange: swap.endRange,
+            oneWay: swap.oneWay,
         };
         var dfr = $q.defer();
         $http.post('message/sendRequest', data).then(function(res){
                 if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
-                    dfr.reject(res.data.msg);
+                    return dfr.reject(res.data.msg);
                 }
-                else{
-                    dfr.resolve(res.data);
+                if(res.data.error){
+                    return dfr.reject(res.data.message);
                 }
+                dfr.resolve(res.data);
             },
             function(err){
                dfr.reject('Error processing request, Please try again later');
@@ -44,11 +46,12 @@ swapsApp.service('MessageService', function($http, $q){
         var dfr = $q.defer();
         $http.post('message/acceptRequest', data).then(function(res){
                 if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
-                    dfr.reject(res.data.msg);
+                    return dfr.reject(res.data.msg);
                 }
-                else{
-                    dfr.resolve(res.data);
+                if(res.data.error){
+                    return dfr.reject(res.data.message);
                 }
+                dfr.resolve(res.data);
             },
             function(err){
                 dfr.reject('Error processing request, Please try again later');
@@ -59,16 +62,17 @@ swapsApp.service('MessageService', function($http, $q){
    this.confirmRequest = function(data) {
         var dfr = $q.defer();
         $http.post('message/confirmRequest', data).then(function(res){
-               if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
-                   dfr.reject(res.data.msg);
-               }
-               else{
-                   dfr.resolve(res.data);
-               }
-           },
-           function(err){
+            if(res.data.code && (res.data.code === 409 || res.data.code === 411)){
+                return dfr.reject(res.data.msg);
+            }
+            if(res.data.error){
+                return dfr.reject(res.data.message);
+            }
+            dfr.resolve(res.data);
+            },
+            function(err){
                dfr.reject('Error processing request, Please try again later');
-           });
+            });
         return dfr.promise;
     };
 

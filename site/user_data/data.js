@@ -171,7 +171,7 @@ const visibleRequestData ={
 
 const requestUserData = 'firstName image photos _id apptInfo country city reviews rating occupation';
 
-const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status';
+const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit';
 
 
 const transactionType = {
@@ -189,7 +189,7 @@ const transactionMode = {
 };
 
 const creditInfo = {
-    price: 0.8,
+    price: 0.01,
     perNight: 5,
     perNightOneWay: 10,
     oneWayCommission: 5,

@@ -59,9 +59,9 @@ var messages = {
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
-    request: function(user, swapper, dates, range, guests, message){
+    request: function(user, swapper, dates, range, guests, message, oneWay){
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">New Swap Request!</div></br>' +
-            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' from ' + swapper.city + ' has proposed to Swap with you ' + utils.getRangeText(range) + '. </div>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' from ' + swapper.city + ` has proposed ${oneWay?'a one way Swap at your home':'to Swap with you'} ` + utils.getRangeText(range) + '. </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">From: <strong>' + new Date(dates.departure).toLocaleDateString("en-US",options) + '</strong></div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">To: <strong>' + new Date(dates.returnDate).toLocaleDateString("en-US",options) + '</strong></div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' will be arriving ' + (guests > 1?' with ' + (guests - 1) + ' other ' + (guests - 1 > 1?'guests':'guest'):' alone') +':</div>' +

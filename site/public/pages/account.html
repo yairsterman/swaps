@@ -423,6 +423,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="dates-and-cancel" ng-if="getRequest(currentConversationId)">
+                                                    <div class="" ng-if="getRequest(currentConversationId).oneWay">
+                                                        <div class="request-dates">
+                                                            One way Swap by {{getRequest(currentConversationId).user1 == null?'you':getRequest(currentConversationId).user1.firstName}} at {{getRequest(currentConversationId).user1 == null?getRequest(currentConversationId).user2.firstName+"'s":'your'}} home
+                                                        </div>
+                                                    </div>
                                                     <div class="" ng-if="requestStatus(currentConversationId) == 0">
                                                         <div class="request-dates">
                                                             {{getRequest(currentConversationId).proposition.checkin | date: 'EEEE, MMMM d, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'EEEE, MMMM d, yyyy'}}

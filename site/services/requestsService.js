@@ -29,6 +29,7 @@ module.exports.sendRequest = function(params) {
     let senderId = params.user1;
     let recipientId = params.user2;
     let guests = params.guests;
+    let oneWay = params.oneWay;
     let now = Date.now();
     let departure;
     let returnDate;
@@ -67,6 +68,7 @@ module.exports.sendRequest = function(params) {
                 status: Data.getRequestStatus().pending,
                 guests: guests,
                 nights: nights,
+                oneWay: oneWay,
                 plan: params.plan
             };
             return saveRequest(requestDetails);
@@ -75,11 +77,11 @@ module.exports.sendRequest = function(params) {
             email.sendMail([recipient.email], 'New Swap Request!', emailMessages.request(recipient, sender, {
                 departure: departure,
                 returnDate: returnDate
-            }, range, guests, params.message));
+            }, range, guests, params.message, oneWay));
 
             email.sendMail([sender.email], 'Swap Request Sent', emailMessages.requestSent(sender, recipient));
 
-            message = 'SWAP REQUEST:<br>' + sender.firstName + ' proposed to swap ' + util.getRangeText(range) + '<br>' +
+            message = 'SWAP REQUEST:<br>' + sender.firstName + ` proposed ${oneWay?'a one way swap at '+recipient.firstName+'\'s home ':'to swap'} ` + util.getRangeText(range) + '<br>' +
                 'From: ' + dates[0] + '<br>' +
                 'To: ' + dates[1] + '<br>';
             newMessage = {
@@ -252,6 +254,7 @@ function saveRequest(requestDetails){
         guests1: requestDetails.guests,
         nights: requestDetails.nights,
         plan: requestDetails.plan,
+        oneWay: requestDetails.oneWay,
         status: requestDetails.status
     });
     let sender = {};
