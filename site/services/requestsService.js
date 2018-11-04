@@ -500,13 +500,16 @@ module.exports.cancelRequest = function(requestId, userId, message){
         getConfirmedRequest(requestId).then(function(request){
             user1 = request.user1;
             user2 = request.user2;
-            transaction1 = request.transactionUser1;
-            transaction2 = request.transactionUser1;
+            // transaction1 = request.transactionUser1;
+            // transaction2 = request.transactionUser1;
             // if status is pending and the call came from user2 then send decline message
             declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
 
-            //refund transactions
-            return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
+            // refund transactions
+            // return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
+
+            // refund credits
+            return refundCredits(user1, user2, request, declined);
         })
         .then(function(){
             //update request
@@ -664,6 +667,48 @@ function chargeUsers(params){
 }
 
 /**
+ * Return the credits amount to what it was before the request confirmation,
+ * meaning adding the amount of credits that was taken off if the request was
+ * a regular swap and decrease the amount for user2 if the request was a one
+ * way swap.
+ *
+ * @param user1 - first user
+ * @param user2 - second user
+ * @param request - the request
+ * @param declined - is request declined
+ */
+function refundCredits(user1, user2, request, declined){
+    let dfr = Q.defer();
+    if(declined){
+        dfr.resolve();
+        return dfr.promise;
+    }
+
+    let amountUser1;
+    let amountUser2;
+
+    if(request.oneWay){
+        amountUser1 = Data.getCreditInfo().perNightOneWay * request.nights;
+        amountUser2 = -(Data.getCreditInfo().oneWayCommission * request.nights);
+    }
+    else{
+        amountUser1 = amountUser2 = Data.getCreditInfo().perNight * request.nights;
+    }
+
+    updateCredits(user1._id, amountUser1)
+    .then(function(){
+        updateCredits(user2._id, amountUser2)
+    })
+    .then(function(){
+        dfr.resolve();
+    },function(err){
+        dfr.reject(err);
+    });
+
+    return dfr.promise;
+}
+
+/**
  * Charge the users credits and subtract the total from their current amount
  *
  * @param request
@@ -777,20 +822,20 @@ function getRequest(id){
 }
 
 /**
- * Get a request that is has been confirmed.
+ * Get a request that is confirmed.
  *
  * @param id - request ID
  */
 function getConfirmedRequest(id){
     let dfr = Q.defer();
     //populate transactions in order to cancel them
-    Request.findOne({_id: id})
-        .populate({
-            path: 'transactionUser1',
-        })
-        .populate({
-            path: 'transactionUser2',
-        })
+    Request.findOne({_id: id, status: Data.getRequestStatus().confirmed})
+        // .populate({
+        //     path: 'transactionUser1',
+        // })
+        // .populate({
+        //     path: 'transactionUser2',
+        // })
         .populate({
             path: 'user1',
         })
