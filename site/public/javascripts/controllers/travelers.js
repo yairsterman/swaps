@@ -366,7 +366,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     }
 
     function countPages(){
-        $scope.totalPages = Math.ceil($scope.totalUsers / 12);
+        $scope.totalPages = Math.ceil($scope.totalUsers / $scope.pageSize);
         $scope.pageNumbers = [];
         for (var i = 1; i <= $scope.totalPages; i++) {
             $scope.pageNumbers.push(i);
@@ -383,8 +383,10 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         UsersService.getUsers($scope.filter).then(function(data){
             $scope.currentPage = page + 1;
             var travelers = data.users;
+            $scope.exactMatchesLength = data.exactMatchesLength;
             $scope.totalUsers = data.total;
             $scope.page = parseInt(data.page);
+            $scope.exactMatchesLimit = ($scope.pageSize * ($scope.page + 1)) - $scope.exactMatchesLength <= $scope.pageSize?$scope.pageSize - (($scope.pageSize * ($scope.page + 1)) - $scope.exactMatchesLength):$scope.pageSize;
             angular.forEach(travelers, function(value, key) {
                 var location = value.location;
                 var image = value.image;

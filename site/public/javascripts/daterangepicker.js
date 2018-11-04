@@ -813,8 +813,15 @@
                         classes.push('off', 'disabled');
 
                     //don't allow selection of date if a custom function decides it's invalid
-                    if (this.isInvalidDate(calendar[row][col]))
+
+                    var isInvalid = this.isInvalidDate(calendar[row][col]);
+                    if (isInvalid){
                         classes.push('off', 'disabled');
+                    }
+
+                    if (typeof isInvalid === 'string'){
+                        classes.push(isInvalid);
+                    }
 
                     //highlight the currently selected start date
                     if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))

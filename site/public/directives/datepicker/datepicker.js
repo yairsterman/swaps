@@ -307,7 +307,10 @@ swapsApp.directive('datepicker', function() {
 
                 var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
                 // date is already confirmed in another swap
-                if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
+                if(confirmedDates.includes(thisCompare)){
+                    return 'confirmed';
+                }
+                if(new Date(thisCompare).getTime() < new Date(today).getTime()){
                     return true;
                 }
                 // not in other users' traveling dates
