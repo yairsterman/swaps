@@ -829,7 +829,7 @@ function getRequest(id){
 function getConfirmedRequest(id){
     let dfr = Q.defer();
     //populate transactions in order to cancel them
-    Request.findOne({_id: id, status: Data.getRequestStatus().confirmed})
+    Request.findOne({_id: id})
         // .populate({
         //     path: 'transactionUser1',
         // })
