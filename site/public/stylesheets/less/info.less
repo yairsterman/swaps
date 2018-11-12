@@ -48,6 +48,70 @@
   .pa-55{
     padding-top:55px;
   }
+  .our-team{
+    margin-top: 40px;
+    text-align: center;
+    background-color: #FDFCFF;
+    .all-members{
+      text-align: center;
+      display: flex;
+      margin: 20px -10%;
+      @media @mobile {
+        display: block;
+      }
+      .member{
+        padding: 15px;
+        transition: 0.5s ease;
+        transform: translateZ(0);
+        &:hover{
+          .name{
+            .underline {
+              width: 20%;
+            }
+          }
+        }
+        .name{
+          color: #0e5d7c;
+          font-size: 18px;
+          font-weight: 500;
+          margin-bottom: 10px;
+          .underline{
+            transition: 0.8s ease;
+            width: 0;
+            margin: auto;
+          }
+        }
+        .photo{
+          width: 125px;
+          height: 125px;
+          margin: auto;
+          margin-bottom: 20px;
+          border-radius: 50%;
+          border: 2px solid #848a91;
+          box-shadow: 0px 0px 7px 1px rgba(0,0,0,0.5);
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          &.adiv{
+            background-image: url("https://res.cloudinary.com/swaps/image/upload/team/adiv.jpg");
+          }
+          &.yair{
+            background-image: url("https://res.cloudinary.com/swaps/image/upload/v1542020056/team/yair.jpg");
+          }
+          &.didi{
+            background-image: url("https://res.cloudinary.com/swaps/image/upload/team/didi.jpg");
+          }
+          &.david{
+            background-image: url("https://res.cloudinary.com/swaps/image/upload/team/david.jpg");
+          }
+        }
+        .description{
+          text-align: left;
+          font-size: 16px;
+        }
+      }
+    }
+  }
 }
 .join-us-page{
   .top-corner{

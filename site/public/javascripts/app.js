@@ -32,6 +32,10 @@ $routeProvider
         templateUrl : '/pages/contact.html',
         controller  : 'mainController'
     })
+    .when('/about', {
+        templateUrl : '/pages/about.html',
+        controller  : 'mainController'
+    })
     .when('/how-it-works', {
         templateUrl : '/pages/how-it-works.html',
         controller  : 'mainController'
