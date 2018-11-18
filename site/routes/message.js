@@ -67,7 +67,7 @@ router.post('/sendRequest', function(req, res) {
 	req.body.user1 = req.user._id;
 	req.body.plan = req.user.deposit;
 	let id = req.user._id;
-    requestsService.sendRequest(req.body).then(function(){
+    requestsService.sendRequest(req.body, req.user).then(function(){
         User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
             .populate({
                 path: 'community',
@@ -99,11 +99,11 @@ router.post('/acceptRequest', function(req, res) {
         // populate both users to get their information
         .populate({
             path: 'user1',
-            select: '_id email firstName city credit'
+            select: '_id email firstName city credit apptInfo'
         })
         .populate({
             path: 'user2',
-            select: '_id email firstName city credit'
+            select: '_id email firstName city credit apptInfo'
         })
         .exec(function (err, request) {
             if (err || !request) {
@@ -144,11 +144,11 @@ router.post('/confirmRequest', function(req, res) {
     // populate both users to get their information
         .populate({
             path: 'user1',
-            select: '_id email firstName city credit'
+            select: '_id email firstName city credit apptInfo'
         })
         .populate({
             path: 'user2',
-            select: '_id email firstName city credit'
+            select: '_id email firstName city credit apptInfo'
         })
         .exec(function (err, request) {
             if (err || !request) {

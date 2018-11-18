@@ -18,6 +18,21 @@ module.exports.calculateNightsBetween = function(date1, date2) {
     return Math.ceil(difference_ms / DAYS);
 };
 
+module.exports.getTotalPaymentAmount = function(roomTypeCost, roomTypeGain, nights, oneWay, showGain) {
+    let cost = data.getRoomType()[roomTypeCost].cost;
+    let gain = data.getRoomType()[roomTypeGain].gain;
+
+    if(oneWay){
+        if(showGain){
+            cost = 0;
+        }
+        else{
+            gain = 0;
+        }
+    }
+    return (cost - gain) * nights
+};
+
 module.exports.createVerifyToken = function(email){
     return jwt.sign({
         email: email,

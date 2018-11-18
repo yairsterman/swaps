@@ -29,12 +29,17 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.depositPlan = $scope.confirmation?$scope.data.securityDeposit[$scope.user.deposit]:$scope.data.securityDeposit[$scope.profile.deposit];
         $scope.numberOfWeeks = calculateWeeksBetween(new Date($scope.swap.from), new Date($scope.swap.to));
         $scope.numberOfNights = calculateNightsBetween(new Date($scope.swap.from), new Date($scope.swap.to));
-        $scope.paymentPerNight = ($scope.confirmation && $scope.request.oneWay?$scope.data.creditInfo.perNightOneWay:$scope.accepting && $scope.accepting.oneWay?$scope.data.creditInfo.oneWayCommission:$scope.data.creditInfo.perNight);
-        $scope.totalPayment = $scope.paymentPerNight * $scope.numberOfNights;
+        $scope.paymentPerNight = $scope.accepting?$scope.accepting.oneWay?0:$scope.data.roomType[$scope.accepting.roomType1].cost:$scope.data.roomType[$scope.request.roomType2].cost;
+        $scope.gainPerNight = $scope.accepting?$scope.data.roomType[$scope.user.apptInfo.roomType].gain:$scope.request.oneWay?0:$scope.data.roomType[$scope.request.roomType1].gain;
+        $scope.totalPayment = ($scope.paymentPerNight - $scope.gainPerNight) * $scope.numberOfNights;
+        if($scope.totalPayment < 0){
+            $scope.hasGain = true;
+        }
+        $scope.totalPayment = Math.abs($scope.totalPayment);
         $scope.totalDeposit = $scope.depositPlan.week * $scope.numberOfWeeks;
         $scope.dates = $scope.swap.from + '-' + $scope.swap.to;
         $scope.receipt = true;
-        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $rootScope.user.credit < ($scope.paymentPerNight * $scope.numberOfNights)){
+        if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $rootScope.user.credit < $scope.totalPayment){
             $scope.notEnoughCredits = true;
             $scope.missing = ($scope.paymentPerNight * $scope.numberOfNights) - $rootScope.user.credit;
         }

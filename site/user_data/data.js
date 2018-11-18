@@ -171,7 +171,7 @@ const visibleRequestData ={
 
 const requestUserData = 'firstName image photos _id apptInfo country city reviews rating occupation';
 
-const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit';
+const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit roomType1 roomType2';
 
 
 const transactionType = {
@@ -202,9 +202,9 @@ const genders =[
 ];
 
 const roomType =[
-    {id: 0, type: 'SingleRoom', displayName: 'Single Room'},
-    {id: 1, type: 'EntirePlace', displayName: 'Entire Place'},
-    {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
+    {id: 0, type: 'SharedRoom', displayName: 'Shared Room', cost: 10, gain: 5},
+    {id: 1, type: 'SingleRoom', displayName: 'Single Room', cost: 15, gain: 10},
+    {id: 2, type: 'EntirePlace', displayName: 'Entire Place', cost: 20, gain: 15},
 ];
 
 const securityDeposit =[

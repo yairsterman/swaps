@@ -84,7 +84,7 @@
                                                         <div class="things-checkbox" ng-click="setExactDates(swap)">
                                                             <div class="check icon icon-check {{exactDates?'checked':''}}"></div>
                                                         </div>
-                                                        <div class="text">
+                                                        <div class="text flexible-label">
                                                             Exact Dates
                                                         </div>
                                                     </div>
@@ -165,27 +165,29 @@
         </div>
         <div ng-if="!notEnoughCredits || (accepting && accepting.oneWay)">
             <div class="deposit-plan">Travel Points Details</div>
-            <div class="type" ng-if="(accepting && accepting.oneWay)">You will receive travel points for every night you offer your home</div>
+            <!--<div class="type" ng-if="(accepting && accepting.oneWay)">You will receive travel points for every night you offer your home</div>-->
             <div class="type">Travel points:</div>
             <!--<div class="amount">${{depositPlan.night}} Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>-->
-            <div class="amount">{{paymentPerNight}} Per Night X {{numberOfNights}} {{numberOfNights>1?'Nights':'Night'}}</div>
-            <div class="total">Total Points {{accepting && accepting.oneWay?'Received':''}}: <strong>{{totalPayment}}</strong></div>
-            <div class="checkbox-wrapper" ng-if="accepting">
-                <div class="single-checkbox">
-                    <div class="things-checkbox" ng-click="setDeposit()">
-                        <div class="check icon icon-check {{hasDeposit?'checked':''}}"></div>
-                    </div>
-                    <div class="text">
-                        I would like both sides to put down a weekly security deposit of ${{depositPlan.week}}
-                        <span class="explanation"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i></span>
-                    </div>
-                </div>
+            <div class="amount"><span class="points-details">Cost: </span>{{paymentPerNight}} Per Night X {{numberOfNights}} {{numberOfNights>1?'Nights':'Night'}} = <span class="points-details">{{paymentPerNight * numberOfNights}} </span></div>
+            <div class="amount"><span class="points-details gain">Gain: </span>{{gainPerNight}} Per Night X {{numberOfNights}} {{numberOfNights>1?'Nights':'Night'}} = <span class="points-details">{{gainPerNight * numberOfNights}} </span></div>
+            <div class="total" ng-if="totalPayment == 0"><strong>NO CHARGE</strong></div>
+            <div class="total {{hasGain?'gain':''}}" ng-if="totalPayment != 0">Total points {{hasGain?'gained':'used'}}: <strong>{{totalPayment}}</strong></div>
+            <!--<div class="checkbox-wrapper" ng-if="accepting">-->
+                <!--<div class="single-checkbox">-->
+                    <!--<div class="things-checkbox" ng-click="setDeposit()">-->
+                        <!--<div class="check icon icon-check {{hasDeposit?'checked':''}}"></div>-->
+                    <!--</div>-->
+                    <!--<div class="text">-->
+                        <!--I would like both sides to put down a weekly security deposit of ${{depositPlan.week}}-->
+                        <!--<span class="explanation"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i></span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="type">
+                Weekly security deposit
+                <span class="explanation"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="right" tooltip></i></span>
             </div>
-            <div class="text deposit" ng-if="confirmation && request.deposit">
-                {{profile.firstName}} has required for both of you to put down a weekly security deposit of ${{depositPlan.week}}
-                <span class="explanation"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="The security deposit remains in your account and is not charged at all, except in cases where damages were claimed, or if you cancelled a Swap too close to the scheduled Swap date." tooltip-placement="left" tooltip></i></span>
-            </div>
-            <div ng-if="hasDeposit || (confirmation && request.deposit)">
+            <div>
                 <div class="amount">${{depositPlan.week}} Per Week X {{numberOfWeeks}} {{numberOfWeeks>1?'Weeks':'Week'}}</div>
                 <div class="total">Total Deposit: <strong>${{totalDeposit}}</strong></div>
             </div>

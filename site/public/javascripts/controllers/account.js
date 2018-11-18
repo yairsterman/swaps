@@ -153,6 +153,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         })
         $scope.modelInstance.closed.then(function(){
             $scope.user = $rootScope.user;
+            $scope.confirmation = false;
             scrollMessagesToTop();
             updateUser();
         },function(){
