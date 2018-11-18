@@ -278,8 +278,12 @@
                     </div>
                 </div>
                 <div class="" ng-if="activeTab == 'messages'">
-                    <div ng-if="user.messages.length == 0">
-                        <div class="no-messages">You Have no messages</div>
+                    <div class="messages" ng-if="user.messages.length == 0">
+                        <div class="no-messages">You Have no messages
+                            <div class="underline">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="messages" ng-if="user.messages.length > 0">
                         <div class="all-messages" ng-if="!conversationIsOpen">
@@ -535,8 +539,12 @@
                 </div>
                 <div class="fav-tab" ng-if="activeTab == 'homes-i-like'">
 
-                    <div ng-if="user.favorites.length == 0">
-                        <div class="no-reviews">You have no saved homes</div>
+                    <div class="messages" ng-if="user.favorites.length == 0">
+                        <div class="no-messages">You have no saved homes
+                            <div class="underline">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="favorite-cont" ng-if="user.favorites.length > 0">
 
@@ -550,8 +558,12 @@
                     </div>
                 </div>
                 <div class="reviews-tab" ng-if="activeTab == 'reviews'">
-                    <div ng-if="user.reviews.length == 0">
-                        <div class="no-reviews">You Have no reviews</div>
+                    <div class="messages" ng-if="user.reviews.length == 0">
+                        <div class="no-messages">You Have no reviews
+                            <div class="underline">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="reviews-cont" ng-if="user.reviews.length > 0">
 
