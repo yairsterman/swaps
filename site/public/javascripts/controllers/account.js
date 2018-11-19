@@ -12,6 +12,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.numOfFiles = 0;
     $scope.edit = {};
 
+    $scope.messagePage = 1;
+    $scope.messagePageStart = 0;
+    $scope.messagePageSize = 8;
+    $scope.messagePageEnd = 8;
 
     $scope.select = {};
     $scope.passwords = {};
@@ -561,6 +565,23 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
     }
 
+    $scope.getCreditsAmount = function(request){
+        var paymentPerNight = request.user1?request.oneWay?0:$scope.data.roomType[request.roomType1].cost:$scope.data.roomType[request.roomType2].cost;
+        var gainPerNight = request.user1?$scope.data.roomType[request.roomType2].gain:request.oneWay?0:$scope.data.roomType[request.roomType1].gain;
+        var totalPayment = (paymentPerNight - gainPerNight) * request.nights;
+        var res = {};
+        res.totalPayment = Math.abs(totalPayment);
+        res.gained = totalPayment < 0;
+        res.notCharged = totalPayment == 0;
+        return res;
+    };``
+
+    $scope.getPage = function(page){
+        $scope.messagePageStart = (page - 1) * $scope.messagePageSize;
+        // $scope.messagePage = page;
+        $scope.messagePageEnd = ($scope.messagePageSize * page);
+    }
+
     $scope.trustAsHtml = function(html) {
         return $sce.trustAsHtml(html);
     }
@@ -581,6 +602,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.focusPlan=false;
         $scope.edit = angular.copy($scope.user);
         $scope.requests = $scope.user.requests;
+        $scope.messagesLength = $scope.user.messages.length;
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){
             $scope.currentConversation = $scope.findMessage($scope.currentConversationId);

@@ -289,7 +289,7 @@
                         <div class="all-messages" ng-if="!conversationIsOpen">
                             <div class="">
                                 <div class="messages-list"
-                                     ng-repeat="message in user.messages | orderBy: orderByDate | limitTo: 8 ">
+                                     ng-repeat="message in user.messages | orderBy: orderByDate | limitTo: messagePageEnd: messagePageStart">
                                     <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="openConversation(message)">
                                         <div class="">
                                             <a href="{{'profile/'+message.id}}" >
@@ -386,6 +386,18 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="messages-pagination" ng-if="user.messages.length > messagePageSize">
+                                <paging
+                                        page="messagePage"
+                                        page-size="messagePageSize"
+                                        total="messagesLength"
+                                        paging-action="getPage(page)"
+                                        show-prev-next="true"
+                                        adjacent="1"
+                                        text-next-class="glyphicon glyphicon-chevron-right"
+                                        text-prev-class="glyphicon glyphicon-chevron-left">
+                                </paging>
                             </div>
                         </div>
                         <div class="message-profile" ng-if="conversationIsOpen">
@@ -498,42 +510,67 @@
                     <points data="data" ng-if="data && user._id"></points>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
+                    <div class="messages" ng-if="requests.length == 0">
+                        <div class="no-messages">You Have no upcoming swaps
+                            <div class="underline">
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="loader" ng-if="saving"></div>
                     <div class="swap-title" ng-hide="saving"></div>
-                    <div class="mg-0 row request-list" ng-repeat="request in requests" ng-hide="saving">
+                    <div class="mg-0 row request-list" ng-repeat="request in requests | filter: status == 2 || status == 3 | orderBy: 'checkin'" ng-hide="saving">
                         <swapper-home ng-if="request.user1" class="traveler-col col-sm-6 col-xs-12" traveler="request.user1"></swapper-home>
                         <swapper-home ng-if="request.user2" class="traveler-col col-sm-6 col-xs-12" traveler="request.user2"></swapper-home>
                         <div class="request-info col-sm-6 col-xs-12">
                             <div class="form-group row">
-                                <label class="col-sm-4 control-label">Check in:</label>
-                                <div class="col-sm-6">
-                                    {{request.checkin | date :'MMMM dd, yyyy'}}
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 control-label">Check out:</label>
-                                <div class="col-sm-6">
-                                    {{request.checkout | date :'MMMM dd, yyyy'}}
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 control-label">Request Status:</label>
+                                <label class="col-sm-4 control-label">Status:</label>
                                 <div class="statuses col-sm-6">
                                     <div class="request-status"
-                                         ng-if="request.status == 0 && request.user2">
-                                        Pending
+                                         ng-if="request.status == 4">
+                                        Completed
                                     </div>
-                                    <div class="request-status confirmed" ng-if="request.status == 1">Confirmed</div>
-                                    <div class="icon icon-check" ng-if="request.status == 1"></div>
-                                    <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
-                                         ng-if="request.status == 0 && request.user1"
-                                         ng-click="confirmRequest(request)">Confirm
-                                    </div>
+                                    <div class="request-status confirmed" ng-if="request.status == 2">Confirmed</div>
                                 </div>
                             </div>
-                            <div class="">
-                                <div class="cancel" ng-click="cancelRequest(request)" ng-hide="saving">{{request.status == 0 && request.user1?'Decline':'Cancel'}} Request</div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Check in:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11">
+                                    {{request.checkin | date :'EEEE, MMMM dd, yyyy'}}
+                                </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Check out:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11">
+                                    {{request.checkout | date :'EEEE, MMMM dd, yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Type:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11" ng-if="!request.oneWay">
+                                    {{data.roomType[request.roomType1].displayName}} for {{data.roomType[request.roomType2].displayName}}
+                                </div>
+                                <div class="col-xs-11" ng-if="request.oneWay">
+                                    One way Swap at {{data.roomType[request.roomType2].displayName}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Travel Points:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11" ng-init="x = getCreditsAmount(request)">
+                                    {{x.notCharged?'No travel points spent':x.gained?'You gained ' + x.totalPayment + ' travel points':'You spent '+ x.totalPayment + ' travel points'}}
+                                </div>
+                            </div>
+                            <!--<div class="">-->
+                                <!--<div class="cancel" ng-click="cancelRequest(request)" ng-hide="saving">{{request.status == 0 && request.user1?'Decline':'Cancel'}} Request</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>

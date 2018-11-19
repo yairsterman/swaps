@@ -684,7 +684,7 @@ function chargeUsers(params){
  */
 function refundCredits(user1, user2, request, declined){
     let dfr = Q.defer();
-    if(declined){
+    if(declined || request.status != Data.getRequestStatus().confirmed){
         dfr.resolve();
         return dfr.promise;
     }

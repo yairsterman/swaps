@@ -74,6 +74,11 @@ router.get('/getUsers', function(req, res, next) {
                 path: 'community',
                 select: 'name _id',
             })
+            .populate({
+                path: 'requests',
+                match: {status: Data.getRequestStatus().confirmed},
+                select: 'status checkin checkout'
+            })
             .exec(function (err, users) {
             if (err){
                 error.message = "error finding users";

@@ -634,6 +634,41 @@
 	    				}
 	    			}
 	    		}
+				.messages-pagination{
+					width: 100%;
+					text-align: center;
+					.pagination>li>a{
+						width: 35px;
+						height: 35px;
+						padding: 6px 2px;
+						border-radius: 50%;
+						background-color: transparent;
+						border-color: transparent;
+						color: #045F79;
+					}
+					.pagination>.disabled>a{
+						background-color: transparent;
+						border-color: transparent;
+						color: #045F79;
+					}
+					.pagination>.active>a{
+						color: #fff;
+						background-color: #045F79;
+						border-color: #045F79;
+					}
+					.pagination>li>a:hover{
+						background-color: rgba(232, 79, 47,0.4);
+					}
+					.pagination>.active>a:hover{
+						background-color: #045F79;
+					}
+					.pagination>li:last-child>a:hover{
+						background-color: transparent;
+					}
+					.pagination>li:first-child>a:hover{
+						background-color: transparent;
+					}
+				}
 	    	}
 			.message-profile{
 				@media @mobile {
@@ -1015,6 +1050,9 @@
 				font-size: 16px;
 				position: relative;
 				.form-group{
+					color: #484848;
+				}
+				.control-label{
 					color: #0E5D7C;
 				}
 				.statuses{
@@ -1038,9 +1076,7 @@
 			}
 			.request-status{
 				color: #484848;
-				&.confirmed{
-					color: #0E5D7C;
-				}
+				font-weight: 600;
 				&.confirm{
 					border-radius: 4px;
 					padding: 10px;

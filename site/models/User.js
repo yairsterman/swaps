@@ -75,6 +75,7 @@ var UserSchema = new Schema({
         complete: Boolean
     },
     credit: Number,
+    oneWaySwapDays: Number,
     refers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     deposit: Number,
     featured: Boolean,

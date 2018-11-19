@@ -102,6 +102,7 @@ module.exports.init = function () {
                         },
                         deposit: 0,
                         credit: 20,
+                        oneWaySwapDays: 0,
                         IP: req.headers['x-forwarded-for'] || req.headers['x-real-ip']
                     });
                     uploadProfileImage(user._id, profile._json.picture.data.url).then(function (result) {
@@ -176,6 +177,7 @@ module.exports.init = function () {
                         },
                         deposit: 0,
                         credit: 20,
+                        oneWaySwapDays: 0,
                         paymentInfo: {},
                         IP: req.headers['x-forwarded-for'] || req.headers['x-real-ip']
                     });
@@ -250,6 +252,7 @@ module.exports.init = function () {
                             },
                             deposit: 0,
                             credit: 20,
+                            oneWaySwapDays: 0,
                             IP: req.headers['x-forwarded-for'] || req.headers['x-real-ip']
                         });
                         bcrypt.genSalt(config.saltRounds, function (err, salt) {
