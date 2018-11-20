@@ -1,8 +1,10 @@
 let jwt = require('jsonwebtoken');
 let config = require('../config.js');
 let data = require('../user_data/data');
+let Q = require('q');
 
 const PASSWORD_LENGTH = 8;
+const ALLOWED_ONE_WAY_SWAP_DAYS = 14;
 
 /**
  * calculate how many nights are between the two dates
@@ -63,5 +65,13 @@ module.exports.getRangeText = function(range){
         return `on flexible dates, on a ${data.getWeekendStart()[range.startRange].displayName} to ${data.getWeekendEnd()[range.endRange].displayName} weekend within the following range`
     }
     return '';
+}
+
+module.exports.notEnoughOneWaySwapDays = function(user, nights, isOneWay){
+
+    if(!isOneWay){
+       return false;
+    }
+    return(user.oneWaySwapDays + nights > ALLOWED_ONE_WAY_SWAP_DAYS);
 }
 

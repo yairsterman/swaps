@@ -9,7 +9,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         name: 'Beginners Discount'
     }
     $scope.completeText = $scope.confirmation?'Request Confirmed!':'Your request has been sent';
-
+    // $scope.requestComplete = false;
     $scope.payment = false;
     $scope.isMatch = $scope.$parent.isMatch;
     $scope.localeFormat = 'MMM DD';
@@ -55,6 +55,16 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.processing = true;
 
         $scope.swap.message = $scope.send.message;
+        if(checkOneWaySwapNights()){
+            $timeout(function(){
+                $scope.processing = false;
+                $scope.requestComplete = true;
+                $scope.requestError = 'You can only use up to 14 one way swap nights without offering your home in exchange, You have already used ' +
+                    $scope.user.oneWaySwapDays + ' nights and this swap will exceed the limit. This amount will be reduced for every night you offer your home either within a swap '+
+                    'or by a one way swap at your home';
+            }, 1000);
+            return;
+        }
         $scope.proposeSwap();
     }
 
@@ -253,6 +263,21 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         }
 
         return true;
+    }
+
+    function checkOneWaySwapNights(){
+        if(!$scope.swap.oneWay){
+            return false;
+        }
+        var nights;
+        if($scope.swap.rangeLabel == 'Date Range'){
+            nights = $scope.swap.endRange;
+        }
+        if($scope.swap.rangeLabel == 'Weekends'){
+            nights = 4;
+        }
+
+        return ($scope.user.oneWaySwapDays + nights > 14)
     }
 
     function calculateWeeksBetween(date1, date2) {

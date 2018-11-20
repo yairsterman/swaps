@@ -20,6 +20,8 @@ var schema = new Schema({
     roomType1: Number,
     roomType2: Number,
     oneWay: Boolean,
+    oneWaySwapDays1: Number,
+    oneWaySwapDays2: Number,
     deposit: Boolean,
     verifyTransactionUser1: { type: Schema.Types.ObjectId, ref: 'Transaction' },
     verifyTransactionUser2: { type: Schema.Types.ObjectId, ref: 'Transaction' },

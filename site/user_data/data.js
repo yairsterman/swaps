@@ -76,6 +76,7 @@ const visibleUserData = {
         thingsToDo:true,
         allowViewHome:true,
         favorites:true,
+        matches: true,
         rating:true,
         radius:true,
         location:true,
@@ -88,6 +89,7 @@ const visibleUserData = {
         verifications: true,
         facebookId: true,
         referredBy: true,
+        oneWaySwapDays: true
     }
 };
 

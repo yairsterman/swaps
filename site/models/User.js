@@ -47,6 +47,7 @@ var UserSchema = new Schema({
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     photos: Array,
     favorites: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    matches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     thingsToDo: Array,
     radius: {},
     location: {},

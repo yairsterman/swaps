@@ -99,11 +99,9 @@ router.post('/acceptRequest', function(req, res) {
         // populate both users to get their information
         .populate({
             path: 'user1',
-            select: '_id email firstName city credit apptInfo'
         })
         .populate({
             path: 'user2',
-            select: '_id email firstName city credit apptInfo'
         })
         .exec(function (err, request) {
             if (err || !request) {
@@ -144,11 +142,9 @@ router.post('/confirmRequest', function(req, res) {
     // populate both users to get their information
         .populate({
             path: 'user1',
-            select: '_id email firstName city credit apptInfo'
         })
         .populate({
             path: 'user2',
-            select: '_id email firstName city credit apptInfo'
         })
         .exec(function (err, request) {
             if (err || !request) {

@@ -393,6 +393,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         $scope.saving = true;
         $scope.swap = {};
+        $scope.requestComplete = false;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/request/request.html',
@@ -409,6 +410,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.proposeSwap = function(){
+        $scope.requestComplete = false;
         MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
@@ -420,6 +422,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             $timeout(function(){
                 $scope.modelInstance.close();
             },4000);
+        },function(err){
+            $scope.requestComplete = true;
+            $scope.processing = false;
+            $scope.completeText = 'Request Failed';
+            $scope.requestError = err.message;
         })
     }
 
@@ -472,27 +479,24 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         $scope.swap.from = request.checkin;
         $scope.swap.to = request.checkout;
-        UsersService.getProfile(id).then(function(data){
-            $scope.profile = data;
-            $scope.request = request;
-            $scope.requestId = request._id;
-            $scope.chooseDates = false;
-            $scope.confirmation = true;
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/request/request.html',
-                size: 'sm',
-                windowClass: 'request-modal',
-                controller: 'requestController',
-                scope: $scope
-            });
-            $scope.modelInstance.closed.then(function(){
-                $scope.user = $rootScope.user;
-                updateUser();
-            },function(){
-                $scope.saving = false;
-            });
-        })
+        $scope.request = request;
+        $scope.requestId = request._id;
+        $scope.chooseDates = false;
+        $scope.confirmation = true;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+        $scope.modelInstance.closed.then(function(){
+            $scope.user = $rootScope.user;
+            updateUser();
+        },function(){
+            $scope.saving = false;
+        });
     }
 
     $scope.requestStatus = function(id){

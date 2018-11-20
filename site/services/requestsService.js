@@ -24,6 +24,7 @@ let error = {
  * Send and save a new swap request on both of the users
  *
  * @param params - all relevant information for the request
+ * @param user - the requesting user
  */
 module.exports.sendRequest = function(params, user) {
     let senderId = params.user1;
@@ -54,7 +55,18 @@ module.exports.sendRequest = function(params, user) {
         }
         else {
             error.message = "No dates specified";
-            return dfr.reject(error);
+            throw (error);
+        }
+        let maxNights = nights;
+        if(range.rangeLabel == 'Weekends'){
+            maxNights = 4;
+        }
+        if(range.rangeLabel == 'Date Range'){
+            maxNights = range.endRange;
+        }
+        if(util.notEnoughOneWaySwapDays(user, maxNights, oneWay)){
+            error.message = `You have exceeded the amount of one way swap nights, you must let users swap at your home as well`;
+            throw (error);
         }
         checkAvailability(senderId, recipientId, departure, returnDate)
         .then(function () {
@@ -198,9 +210,14 @@ module.exports.confirm = function(params, request) {
             message: 'Swap request confirmed'
         };
 
+        if(util.notEnoughOneWaySwapDays(request.user1, request.nights, request.oneWay)){
+            error.message = `You have exceeded the amount of one way swap nights, you must let users swap at your home as well`;
+            throw (error);
+        }
+
         chargeCredits(request).then(function () {
             let info = {
-                requestId: request._id,
+                request: request,
                 verifyTransactionUser1: params.transactionId
             };
             return confirmRequest(info);
@@ -208,10 +225,10 @@ module.exports.confirm = function(params, request) {
             sender = result.sender;
             recipient = result.recipient;
             dates = result.dates;
-            return updateUserTravelInfo(sender, dates);
+            return updateUserTravelInfo(sender, dates, request);
         })
         .then(function () {
-            return updateUserTravelInfo(recipient, dates);
+            return updateUserTravelInfo(recipient, dates, request);
         })
         .then(function () {
             return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
@@ -378,13 +395,15 @@ function acceptRequest(params, request){
  */
 function confirmRequest(info){
     let deferd = Q.defer();
-
+    let request = info.request;
     let set = {
         verifyTransactionUser1: info.verifyTransactionUser1,
-        status: Data.getRequestStatus().confirmed
+        status: Data.getRequestStatus().confirmed,
+        oneWaySwapDays1: request.oneWay?request.nights:request.user1.oneWaySwapDays < request.nights?request.user1.oneWaySwapDays:request.nights,
+        oneWaySwapDays2: request.user2.oneWaySwapDays < request.nights?request.user2.oneWaySwapDays:request.nights,
     };
 
-    Request.findOneAndUpdate({_id: info.requestId}, {$set: set})
+    Request.findOneAndUpdate({_id: request._id}, {$set: set})
         // populate both users to get their information
         .populate({
             path: 'user1'
@@ -425,17 +444,25 @@ function confirmRequest(info){
 
 /**
  * Update the travel information of the user according to the confirmed
- * travel dates
+ * travel dates. update the amount of one way swap nights used as well.
  *
  * @param user - user to update
  * @param dates - confirmed dates
+ * @param request - the request being confirmed
  */
-function updateUserTravelInfo(user, dates){
+function updateUserTravelInfo(user, dates, request){
     let travelingInformation = updateDates(user.travelingInformation, dates.departure, dates.returnDate);
 
     let toUpdate = {
         travelingInformation: travelingInformation,
     };
+
+    if(request.oneWay && user._id.toString() === request.user1._id.toString()){
+        toUpdate.oneWaySwapDays = user.oneWaySwapDays + request.nights;
+    }
+    else{
+        toUpdate.oneWaySwapDays = user.oneWaySwapDays - request.nights < 0?0:user.oneWaySwapDays - request.nights;
+    }
     return updateUser(user, toUpdate);
 }
 
@@ -443,11 +470,14 @@ function updateUserTravelInfo(user, dates){
  * Remove and update user's canceled requests
  *
  * @param user - user to update
- * @param requestId - requestId to remove from requests
+ * @param request - request to remove from user's requests list
  */
-function removeCanceledRequest(user, requestId){
+function removeCanceledRequest(user, request){
     let dfr = Q.defer();
-    User.update({_id: user._id}, {$pull: {requests: requestId}})
+    let toUpdate = {
+        oneWaySwapDays: (user._id.toString() === request.user1._id.toString())?request.oneWay?user.oneWaySwapDays - request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays2
+    }
+    User.update({_id: user._id}, {$pull: {requests: request._id}, $set: toUpdate})
         .then(function (updated) {
             if (!updated.ok) {
                 dfr.reject('User not updated');
@@ -494,6 +524,7 @@ module.exports.cancelRequest = function(requestId, userId, message){
     let declined = false;
     let sender;
     let recipient;
+    let request;
     let now = moment.utc().valueOf();
     let newMessage = {
         date: now,
@@ -502,7 +533,8 @@ module.exports.cancelRequest = function(requestId, userId, message){
     };
 
     try{
-        getConfirmedRequest(requestId).then(function(request){
+        getConfirmedRequest(requestId).then(function(_request){
+            request = _request;
             user1 = request.user1;
             user2 = request.user2;
             // transaction1 = request.transactionUser1;
@@ -526,11 +558,11 @@ module.exports.cancelRequest = function(requestId, userId, message){
             }
             // update users requests
             else {
-                return removeCanceledRequest(user1, requestId);
+                return removeCanceledRequest(user1, request);
             }
         })
         .then(function(){
-            return removeCanceledRequest(user2, requestId);
+            return removeCanceledRequest(user2, request);
         })
         .then(function () {
             // send messages about the cancellation
