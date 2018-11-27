@@ -32,6 +32,8 @@ module.exports.sendRequest = function(params, user) {
     let guests = params.guests;
     let oneWay = params.oneWay;
     let roomType = user.apptInfo.roomType;
+    let city = user.city;
+    let country = user.country;
     let now = Date.now();
     let departure;
     let returnDate;
@@ -83,6 +85,8 @@ module.exports.sendRequest = function(params, user) {
                 roomType: roomType,
                 nights: nights,
                 oneWay: oneWay,
+                city: city,
+                country: country,
                 plan: params.plan
             };
             return saveRequest(requestDetails);
@@ -275,6 +279,8 @@ function saveRequest(requestDetails){
         nights: requestDetails.nights,
         plan: requestDetails.plan,
         oneWay: requestDetails.oneWay,
+        city1: requestDetails.city,
+        country1: requestDetails.country,
         status: requestDetails.status
     });
     let sender = {};
@@ -355,6 +361,8 @@ function acceptRequest(params, request){
                     checkout : returnDate,
                     nights : nights,
                     deposit : params.deposit,
+                    city2 : request.user2.city,
+                    country2 : request.user2.country,
                     status: Data.getRequestStatus().accepted
                 };
 
@@ -513,8 +521,11 @@ function updateUser(user, toUpdate){
  * Cancel or decline a swap request
  *
  * @param requestId - the request ID
+ * @param userId - the user ID canceling pr declining the request
+ * @param message - message to be sent along with the cancellation
+ * @param automatic - indicates whether the cancellation is automatic by the monitoring system
  */
-module.exports.cancelRequest = function(requestId, userId, message){
+module.exports.cancelRequest = function(requestId, userId, message, automatic){
     let defer = Q.defer();
 
     let user1 = {};
@@ -540,7 +551,7 @@ module.exports.cancelRequest = function(requestId, userId, message){
             // transaction1 = request.transactionUser1;
             // transaction2 = request.transactionUser1;
             // if status is pending and the call came from user2 then send decline message
-            declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
+            declined = !automatic && request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
 
             // refund transactions
             // return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
@@ -588,6 +599,11 @@ module.exports.cancelRequest = function(requestId, userId, message){
                 message: message
             };
 
+            if(automatic){
+                newMessage.message = 'This swap has been canceled do to no response.';
+                newMessage.isInfo = true;
+            }
+
             return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
         })
         .then(function () {
@@ -599,8 +615,14 @@ module.exports.cancelRequest = function(requestId, userId, message){
                 email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
             }
             else{
-                email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
-                email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                if(automatic){
+                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender));
+                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceled(sender, recipient));
+                }
+                else{
+                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
+                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                }
             }
         },function(err){
             error.message = err;

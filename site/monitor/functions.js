@@ -3,6 +3,7 @@ let User = require('./../models/User');
 let data = require('./../user_data/data');
 let email = require('./../services/email');
 let emailMessages = require('./../services/email-messages');
+let requestService = require('./../services/requestsService');
 let moment = require('moment');
 let util = require('./../utils/util');
 let jwt = require('jsonwebtoken');
@@ -49,91 +50,155 @@ module.exports.updateTravelingInformation = function () {
 
 
 /**
- * run through all requests that are pending and if the check in date passed
- * change the status to canceled and send a mail to the user
+ * run through all requests that are pending and if the check in date
+ * has passed cancel the request.
+ * If the request hasn't been responded to yet send reminder emails
  */
-module.exports.emailPassedPendingRequests = function () {
-    Requests.find({status: data.getRequestStatus().pending}, function (err, requests) {
-        if (err) return err;
-        let now = moment.utc().valueOf();
-        requests.forEach(function (request) {
-            if (request.checkin < now) { // or a week after the request was sent
-                request.update({status: data.getRequestStatus().canceled}).then(function () {
-                    User.findOne({_id: request.user1}, function (err, user) {
-                        if (err) return err;
-                        if (user.email) {
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+module.exports.emailPendingRequests = function () {
+    Requests.find({status: data.getRequestStatus().pending})
+        .populate({
+            path: 'user1',
+        })
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, requests) {
+            if (err) return err;
+            let now = moment.utc().valueOf();
+            requests.forEach(function (request) {
+                if (request.proposition.checkin < now) { // or a week after the request was sent
+                    requestService.cancelRequest(request._id, request.user1._id, '', true);
+                }
+                else{
+                    let diff = util.calculateNightsBetween(request.updated_at, now);
+                    if (request.user2.email) {
+                        switch (diff) {
+                            case 1:
+                                email.sendMail(request.user2.email, 'Swap Request Pending', emailMessages.pendingRequestReminder(request.user1));
+                                break;
+                            case 3:
+                                email.sendMail(request.user2.email, 'Swap Request Pending', emailMessages.pendingRequestReminder(request.user1));
+                                break;
+                            case 6:
+                                email.sendMail(request.user2.email, 'Swap Request Pending', emailMessages.pendingRequestReminder(request.user1, true));
+                                break;
+                            case 7:
+                                requestService.cancelRequest(request._id, request.user1._id, '', true);
+                                break;
+                            default:
+                                break;
                         }
-                    });
-                });
-            }
-        })
-    });
-};
-
-
-//todo: can merge this with the one on top
-//find all pending requests that have 7, 3, 1 days till expire and update user 2
-module.exports.PendingRequestsReminder = function () {
-    Requests.find({status: data.getRequestStatus().pending}, function (err, requests) {
-        if (err) return err;
-        requests.forEach(function (request) {
-            let diff = util.calculateNightsBetween(request.updated_at, now);
-            User.findOne({_id: request.user2}, function (err, user) {
-                if (err) return err;
-                if (user.email) {
-                    switch (diff) {
-                        case 7:
-                            console.log("SEVEN");
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
-                            break;
-                        case 3:
-                            console.log("THREE");
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
-                            break;
-                        case 1:
-                            console.log("ONE");
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
-                            break;
-                        default:
-                            break;
                     }
                 }
-            });
-        })
+            })
     });
 };
 
 
-//run through all requests that are confirmed and update the 2 user (?) in 7, 3, 1 day left for swap
+/**
+ * run through all requests that are accepted and if the check in date
+ * has passed cancel the request.
+ * If the request hasn't been confirmed yet, send reminder emails.
+ */
+module.exports.emailAcceptedRequests = function () {
+    Requests.find({status: data.getRequestStatus().accepted})
+        .populate({
+            path: 'user1',
+        })
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, requests) {
+            if (err) return err;
+            let now = moment.utc().valueOf();
+            requests.forEach(function (request) {
+                if (request.checkin < now) { // or a week after the request was sent
+                    requestService.cancelRequest(request._id, request.user1._id, '', true);
+                }
+                else{
+                    let diff = util.calculateNightsBetween(request.updated_at, now);
+                    if (request.user1.email) {
+                        switch (diff) {
+                            case 1:
+                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user1));
+                                break;
+                            case 3:
+                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user1));
+                                break;
+                            case 6:
+                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user1, true));
+                                break;
+                            case 7:
+                                requestService.cancelRequest(request._id, request.user2._id, '', true);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            })
+        });
+};
+
+
+/**
+ * run through all confirmed request and send reminder emails before the swap
+ *
+ */
 module.exports.emailConfirmedRequests = function () {
-    Requests.find({status: data.getRequestStatus().confirmed}, function (err, requests) {
-        if (err) return err;
-        requests.forEach(function (request) {
-            let diff = util.calculateNightsBetween(request.updated_at, now);
-            User.findOne({_id: request.user2}, function (err, user) {
-                if (err) return err;
-                if (user.email) {
+    Requests.find({status: data.getRequestStatus().confirmed})
+        .populate({
+            path: 'user1',
+        })
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, requests) {
+            if (err) return err;
+            let now = moment.utc().valueOf();
+            requests.forEach(function (request) {
+                if (request.checkin < now) {
+                    return;
+                }
+                let diff = util.calculateNightsBetween(now, request.checkin);
+                if (request.user1.email) {
                     switch (diff) {
+                        case 14:
+                            email.sendMail(request.user1.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user2, request.city2, 2));
+                            break;
                         case 7:
-                            console.log("SEVEN");
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+                            email.sendMail(request.user1.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user2, request.city2,2));
                             break;
                         case 3:
-                            console.log("THREE");
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+                            email.sendMail(request.user1.email, 'Get Ready to Swap!', emailMessages.confirmedRequestReminder(request.user2, request.city2,0, 3));
                             break;
                         case 1:
-                            console.log("ONE");
-                            email.sendMail("stermaneran@gmail.com", 'fix this!!', emailMessages.confirmation(user));
+                            email.sendMail(request.user1.email, 'Last preparations for your swap tomorrow', emailMessages.confirmedRequestReminder(request.user2, request.city2, 0, 3));
                             break;
                         default:
                             break;
                     }
                 }
-            });
-        })
-    });
+                if (request.user2.email) {
+                    switch (diff) {
+                        case 14:
+                            email.sendMail(request.user2.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user1, request.city1, 2, 0, request.oneWay));
+                            break;
+                        case 7:
+                            email.sendMail(request.user2.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user1, request.city1, 1, 0, request.oneWay));
+                            break;
+                        case 3:
+                            email.sendMail(request.user2.email, 'Get Ready to Swap!', emailMessages.confirmedRequestReminder(request.user1, request.city1, 0, 3, request.oneWay));
+                            break;
+                        case 1:
+                            email.sendMail(request.user2.email, 'Last preparations for your swap tomorrow', emailMessages.confirmedRequestReminder(request.user1, request.city1, 0, 1, request.oneWay));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            })
+        });
 };
 
 

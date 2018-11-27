@@ -29,10 +29,12 @@ let schedule = require('node-schedule');
 //  # * * * * * *
 
 // schedule.scheduleJob('0 23 * * *', functions.updateTravelingInformation);
-// schedule.scheduleJob('0 23 * * *', functions.emailPassedPendingRequests);
-// schedule.scheduleJob('0 23 * * *', functions.PendingRequestsReminder);
+// schedule.scheduleJob('0 23 * * *', functions.emailPendingRequests);
+// schedule.scheduleJob('0 23 * * *', functions.emailAcceptedRequests);
 // schedule.scheduleJob('0 23 * * *', functions.emailConfirmedRequests);
 // schedule.scheduleJob('0 23 * * *', functions.emailReview);
-functions.emailReview(); // for testing...
+functions.emailPendingRequests(); // for testing...
+functions.emailAcceptedRequests(); // for testing...
+functions.emailConfirmedRequests(); // for testing...
 
 // module.exports = monitor;
