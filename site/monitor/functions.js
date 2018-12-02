@@ -70,7 +70,7 @@ module.exports.emailPendingRequests = function () {
                     requestService.cancelRequest(request._id, request.user1._id, '', true);
                 }
                 else{
-                    let diff = util.calculateNightsBetween(request.updated_at, now);
+                    let diff = util.calculateNightsBetween(moment.utc(request.updated_at).valueOf(), now);
                     if (request.user2.email) {
                         switch (diff) {
                             case 1:
@@ -116,17 +116,17 @@ module.exports.emailAcceptedRequests = function () {
                     requestService.cancelRequest(request._id, request.user1._id, '', true);
                 }
                 else{
-                    let diff = util.calculateNightsBetween(request.updated_at, now);
+                    let diff = util.calculateNightsBetween(moment.utc(request.updated_at).valueOf(), now);
                     if (request.user1.email) {
                         switch (diff) {
                             case 1:
-                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user1));
+                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user2));
                                 break;
                             case 3:
-                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user1));
+                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user2));
                                 break;
                             case 6:
-                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user1, true));
+                                email.sendMail(request.user1.email, 'Swap Request unconfirmed', emailMessages.acceptedRequestReminder(request.user2, true));
                                 break;
                             case 7:
                                 requestService.cancelRequest(request._id, request.user2._id, '', true);
@@ -163,11 +163,8 @@ module.exports.emailConfirmedRequests = function () {
                 let diff = util.calculateNightsBetween(now, request.checkin);
                 if (request.user1.email) {
                     switch (diff) {
-                        case 14:
-                            email.sendMail(request.user1.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user2, request.city2, 2));
-                            break;
                         case 7:
-                            email.sendMail(request.user1.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user2, request.city2,2));
+                            email.sendMail(request.user1.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user2, request.city2, 1));
                             break;
                         case 3:
                             email.sendMail(request.user1.email, 'Get Ready to Swap!', emailMessages.confirmedRequestReminder(request.user2, request.city2,0, 3));
@@ -181,9 +178,6 @@ module.exports.emailConfirmedRequests = function () {
                 }
                 if (request.user2.email) {
                     switch (diff) {
-                        case 14:
-                            email.sendMail(request.user2.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user1, request.city1, 2, 0, request.oneWay));
-                            break;
                         case 7:
                             email.sendMail(request.user2.email, 'Swap Coming Up', emailMessages.confirmedRequestReminder(request.user1, request.city1, 1, 0, request.oneWay));
                             break;
@@ -235,12 +229,12 @@ module.exports.emailReview = function () {
                     request.update({tokenUser1: t1, tokenUser2: t2}).then(function () {
                         if (user1.email) {
                             // email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, t1));
-                            console.log("email sent");
+                            // console.log("email sent");
                             email.sendMail([user1.email], 'Review your Swap', emailMessages.review(user2, t1));
                         }
                         if (user2.email) {
                             // email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user1, t2));
-                            console.log("email sent");
+                            // console.log("email sent");
                             email.sendMail([user2.email], 'Review your Swap', emailMessages.review(user1, t2));
                         }
                     });
@@ -248,18 +242,18 @@ module.exports.emailReview = function () {
                 else {
                     switch (diff) {
                         case 3:
-                            if (request.tokenUser2 && request.tokenUser2 != !config.EXPIRED_TOKEN) {
+                            if (request.tokenUser2 && request.tokenUser2 != config.EXPIRED_TOKEN) {
                                 if (user2.email) {
-                                    email.sendMail(['yair@swapshome.com'], 'Review Swap Reminder', emailMessages.reviewReminder(user1, request.tokenUser2));
-                                    console.log("email sent");
-                                    // email.sendMail([user2.email], 'Review your Swap', emailMessages.review(user1, t2));
+                                    // email.sendMail(['yair@swapshome.com'], 'Review Swap Reminder', emailMessages.reviewReminder(user1, request.tokenUser2));
+                                    // console.log("email sent");
+                                    email.sendMail([user2.email], 'Review Swap Reminder', emailMessages.reviewReminder(user1, request.tokenUser2));
                                 }
                             }
-                            if (request.tokenUser1 && request.tokenUser1 != !config.EXPIRED_TOKEN) {
+                            if (request.tokenUser1 && request.tokenUser1 != config.EXPIRED_TOKEN) {
                                 if (user1.email) {
-                                    email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, request.tokenUser1));
-                                    console.log("email sent");
-                                    // email.sendMail([user1.email], 'Review your Swap', emailMessages.review(user2, t1));
+                                    // email.sendMail(['yair@swapshome.com'], 'Review your Swap', emailMessages.review(user2, request.tokenUser1));
+                                    // console.log("email sent");
+                                    email.sendMail([user1.email], 'Review Swap Reminder', emailMessages.reviewReminder(user2, request.tokenUser1));
                                 }
                             }
                             break;
