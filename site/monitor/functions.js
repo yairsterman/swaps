@@ -197,7 +197,10 @@ module.exports.emailConfirmedRequests = function () {
 
 
 /**
- * Find all swaps that are completed and send a review email to both users
+ * Find all swaps that are completed and send a review email to both users.
+ * After three days - if the user hasn't written a review send a reminder email.
+ * After 4 days - if the user hasn't written a review, disable the review token
+ *                and mark the request as complete.
  */
 module.exports.emailReview = function () {
     let now = moment.utc().valueOf();
