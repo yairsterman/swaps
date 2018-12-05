@@ -36,7 +36,7 @@ router.post('/success', function(req, res, next) {
         params.type = Data.getTransactionType().regular;
         transactionsService.createAndSaveToUser(params, req.body.user1) // save transaction in db and save id to user.transactions
             .then(function ({transactionId, token}){
-                let amount = Math.round(parseFloat(req.body.sum) / Data.getCreditInfo().price); // get the exact amount of credits purchased
+                let amount = creditService.calculateCreditAmount(req.body.sum); // get the exact amount of credits purchased
                 // let amount = 12; // TODO: for testing, REMOVE!!
                 return creditService.purchaseCredits(req.body.user1, amount);
             })

@@ -3,20 +3,31 @@
 
     </div>
     <div class="title {{request?'smaller':''}}" ng-hide="pay && request">
-        You {{request?'only':''}} have <span class="user-credits">{{currentPoints.toFixed(0)}}</span> travel points
+        You {{request?'only':''}} have <span class="user-credits">{{currentPoints.toFixed(0)}}</span> Swap Credits
     </div>
     <div class="sub-title" ng-if="pay && !request">
-        Get {{amount}} more Travel Points
+        Get {{amount}} more Swap Credits
     </div>
     <div class="buy-credits" ng-hide="pay">
-        <div class="sub-title" ng-if="!request">
-            Travel points can be traded in for nights at another Swapper's home, Staying at someones home costs 5 points per night.
-        </div>
         <div class="sub-title" ng-if="request">
-            You must purchase at least {{missing}} more travel points in order to complete this action.
+            You must purchase at least {{missing}} more Swap Credits in order to complete this action.
         </div>
         <div class="title">
-            Get more points
+            Get more Swap Credits
+        </div>
+        <div>
+            <div>
+                <strong>1 Swap Credit</strong> for <strong>$2.50</strong>
+            </div>
+            <div>
+                <strong>5 Swap Credits</strong> for <strong>$10.00</strong>
+            </div>
+            <div>
+                <strong>10 Swap Credits</strong> for <strong>$17.50</strong>
+            </div>
+            <div>
+                <strong>15 Swap Credits</strong> for <strong>$22.50</strong>
+            </div>
         </div>
         <div class="choose-amount">
             <div class="subtract {{missing?(amount <= missing?'disabled':''):amount <= 1?'disabled':''}}" ng-click="subtractAmount()">

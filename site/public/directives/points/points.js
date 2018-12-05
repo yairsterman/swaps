@@ -16,7 +16,6 @@ swapsApp.directive('points', function() {
 function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersService, alertify){
 
     $scope.amount = $scope.missing?$scope.missing:5;
-    $scope.cost = $scope.amount * $scope.data.creditInfo.price;
     $scope.currentPoints = $rootScope.user.credit;
 
     $scope.go = function(){
@@ -25,7 +24,7 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
 
     $scope.buyCredits = function(){
         $scope.loading = true;
-        $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+($scope.amount * $scope.data.creditInfo.price).toFixed(2)+"&requestType="+$scope.data.requestType.creditPurchase+"&user1="+$rootScope.user._id+"&email="+$rootScope.user.email+"&currency=2&cred_type=1&tranmode=A&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Swap");
+        $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+$scope.calculatePrice($scope.amount).toFixed(2)+"&requestType="+$scope.data.requestType.creditPurchase+"&user1="+$rootScope.user._id+"&email="+$rootScope.user.email+"&currency=2&cred_type=1&tranmode=A&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Swap");
         $scope.pay = true;
         $timeout(function(){
             $scope.loading = false;
@@ -38,7 +37,8 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
 
     $scope.addAmount = function(){
         $scope.amount++;
-        $scope.smoothNumberTransition('cost', parseFloat(($scope.amount * $scope.data.creditInfo.price).toFixed(2)), 0.1);
+        var price = $scope.calculatePrice($scope.amount);
+        $scope.smoothNumberTransition('cost', parseFloat((price).toFixed(2)), 0.1);
         $scope.makeItRain = true;
         $timeout(function(){
             $scope.makeItRain = false;
@@ -57,18 +57,41 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
             return;
         }
         $scope.amount--;
-        $scope.smoothNumberTransitionDown('cost', parseFloat(($scope.amount * $scope.data.creditInfo.price).toFixed(2)), 0.1);
+        var price = $scope.calculatePrice($scope.amount);
+        $scope.smoothNumberTransition('cost', parseFloat((price).toFixed(2)), 0.1);
     };
 
+    $scope.calculatePrice = function(amount){
+        var price = 0;
+        price += Math.floor(amount/15) * $scope.data.creditInfo.priceFor15;
+        amount = amount % 15;
+        price += Math.floor(amount/10) * $scope.data.creditInfo.priceFor10;
+        amount = amount % 10;
+        price += Math.floor(amount/5) * $scope.data.creditInfo.priceFor5;
+        amount = amount % 5;
+        price += amount * $scope.data.creditInfo.priceFor1;
+        return price;
+    }
+
     $scope.smoothNumberTransition = function(ref, final, jump){
+        if($scope[ref] > final){
+            jump = -jump;
+        }
         var counterIntvl = $interval(function(){
-            if($scope[ref] >= final){
+            if(jump > 0 && $scope[ref] >= final){
+                $interval.cancel(counterIntvl);
+            }
+            else if(jump < 0 && $scope[ref] <= final){
                 $interval.cancel(counterIntvl);
             }
             else{
                 $scope[ref] = parseFloat(($scope[ref] + jump).toFixed(2));
             }
         }, 40);
+        $timeout(function(){
+            $interval.cancel(counterIntvl);
+            $scope[ref] = final;
+        }, 2000);
     };
 
     $scope.smoothNumberTransitionDown = function(ref, final, jump){
@@ -120,4 +143,6 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
         }
         $scope.pay = false;
     }
+
+    $scope.cost = $scope.calculatePrice($scope.amount);
 }

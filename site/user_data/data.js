@@ -191,7 +191,10 @@ const transactionMode = {
 };
 
 const creditInfo = {
-    price: 0.01,
+    priceFor1: 2.5,
+    priceFor5: 10,
+    priceFor10: 17.5,
+    priceFor15: 22.5,
     perNight: 5,
     perNightOneWay: 10,
     oneWayCommission: 5,

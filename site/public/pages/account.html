@@ -15,8 +15,8 @@
                     <li class="single-link {{activeTab == 'set-swap-dates'?'active':''}}"><a href=""
                                                                                     ng-click="go('account/set-swap-dates')">Set Swap Dates</a>
                     </li>
-                    <li class="single-link {{activeTab == 'points'?'active':''}}"><a href=""
-                                                                                    ng-click="go('account/points')">Travel Points</a>
+                    <li class="single-link {{activeTab == 'credits'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/credits')">Swap Credits</a>
                     </li>
                     <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
                                                                                            ng-click="go('account/homes-i-like')">Homes
@@ -506,7 +506,15 @@
                     <div class="swap-title"></div>
                     <swaps swaps="user.travelingInformation" ng-if="user._id"></swaps>
                 </div>
-                <div class="swaps-and-requests" ng-if="activeTab == 'points'">
+                <div class="swaps-and-requests" ng-if="activeTab == 'credits'">
+                    <div class="points">
+                        <div class="sub-title">
+                            Swap nights are acquired with Swap Credits, The value of each Swapper’s home is calculated based on our easy-to-understand Swap Credit system.
+                            <br>
+                            <br>
+                            <a target="_blank"  href="/how-it-works#swapCredits"> Click here for more information about Swap Credit prices and Swap Credit Value System.</a>
+                        </div>
+                    </div>
                     <points data="data" ng-if="data && user._id"></points>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">

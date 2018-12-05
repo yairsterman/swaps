@@ -26,6 +26,12 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
         },300)
     };
 
+    $scope.showCreditsSection = function(){
+        $timeout(function(){
+            $("html").animate({scrollTop: $("#swapCredits").offset().top}, "fast");
+        },300)
+    };
+
     $rootScope.isMobile = (/android|webos|iphone|ipad|ipod|blackberry|windows phone/).test(navigator.userAgent.toLowerCase()) || $window.outerWidth < 641;
 
     $scope.go = function(path){
