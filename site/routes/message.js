@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
+var Request = require('../models/Request.js');
 var Q = require('q');
 var dateFormat = require('dateformat');
 var email = require('../services/email.js');
@@ -66,7 +67,7 @@ router.post('/sendRequest', function(req, res) {
 	req.body.user1 = req.user._id;
 	req.body.plan = req.user.deposit;
 	let id = req.user._id;
-    requestsService.sendRequest(req.body).then(function(){
+    requestsService.sendRequest(req.body, req.user).then(function(){
         User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
             .populate({
                 path: 'community',
@@ -89,6 +90,92 @@ router.post('/sendRequest', function(req, res) {
         function(err){
             error.message = err;
             res.json(error);
+        });
+});
+
+router.post('/acceptRequest', function(req, res) {
+    let id = req.user._id;
+    Request.findOne({_id: req.body.requestId})
+        // populate both users to get their information
+        .populate({
+            path: 'user1',
+        })
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, request) {
+            if (err || !request) {
+                error.message = err;
+                return res.json(error);
+            }
+            requestsService.accept(req.body, request)
+                .then(function(){
+                    User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
+                        .populate({
+                            path: 'community',
+                            select: 'name _id',
+                        })
+                        .populate({
+                            path: 'requests',
+                            match: {status: {$ne: Data.getRequestStatus().canceled}},
+                            select: Data.getRequestData(),
+                            populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
+                        })
+                        .exec(function (err, user) {
+                            if (err){
+                                error.message = err;
+                                return res.json(error);
+                            }
+                            res.json(user);
+                        });
+                },
+                function(err){
+                    error.message = err;
+                    res.json(error);
+                });
+        });
+});
+
+router.post('/confirmRequest', function(req, res) {
+    let id = req.user._id;
+    Request.findOne({_id: req.body.requestId})
+    // populate both users to get their information
+        .populate({
+            path: 'user1',
+        })
+        .populate({
+            path: 'user2',
+        })
+        .exec(function (err, request) {
+            if (err || !request) {
+                error.message = err;
+                return res.json(error);
+            }
+            requestsService.confirm(req.body, request)
+                .then(function(){
+                    User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
+                        .populate({
+                            path: 'community',
+                            select: 'name _id',
+                        })
+                        .populate({
+                            path: 'requests',
+                            match: {status: {$ne: Data.getRequestStatus().canceled}},
+                            select: Data.getRequestData(),
+                            populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
+                        })
+                        .exec(function (err, user) {
+                            if (err){
+                                error.message = err;
+                                return res.json(error);
+                            }
+                            res.json(user);
+                        });
+                },
+                function(err){
+                    error.message = err;
+                    res.json(error);
+                });
         });
 });
 

@@ -1,6 +1,6 @@
 @import 'media.less';
 .account-page{
-	background-color: #ffffff;
+	background-color: #F9F6F1;
 	padding: 40px 0;
 	min-height: 75vh;
 	.content{
@@ -11,7 +11,7 @@
 		}
 	}
 	.inner-page {
-		background-color: #F9F6F1;
+		background-color: #ffffff;
 		.display-flex{
 			display: flex;
 			@media @mobile {
@@ -23,7 +23,7 @@
 			text-align: center;
 		}
 		.sidebar{
-			background-color: #ffffff;
+			background-color: #F9F6F1;
 			margin-bottom: 0;
 			padding-right: 0;
 			@media @mobile {
@@ -56,7 +56,7 @@
 			    }
 		    }
 		    &.active{
-		    	background-color: #F9F6F1;
+		    	background-color: #ffffff;
 		    }
 	    }
 	    .edit-profile{
@@ -388,9 +388,16 @@
 				position: relative;
 			}
 			.no-messages{
-				color: #484848;
-				padding: 35px;
-				font-size: 18px;
+				color: #848a91;
+				text-align: left;
+				padding: 15px;
+				font-weight: 300;
+				font-size: 24px;
+				.underline{
+					border-bottom: 2px solid rgba(14,93,124,0.5);
+					padding-top: 8px;
+					width: 10%;
+				}
 			}
 	    	.all-messages{
 				background-color: #ffffff;
@@ -627,6 +634,41 @@
 	    				}
 	    			}
 	    		}
+				.messages-pagination{
+					width: 100%;
+					text-align: center;
+					.pagination>li>a{
+						width: 35px;
+						height: 35px;
+						padding: 6px 2px;
+						border-radius: 50%;
+						background-color: transparent;
+						border-color: transparent;
+						color: #045F79;
+					}
+					.pagination>.disabled>a{
+						background-color: transparent;
+						border-color: transparent;
+						color: #045F79;
+					}
+					.pagination>.active>a{
+						color: #fff;
+						background-color: #045F79;
+						border-color: #045F79;
+					}
+					.pagination>li>a:hover{
+						background-color: rgba(232, 79, 47,0.4);
+					}
+					.pagination>.active>a:hover{
+						background-color: #045F79;
+					}
+					.pagination>li:last-child>a:hover{
+						background-color: transparent;
+					}
+					.pagination>li:first-child>a:hover{
+						background-color: transparent;
+					}
+				}
 	    	}
 			.message-profile{
 				@media @mobile {
@@ -746,7 +788,7 @@
 								float: right;
 								flex-direction: row-reverse;
 								.conversation{
-									background-color: #ffffff;
+									background-color: #edefed;
 								}
 								.photo{
 									margin: 5px 5px 0 0;
@@ -862,7 +904,7 @@
 	    }
 
       .favorite-cont {
-        height: 500px;
+	  	height: 70vh;
         overflow-y: scroll;
         overflow-x: hidden;
 
@@ -870,7 +912,7 @@
           .favorites-show {
             margin-top: 1%;
 			  .single-favorite{
-				  padding: 0;
+				  padding: 5px;
 			  }
           }
         }
@@ -1008,6 +1050,9 @@
 				font-size: 16px;
 				position: relative;
 				.form-group{
+					color: #484848;
+				}
+				.control-label{
 					color: #0E5D7C;
 				}
 				.statuses{
@@ -1031,9 +1076,7 @@
 			}
 			.request-status{
 				color: #484848;
-				&.confirmed{
-					color: #0E5D7C;
-				}
+				font-weight: 600;
 				&.confirm{
 					border-radius: 4px;
 					padding: 10px;
@@ -1057,6 +1100,18 @@
 				@media @mobile {
 					display: block;
 				}
+			}
+			.sub-title{
+				color: #616161;
+				font-size: 18px;
+				margin-bottom: 5px;
+				transition: 0.2s ease;
+				text-align: center;
+			}
+			.points{
+				width: 500px;
+				margin: auto;
+				padding: 20px 0;
 			}
 		}
 	}
@@ -1087,8 +1142,9 @@
 	}
 	.password-tab{
 		width: 50%;
-		padding: 0 10%;
-		margin: auto;
+		padding: 10px 10%;
+		margin: 20px auto;
+		box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
 		@media @tablet {
 			width: 75%;
 		}
@@ -1255,25 +1311,25 @@
 	}
 	::-webkit-scrollbar-corner       { display: none;}
 	::-webkit-resizer                {display: none; }
+	.tooltip{
+		&.left{
+			.tooltip-arrow{
+				border-left-color: #0E5D7C !important;
+			}
+		}
+		&.right{
+			.tooltip-arrow{
+				border-right-color: #0E5D7C !important;
+			}
+		}
+	}
+	.tooltip-inner {
+		background-color: #0E5D7C !important;
+		color: white !important;
+	}
 }
 .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
 	border-left-color: #0E5D7C !important;
-}
-.tooltip{
-	&.left{
-		.tooltip-arrow{
-			border-left-color: #0E5D7C !important;
-		}
-	}
-	&.right{
-		.tooltip-arrow{
-			border-right-color: #0E5D7C !important;
-		}
-	}
-}
-.tooltip-inner {
-	background-color: #0E5D7C !important;
-	color: white !important;
 }
 
 @keyframes drag {

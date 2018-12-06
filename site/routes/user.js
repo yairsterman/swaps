@@ -74,15 +74,22 @@ router.get('/getUsers', function(req, res, next) {
                 path: 'community',
                 select: 'name _id',
             })
+            .populate({
+                path: 'requests',
+                match: {status: Data.getRequestStatus().confirmed},
+                select: 'status checkin checkout'
+            })
             .exec(function (err, users) {
             if (err){
                 error.message = "error finding users";
                 res.json(error);
             }
             else{
-                let sortedUsers = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
+                let matches = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
+                let sortedUsers = matches.exactMatches.concat(matches.closeMatches);
                 let length = sortedUsers.length;
-                res.json({users: getPage(sortedUsers, page), total: length, page: page});
+                let exactMatchesLength = matches.exactMatches.length;
+                res.json({users: getPage(sortedUsers, page), total: length, page: page, exactMatchesLength:exactMatchesLength});
             }
         });
     });

@@ -59,14 +59,14 @@ var messages = {
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
-    request: function(user, swapper, dates, range, guests, message){
+    request: function(user, swapper, dates, range, guests, message, oneWay){
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">New Swap Request!</div></br>' +
-            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' from ' + swapper.city + ' has proposed to Swap with you ' + utils.getRangeText(range) + '. </div>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' from ' + swapper.city + ` has proposed ${oneWay?'a one way Swap at your home':'to Swap with you'} ` + utils.getRangeText(range) + '. </div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">From: <strong>' + new Date(dates.departure).toLocaleDateString("en-US",options) + '</strong></div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">To: <strong>' + new Date(dates.returnDate).toLocaleDateString("en-US",options) + '</strong></div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + swapper.firstName + ' will be arriving ' + (guests > 1?' with ' + (guests - 1) + ' other ' + (guests - 1 > 1?'guests':'guest'):' alone') +':</div>' +
             (message?'<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;"><br><div class="message" style="font-size: 18px; color:black;">"' + message +'"</div><br></div>':'') +
-            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Be sure to replay as soon as possible in order to allow " + swapper.firstName + ' to plan accordingly.' + "</div>" +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Be sure to reply as soon as possible in order to allow " + swapper.firstName + ' to plan accordingly.' + "</div>" +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES + swapper._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Accept Swap</div></a>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
@@ -200,8 +200,8 @@ var messages = {
     referralComplete: function(referrer, user){
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Referral complete </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + referrer.firstName + ', Thanks for referring your friend '+user.firstName+' to Swaps<br>' +
-            'we are glad to inform you that they have successfully posted their home!<br>' +
-            '10$ will be added to your credit.' +
+            'we are glad to inform you that ' + user.firstName + ' has successfully posted their home!<br>' +
+            '5 Swap Credits will be added to your credit.' +
             '<br><br>Keep on spreading the word!</div>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
@@ -209,15 +209,64 @@ var messages = {
     invitation: function(user, link){
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Invitation to Swaps </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hi there, your friend ' + user.firstName + ', invited you to join Swaps!<br>' +
-            'You’ll get $10 in Swap Credits when you post your home on Swaps.<br>' +
-            user.firstName + ' will also get $10 in Swap Credits.<br></div>' +
+            'You’ll get 5 Swap Credits when you post your home on Swaps.<br>' +
+            user.firstName + ' will also get 5 Swap Credits.<br></div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + link + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Join</div></a>' +
             '</div>' + SIGNITURE + STYLE + '</div>'
     },
 
     userInterested: function(email, city){
         return '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">New user left his email: ' + email + ', searched for: '+ city+'</div>'
-    }
+    },
+
+    /**
+     * Reminder emails
+     */
+
+    pendingRequestReminder: function(user, last){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Request Pending</div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You still haven\'t responded to ' + user.firstName + '\'s swap request.<br>Please take a moment to respond so ' + user.firstName + ' can prepare accordingly.<br><strong>' + (last?'This is your last chance to respond to this request':'If you do not respond to this request within a week, we will automatically cancel the request') + '.</strong></div>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES +  '/' + user._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Respond</div></a>' +
+            '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
+    },
+
+    acceptedRequestReminder: function(user, last){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Request Unconfirmed</div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">You haven\'t confirmed your swap with ' + user.firstName + '.<br>This swap can not take place until you confirm!<br>Please take a moment to confirm the swap.<br><strong>' + (last?'This is your last chance to confirm this swap':'If you do not confirm this swap within a week, we will automatically cancel the swap') + '.</strong></div>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES +  '/' + user._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Respond</div></a>' +
+            '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
+    },
+
+    confirmedRequestReminder: function(user, city, weeks, days, oneWay){
+        let title = '';
+        let text = '';
+        switch(weeks){
+            case 1:
+                title = 'Scheduled Swap next week';
+                text = `We are glad to remind you that you have a planned ${oneWay?'one way swap at your home':'swap in '+ city} coming up next week.` +
+                    'If there is anything important you think your guest should know, now is the time to inform them.' +
+                    'Here are some things you should make sure of when swapping homes: ' +
+                    '<br><strong>1.</strong> Does your guest know how to find the place?' +
+                    '<br><strong>2.</strong> Does your guest know how to enter your home? (e.i. keys, passwords)' +
+                    '<br><strong>3.</strong> Did you make sure all essentials and facilities you offered are still available? (WiFi working, towels and sheets will be clean)';
+                break;
+            case 0:
+                if(days == 3){
+                    title = 'Getting ready for your swap';
+                    text = `Only three days left! <br>We hope you already have everything ready for ${oneWay?'your guest':'your trip to ' + city}.` +
+                         `Make sure you\'ve exchanged all necessary details with your ${oneWay?'guest':'host'}`;
+                }
+                if(days == 1){
+                    title = 'Last Preparations for tomorrow';
+                    text = `Nothing left to say but wish you a pleasant experience with ${user.firstName} ${oneWay?'':'and a great trip to '+ city}!`;
+                }
+                break;
+        }
+        return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">'+ title + '</div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + text + '</div>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES +  '/' + user._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Message</div></a>' +
+            '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
+    },
 };
 
 

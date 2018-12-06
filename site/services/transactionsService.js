@@ -31,7 +31,7 @@ function chargeRequest(token, index, userId, payment, userEmail, expdate){
     let requestUrl = config.tranzilaRequestUrl;
     let perNight = Data.getSecurityDeposit()[payment.plan].night; // how much to pay per night based on plan
     let amount = perNight * payment.guests * payment.nights; // pay for each guests per night
-    amount = payment.discount?amount * ((100 - payment.discount) / 100):amount; // distract discount from final amount
+    amount = payment.discount?amount * ((100 - payment.discount) / 100):amount; // subtract discount from final amount
     let tranmode = Data.getTransactionMode().regular;
 
     //-------------
@@ -149,6 +149,7 @@ function refund(transaction, userId){
  * Create and save transaction in DB, then save transaction on user
  *
  * @param data - transaction data
+ * @param userId - the user invoking the transaction
  */
 function createAndSaveToUser (data, userId){
     let dfr = Q.defer();

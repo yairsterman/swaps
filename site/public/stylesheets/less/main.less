@@ -21,6 +21,7 @@
 @import "transactions.less";
 @import "blog.less";
 @import "invite.less";
+@import "points.less";
 
 @font-face {
   font-family: 'MavenPro';
@@ -172,6 +173,13 @@ input:-webkit-autofill{
       &.end-date {
         background-color: #e84f2f !important;
       }
+      &.confirmed{
+        background-color: #f1f1f1;
+        text-decoration: none;
+        opacity: 0.7;
+        border-radius: 0;
+        border: none;
+      }
     }
   }
   .table-condensed{
@@ -302,6 +310,34 @@ div{
   font-size: 14px;
   font-family: Lato;
   letter-spacing: 0.8px;
+  .tooltip-inner {
+    font-family: Lato;
+    padding: 6px 15px;
+    background-color: #fff!important;
+    color: #333 !important;
+    border: 1px solid #0e5d7c;
+    box-shadow: 4px 4px 16px -6px rgba(0,0,0,0.5);
+  }
+  &.left{
+    .tooltip-arrow{
+      border-left-color: #0E5D7C !important;
+    }
+  }
+  &.right{
+    .tooltip-arrow{
+      border-right-color: #0E5D7C !important;
+    }
+  }
+  &.top{
+    .tooltip-arrow{
+      border-left-color: #0E5D7C !important;
+    }
+  }
+  &.bottom{
+    .tooltip-arrow{
+      border-right-color: #0E5D7C !important;
+    }
+  }
 }
 
 .daterangepicker.ltr .ranges{

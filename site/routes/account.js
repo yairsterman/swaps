@@ -792,14 +792,14 @@ function completeReferral(user) {
             referrer.refers = [];
         }
         referrer.refers.push(user._id);
-        referrer.credit = typeof referrer.credit == 'undefined'?10:referrer.credit + 10;
+        referrer.credit = typeof referrer.credit == 'undefined'?10:referrer.credit + 5;
         referrer.save(function (err) {
             if (err) {
                 error.message = 'Failed to save user, please try again';
                 dfr.reject(error);
             }
             user.referredBy.complete = true;
-            user.credit = typeof user.credit == 'undefined'?10:user.credit + 10;
+            user.credit = typeof user.credit == 'undefined'?10:user.credit + 5;
             user.save(function (err) {
                 if (err) {
                     error.message = 'Failed to save user, please try again';

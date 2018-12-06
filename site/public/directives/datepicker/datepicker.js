@@ -53,13 +53,13 @@ swapsApp.directive('datepicker', function() {
                     element.daterangepicker({
                         autoApply: true,
                         opens: 'center',
-                        startDate: formatDate(new Date(scope.start), scope.localeFormat),
-                        endDate: formatDate(new Date(scope.end), scope.localeFormat),
+                        startDate: formatDate(new Date(scope.start), 'MM/DD/YYYY'),
+                        endDate: formatDate(new Date(scope.end), 'MM/DD/YYYY'),
                         // isInvalidDate: function(arg){
                         //     return isInvalidDateReadOnly(arg);
                         // },
                         locale: {
-                            format: scope.localeFormat,
+                            format: 'MM/DD/YYYY',
                         },
                         parentEl: '.' + scope.parentEl
                     });
@@ -310,7 +310,10 @@ swapsApp.directive('datepicker', function() {
 
                 var thisCompare = thisMonth +"/"+ thisDate +"/"+ thisYear;
                 // date is already confirmed in another swap
-                if(confirmedDates.includes(thisCompare) || new Date(thisCompare).getTime() < new Date(today).getTime()){
+                if(confirmedDates.includes(thisCompare)){
+                    return 'confirmed';
+                }
+                if(new Date(thisCompare).getTime() < new Date(today).getTime()){
                     return true;
                 }
                 // not in other users' traveling dates

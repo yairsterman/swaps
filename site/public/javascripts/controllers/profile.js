@@ -30,6 +30,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
 
     $scope.openRequest = function(){
         $scope.swap = {};
+        $scope.requestComplete = false;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/request/request.html',
@@ -41,6 +42,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
     }
 
     $scope.proposeSwap = function(){
+        $scope.requestComplete = false;
         if($rootScope.user && $rootScope.user._id){
             MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(){
                 $scope.requestComplete = true;
@@ -50,6 +52,11 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
                 $timeout(function(){
                     $scope.modelInstance.close();
                 },4000);
+            },function(err){
+                $scope.requestComplete = true;
+                $scope.processing = false;
+                $scope.completeText = 'Request Failed';
+                $scope.requestError = err.message;
             })
         }
         else{
@@ -434,6 +441,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.canSendRequest.status = false;
         setUpMarkers();
         checkRequestSent();
+        $scope.creditsAmount = Math.abs($scope.data.roomType[$scope.user.apptInfo.roomType].gain - $scope.data.roomType[$scope.profile.apptInfo.roomType].cost);
         $timeout(function(){
             $scope.ready = true;
         },1000);

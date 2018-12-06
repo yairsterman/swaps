@@ -15,8 +15,8 @@
                     <li class="single-link {{activeTab == 'set-swap-dates'?'active':''}}"><a href=""
                                                                                     ng-click="go('account/set-swap-dates')">Set Swap Dates</a>
                     </li>
-                    <li class="single-link {{activeTab == 'upcoming-swaps'?'active':''}}"><a href=""
-                                                                                    ng-click="go('account/upcoming-swaps')">Upcoming Swaps</a>
+                    <li class="single-link {{activeTab == 'credits'?'active':''}}"><a href=""
+                                                                                    ng-click="go('account/credits')">Swap Credits</a>
                     </li>
                     <li class="single-link {{activeTab == 'homes-i-like'?'active':''}}"><a href=""
                                                                                            ng-click="go('account/homes-i-like')">Homes
@@ -278,14 +278,18 @@
                     </div>
                 </div>
                 <div class="" ng-if="activeTab == 'messages'">
-                    <div ng-if="user.messages.length == 0">
-                        <div class="no-messages">You Have no messages</div>
+                    <div class="messages" ng-if="user.messages.length == 0">
+                        <div class="no-messages">You Have no messages
+                            <div class="underline">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="messages" ng-if="user.messages.length > 0">
                         <div class="all-messages" ng-if="!conversationIsOpen">
                             <div class="">
                                 <div class="messages-list"
-                                     ng-repeat="message in user.messages | orderBy: orderByDate | limitTo: 8 ">
+                                     ng-repeat="message in user.messages | orderBy: orderByDate | limitTo: messagePageEnd: messagePageStart">
                                     <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="openConversation(message)">
                                         <div class="">
                                             <a href="{{'profile/'+message.id}}" >
@@ -383,6 +387,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="messages-pagination" ng-if="user.messages.length > messagePageSize">
+                                <paging
+                                        page="messagePage"
+                                        page-size="messagePageSize"
+                                        total="messagesLength"
+                                        paging-action="getPage(page)"
+                                        show-prev-next="true"
+                                        adjacent="1"
+                                        text-next-class="glyphicon glyphicon-chevron-right"
+                                        text-prev-class="glyphicon glyphicon-chevron-left">
+                                </paging>
+                            </div>
                         </div>
                         <div class="message-profile" ng-if="conversationIsOpen">
                             <div class="loader-wrapper" ng-if="loading">
@@ -423,6 +439,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="dates-and-cancel" ng-if="getRequest(currentConversationId)">
+                                                    <div class="" ng-if="getRequest(currentConversationId).oneWay">
+                                                        <div class="request-dates">
+                                                            One way Swap by {{getRequest(currentConversationId).user1 == null?'you':getRequest(currentConversationId).user1.firstName}} at {{getRequest(currentConversationId).user1 == null?getRequest(currentConversationId).user2.firstName+"'s":'your'}} home
+                                                        </div>
+                                                    </div>
                                                     <div class="" ng-if="requestStatus(currentConversationId) == 0">
                                                         <div class="request-dates">
                                                             {{getRequest(currentConversationId).proposition.checkin | date: 'EEEE, MMMM d, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'EEEE, MMMM d, yyyy'}}
@@ -538,52 +559,92 @@
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'set-swap-dates'">
                     <div class="swap-title"></div>
-                    <swaps swaps="user.travelingInformation"></swaps>
+                    <swaps swaps="user.travelingInformation" ng-if="user._id"></swaps>
+                </div>
+                <div class="swaps-and-requests" ng-if="activeTab == 'credits'">
+                    <div class="points">
+                        <div class="sub-title">
+                            Swap nights are acquired with Swap Credits, The value of each Swapper’s home is calculated based on our easy-to-understand Swap Credit system.
+                            <br>
+                            <br>
+                            <a target="_blank"  href="/how-it-works#swapCredits"> Click here for more information about Swap Credit prices and Swap Credit Value System.</a>
+                        </div>
+                    </div>
+                    <points data="data" ng-if="data && user._id"></points>
                 </div>
                 <div class="swaps-and-requests" ng-if="activeTab == 'upcoming-swaps'">
+                    <div class="messages" ng-if="requests.length == 0">
+                        <div class="no-messages">You Have no upcoming swaps
+                            <div class="underline">
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="loader" ng-if="saving"></div>
                     <div class="swap-title" ng-hide="saving"></div>
-                    <div class="mg-0 row request-list" ng-repeat="request in requests" ng-hide="saving">
+                    <div class="mg-0 row request-list" ng-repeat="request in requests | filter: status == 2 || status == 3 | orderBy: 'checkin'" ng-hide="saving">
                         <swapper-home ng-if="request.user1" class="traveler-col col-sm-6 col-xs-12" traveler="request.user1"></swapper-home>
                         <swapper-home ng-if="request.user2" class="traveler-col col-sm-6 col-xs-12" traveler="request.user2"></swapper-home>
                         <div class="request-info col-sm-6 col-xs-12">
                             <div class="form-group row">
-                                <label class="col-sm-4 control-label">Check in:</label>
-                                <div class="col-sm-6">
-                                    {{request.checkin | date :'MMMM dd, yyyy'}}
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 control-label">Check out:</label>
-                                <div class="col-sm-6">
-                                    {{request.checkout | date :'MMMM dd, yyyy'}}
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 control-label">Request Status:</label>
+                                <label class="col-sm-4 control-label">Status:</label>
                                 <div class="statuses col-sm-6">
                                     <div class="request-status"
-                                         ng-if="request.status == 0 && request.user2">
-                                        Pending
+                                         ng-if="request.status == 4">
+                                        Completed
                                     </div>
-                                    <div class="request-status confirmed" ng-if="request.status == 1">Confirmed</div>
-                                    <div class="icon icon-check" ng-if="request.status == 1"></div>
-                                    <div class="request-status btn-primary confirm {{saving?'disabled':''}}"
-                                         ng-if="request.status == 0 && request.user1"
-                                         ng-click="confirmRequest(request)">Confirm
-                                    </div>
+                                    <div class="request-status confirmed" ng-if="request.status == 2">Confirmed</div>
                                 </div>
                             </div>
-                            <div class="">
-                                <div class="cancel" ng-click="cancelRequest(request)" ng-hide="saving">{{request.status == 0 && request.user1?'Decline':'Cancel'}} Request</div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Check in:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11">
+                                    {{request.checkin | date :'EEEE, MMMM dd, yyyy'}}
+                                </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Check out:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11">
+                                    {{request.checkout | date :'EEEE, MMMM dd, yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Type:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11" ng-if="!request.oneWay">
+                                    {{data.roomType[request.roomType1].displayName}} for {{data.roomType[request.roomType2].displayName}}
+                                </div>
+                                <div class="col-xs-11" ng-if="request.oneWay">
+                                    One way Swap at {{data.roomType[request.roomType2].displayName}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xs-12 control-label">Swap Credits:</label>
+                                <div class="col-xs-1 hidden-xs">
+                                </div>
+                                <div class="col-xs-11" ng-init="x = getCreditsAmount(request)">
+                                    {{x.notCharged?'No Swap Credits spent':x.gained?'You gained ' + x.totalPayment + ' Swap Credits':'You spent '+ x.totalPayment + ' Swap Credits'}}
+                                </div>
+                            </div>
+                            <!--<div class="">-->
+                                <!--<div class="cancel" ng-click="cancelRequest(request)" ng-hide="saving">{{request.status == 0 && request.user1?'Decline':'Cancel'}} Request</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
                 <div class="fav-tab" ng-if="activeTab == 'homes-i-like'">
 
-                    <div ng-if="user.favorites.length == 0">
-                        <div class="no-reviews">You have no saved homes</div>
+                    <div class="messages" ng-if="user.favorites.length == 0">
+                        <div class="no-messages">You have no saved homes
+                            <div class="underline">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="favorite-cont" ng-if="user.favorites.length > 0">
 
@@ -597,8 +658,12 @@
                     </div>
                 </div>
                 <div class="reviews-tab" ng-if="activeTab == 'reviews'">
-                    <div ng-if="user.reviews.length == 0">
-                        <div class="no-reviews">You Have no reviews</div>
+                    <div class="messages" ng-if="user.reviews.length == 0">
+                        <div class="no-messages">You Have no reviews
+                            <div class="underline">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="reviews-cont" ng-if="user.reviews.length > 0">
 
@@ -706,7 +771,7 @@
                 <!--</div>-->
             </div>
         </div>
-        <div class="row display-flex" style="background-color: #ffffff">
+        <div class="row display-flex" style="background-color: #f9f6f1">
             <div class="col-sm-3 col-xs-0">
 
             </div>

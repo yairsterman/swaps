@@ -76,6 +76,7 @@ const visibleUserData = {
         thingsToDo:true,
         allowViewHome:true,
         favorites:true,
+        matches: true,
         rating:true,
         radius:true,
         location:true,
@@ -84,9 +85,11 @@ const visibleUserData = {
         googleId: true,
         localId: true,
         community:true,
+        credit:true,
         verifications: true,
         facebookId: true,
         referredBy: true,
+        oneWaySwapDays: true
     }
 };
 
@@ -158,6 +161,7 @@ const requestType ={
     accept: 1,
     confirm: 2,
     cancel: 3,
+    creditPurchase: 4,
 };
 
 const visibleRequestData ={
@@ -169,7 +173,7 @@ const visibleRequestData ={
 
 const requestUserData = 'firstName image photos _id apptInfo country city reviews rating occupation';
 
-const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status';
+const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit roomType1 roomType2';
 
 
 const transactionType = {
@@ -186,6 +190,16 @@ const transactionMode = {
     rejected: 3,
 };
 
+const creditInfo = {
+    priceFor1: 2.5,
+    priceFor5: 10,
+    priceFor10: 17.5,
+    priceFor15: 22.5,
+    perNight: 5,
+    perNightOneWay: 10,
+    oneWayCommission: 5,
+};
+
 const genders =[
     {value:1, name:'Female'},
     {value:2, name:'Male'},
@@ -193,9 +207,9 @@ const genders =[
 ];
 
 const roomType =[
-    {id: 0, type: 'SingleRoom', displayName: 'Single Room'},
-    {id: 1, type: 'EntirePlace', displayName: 'Entire Place'},
-    {id: 2, type: 'SharedRoom', displayName: 'Shared Room'},
+    {id: 0, type: 'SharedRoom', displayName: 'Shared Room', cost: 10, gain: 5},
+    {id: 1, type: 'SingleRoom', displayName: 'Single Room', cost: 15, gain: 10},
+    {id: 2, type: 'EntirePlace', displayName: 'Entire Place', cost: 20, gain: 15},
 ];
 
 const securityDeposit =[
@@ -276,7 +290,8 @@ var dataForSite = {
     label: label,
     flexibleDates: flexibleDates,
     weekendEnd: weekendEnd,
-    weekendStart: weekendStart
+    weekendStart: weekendStart,
+    creditInfo: creditInfo,
 };
 
 data.getAmenities = function(){
@@ -358,6 +373,10 @@ data.getFlexibleDates = function(){
 
 data.getLabel = function(){
     return label;
+};
+
+data.getCreditInfo = function(){
+    return creditInfo;
 };
 
 

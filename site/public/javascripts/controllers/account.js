@@ -12,6 +12,10 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     $scope.numOfFiles = 0;
     $scope.edit = {};
 
+    $scope.messagePage = 1;
+    $scope.messagePageStart = 0;
+    $scope.messagePageSize = 8;
+    $scope.messagePageEnd = 8;
 
     $scope.select = {};
     $scope.passwords = {};
@@ -153,6 +157,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         })
         $scope.modelInstance.closed.then(function(){
             $scope.user = $rootScope.user;
+            $scope.confirmation = false;
             scrollMessagesToTop();
             updateUser();
         },function(){
@@ -388,6 +393,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         $scope.saving = true;
         $scope.swap = {};
+        $scope.requestComplete = false;
         $scope.modelInstance = $uibModal.open({
             animation: true,
             templateUrl: '../../directives/request/request.html',
@@ -404,6 +410,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.proposeSwap = function(){
+        $scope.requestComplete = false;
         MessageService.sendRequest($scope.profile._id, $scope.swap).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
@@ -415,6 +422,11 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             $timeout(function(){
                 $scope.modelInstance.close();
             },4000);
+        },function(err){
+            $scope.requestComplete = true;
+            $scope.processing = false;
+            $scope.completeText = 'Request Failed';
+            $scope.requestError = err.message;
         })
     }
 
@@ -467,27 +479,24 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         }
         $scope.swap.from = request.checkin;
         $scope.swap.to = request.checkout;
-        UsersService.getProfile(id).then(function(data){
-            $scope.profile = data;
-            $scope.request = request;
-            $scope.requestId = request._id;
-            $scope.chooseDates = false;
-            $scope.confirmation = true;
-            $scope.modelInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '../../directives/request/request.html',
-                size: 'sm',
-                windowClass: 'request-modal',
-                controller: 'requestController',
-                scope: $scope
-            });
-            $scope.modelInstance.closed.then(function(){
-                $scope.user = $rootScope.user;
-                updateUser();
-            },function(){
-                $scope.saving = false;
-            });
-        })
+        $scope.request = request;
+        $scope.requestId = request._id;
+        $scope.chooseDates = false;
+        $scope.confirmation = true;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/request/request.html',
+            size: 'sm',
+            windowClass: 'request-modal',
+            controller: 'requestController',
+            scope: $scope
+        });
+        $scope.modelInstance.closed.then(function(){
+            $scope.user = $rootScope.user;
+            updateUser();
+        },function(){
+            $scope.saving = false;
+        });
     }
 
     $scope.requestStatus = function(id){
@@ -560,6 +569,23 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         });
     }
 
+    $scope.getCreditsAmount = function(request){
+        var paymentPerNight = request.user1?request.oneWay?0:$scope.data.roomType[request.roomType1].cost:$scope.data.roomType[request.roomType2].cost;
+        var gainPerNight = request.user1?$scope.data.roomType[request.roomType2].gain:request.oneWay?0:$scope.data.roomType[request.roomType1].gain;
+        var totalPayment = (paymentPerNight - gainPerNight) * request.nights;
+        var res = {};
+        res.totalPayment = Math.abs(totalPayment);
+        res.gained = totalPayment < 0;
+        res.notCharged = totalPayment == 0;
+        return res;
+    };``
+
+    $scope.getPage = function(page){
+        $scope.messagePageStart = (page - 1) * $scope.messagePageSize;
+        // $scope.messagePage = page;
+        $scope.messagePageEnd = ($scope.messagePageSize * page);
+    }
+
     $scope.trustAsHtml = function(html) {
         return $sce.trustAsHtml(html);
     }
@@ -580,6 +606,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
         $scope.focusPlan=false;
         $scope.edit = angular.copy($scope.user);
         $scope.requests = $scope.user.requests;
+        $scope.messagesLength = $scope.user.messages.length;
         $scope.apptInfo = $scope.edit.apptInfo ? $scope.edit.apptInfo : {};
         if($scope.currentConversationId){
             $scope.currentConversation = $scope.findMessage($scope.currentConversationId);

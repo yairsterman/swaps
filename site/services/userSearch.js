@@ -13,6 +13,9 @@ const WEEK = 1000 * 60 * 60 * 24 * 7;
 // Filter all returned users by the given filter params
 module.exports.sortUsers = function (req, users, options){
 
+    let exactMatches = [];
+    let closeMatches = [];
+
     let dates = {};
     let when = req.query.when ? req.query.when.split('-') : null;
     dates.departure = when ? moment.utc(when[0].trim(), "MM/DD/YYYY").valueOf() : null;
@@ -27,10 +30,25 @@ module.exports.sortUsers = function (req, users, options){
         // filterRooms(user, query.room);
         // filterAmenities(user, query.amenities);
 
+        if(user.relevance >= 100){
+            exactMatches.push(user);
+        }
+        else{
+            closeMatches.push(user);
+        }
+
     });
-    return users.sort(function(a, b){
+
+    exactMatches.sort(function(a, b){
         return b.relevance - a.relevance;
     });
+
+    closeMatches.sort(function(a, b){
+        return b.relevance - a.relevance;
+    });
+
+
+    return {exactMatches, closeMatches};
 };
 
 module.exports.findMatchingTravelers = function (users){
@@ -76,17 +94,26 @@ function findMatches(user, users){
     // });
 }
 
-function matchPlaces(user, geo){
+function matchPlaces(user, geo, to){
     if(!geo){
-        return 0.4;
+        if(to){ // if checking the travel information
+            return 0.4;
+        }
+        return 1;
     }
     if(user.city && geo.city && user.city.toLowerCase() == geo.city.toLowerCase()){
         return 1 // 100% match
     }
     if(user.region && geo.region && user.region.toLowerCase() == geo.region.toLowerCase()){
+        if(!geo.city){ // no city specified
+            return 1
+        }
         return 0.5 // 50% match
     }
     if(user.country && geo.country && user.country.toLowerCase() == geo.country.toLowerCase()){
+        if(!geo.city && !geo.region){ // no city specified are region
+            return 1
+        }
         return 0.3 // 30% match
     }
     return 0;
@@ -108,18 +135,21 @@ function getHighestTravelScore(user, geo, searchDates, req){
     if(!req.user){
         let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.8;
         placesAndDatesRelevance = (from * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
+        if(from === 1){
+            placesAndDatesRelevance += 100 // add 100 points if cities are exact match
+        }
         return placesAndDatesRelevance;
     }
 
     // if the user has no traveling information then return only
     // the places relevance percent of total places and dates relevance
-    if(!user.travelingInformation || user.travelingInformation.length == 0){
+    if((!user.travelingInformation || user.travelingInformation.length == 0) && !user.allowViewHome){
         return (from * fromRelevance * placesRelevancePercent) / 100  * placesAndDatesRelevance;
     }
     user.travelingInformation.forEach(travel => {
 
         // match travel destinations to the searching user's address
-        let to = matchPlaces(req.user, travel.destination.country?travel.destination:null);
+        let to = matchPlaces(req.user, travel.destination.country?travel.destination:null, true);
 
         let travelDates = {
             departure: travel.departure,
@@ -150,6 +180,10 @@ function getHighestTravelScore(user, geo, searchDates, req){
             score = finalTravelRelevance;
         }
     });
+
+    if(from === 1){
+        score += 100 // add 100 points if cities are exact match
+    }
 
     return score;
 }

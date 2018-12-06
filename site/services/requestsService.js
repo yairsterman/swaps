@@ -24,11 +24,16 @@ let error = {
  * Send and save a new swap request on both of the users
  *
  * @param params - all relevant information for the request
+ * @param user - the requesting user
  */
-module.exports.sendRequest = function(params) {
+module.exports.sendRequest = function(params, user) {
     let senderId = params.user1;
     let recipientId = params.user2;
     let guests = params.guests;
+    let oneWay = params.oneWay;
+    let roomType = user.apptInfo.roomType;
+    let city = user.city;
+    let country = user.country;
     let now = Date.now();
     let departure;
     let returnDate;
@@ -52,7 +57,18 @@ module.exports.sendRequest = function(params) {
         }
         else {
             error.message = "No dates specified";
-            return dfr.reject(error);
+            throw (error);
+        }
+        let maxNights = nights;
+        if(range.rangeLabel == 'Weekends'){
+            maxNights = 4;
+        }
+        if(range.rangeLabel == 'Date Range'){
+            maxNights = range.endRange;
+        }
+        if(util.notEnoughOneWaySwapDays(user, maxNights, oneWay)){
+            error.message = `You have exceeded the amount of one way swap nights, you must let users swap at your home as well`;
+            throw (error);
         }
         checkAvailability(senderId, recipientId, departure, returnDate)
         .then(function () {
@@ -66,7 +82,11 @@ module.exports.sendRequest = function(params) {
                 endRange: range.endRange,
                 status: Data.getRequestStatus().pending,
                 guests: guests,
+                roomType: roomType,
                 nights: nights,
+                oneWay: oneWay,
+                city: city,
+                country: country,
                 plan: params.plan
             };
             return saveRequest(requestDetails);
@@ -75,11 +95,11 @@ module.exports.sendRequest = function(params) {
             email.sendMail([recipient.email], 'New Swap Request!', emailMessages.request(recipient, sender, {
                 departure: departure,
                 returnDate: returnDate
-            }, range, guests, params.message));
+            }, range, guests, params.message, oneWay));
 
             email.sendMail([sender.email], 'Swap Request Sent', emailMessages.requestSent(sender, recipient));
 
-            message = 'SWAP REQUEST:<br>' + sender.firstName + ' proposed to swap ' + util.getRangeText(range) + '<br>' +
+            message = 'SWAP REQUEST:<br>' + sender.firstName + ` proposed ${oneWay?'a one way swap at '+recipient.firstName+'\'s home ':'to swap'} ` + util.getRangeText(range) + '<br>' +
                 'From: ' + dates[0] + '<br>' +
                 'To: ' + dates[1] + '<br>';
             newMessage = {
@@ -179,7 +199,7 @@ module.exports.accept = function(params, request) {
     return dfr.promise;
 };
 
-module.exports.confirm = function(params) {
+module.exports.confirm = function(params, request) {
 
     let dfr = Q.defer();
     let recipient = {};
@@ -194,16 +214,25 @@ module.exports.confirm = function(params) {
             message: 'Swap request confirmed'
         };
 
-        chargeUsers(params).then(function (results) {
-            return confirmRequest(results);
+        if(util.notEnoughOneWaySwapDays(request.user1, request.nights, request.oneWay)){
+            error.message = `You have exceeded the amount of one way swap nights, you must let users swap at your home as well`;
+            throw (error);
+        }
+
+        chargeCredits(request).then(function () {
+            let info = {
+                request: request,
+                verifyTransactionUser1: params.transactionId
+            };
+            return confirmRequest(info);
         }).then(function (result) {
             sender = result.sender;
             recipient = result.recipient;
             dates = result.dates;
-            return updateUserTravelInfo(sender, dates);
+            return updateUserTravelInfo(sender, dates, request);
         })
         .then(function () {
-            return updateUserTravelInfo(recipient, dates);
+            return updateUserTravelInfo(recipient, dates, request);
         })
         .then(function () {
             return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
@@ -246,8 +275,12 @@ function saveRequest(requestDetails){
             checkout : requestDetails.returnDate,
         },
         guests1: requestDetails.guests,
+        roomType1: requestDetails.roomType,
         nights: requestDetails.nights,
         plan: requestDetails.plan,
+        oneWay: requestDetails.oneWay,
+        city1: requestDetails.city,
+        country1: requestDetails.country,
         status: requestDetails.status
     });
     let sender = {};
@@ -312,16 +345,24 @@ function acceptRequest(params, request){
         }
         else {
             error.message = "No dates specified";
-            return dfr.reject(error);
+            throw (error);
+        }
+        if(!request.oneWay && request.user2.credit < util.getTotalPaymentAmount(request.roomType1, request.user2.apptInfo.roomType, nights)){
+            error.message = `You do not have enough Swap Credits to trade in for this swap`;
+            throw (error);
         }
         checkAvailability(request.user1, request.user2, departure, returnDate)
             .then(function () {
                 let set = {
                     guests2: guests,
+                    roomType2: request.user2.apptInfo.roomType,
                     verifyTransactionUser2: params.transactionId, // user2 is accepting
                     checkin: departure,
                     checkout : returnDate,
                     nights : nights,
+                    deposit : params.deposit,
+                    city2 : request.user2.city,
+                    country2 : request.user2.country,
                     status: Data.getRequestStatus().accepted
                 };
 
@@ -362,15 +403,15 @@ function acceptRequest(params, request){
  */
 function confirmRequest(info){
     let deferd = Q.defer();
-
+    let request = info.request;
     let set = {
         verifyTransactionUser1: info.verifyTransactionUser1,
-        transactionUser1: info.transactionUser1,
-        transactionUser2: info.transactionUser2,
-        status: Data.getRequestStatus().confirmed
+        status: Data.getRequestStatus().confirmed,
+        oneWaySwapDays1: request.oneWay?request.nights:request.user1.oneWaySwapDays < request.nights?request.user1.oneWaySwapDays:request.nights,
+        oneWaySwapDays2: request.user2.oneWaySwapDays < request.nights?request.user2.oneWaySwapDays:request.nights,
     };
 
-    Request.findOneAndUpdate({_id: info.requestId}, {$set: set})
+    Request.findOneAndUpdate({_id: request._id}, {$set: set})
         // populate both users to get their information
         .populate({
             path: 'user1'
@@ -411,17 +452,25 @@ function confirmRequest(info){
 
 /**
  * Update the travel information of the user according to the confirmed
- * travel dates
+ * travel dates. update the amount of one way swap nights used as well.
  *
  * @param user - user to update
  * @param dates - confirmed dates
+ * @param request - the request being confirmed
  */
-function updateUserTravelInfo(user, dates){
+function updateUserTravelInfo(user, dates, request){
     let travelingInformation = updateDates(user.travelingInformation, dates.departure, dates.returnDate);
 
     let toUpdate = {
         travelingInformation: travelingInformation,
     };
+
+    if(request.oneWay && user._id.toString() === request.user1._id.toString()){
+        toUpdate.oneWaySwapDays = user.oneWaySwapDays + request.nights;
+    }
+    else{
+        toUpdate.oneWaySwapDays = user.oneWaySwapDays - request.nights < 0?0:user.oneWaySwapDays - request.nights;
+    }
     return updateUser(user, toUpdate);
 }
 
@@ -429,11 +478,14 @@ function updateUserTravelInfo(user, dates){
  * Remove and update user's canceled requests
  *
  * @param user - user to update
- * @param requestId - requestId to remove from requests
+ * @param request - request to remove from user's requests list
  */
-function removeCanceledRequest(user, requestId){
+function removeCanceledRequest(user, request){
     let dfr = Q.defer();
-    User.update({_id: user._id}, {$pull: {requests: requestId}})
+    let toUpdate = {
+        oneWaySwapDays: (user._id.toString() === request.user1._id.toString())?request.oneWay?user.oneWaySwapDays - request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays2
+    }
+    User.update({_id: user._id}, {$pull: {requests: request._id}, $set: toUpdate})
         .then(function (updated) {
             if (!updated.ok) {
                 dfr.reject('User not updated');
@@ -469,8 +521,11 @@ function updateUser(user, toUpdate){
  * Cancel or decline a swap request
  *
  * @param requestId - the request ID
+ * @param userId - the user ID canceling pr declining the request
+ * @param message - message to be sent along with the cancellation
+ * @param automatic - indicates whether the cancellation is automatic by the monitoring system
  */
-module.exports.cancelRequest = function(requestId, userId, message){
+module.exports.cancelRequest = function(requestId, userId, message, automatic){
     let defer = Q.defer();
 
     let user1 = {};
@@ -480,6 +535,7 @@ module.exports.cancelRequest = function(requestId, userId, message){
     let declined = false;
     let sender;
     let recipient;
+    let request;
     let now = moment.utc().valueOf();
     let newMessage = {
         date: now,
@@ -488,16 +544,20 @@ module.exports.cancelRequest = function(requestId, userId, message){
     };
 
     try{
-        getConfirmedRequest(requestId).then(function(request){
+        getConfirmedRequest(requestId).then(function(_request){
+            request = _request;
             user1 = request.user1;
             user2 = request.user2;
-            transaction1 = request.transactionUser1;
-            transaction2 = request.transactionUser1;
+            // transaction1 = request.transactionUser1;
+            // transaction2 = request.transactionUser1;
             // if status is pending and the call came from user2 then send decline message
-            declined = request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
+            declined = !automatic && request.status == Data.getRequestStatus().pending && userId.toString() == (user2._id).toString();
 
-            //refund transactions
-            return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
+            // refund transactions
+            // return sendRefundTransactions(transaction1, transaction2, user1, user2, declined);
+
+            // refund credits
+            return refundCredits(user1, user2, request, declined);
         })
         .then(function(){
             //update request
@@ -509,11 +569,11 @@ module.exports.cancelRequest = function(requestId, userId, message){
             }
             // update users requests
             else {
-                return removeCanceledRequest(user1, requestId);
+                return removeCanceledRequest(user1, request);
             }
         })
         .then(function(){
-            return removeCanceledRequest(user2, requestId);
+            return removeCanceledRequest(user2, request);
         })
         .then(function () {
             // send messages about the cancellation
@@ -539,6 +599,11 @@ module.exports.cancelRequest = function(requestId, userId, message){
                 message: message
             };
 
+            if(automatic){
+                newMessage.message = 'This swap has been canceled do to no response.';
+                newMessage.isInfo = true;
+            }
+
             return MessageService.saveMessage(sender._id, recipient._id, sender._id, newMessage, false);
         })
         .then(function () {
@@ -550,8 +615,14 @@ module.exports.cancelRequest = function(requestId, userId, message){
                 email.sendMail([user1.email],'Swap Declined', emailMessages.declined(user1, user2, message));
             }
             else{
-                email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
-                email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                if(automatic){
+                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender));
+                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceled(sender, recipient));
+                }
+                else{
+                    email.sendMail([recipient.email],'Swap Canceled', emailMessages.canceled(recipient, sender, message));
+                    email.sendMail([sender.email],'Swap Canceled', emailMessages.canceledSent(sender, recipient));
+                }
             }
         },function(err){
             error.message = err;
@@ -655,6 +726,126 @@ function chargeUsers(params){
 }
 
 /**
+ * Return the credits amount to what it was before the request confirmation,
+ * meaning adding the amount of credits that was taken off if the request was
+ * a regular swap and decrease the amount for user2 if the request was a one
+ * way swap.
+ *
+ * @param user1 - first user
+ * @param user2 - second user
+ * @param request - the request
+ * @param declined - is request declined
+ */
+function refundCredits(user1, user2, request, declined){
+    let dfr = Q.defer();
+    if(declined || request.status != Data.getRequestStatus().confirmed){
+        dfr.resolve();
+        return dfr.promise;
+    }
+
+    let amountUser1;
+    let amountUser2;
+
+    if(request.oneWay){
+        amountUser1 = util.getTotalPaymentAmount(request.roomType2, request.roomType1, request.nights, true);
+        amountUser2 = util.getTotalPaymentAmount(request.roomType1, request.roomType2, request.nights, true, true);
+    }
+    else{
+        amountUser1 = util.getTotalPaymentAmount(request.roomType2, request.roomType1, request.nights);
+        amountUser2 = util.getTotalPaymentAmount(request.roomType1, request.roomType2, request.nights);
+    }
+
+    updateCredits(user1._id, amountUser1)
+    .then(function(){
+        updateCredits(user2._id, amountUser2)
+    })
+    .then(function(){
+        dfr.resolve();
+    },function(err){
+        dfr.reject(err);
+    });
+
+    return dfr.promise;
+}
+
+/**
+ * Charge the users credits and subtract the total from their current amount
+ *
+ * @param request
+ */
+function chargeCredits(request){
+    let dfr = Q.defer();
+
+    let user1 = request.user1;
+    let user2 = request.user2;
+    let nights = request.nights;
+    let amount;
+
+    if(request.oneWay){
+        if(user1.credit < util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights, true)){
+            dfr.reject(`Insufficient points for ${user1.firstName}`);
+            return dfr.promise;
+        }
+    }
+    else{
+        if(user1.credit < util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights)){
+            dfr.reject(`Insufficient points for ${user1.firstName}`);
+            return dfr.promise;
+        }
+        if(user2.credit < util.getTotalPaymentAmount(request.roomType1, request.roomType2, nights)){
+            dfr.reject(`Insufficient points for ${user2.firstName}`);
+            return dfr.promise;
+        }
+    }
+
+    checkAvailability(user1._id, user2._id, request.checkin, request.checkout)
+        .then(function() {
+            if(request.oneWay){ // one way swap, only user1 is staying at user2
+                amount = -(util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights, true));
+            }
+            else{
+                amount = -(util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights));
+            }
+            return updateCredits(user1._id, amount);
+        })
+        .then(function(){
+            if(request.oneWay){ // user2 gets what's left from payment after the commission
+                amount = -(util.getTotalPaymentAmount(request.roomType1, request.roomType2, nights, true, true));
+            }
+            else{
+                amount = -(util.getTotalPaymentAmount(request.roomType1, request.roomType2, nights));
+            }
+            return updateCredits(user2._id, amount);
+        })
+        .then(function(){
+            dfr.resolve();
+        },function(err){
+            dfr.reject(err);
+        });
+    return dfr.promise;
+}
+
+/**
+ * Update the user's credit balance
+ *
+ * @param id - user ID
+ * @param amount - the amount to increment the credits by (could be negative)
+ */
+function updateCredits(id, amount){
+    let dfr = Q.defer();
+    User.update({_id: id}, {$inc: {credit: amount}})
+        .then(function (updated) {
+            if (!updated.ok) {
+                dfr.reject('User not updated');
+            }
+            else {
+                dfr.resolve();
+            }
+        });
+    return dfr.promise;
+}
+
+/**
  * Get a request that has been accepted.
  *
  * @param id - request ID
@@ -668,12 +859,12 @@ function getRequest(id){
         .populate({
             path: 'user1',
             populate: {path: 'community'},
-            select: '_id community email'
+            select: '_id community email credit'
         })
         .populate({
             path: 'user2',
             populate: {path: 'community'},
-            select: '_id community email'
+            select: '_id community email credit'
         })
         .exec(function (err, request) {
             if (err || !request) {
@@ -691,7 +882,7 @@ function getRequest(id){
 }
 
 /**
- * Get a request that is has been confirmed.
+ * Get a request that is confirmed.
  *
  * @param id - request ID
  */
@@ -699,12 +890,12 @@ function getConfirmedRequest(id){
     let dfr = Q.defer();
     //populate transactions in order to cancel them
     Request.findOne({_id: id})
-        .populate({
-            path: 'transactionUser1',
-        })
-        .populate({
-            path: 'transactionUser2',
-        })
+        // .populate({
+        //     path: 'transactionUser1',
+        // })
+        // .populate({
+        //     path: 'transactionUser2',
+        // })
         .populate({
             path: 'user1',
         })

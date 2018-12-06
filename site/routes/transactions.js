@@ -1,26 +1,27 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var User = require('../models/User.js');
-var Q = require('q');
-var request = require('request');
-var Request = require('../models/Request.js');
-var email = require('../services/email.js');
-var transactionsService = require('../services/transactionsService.js');
-var requestsService = require('../services/requestsService.js');
-var Data = require('../user_data/data.js');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let User = require('../models/User.js');
+let Q = require('q');
+let request = require('request');
+let Request = require('../models/Request.js');
+let email = require('../services/email.js');
+let transactionsService = require('../services/transactionsService.js');
+let creditService = require('../services/creditService.js');
+let requestsService = require('../services/requestsService.js');
+let Data = require('../user_data/data.js');
 
-var error = {
+let error = {
     error: true,
     message: ''
 };
 
 router.post('/notify', function(req, res, next) {
-    var recipientId = req.body.recipientId;
-    var sender = req.user;
-    var message = req.body.message;
-    var now = Date.now();
-    var newMessage = {
+    let recipientId = req.body.recipientId;
+    let sender = req.user;
+    let message = req.body.message;
+    let now = Date.now();
+    let newMessage = {
         date: now,
         isRequest: false,
         message: message
@@ -30,63 +31,80 @@ router.post('/notify', function(req, res, next) {
 
 router.post('/success', function(req, res, next) {
 
-    let requestDetails = {
-        dates: req.body.dates,
-        guests: req.body.guests,
-        message: req.body.message,
-        plan: req.body.plan,
-        requestId: req.body.requestId
-    };
+    if(parseInt(req.body.requestType) == Data.getRequestType().creditPurchase){
+        let params = req.body;
+        params.type = Data.getTransactionType().regular;
+        transactionsService.createAndSaveToUser(params, req.body.user1) // save transaction in db and save id to user.transactions
+            .then(function ({transactionId, token}){
+                let amount = creditService.calculateCreditAmount(req.body.sum); // get the exact amount of credits purchased
+                // let amount = 12; // TODO: for testing, REMOVE!!
+                return creditService.purchaseCredits(req.body.user1, amount);
+            })
+            .then(function (){
+                res.redirect('/success');
+            },function (err){
+                console.log(err);
+                res.redirect('/fail?'+err);
+            });
+    }
+    else{
+        let requestDetails = {
+            dates: req.body.dates,
+            guests: req.body.guests,
+            message: req.body.message,
+            plan: req.body.plan,
+            deposit: true,
+            requestId: req.body.requestId
+        };
 
-    let params = req.body;
-    let expdate = params.expmonth + params.expyear; // save expiration date in case of confirmation
-    params.type = Data.getTransactionType().verify;
-    Request.findOne({_id: req.body.requestId})
+        let params = req.body;
+        let expdate = params.expmonth + params.expyear; // save expiration date in case of confirmation
+        params.type = Data.getTransactionType().verify;
+        Request.findOne({_id: req.body.requestId})
         // populate both users to get their information
-        .populate({
-            path: 'user1',
-            select: '_id email firstName city'
-        })
-        .populate({
-            path: 'user2',
-            select: '_id email firstName city'
-        })
-        .exec(function (err, request) {
-            if (err || !request) {
-                let msg = err;
-                return res.redirect('/fail');
-            }
-            let actionUser = {};
-            if(parseInt(req.body.requestType) == Data.getRequestType().accept){
-                actionUser = request.user2._id;
-            }
-            else{
-                actionUser = request.user1._id;
-            }
-            transactionsService.createAndSaveToUser(params, actionUser) // save transaction in db and save id to user.transactions
-                .then(function ({transactionId, token}){
-                    requestDetails.transactionId = transactionId;
-                    //see whether this is a request acceptance or a confirmation
-                    if(parseInt(req.body.requestType) == Data.getRequestType().accept){
-                        return requestsService.accept(requestDetails, request);
-                    }
-                    else{
-                        requestDetails.token = token;
-                        requestDetails.expdate = expdate;
-                        return requestsService.confirm(requestDetails);
-                    }
-                })
-                .then(function (){
-                    res.redirect('/success');
-                },function (err){
-                    console.log(err);
-                    res.redirect('/fail');
-                });
-        });
+            .populate({
+                path: 'user1',
+            })
+            .populate({
+                path: 'user2',
+            })
+            .exec(function (err, request) {
+                if (err || !request) {
+                    let msg = err;
+                    return res.redirect('/fail?'+err);
+                }
+                let actionUser = {};
+                if(parseInt(req.body.requestType) == Data.getRequestType().accept){
+                    actionUser = request.user2._id;
+                }
+                else{
+                    actionUser = request.user1._id;
+                }
+                transactionsService.createAndSaveToUser(params, actionUser) // save transaction in db and save id to user.transactions
+                    .then(function ({transactionId, token}){
+                        requestDetails.transactionId = transactionId;
+                        //see whether this is a request acceptance or a confirmation
+                        if(parseInt(req.body.requestType) == Data.getRequestType().accept){
+                            return requestsService.accept(requestDetails, request);
+                        }
+                        else{
+                            requestDetails.token = token;
+                            requestDetails.expdate = expdate;
+                            return requestsService.confirm(requestDetails, request);
+                        }
+                    })
+                    .then(function (){
+                        res.redirect('/success');
+                    },function (err){
+                        console.log(err);
+                        res.redirect('/fail?'+err);
+                    });
+            });
+    }
 });
 
 router.post('/fail', function(req, res, next) {
-    res.redirect('/fail');
+    res.redirect('/fail?fail');
 });
 
 
