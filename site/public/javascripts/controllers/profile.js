@@ -441,6 +441,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.canSendRequest.status = false;
         setUpMarkers();
         checkRequestSent();
+        $scope.creditsAmount = Math.abs($scope.data.roomType[$scope.user.apptInfo.roomType].gain - $scope.data.roomType[$scope.profile.apptInfo.roomType].cost);
         $timeout(function(){
             $scope.ready = true;
         },1000);

@@ -310,6 +310,34 @@ div{
   font-size: 14px;
   font-family: Lato;
   letter-spacing: 0.8px;
+  .tooltip-inner {
+    font-family: Lato;
+    padding: 6px 15px;
+    background-color: #fff!important;
+    color: #333 !important;
+    border: 1px solid #0e5d7c;
+    box-shadow: 4px 4px 16px -6px rgba(0,0,0,0.5);
+  }
+  &.left{
+    .tooltip-arrow{
+      border-left-color: #0E5D7C !important;
+    }
+  }
+  &.right{
+    .tooltip-arrow{
+      border-right-color: #0E5D7C !important;
+    }
+  }
+  &.top{
+    .tooltip-arrow{
+      border-left-color: #0E5D7C !important;
+    }
+  }
+  &.bottom{
+    .tooltip-arrow{
+      border-right-color: #0E5D7C !important;
+    }
+  }
 }
 
 .daterangepicker.ltr .ranges{

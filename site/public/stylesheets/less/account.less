@@ -1311,25 +1311,25 @@
 	}
 	::-webkit-scrollbar-corner       { display: none;}
 	::-webkit-resizer                {display: none; }
+	.tooltip{
+		&.left{
+			.tooltip-arrow{
+				border-left-color: #0E5D7C !important;
+			}
+		}
+		&.right{
+			.tooltip-arrow{
+				border-right-color: #0E5D7C !important;
+			}
+		}
+	}
+	.tooltip-inner {
+		background-color: #0E5D7C !important;
+		color: white !important;
+	}
 }
 .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
 	border-left-color: #0E5D7C !important;
-}
-.tooltip{
-	&.left{
-		.tooltip-arrow{
-			border-left-color: #0E5D7C !important;
-		}
-	}
-	&.right{
-		.tooltip-arrow{
-			border-right-color: #0E5D7C !important;
-		}
-	}
-}
-.tooltip-inner {
-	background-color: #0E5D7C !important;
-	color: white !important;
 }
 
 @keyframes drag {

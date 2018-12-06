@@ -135,6 +135,9 @@ function getHighestTravelScore(user, geo, searchDates, req){
     if(!req.user){
         let travelRelevance = (user.travelingInformation && user.travelingInformation.length > 0)?1:0.8;
         placesAndDatesRelevance = (from * placesRelevancePercent) / 100  * placesAndDatesRelevance * travelRelevance;
+        if(from === 1){
+            placesAndDatesRelevance += 100 // add 100 points if cities are exact match
+        }
         return placesAndDatesRelevance;
     }
 

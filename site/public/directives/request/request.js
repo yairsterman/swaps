@@ -74,48 +74,49 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     };
 
     $scope.goToPayment = function(){
-        if($scope.hasDeposit || ($scope.confirmation && $scope.request.deposit)){
-            $scope.payment = true;
-        }
-        else{
-            $scope.processing = true;
-            var action = MessageService.confirmRequest;
-            var data = {};
-
-            if($scope.accepting){
-                action = MessageService.acceptRequest;
-                data = {
-                    requestId: $scope.accepting._id,
-                    dates: $scope.dates,
-                    guests: $scope.swap.guests,
-                    message: $scope.send.message
-                }
-            }
-            else if($scope.request){
-                action = MessageService.confirmRequest;
-                data = {
-                    requestId: $scope.request._id,
-                }
-            }
-            else{
-                return;
-            }
-            action(data).then(function(res){
-                $rootScope.user = res;
-                $scope.user = $rootScope.user;
-                $scope.requestComplete = true;
-                if($scope.accepting){
-                    $scope.completeText = 'Swap proposal accepted.';
-                }
-                $scope.$parent.requestSent = true;
-                $scope.processing = false;
-            }, function(err){
-                $scope.requestComplete = true;
-                $scope.processing = false;
-                $scope.completeText = 'Sorry! This action cannot be completed: ' + err;
-
-            })
-        }
+        $scope.payment = true;
+        // if($scope.hasDeposit || ($scope.confirmation && $scope.request.deposit)){
+        //     $scope.payment = true;
+        // }
+        // else{
+        //     $scope.processing = true;
+        //     var action = MessageService.confirmRequest;
+        //     var data = {};
+        //
+        //     if($scope.accepting){
+        //         action = MessageService.acceptRequest;
+        //         data = {
+        //             requestId: $scope.accepting._id,
+        //             dates: $scope.dates,
+        //             guests: $scope.swap.guests,
+        //             message: $scope.send.message
+        //         }
+        //     }
+        //     else if($scope.request){
+        //         action = MessageService.confirmRequest;
+        //         data = {
+        //             requestId: $scope.request._id,
+        //         }
+        //     }
+        //     else{
+        //         return;
+        //     }
+        //     action(data).then(function(res){
+        //         $rootScope.user = res;
+        //         $scope.user = $rootScope.user;
+        //         $scope.requestComplete = true;
+        //         if($scope.accepting){
+        //             $scope.completeText = 'Swap proposal accepted.';
+        //         }
+        //         $scope.$parent.requestSent = true;
+        //         $scope.processing = false;
+        //     }, function(err){
+        //         $scope.requestComplete = true;
+        //         $scope.processing = false;
+        //         $scope.completeText = 'Sorry! This action cannot be completed: ' + err;
+        //
+        //     })
+        // }
     };
 
     $scope.close = function(){
