@@ -124,7 +124,7 @@
                 </div>
                 <div class="text">
                     I would like to propose a one way swap.
-                    <span class="explanation pd-10-l"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="I wish to stay at {{profile.firstName}}'s home but I do not want to offer my home in exchange (10 travel points per night)" tooltip-placement="left" tooltip></i></span>
+                    <span class="explanation pd-10-l"><i class="fa fa-question-circle-o" aria-hidden="true" uib-tooltip="I wish to stay at {{profile.firstName}}'s home without offering my home in exchange" tooltip-placement="left" tooltip></i></span>
                 </div>
             </div>
         </div>
@@ -164,14 +164,14 @@
             <points data="data" user="user" request="true" missing="missing" hide-credits="hideBuyCredits()"></points>
         </div>
         <div ng-if="!notEnoughCredits || (accepting && accepting.oneWay)">
-            <div class="deposit-plan">Travel Points Details</div>
+            <div class="deposit-plan">Swap Credits Details</div>
             <!--<div class="type" ng-if="(accepting && accepting.oneWay)">You will receive travel points for every night you offer your home</div>-->
-            <div class="type">Travel points:</div>
+            <div class="type">Swap Credits:</div>
             <!--<div class="amount">${{depositPlan.night}} Per Night X {{numberOfNights}} {{numberOfWeeks>1?'Nights':'Night'}} X {{swap.guests}} {{swap.guests>1?'Guest':'Guests'}}</div>-->
             <div class="amount"><span class="points-details">Cost: </span>{{paymentPerNight}} Per Night X {{numberOfNights}} {{numberOfNights>1?'Nights':'Night'}} = <span class="points-details">{{paymentPerNight * numberOfNights}} </span></div>
             <div class="amount"><span class="points-details gain">Gain: </span>{{gainPerNight}} Per Night X {{numberOfNights}} {{numberOfNights>1?'Nights':'Night'}} = <span class="points-details">{{gainPerNight * numberOfNights}} </span></div>
             <div class="total" ng-if="totalPayment == 0"><strong>NO CHARGE</strong></div>
-            <div class="total {{hasGain?'gain':''}}" ng-if="totalPayment != 0">Total points {{hasGain?'gained':'used'}}: <strong>{{totalPayment}}</strong></div>
+            <div class="total {{hasGain?'gain':''}}" ng-if="totalPayment != 0">Total Credits {{hasGain?'gained':'used'}}: <strong>{{totalPayment}}</strong></div>
             <!--<div class="checkbox-wrapper" ng-if="accepting">-->
                 <!--<div class="single-checkbox">-->
                     <!--<div class="things-checkbox" ng-click="setDeposit()">-->

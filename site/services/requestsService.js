@@ -348,7 +348,7 @@ function acceptRequest(params, request){
             throw (error);
         }
         if(!request.oneWay && request.user2.credit < util.getTotalPaymentAmount(request.roomType1, request.user2.apptInfo.roomType, nights)){
-            error.message = `You do not have enough travel points to trade in for this swap`;
+            error.message = `You do not have enough Swap Credits to trade in for this swap`;
             throw (error);
         }
         checkAvailability(request.user1, request.user2, departure, returnDate)
