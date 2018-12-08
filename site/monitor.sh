@@ -1,3 +1,3 @@
 forever stop monitor
-forever --uid monitor start ./monitor/monitor.js
+forever --append --uid monitor start ./monitor/monitor.js
 
