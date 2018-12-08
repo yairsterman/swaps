@@ -30,7 +30,7 @@
         </div>
         <div class="favorite community" id="community" ng-if="$root.user.community  && $root.user.community._id && traveler.community && traveler.community._id == $root.user.community._id"
         for="community" uib-tooltip="{{traveler.firstName}} is also a member of {{$root.user.community.name}}" tooltip-placement="left" tooltip>
-            <div class="icon icon-friends-small"></div>
+            <div class="community-photo" style="background-image: url({{$root.user.community.photo}})"></div>
         </div>
         <div class="favorite {{!isFavorite()?'like':''}}">
             <div class="heart-shape" ng-if="!isFavorite()"></div>

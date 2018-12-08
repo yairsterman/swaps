@@ -221,7 +221,7 @@ router.get('/get-user', function(req, res, next) {
     User.findOne({_id: id}, Data.getVisibleUserData().restricted)
         .populate({
             path: 'community',
-            select: 'name _id',
+            select: Data.getCommunityData(),
         })
         .populate({
             path: 'requests',
@@ -241,7 +241,7 @@ router.get('/get-profile', function(req, res, next) {
     User.findOne({_id:id}, Data.getVisibleUserData().accessible)
         .populate({
             path: 'community',
-            select: 'name _id',
+            select: Data.getCommunityData(),
         })
         .populate({
             path: 'reviews',
