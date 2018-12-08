@@ -338,7 +338,7 @@ router.post('/update-travel-info', function (req, res, next) {
         User.findOneAndUpdate({'travelingInformation._id': travelId}, {$set: updatedInfo}, {new: true, projection: Data.getVisibleUserData().restricted})
             .populate({
                 path: 'community',
-                select: 'name _id',
+                select: Data.getCommunityData(),
             })
             .exec(function (err, user) {
                 if (err) {
@@ -385,7 +385,7 @@ router.post('/delete-photo', function (req, res, next) {
                     })
                         .populate({
                             path: 'community',
-                            select: 'name _id',
+                            select: Data.getCommunityData(),
                         })
                         .populate({
                             path: 'requests',
@@ -597,7 +597,7 @@ router.put('/add-favorite', function (req, res, next) {
                 return User.findOne({_id: id}, Data.getVisibleUserData().restricted)
                     .populate({
                         path: 'community',
-                        select: 'name _id',
+                        select: Data.getCommunityData(),
                     })
                     .populate({
                         path: 'requests',
@@ -820,7 +820,7 @@ function findOneAndUpdate(id, toUpdate, res) {
     User.findOneAndUpdate({_id: id}, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})
         .populate({
             path: 'community',
-            select: 'name _id',
+            select: Data.getCommunityData(),
         })
         .populate({
             path: 'requests',

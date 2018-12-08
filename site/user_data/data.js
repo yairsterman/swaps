@@ -174,6 +174,7 @@ const visibleRequestData ={
 const requestUserData = 'firstName image photos _id apptInfo country city reviews rating occupation';
 
 const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit roomType1 roomType2';
+const communityData = 'name _id photo';
 
 
 const transactionType = {
@@ -377,6 +378,10 @@ data.getLabel = function(){
 
 data.getCreditInfo = function(){
     return creditInfo;
+};
+
+data.getCommunityData = function(){
+    return communityData;
 };
 
 
