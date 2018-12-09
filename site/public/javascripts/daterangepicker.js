@@ -318,6 +318,14 @@
                 else
                     end = moment(options.ranges[range][1]);
 
+                // fix cases where the year changes
+                if(moment().get('month') + 1 > start.get('month') + 1){
+                    start.add(1, 'year');
+                }
+                if(moment().get('month') + 1 > end.get('month') + 1){
+                    end.add(1, 'year');
+                }
+
                 // If the start or end date exceed those allowed by the minDate or dateLimit
                 // options, shorten the range to the allowable period.
                 if (this.minDate && start.isBefore(this.minDate))
