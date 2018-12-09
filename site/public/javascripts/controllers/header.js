@@ -1,5 +1,5 @@
 var he = null;
-swapsApp.controller('headerController', function($scope, $rootScope, $location, $document, UsersService, AccountService, $uibModal) {
+swapsApp.controller('headerController', function($scope, $rootScope, $location, $document, $sce, UsersService, AccountService, $uibModal) {
 	he = $scope;
 	$scope.user = $rootScope.user;
 	$scope.homepage = $rootScope.homepage;
@@ -121,6 +121,10 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         $rootScope.userCity = $scope.user.city;
         getUnreadMessages();
     });
+
+    $scope.toHtml = function(html){
+        return $sce.trustAsResourceUrl(html);
+    }
 
     function getUnreadMessages(){
         if(!$scope.user._id){

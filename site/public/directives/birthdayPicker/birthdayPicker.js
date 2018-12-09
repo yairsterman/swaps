@@ -2,7 +2,7 @@ swapsApp.directive('birthdayPicker', function() {
     return {
         require: 'ngModel',
         scope:{
-            birthday: '=',
+            birthday: '='
         },
         link: function(scope, element, attrs, model) {
             element.daterangepicker({
