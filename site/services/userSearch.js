@@ -144,7 +144,8 @@ function getHighestTravelScore(user, geo, searchDates, req){
     // if the user has no traveling information then return only
     // the places relevance percent of total places and dates relevance
     if((!user.travelingInformation || user.travelingInformation.length == 0) && !user.allowViewHome){
-        return (from * fromRelevance * placesRelevancePercent) / 100  * placesAndDatesRelevance;
+        score = (from * fromRelevance * placesRelevancePercent) / 100  * placesAndDatesRelevance;
+        return from === 1? score + 100:score;
     }
     user.travelingInformation.forEach(travel => {
 

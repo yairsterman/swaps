@@ -103,9 +103,9 @@
                         </div>
                     </div>
                     <div class="not-charged"  ng-if="!profile.allowViewHome && profile.travelingInformation.length == 0">
-                        User is currently not accepting requests
+                        <br>User is currently not accepting requests
                     </div>
-                    <div class="not-charged"  ng-if="profile.allowViewHome && profile.travelingInformation.length > 0">
+                    <div class="not-charged"  ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
                         <div ng-if="user && user._id">
                             Swap homes with {{profile.firstName}} {{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'and gain ':'for'}}
                             <span ng-if="creditsAmount == 0">FREE</span>
