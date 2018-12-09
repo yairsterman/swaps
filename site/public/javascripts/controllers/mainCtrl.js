@@ -21,6 +21,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
     }
 
     $scope.showSecuritySection = function(){
+        $scope.showSecurityDeposit = true;
         $timeout(function(){
             $("html").animate({scrollTop: $("#securityDeposit").offset().top}, "fast");
         },300)

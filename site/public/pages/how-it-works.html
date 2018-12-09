@@ -176,7 +176,7 @@ Finally, Swaps is uncompromising when it comes to your security. We place a real
         <div class="clickable secondary-title" data-toggle="collapse" href="#swapCredits" aria-expanded="{{showSwapCredits}}" aria-controls="swapCredits">
             Swap Credits
         </div>
-        <div class="collapse" id="swapCredits">
+        <div class="collapse {{showSwapCredits?'in':''}}" id="swapCredits">
             <div class="clickable sub-title" data-toggle="collapse" href="#whatAreSwapCredits" aria-expanded="false" aria-controls="whatAreSwapCredits">
                 What are Swap Credits?
                 <div class="underline"></div>
@@ -374,10 +374,10 @@ Finally, Swaps is uncompromising when it comes to your security. We place a real
                 All messages between Swappers are sent only via the Swaps messaging feature, and never through other parties. In order to avoid possible scams and keep yourself safe, <strong>never provide credit card information, phone numbers, emails, or other contact information when messaging a fellow Swapper.</strong> Remember, Swaps does not require that money be transferred between Swappers, and <strong>in no case should anyone ask you to transfer them money.</strong> The only time you will be asked for credit card or paypal information is via our protected service once you have requested a Swap.
             </span>
         </div>
-        <div class="clickable secondary-title" data-toggle="collapse" href="#securityDeposit" aria-expanded="false" aria-controls="securityDeposit">
+        <div class="clickable secondary-title" data-toggle="collapse" href="#securityDeposit" aria-expanded="{{showSecurityDeposit}}" aria-controls="securityDeposit">
             Security Deposit
         </div>
-        <div class="collapse" id="securityDeposit">
+        <div class="collapse {{showSecurityDeposit?'in':''}}" id="securityDeposit">
             <div class="clickable sub-title" data-toggle="collapse" href="#whatIsSecurityDeposit" aria-expanded="false" aria-controls="whatIsSecurityDeposit">
                 What is the security deposit?
                 <div class="underline"></div>
