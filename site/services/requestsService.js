@@ -440,8 +440,8 @@ function confirmRequest(info){
                     dates: dates,
                 };
 
-                email.sendMail([sender.email],'Swap Confirmation', emailMessages.confirmation(sender, recipient, dates));
-                email.sendMail([recipient.email],'Swap Confirmation', emailMessages.confirmation(recipient, sender, dates));
+                email.sendMail([sender.email],'Swap Confirmation', emailMessages.confirmation(sender, recipient, dates, true));
+                email.sendMail([recipient.email],'Swap Confirmation', emailMessages.confirmation(recipient, sender, dates, !request.oneWay));
 
                 deferd.resolve(result);
             }

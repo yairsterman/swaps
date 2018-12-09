@@ -47,12 +47,12 @@ var messages = {
         '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
-    confirmation: function(user, swapper, dates){
+    confirmation: function(user, swapper, dates, showAddress){
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Swap Confirmed!</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Your Swap with ' + swapper.firstName + ' has been confirmed. </div><br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Check in: <strong>' + new Date(dates.departure).toLocaleDateString("en-US",options) + '</strong></div>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Check out: <strong>' + new Date(dates.returnDate).toLocaleDateString("en-US",options) + '</strong></div><br>' +
-            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Address: <strong>' + swapper.address + '</strong></div><br>' +
+            (showAddress?'<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Address: <strong>' + swapper.address + '</strong></div><br>':'') +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + "Don't forget to give each other all the necessary information needed to access your homes. </div><br>" +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Have a pleasant Swap!</div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + MY_SWAPS + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">View swaps</div></a>' +
