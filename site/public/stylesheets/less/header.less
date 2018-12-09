@@ -305,7 +305,6 @@
 		    float: right;
 		    margin-top: 10px;
 			@media @mobile {
-				flex-direction: column;
 				margin-top: 0 !important;
 			}
 			.login{
@@ -336,8 +335,14 @@
 					padding-left: 10px;
 					margin-bottom: 2px;
 					border-left: 0.5px solid rgba(14,93,124,0.3);
+					@media @mobile {
+						margin-bottom: 0;
+					}
 					.user-credits{
 						display: flex;
+						@media @mobile {
+							flex-direction: column;
+						}
 					}
 					.coins{
 						background-image: url("../../images/coin.png");
@@ -347,6 +352,10 @@
 						width: 25px;
 						height: 25px;
 						margin-bottom: 3px;
+						@media @mobile {
+							margin-bottom: 0;
+							margin-top: -6px;
+						}
 					}
 					.coins-amount{
 						line-height: 1.6;
@@ -354,6 +363,9 @@
 						font-size: 16px;
 						font-weight: 500;
 						text-align: center;
+						@media @mobile {
+							font-size: 14px;
+						}
 					}
 				}
 				.unread-messages{

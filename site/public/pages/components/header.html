@@ -111,22 +111,31 @@
                     </div>
                 </div>
                 <div class="user-area">
-                    <div class="dropdown" ng-if="user._id">
-                        <ul class="dropdown-menu">
-                            <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
-                            <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
-                            <li><a href="" ng-click ="go('account/messages')">Messages</a></li>
-                            <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id">Set Swap Dates</div></a></li>
-                            <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
-                            <li><a class="nav-link" href="/tips-for-trips" ng-click ="go('tips-for-trips')">Tips for Trips</a></li>
-                            <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
-                            <li><a href="" ng-click ="logout()">Log out</a></li>
-                        </ul>
-                        <div class="dropdown-toggle" data-toggle="dropdown">
-                            <div class="profile-pic" style="background-image:url('{{user.image}}')">
+                    <div class="login-area">
+                        <div class="login sign-up credits" ng-if="user._id" uib-tooltip="You have {{$root.user.credit}} Swap Credits. Click to buy more" tooltip-placement="bottom" tooltip>
+                            <a class="user-credits" href="/account/credits" ng-click="go('account/credits')">
+                                <div class="coins-amount">{{$root.user.credit}}</div>
+                                <div class="coins">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="dropdown" ng-if="user._id">
+                            <ul class="dropdown-menu">
+                                <li><a href="" ng-click ="go('account/edit')">My Profile</a></li>
+                                <li><a href="" ng-click ="go('account/listing')">My Home</a></li>
+                                <li><a href="" ng-click ="go('account/messages')">Messages</a></li>
+                                <li><a href=""><div class="" data-toggle="modal" data-target="#swapModel" ng-if="user._id">Set Swap Dates</div></a></li>
+                                <li><a class="nav-link" href="" ng-click ="go('account/upcoming-swaps')">My Swaps</a></li>
+                                <li><a class="nav-link" href="/tips-for-trips" ng-click ="go('tips-for-trips')">Tips for Trips</a></li>
+                                <!--<li><a class="nav-link" href="" ng-click ="go('account/favorites')">Homes I Like</a></li>-->
+                                <li><a href="" ng-click ="logout()">Log out</a></li>
+                            </ul>
+                            <div class="dropdown-toggle" data-toggle="dropdown">
+                                <div class="profile-pic" style="background-image:url('{{user.image}}')">
+
+                                </div>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
