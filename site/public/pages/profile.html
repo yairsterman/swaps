@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="not-charged"  ng-if="!profile.allowViewHome && profile.travelingInformation.length == 0">
-                        <br>User is currently not accepting requests
+                        <br>{{profile.firstName}} is currently not accepting requests
                     </div>
                     <div class="not-charged"  ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
                         <div ng-if="user && user._id">
