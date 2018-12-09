@@ -27,6 +27,7 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
     };
 
     $scope.showCreditsSection = function(){
+        $scope.showSwapCredits = true;
         $timeout(function(){
             $("html").animate({scrollTop: $("#swapCredits").offset().top}, "fast");
         },300)
@@ -70,5 +71,12 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
     }
 
     $rootScope.profileComplete = $scope.profileComplete;
+
+    if($location.url().indexOf('#swapCredits') != -1){
+        $scope.showCreditsSection();
+    }
+    if($location.url().indexOf('#securityDeposit') != -1){
+        $scope.showSecuritySection();
+    }
 
 });
