@@ -218,3 +218,59 @@
     }
   }
 }
+.credit-explanation{
+  .top-corner{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+  }
+  .text{
+    font-size: 16px;
+    @media @mobile {
+      font-size: 14px;
+    }
+  }
+  .one-way{
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .cost{
+    font-weight: 500;
+    color: #e84f2f;
+  }
+  .gain{
+    font-weight: 500;
+    color: #22A854;
+  }
+  .gold{
+    font-weight: 500;
+    color: #c7a768;
+  }
+  .swap-value{
+    margin: auto;
+    text-align: center;
+    background-color: #edefed;
+    td, th{
+      text-align: center;
+      border: 1px solid lightgray;
+      padding: 10px;
+    }
+  }
+  .explanation{
+    align-self: center;
+    margin-right: 10px;
+    &.pd-10-l{
+      padding-left: 10px;
+    }
+  }
+  .coins{
+    background-image: url("../../images/coin.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    margin-bottom: -6px;
+  }
+}

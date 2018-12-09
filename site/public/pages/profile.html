@@ -105,7 +105,7 @@
                     <div class="not-charged"  ng-if="!profile.allowViewHome && profile.travelingInformation.length == 0">
                         <br>{{profile.firstName}} is currently not accepting requests
                     </div>
-                    <div class="not-charged"  ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
+                    <div class="not-charged" ng-hide="requestSent" ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
                         <div ng-if="user && user._id">
                             Swap homes with {{profile.firstName}} {{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'and gain ':'for'}}
                             <span ng-if="creditsAmount == 0">FREE</span>
@@ -113,6 +113,9 @@
                         </div>
                         <div ng-if="!user || !user._id">
                             {{profile.firstName}}'s home costs <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}}</span> Swap Credits per night, Swap homes with them and you can gain Credits as well
+                        </div>
+                        <div class="credit-explanation" ng-click="openCreditExplanation()">
+                            Why is this?
                         </div>
                     </div>
                 </div>

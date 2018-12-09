@@ -313,6 +313,17 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             $scope.saving = false;
         });
     };
+
+    $scope.openCreditExplanation = function(){
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../pages/popups/credit-explanation.html',
+            size: 'md',
+            // windowClass: 'information-page',
+            scope: $scope
+        });
+    };
+
     
     function checkRequestSent(){
         $scope.requestSent = $scope.user.requests.filter(function(request){
