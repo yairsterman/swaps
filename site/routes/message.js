@@ -40,7 +40,7 @@ router.post('/sendMessage', function(req, res, next) {
 		User.findOne({_id: sender._id})
             .populate({
                 path: 'community',
-                select: 'name _id',
+                select: Data.getCommunityData(),
             })
             .populate({
                 path: 'requests',
@@ -71,7 +71,7 @@ router.post('/sendRequest', function(req, res) {
         User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
             .populate({
                 path: 'community',
-                select: 'name _id',
+                select: Data.getCommunityData(),
             })
             .populate({
                 path: 'requests',
@@ -113,7 +113,7 @@ router.post('/acceptRequest', function(req, res) {
                     User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
                         .populate({
                             path: 'community',
-                            select: 'name _id',
+                            select: Data.getCommunityData(),
                         })
                         .populate({
                             path: 'requests',
@@ -156,7 +156,7 @@ router.post('/confirmRequest', function(req, res) {
                     User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
                         .populate({
                             path: 'community',
-                            select: 'name _id',
+                            select: Data.getCommunityData(),
                         })
                         .populate({
                             path: 'requests',
@@ -187,7 +187,7 @@ router.post('/cancelRequest', function(req, res) {
         User.findOne({_id: req.user._id}, Data.getVisibleUserData().restricted)
             .populate({
                 path: 'community',
-                select: 'name _id',
+                select: Data.getCommunityData(),
             })
             .populate({
                 path: 'requests',

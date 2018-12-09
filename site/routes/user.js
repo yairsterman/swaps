@@ -72,7 +72,7 @@ router.get('/getUsers', function(req, res, next) {
         User.find(params, Data.getVisibleUserData().accessible)
             .populate({
                 path: 'community',
-                select: 'name _id',
+                select: Data.getCommunityData(),
             })
             .populate({
                 path: 'requests',
@@ -128,7 +128,7 @@ router.get('/get-all-users-admin', function(req, res, next) {
     User.find(params,projection)
         .populate({
             path: 'community',
-            select: 'name _id',
+            select: Data.getCommunityData(),
         })
         .exec(function (err, users) {
             if (err) return next(err);
@@ -185,7 +185,7 @@ router.get('/get-featured-users', function(req, res, next) {
     User.find(params, Data.getVisibleUserData().accessible)
         .populate({
             path: 'community',
-            select: 'name _id',
+            select: Data.getCommunityData(),
         })
         .limit(10).sort({rating: -1})
         .exec(function (err, users) {
@@ -203,7 +203,7 @@ router.get('/get-new-users', function(req, res, next) {
     User.find(params, Data.getVisibleUserData().accessible)
         .populate({
             path: 'community',
-            select: 'name _id',
+            select: Data.getCommunityData(),
         }).limit(3)
         .exec(function (err, users) {
             if (err) return next(err);

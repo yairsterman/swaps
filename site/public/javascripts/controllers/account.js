@@ -326,9 +326,12 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
       setPhotoGalery();
     }
 
+    $scope.goToMessages = function(id){
+        $location.path('account/messages/'+id);
+    }
+
     $scope.openConversation = function(conversation){
         $scope.conversationIsOpen = true;
-        $location.path('account/messages/'+conversation.id);
         var id = conversation.id;
         $scope.loading = true;
         UsersService.getProfile(id).then(function(data){

@@ -290,7 +290,7 @@
                             <div class="">
                                 <div class="messages-list"
                                      ng-repeat="message in user.messages | orderBy: orderByDate | limitTo: messagePageEnd: messagePageStart">
-                                    <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="openConversation(message)">
+                                    <div class="single-message {{messageOpened && message.id == currentConversationId?'opened':''}}" ng-click="goToMessages(message.id)">
                                         <div class="">
                                             <a href="{{'profile/'+message.id}}" >
                                                 <div class="photo" style="background-image:url('{{message.image}}')">
