@@ -50,19 +50,19 @@
                     <div class="req-swap" ng-if="ready && (profile.allowViewHome || profile.travelingInformation.length > 0)">
                         <hr>
                         <div class="not-charged" ng-hide="requestSent">
-                            Send {{profile.firstName}} a swap proposition with the dates you would like to swap and the number of travelers.
+                            Send {{profile.firstName}} a Swap request. Suggest exact or flexible dates, enter the number of people traveling, and add a personal note
                         </div>
                         <hr ng-hide="requestSent">
-                        <input type="button" class="btn btn-primary btn-swap" value="Propose Swap"
+                        <input type="button" class="btn btn-primary btn-swap" value="Request Swap"
                                ng-click="openRequest()" ng-hide="requestSent">
                         <div class="req-sent" ng-show="requestSent">
                             <div class="status-action" ng-switch="requestSent.status">
                                 <div ng-switch-when="0">
                                     <div class="not-charged" ng-if="requestSent.user1 == null">
-                                        You have sent a swap proposition and now we are waiting for {{profile.firstName}} to respond.
+                                        You have sent a swap request and now we are waiting for {{profile.firstName}} to respond.
                                     </div>
                                     <div class="not-charged" ng-if="requestSent.user1 != null">
-                                        {{profile.firstName}} has sent a swap proposition, approve the proposition and finalize the dates.
+                                        {{profile.firstName}} has sent a swap request, approve the request and finalize the dates.
                                     </div>
                                     <hr>
                                     <div class="request-status pending" ng-if="requestSent.user1 == null">
@@ -74,10 +74,10 @@
                                 </div>
                                 <div ng-switch-when="1">
                                     <div class="not-charged" ng-if="requestSent.user1 == null">
-                                        {{profile.firstName}} has approved your swap proposition, confirm the swap in order to complete the process.
+                                        {{profile.firstName}} has approved your swap request, confirm the swap in order to complete the process.
                                     </div>
                                     <div class="not-charged" ng-if="requestSent.user1 != null">
-                                        You have approved the swap proposition, we are now waiting for {{profile.firstName}} to confirm.
+                                        You have approved the swap request, we are now waiting for {{profile.firstName}} to confirm.
                                     </div>
                                     <hr>
                                     <div class="request-status confirmation" ng-if="requestSent.user1 != null">

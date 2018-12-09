@@ -99,7 +99,7 @@ module.exports.sendRequest = function(params, user) {
 
             email.sendMail([sender.email], 'Swap Request Sent', emailMessages.requestSent(sender, recipient));
 
-            message = 'SWAP REQUEST:<br>' + sender.firstName + ` proposed ${oneWay?'a one way swap at '+recipient.firstName+'\'s home ':'to swap'} ` + util.getRangeText(range) + '<br>' +
+            message = 'SWAP REQUEST:<br>' + sender.firstName + ` requested ${oneWay?'a one-way swap at '+recipient.firstName+'\'s home ':'to swap'} ` + util.getRangeText(range) + '<br>' +
                 'From: ' + dates[0] + '<br>' +
                 'To: ' + dates[1] + '<br>';
             newMessage = {

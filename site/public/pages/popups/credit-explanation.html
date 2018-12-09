@@ -1,5 +1,10 @@
 <div class="credit-explanation">
     <div class="top-corner icon icon-delete" ng-click="$dismiss()"></div>
+    <div class="text" ng-if="!user || !user._id">
+        The value of each Swapper’s home is calculated based on our easy-to-understand Swap Credit system, you use Swap credits when you stay at another Swapper's home and you gain credits when a Swapper stays at yours:
+        <br>
+        <br>
+    </div>
     <table class="swap-value">
         <thead>
         <th>Room Type</th>
@@ -45,15 +50,21 @@
     <div class="text">
         <br>
         <br>
-        You’re offering a{{data.roomType[user.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[user.apptInfo.roomType].displayName}} (<span class="gain">gain {{data.roomType[user.apptInfo.roomType].gain}} Swap Credits</span>), {{profile.firstName}} is offering a{{data.roomType[profile.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[profile.apptInfo.roomType].displayName}} (<span class="cost">cost {{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span>), you will {{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'pay'}} a total of <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{creditsAmount}} Swap Credits</span> per night. <br>(<span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[user.apptInfo.roomType].gain:data.roomType[profile.apptInfo.roomType].cost}}</span> - <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'gain':'cost'}}">{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[profile.apptInfo.roomType].cost:data.roomType[user.apptInfo.roomType].gain}}</span> = <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{creditsAmount}}</span>)
+        <div ng-if="user && user._id">
+            You’re offering a{{data.roomType[user.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[user.apptInfo.roomType].displayName}} (<span class="gain">gain {{data.roomType[user.apptInfo.roomType].gain}} Swap Credits</span>), {{profile.firstName}} is offering a{{data.roomType[profile.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[profile.apptInfo.roomType].displayName}} (<span class="cost">cost {{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span>), you will {{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'pay'}} a total of <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{creditsAmount}} Swap Credits</span> per night. <br>(<span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[user.apptInfo.roomType].gain:data.roomType[profile.apptInfo.roomType].cost}}</span> - <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'gain':'cost'}}">{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[profile.apptInfo.roomType].cost:data.roomType[user.apptInfo.roomType].gain}}</span> = <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{creditsAmount}}</span>)
+        </div>
+        <div ng-if="!user || !user._id">
+            For example, if you’re offering a{{data.roomType[1].type == 'EntirePlace'?'n':''}} {{data.roomType[1].displayName}} (<span class="gain">gain {{data.roomType[1].gain}} Swap Credits</span>), and {{profile.firstName}} is offering a{{data.roomType[profile.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[profile.apptInfo.roomType].displayName}} (<span class="cost">cost {{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span>), you will {{data.roomType[1].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'pay'}} a total of <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'cost':'gain'}}">{{creditsAmount}} Swap Credits</span> per night. <br>(<span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'cost':'gain'}}">{{data.roomType[1].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[1].gain:data.roomType[profile.apptInfo.roomType].cost}}</span> - <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'gain':'cost'}}">{{data.roomType[1].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[profile.apptInfo.roomType].cost:data.roomType[1].gain}}</span> = <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'cost':'gain'}}">{{creditsAmount}}</span>)
+        </div>
+        <br>
+        If you wish to request a <strong class="one-way" aria-hidden="true" uib-tooltip="I wish to stay at {{profile.firstName}}'s home without offering my home in exchange." tooltip-placement="right" tooltip> one-way Swap</strong>, You will pay the full cost without gaining credits since you are not offering your home in exchange. So for a one-way Swap you will pay for {{profile.firstName}}'s {{data.roomType[profile.apptInfo.roomType].displayName}} <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span> per night.
         <br>
         <br>
-        If you wish to propose a <strong class="one-way" aria-hidden="true" uib-tooltip="I wish to stay at {{profile.firstName}}'s home without offering my home in exchange" tooltip-placement="right" tooltip> one-way Swap</strong>, You will pay the full cost without gaining credits since you are not offering your home in exchange. So for a one-way Swap you will pay for {{profile.firstName}}'s {{data.roomType[profile.apptInfo.roomType].displayName}} <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span> per night.
-        <br>
-        <br>
-        By gaining enough Swap Credits for offering your home to others, you can actually travel for free on your next trip!
-        <br>
-        <br>
+        <span ng-if="!user || !user._id">
+            By gaining enough Swap Credits for offering your home to others, you can actually travel for free on your next trip!
+            <br>
+            <br>
+        </span>
         You can also buy credits for a small fee. <a target="_blank" href="/account/credits">Buy Now</a>
         <br>
         <br>

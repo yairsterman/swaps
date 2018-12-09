@@ -246,6 +246,10 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         });
     };
 
+    $scope.share =function(){
+        $window.open('https://www.facebook.com/swapshome/' , '_blank');
+    }
+
     $scope.isTravelingToCity = function(){
         var isTraveling = false;
         $scope.profile.travelingInformation.forEach(function(info){
@@ -442,6 +446,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             }
             else{
                 setUpMarkers();
+                $scope.creditsAmount = Math.abs($scope.data.roomType[1].gain - $scope.data.roomType[$scope.profile.apptInfo.roomType].cost);
                 $scope.ready = true;
             }
         });

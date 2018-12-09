@@ -106,7 +106,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
                 $scope.user = $rootScope.user;
                 $scope.requestComplete = true;
                 if($scope.accepting){
-                    $scope.completeText = 'Swap proposal accepted.';
+                    $scope.completeText = 'Swap request accepted.';
                 }
                 $scope.$parent.requestSent = true;
                 $scope.processing = false;
@@ -312,7 +312,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
                 return;
             }
             if($scope.accepting){
-                $scope.completeText = 'Swap proposal accepted.';
+                $scope.completeText = 'Swap request accepted.';
             }
             $scope.$parent.requestSent = true;
             $scope.processing = false;
