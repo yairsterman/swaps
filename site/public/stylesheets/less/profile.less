@@ -181,8 +181,6 @@
 						width: 100%;
 						background-color: #ffffff;
 						padding: 10px;
-						display: flex;
-						flex-direction: row-reverse;
 						position: fixed;
 						justify-content: start;
 						bottom: 0;
@@ -265,10 +263,10 @@
 				.not-charged{
 					font-size: 16px;
 					text-align: center;
-					padding-top: 10px;
-					opacity: 0.8;
+					color: #616161;
 					@media @mobile {
 						font-size: 14px;
+						padding-top: 10px;
 					}
 					.cost{
 						font-weight: 500;
@@ -284,6 +282,13 @@
 						color: #0E5D7C;
 						&:focus, &:active{
 							outline: none;
+						}
+					}
+					&.suggest-swap{
+						@media @mobile {
+							font-size: 12px;
+							padding-top: 0;
+							padding-bottom: 5px;
 						}
 					}
 				}
@@ -982,18 +987,6 @@
 			}
 			.req-swap{
 				padding: 10px 20%;
-				@media @mobile {
-					width: 100%;
-					background-color: #ffffff;
-					padding: 10px;
-					display: flex;
-					flex-direction: row-reverse;
-					position: fixed;
-					justify-content: start;
-					bottom: 0;
-					left: 0;
-					z-index: 1000;
-				}
 				.req-sent{
 					text-align: center;
 					font-size: 20px;

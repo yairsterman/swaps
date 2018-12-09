@@ -267,7 +267,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
     }
 
     function checkOneWaySwapNights(){
-        if(!$scope.swap.oneWay){
+        if(!$scope.user || !$scope.swap.oneWay){
             return false;
         }
         var nights;

@@ -49,7 +49,7 @@
                     <!--</div>-->
                     <div class="req-swap" ng-if="ready && (profile.allowViewHome || profile.travelingInformation.length > 0)">
                         <hr>
-                        <div class="not-charged" ng-hide="requestSent">
+                        <div class="not-charged suggest-swap" ng-hide="requestSent">
                             Send {{profile.firstName}} a Swap request. Suggest exact or flexible dates, enter the number of people traveling, and add a personal note
                         </div>
                         <hr ng-hide="requestSent">
@@ -232,7 +232,7 @@
                                     <div ng-if="!info.departure">
                                         <div class="travel-date">Anytime</div>
                                     </div>
-                                    <div class="icon icon-calender" ng-if="info.departure" ng-model="filter.date" read-only-check="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" parent-el="'traveling-information'" datepicker></div>
+                                    <div class="icon icon-calender" ng-if="info.departure" ng-model="filter.date" read-only-check="true" start="info.departure" end="info.returnDate" swap-dates="filter" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker></div>
                                 </div>
                             </div>
                             <div class="travel-info row" ng-if="profile.allowViewHome">

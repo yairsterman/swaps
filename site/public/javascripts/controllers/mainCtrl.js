@@ -18,6 +18,22 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
             controller: 'loginController',
             scope:$scope
         });
+    };
+
+    $scope.openSwapDates = function (){
+        if(!$scope.user || !$scope.user._id){
+            $scope.openLogin();
+            return;
+        }
+        $scope.popup = true;
+        $scope.swaps = $scope.user.travelingInformation;
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../directives/swaps/swaps.html',
+            size: 'lg',
+            controller: 'swapsController',
+            scope: $scope
+        });
     }
 
     $scope.showSecuritySection = function(){
