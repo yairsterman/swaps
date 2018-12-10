@@ -1,7 +1,7 @@
 swapsApp.directive('duration', function() {
 	return {
 		restrict: 'A',
-		controller: 'homeController',
+		// controller: 'homeController',
 		require: 'ngModel',
 		link: function(scope, elm, attr, ngModel) {
 				ngModel.$validators.duration = function (modelValue, viewValue) {

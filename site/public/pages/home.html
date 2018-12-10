@@ -135,7 +135,7 @@
             <div class="mg-0 row">
                 <div class= "traveler-col col-sm-4 col-xs-12 {{'traveler'+$index}}" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}" scroll-animate>
                     <!--<div class="push-pin icon {{$index==0?'icon-pin-green':$index==1?'icon-pin-blue':$index==2?'icon-pin-red':''}}"></div>-->
-                    <swapper-home traveler="traveler"></swapper-home>
+                    <swapper-home traveler="traveler" lazy-load></swapper-home>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
             </a>
         </div>
     </div>
-    <div class="how-it-works">
+    <div class="how-it-works" img="'../../images/static/home/how-it-works.jpg'" lazy-load-image>
         <div class="how-it-works-cover" bind-scroll-opacity>
             <div class="inner-section row" scroll-animate>
                 <div class="title">How does it work?</div>
@@ -189,7 +189,7 @@
         </div>
         <div class="mg-0 row instagram-row">
             <div class= "instagram-col col-sm-3 col-xs-12" ng-repeat="image in [0,1,2,3] " ng-click="link('instagram')">
-                <div class="instagram-image {{'instagram-image'+$index}}" style="background-image: url({{featured[image]}})" scroll-animate>
+                <div class="instagram-image {{'instagram-image'+$index}}" img="{{featured[image]}}" scroll-animate lazy-load-image="">
 
                 </div>
             </div>

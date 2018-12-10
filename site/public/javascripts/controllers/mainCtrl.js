@@ -2,11 +2,10 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
 
     $rootScope.homepage = false;
     $rootScope.searchPage = false;
-    $scope.data = {};
+    $scope.data = $rootScope.data;
 
-    Utils.getData().then(function(data){
-        $scope.data = data;
-        $rootScope.data = data;
+    $scope.$on('data-return', function(event, args) {
+        $scope.data = $rootScope.data;
     });
 
     $scope.openLogin = function(signin){

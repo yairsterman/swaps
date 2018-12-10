@@ -76,7 +76,7 @@ $routeProvider
 
 });
 
-swapsApp.run(function($http, $rootScope, $location, $window){
+swapsApp.run(function($http, $rootScope, $location, $window, Utils){
 
     // initialise google analytics
     $window.ga('create', 'UA-111632373-1', 'auto');
@@ -99,5 +99,10 @@ swapsApp.run(function($http, $rootScope, $location, $window){
     },
     function(){
         $rootScope.user = null;
+    });
+
+    Utils.getData().then(function(data){
+        $rootScope.data = data;
+        $rootScope.$broadcast('data-return');
     });
 });

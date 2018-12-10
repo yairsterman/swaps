@@ -7,7 +7,7 @@
                 <div class="carousel-inner">
                     <div class="item active">
                         <img src="#" alt="First slide">
-                        <div class="carousel-caption carousel-image" ng-style="{'background-image': 'url(' + traveler.photos[0] + ')'}">
+                        <div class="carousel-caption carousel-image" img="{{traveler.photos[0]}}" lazy-load-image>
                         </div>
                     </div>
                     <div class="item" ng-repeat="photo in traveler.photos.slice(1,entries.length)">

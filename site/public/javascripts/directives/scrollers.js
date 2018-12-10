@@ -2,7 +2,7 @@
 swapsApp.directive('scrollOnClick', function() {
     return {
         restrict: 'A',
-        controller: 'homeController',
+        // controller: 'homeController',
         link: function(scope, $elm) {
             $elm.on('click', function() {
                 $("html").animate({scrollTop: $elm.offset().top}, "fast");
@@ -50,4 +50,27 @@ swapsApp.directive('afterRender', ['$timeout', function ($timeout) {
     };
     return def;
 }]);
+
+swapsApp.directive('lazyLoadImage', function () {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            const observer = new IntersectionObserver(loadImg);
+            const img = angular.element(element)[0];
+            observer.observe(img);
+
+            function loadImg(changes){
+                changes.forEach(change => {
+                    if(change.intersectionRatio > 0 && !change.target.style.backgroundImage){
+                        if(change.target.tagName === "IMG")
+                            change.target.src = attrs.img;
+                        else
+                            change.target.style.backgroundImage = 'url('+attrs.img+')';
+                    }
+                })
+            }
+
+        }
+    }
+});
 
