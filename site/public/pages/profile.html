@@ -112,7 +112,7 @@
                             <span ng-if="creditsAmount != 0"><span class="{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'cost'}}">{{creditsAmount}}</span> Swap Credits per night</span>
                         </div>
                         <div ng-if="!user || !user._id">
-                            {{profile.firstName}}'s home costs <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}}</span> Swap Credits per night, Swap homes with them and you can gain Credits as well
+                            {{profile.firstName}}'s home costs <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}}</span> Swap Credits per night, Swap homes with {{profile.firstName}} and you can gain Swap Credits as well.
                         </div>
                         <div class="credit-explanation" ng-click="openCreditExplanation()">
                             Why is this?
