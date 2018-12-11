@@ -291,7 +291,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         });
 
         google.maps.event.addListener(marker, 'click', function(){
-            $location.url('/' + marker.url);
+            // $location.url('/' + marker.url);
             var a = document.createElement("a");
             a.id = "tempA";
             a.target = "_blank";
