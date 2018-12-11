@@ -74,3 +74,42 @@ swapsApp.directive('lazyLoadImage', function () {
     }
 });
 
+swapsApp.directive('stickyHeader', ['$rootScope', '$timeout', function ($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            if(!$rootScope.isMobile) {
+                var fixmeTop = element.offset().top + 80;
+                $(window).scroll(function () {                  // assign scroll event listener
+                    var currentScroll = $(window).scrollTop(); // get current position
+                    if (currentScroll >= fixmeTop) {
+                        if (!angular.element('.navbar').hasClass('navbar-other')) {
+                            angular.element('.navbar').addClass('navbar-other')
+                        }
+                        angular.element('.navbar').addClass('no-opacity');
+                        $timeout(function () {
+                            if (!angular.element('.navbar').hasClass('navbar-other')) {
+                                angular.element('.navbar').addClass('navbar-other');
+                            }
+                            angular.element('.navbar').addClass('sticky');
+                            angular.element('.navbar').addClass('opacity');
+                            angular.element('.navbar').removeClass('no-opacity');
+                        }, 500);
+                    } else {
+                        if (!$rootScope.user || !$rootScope.user._id) {
+                            angular.element('.navbar').removeClass('opacity');
+                            $timeout(function () {
+                                if (angular.element('.navbar').hasClass('opacity')) {
+                                    angular.element('.navbar').removeClass('opacity');
+                                }
+                                angular.element('.navbar').removeClass('navbar-other');
+                                angular.element('.navbar').removeClass('sticky');
+                            }, 500);
+                        }
+                    }
+                });
+            }
+        }
+    }
+}]);
+

@@ -24,7 +24,7 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
 
     $scope.buyCredits = function(){
         $scope.loading = true;
-        $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+$scope.calculatePrice($scope.amount).toFixed(2)+"&requestType="+$scope.data.requestType.creditPurchase+"&user1="+$rootScope.user._id+"&email="+$rootScope.user.email+"&currency=2&cred_type=1&tranmode=A&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Swap");
+        $scope.iframeSrc = $sce.trustAsResourceUrl("https://direct.tranzila.com/swapshom/iframe.php/?hidesum=1&sum="+$scope.calculatePrice($scope.amount).toFixed(2)+"&requestType="+$scope.data.requestType.creditPurchase+"&user1="+$rootScope.user._id+"&email="+$rootScope.user.email+"&currency=2&cred_type=1&tranmode=A&trTextColor=0E5D7C&trButtonColor=0E5D7C&buttonLabel=Get Credits");
         $scope.pay = true;
         $timeout(function(){
             $scope.loading = false;

@@ -405,6 +405,12 @@
 		}
 		.traveler-col{
 			padding: 5px;
+			transition: 0.5s ease;
+			z-index: 0;
+			&.animated{
+				animation: fade-scale 1.5s forwards;
+				-webkit-animation: fade-scale 1.5s forwards;
+			}
 			.other-homes{
 				padding-top: 15px;
 				padding-bottom: 10px;
@@ -640,6 +646,28 @@
 @keyframes pop {
 	from {transform: scale(0.1);}
 	to {transform: scale(0.75);}
+}
+
+@keyframes fade-scale {
+	0% {
+		opacity:0;
+		transform: scale(1.1);
+	}
+	100% {
+		opacity:1;
+		transform: scale(1);
+	}
+}
+
+@-webkit-keyframes fade-scale{
+	0% {
+		opacity:0;
+		transform: scale(1.1);
+	}
+	100% {
+		opacity:1;
+		transform: scale(1);
+	}
 }
 
 

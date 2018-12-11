@@ -83,7 +83,7 @@
           top: 8px;
           padding: 6px;
           font-size: 14px;
-          color: #c7a768;
+          color: #e84f2f;
           @media @mobile {
             top: 7px;
             right: 4px;
@@ -114,7 +114,7 @@
           border-radius: 0;
           background-color: #ffffff;
           border: 1px #0E5D7C solid;
-          color: rgba(199, 167, 104, 1);
+          color: #e84f2f;
           font-size: 16px;
           height: 42px;
           -webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
@@ -160,7 +160,7 @@
           }
         }
         ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-          color: rgba(199, 167, 104, 0.8);
+          color: rgba(232, 79, 47, 0.7);
         }
         &.when{
           border: 1px #0e5d7c solid;
@@ -242,7 +242,7 @@
             border: 0;
             outline: 0;
             background: transparent;
-            color: #c7a768;
+            color: #e84f2f;
           }
         }
         .form-control{
@@ -345,8 +345,18 @@
   }
   .btn-danger{
     line-height: 1.8;
-    background-color: #e84f2f;
+    background-color: #ffffff;
     border-color: #e84f2f;
+    transition: 0.3s ease;
+    .glyphicon{
+      color: #e84f2f;
+    }
+    &:hover{
+      background-color: #e84f2f;
+      .glyphicon{
+        color: #ffffff;
+      }
+    }
   }
   .btn-cancel{
     background-color: #c7a768;
