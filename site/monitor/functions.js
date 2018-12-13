@@ -170,7 +170,7 @@ module.exports.emailConfirmedRequests = function () {
                             email.sendMail(request.user1.email, 'Get Ready to Swap!', emailMessages.confirmedRequestReminder(request.user2, request.city2,0, 3));
                             break;
                         case 1:
-                            email.sendMail(request.user1.email, 'Last preparations for your swap tomorrow', emailMessages.confirmedRequestReminder(request.user2, request.city2, 0, 3));
+                            email.sendMail(request.user1.email, 'Last preparations for your swap tomorrow', emailMessages.confirmedRequestReminder(request.user2, request.city2, 0, 1));
                             break;
                         default:
                             break;

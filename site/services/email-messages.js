@@ -257,7 +257,7 @@ var messages = {
                          `Make sure you\'ve exchanged all necessary details with your ${oneWay?'guest':'host'}`;
                 }
                 if(days == 1){
-                    title = 'Last Preparations for tomorrow';
+                    title = 'Last Preparations for Tomorrow';
                     text = `Nothing left to say but wish you a pleasant experience with ${user.firstName} ${oneWay?'':'and a great trip to '+ city}!`;
                 }
                 break;
