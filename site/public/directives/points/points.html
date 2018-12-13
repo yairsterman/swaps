@@ -40,7 +40,7 @@
                 <i class="fa fa-plus"></i>
             </div>
         </div>
-        <div class="coin-drop {{makeItRain?'show':''}}">
+        <div class="coin-drop {{makeItRain?'show':''}}" ng-if="!request">
 
         </div>
         <div class="btn btn-primary btn-buy {{makeItRain?'glow':''}}" ng-click="buyCredits()">

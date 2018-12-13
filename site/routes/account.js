@@ -264,8 +264,8 @@ router.post('/add-travel-info', function (req, res, next) {
     let departure = dates ? moment.utc(dates[0].trim(), "MM/DD/YYYY").valueOf() : null;
     let returnDate = dates ? moment.utc(dates[1].trim(), "MM/DD/YYYY").valueOf() : null;
     let rangeLabel = info.rangeLabel;
-    let startRange = info.startRange?parseInt(info.startRange):null;
-    let endRange = info.endRange?parseInt(info.endRange):null;
+    let startRange = departure && info.startRange?parseInt(info.startRange):null;
+    let endRange = departure && info.endRange?parseInt(info.endRange):null;
 
     geocoder.geocode(where).then(function (geo) {
 
@@ -329,6 +329,9 @@ router.post('/update-travel-info', function (req, res, next) {
             updatedInfo['travelingInformation.$.dates'] = null;
             updatedInfo['travelingInformation.$.departure'] = null;
             updatedInfo['travelingInformation.$.returnDate'] = null;
+            updatedInfo['travelingInformation.$.rangeLabel'] = null;
+            updatedInfo['travelingInformation.$.startRange'] = null;
+            updatedInfo['travelingInformation.$.endRange'] = null;
         }
         if (where == '') {
             updatedInfo['travelingInformation.$.fullDestination'] = null;

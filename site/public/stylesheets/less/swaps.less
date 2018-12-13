@@ -120,6 +120,14 @@
           -webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
           -moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
           box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+          transition: 0.3s ease;
+          &.disabled{
+            background-color: rgba(199, 167, 104, 0.1);
+            color: rgba(232, 79, 47, 0.8);
+            &.search-dates{
+              background-color: transparent;
+            }
+          }
           @media @mobile {
             font-size: 14px;
             padding-right: 8px;
@@ -168,6 +176,10 @@
           -moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
           box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
           padding: 0;
+          &.disabled{
+            background-color: rgba(199, 167, 104, 0.1);
+            color: rgba(232, 79, 47, 0.8);
+          }
         }
       }
       .flexible-dates{
@@ -179,6 +191,10 @@
         display: block;
         font-weight: 300;
         position: relative;
+        transition: 0.3s ease;
+        &.disabled{
+          color: grey;
+        }
         @media @mobile {
           padding: 11px 2px;
           font-size: 12px;
@@ -353,6 +369,7 @@
     }
     &:hover{
       background-color: #e84f2f;
+      border-color: #e84f2f;
       .glyphicon{
         color: #ffffff;
       }

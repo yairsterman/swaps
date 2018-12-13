@@ -19,16 +19,24 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
 
     $scope.edit = function(index, swap){
         $scope.currentSwap = angular.copy(swap);
+        swap.editing = true;
         $scope.editing = true;
         $scope.editingField = index;
     }
 
     $scope.cancel = function(swap){
-        swap.destination = $scope.currentSwap.destination;
+        swap._id = $scope.currentSwap._id;
         swap.dates = $scope.currentSwap.dates;
         swap.departure = $scope.currentSwap.departure;
         swap.returnDate = $scope.currentSwap.returnDate;
+        swap.rangeLabel = $scope.currentSwap.rangeLabel;
+        swap.startRange = $scope.currentSwap.startRange;
+        swap.endRange = $scope.currentSwap.endRange;
+        swap.duration = $scope.currentSwap.duration;
+        swap.destination = $scope.currentSwap.destination;
+        swap.fullDestination = $scope.currentSwap.fullDestination;
         swap.guests = $scope.currentSwap.guests;
+        delete swap.editing;
         $scope.editedSwap = {};
         $scope.editing = false;
         $scope.editingField = -1;
@@ -99,6 +107,8 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
         swap.from = undefined;
         swap.to = undefined;
         swap.rangeLabel = undefined;
+        swap.startRange = undefined;
+        swap.endRange = undefined;
         swap.removeDates = true;
     }
 
@@ -184,7 +194,7 @@ swapsApp.controller('swapsController' , function ($scope, $rootScope, $filter, $
                     swap.endRange = swap.endRange?swap.endRange.toString():$scope.data.weekendEnd[1].id.toString();
                 }
                 else if(swap.rangeLabel === 'Date Range'){
-                    if(swap.departure){ // dates and ranges already set
+                    if(!swap.editing && swap.departure){ // dates and ranges already set
                         swap.duration = swap.startRange+'-'+swap.endRange;
                         return;
                     }

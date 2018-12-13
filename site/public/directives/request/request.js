@@ -41,7 +41,7 @@ swapsApp.controller('requestController', function($scope, $rootScope, MessageSer
         $scope.receipt = true;
         if((($scope.accepting && !$scope.accepting.oneWay) || ($scope.request)) && $rootScope.user.credit < $scope.totalPayment){
             $scope.notEnoughCredits = true;
-            $scope.missing = ($scope.paymentPerNight * $scope.numberOfNights) - $rootScope.user.credit;
+            $scope.missing = ($scope.totalPayment) - $rootScope.user.credit;
         }
     }
 
