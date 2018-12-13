@@ -264,7 +264,7 @@ var messages = {
         }
         return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">'+ title + '</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">' + text + '</div>' +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES +  '/' + user._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Message</div></a>' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES +  '/' + user._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Message ' + user.firstName + '</div></a>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 };
