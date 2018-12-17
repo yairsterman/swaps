@@ -338,22 +338,9 @@ router.post('/update-travel-info', function (req, res, next) {
             updatedInfo['travelingInformation.$.destination'] = null;
         }
 
-        User.findOneAndUpdate({'travelingInformation._id': travelId}, {$set: updatedInfo}, {new: true, projection: Data.getVisibleUserData().restricted})
-            .populate({
-                path: 'community',
-                select: Data.getCommunityData(),
-            })
-            .exec(function (err, user) {
-                if (err) {
-                    error.message = err;
-                    return res.json(error);
-                }
-                if (!user) {
-                    error.message = 'No user found';
-                    return res.json(error);
-                }
-                res.json(user);
-            });
+        let toUpdate = {$set: updatedInfo};
+
+        findOneAndUpdate(id, toUpdate, res);
     });
 });
 
@@ -389,6 +376,10 @@ router.post('/delete-photo', function (req, res, next) {
                         .populate({
                             path: 'community',
                             select: Data.getCommunityData(),
+                        })
+                        .populate({
+                            path: 'reviews',
+                            populate: {path: 'reviewer', select: 'firstName image city country'},
                         })
                         .populate({
                             path: 'requests',
@@ -601,6 +592,10 @@ router.put('/add-favorite', function (req, res, next) {
                     .populate({
                         path: 'community',
                         select: Data.getCommunityData(),
+                    })
+                    .populate({
+                        path: 'reviews',
+                        populate: {path: 'reviewer', select: 'firstName image city country'},
                     })
                     .populate({
                         path: 'requests',
@@ -824,6 +819,10 @@ function findOneAndUpdate(id, toUpdate, res) {
         .populate({
             path: 'community',
             select: Data.getCommunityData(),
+        })
+        .populate({
+            path: 'reviews',
+            populate: {path: 'reviewer', select: 'firstName image city country'},
         })
         .populate({
             path: 'requests',

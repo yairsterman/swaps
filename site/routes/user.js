@@ -224,6 +224,10 @@ router.get('/get-user', function(req, res, next) {
             select: Data.getCommunityData(),
         })
         .populate({
+            path: 'reviews',
+            populate: {path: 'reviewer', select: 'firstName image city country'},
+        })
+        .populate({
             path: 'requests',
             match: {status: {$ne: Data.getRequestStatus().canceled}},
             select: Data.getRequestData(),
