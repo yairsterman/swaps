@@ -468,6 +468,88 @@
 		@media @mobile {
 			padding: 0;
 		}
+		&.community-travelers{
+			padding-top: 15px;
+			height: 78vh;
+			box-shadow: 4px 0px 12px -9px inset;
+			.community-travelers-photo{
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				width: 100%;
+				height: 260px;
+			}
+			.community-travelers-title{
+				font-size: 18px;
+				font-weight: 500;
+				padding: 8px 0;
+				text-overflow: ellipsis;
+				color: #484848;
+				.community-name{
+					color: #0E5D7C;
+					font-weight: bold;
+					font-size: 20px;
+				}
+			}
+			.members-amount{
+				font-size: 18px;
+				font-weight: 500;
+				padding: 8px 0;
+				text-overflow: ellipsis;
+				color: #484848;
+			}
+			.members-profile{
+				display: flex;
+				&:first-child{
+					margin-left: 0;
+				}
+				.member-photo{
+					margin-left: -15px;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+					border: 1px solid #808080;
+					width: 50px;
+					height: 50px;
+					border-radius: 50%;
+					&:hover{
+						margin-right: -15px;
+					}
+				}
+			}
+			.search-field{
+				padding-right: 25px;
+				position: relative;
+				@media @mobile {
+					padding: 0;
+				}
+				.form-control{
+					padding-left: 36px;
+					border-radius: 0;
+					border: 1px #0e5d7c solid;
+					color: #c7a768;
+					font-size: 16px;
+					height: 42px;
+					-webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+					-moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+					box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
+				}
+				.search-members{
+					padding: 20px 0 10px 0;
+					font-size: 16px;
+					color: #616161;
+				}
+				.icon{
+					position: absolute;
+					transform: scale(.7);
+					bottom: 6px;
+					left: 5px;
+				}
+				::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+					color: rgba(199, 167, 104, 0.8);
+				}
+			}
+		}
 	}
 	.map{
 		height: 78vh;

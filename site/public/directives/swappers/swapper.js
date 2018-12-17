@@ -3,7 +3,8 @@ swapsApp.directive('swapperHome', function() {
         restrict: 'E',
         controller: swapperHomeController,
         scope: {
-            traveler: '='
+            traveler: '=',
+            hideCommunity: '=?',
         },
         templateUrl: '../directives/swappers/swapper-home.html'
     }

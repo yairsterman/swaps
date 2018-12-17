@@ -5,6 +5,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
     $rootScope.homepage = false;
     $rootScope.searchPage = true;
     $scope.city = $routeParams.city;
+    $scope.community = $routeParams.community;
     $scope.user = $rootScope.user;
     $scope.yourCity = $rootScope.userCity;
     $scope.search = {};
@@ -237,6 +238,10 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $("#travelerMarkerLayer>div>img[src='" + imageSrc + "']").parent().css("z-index", google.maps.Marker.MAX_ZINDEX - 1);
     }
 
+    $scope.autoSearch = function(){
+        getTravelers(0);
+    }
+
     function setMapOnAll(map) {
       for (var i = 0; i < $scope.markers.length; i++) {
         $scope.markers[i].setMap(map);
@@ -317,32 +322,40 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
             zoom = 2;
             center = 'Madrid';
         }
-        geocoder.geocode( {'address': center}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
+        if(!$scope.community){
+            geocoder.geocode( {'address': center}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
 
-                var location = results[0].geometry.location;
+                    var location = results[0].geometry.location;
 
-                if(results[0].types.includes('country')){
-                    zoom = 6;
+                    if(results[0].types.includes('country')){
+                        zoom = 6;
+                    }
+
+                    var mapOptions = {
+                        zoom: zoom,
+                        center: new google.maps.LatLng(location.lat(), location.lng()),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        mapTypeControl: false,
+                        scrollwheel: false
+                    };
+
+                    $scope.map = new google.maps.Map(document.getElementById('travelerMap'), mapOptions);
+                    deleteMarkers();
+                    myoverlay.setMap($scope.map);
+                    getTravelers(0);
+                    $(window).scroll(function() {
+                        $('#swappers').stop();
+                    });
                 }
-
-                var mapOptions = {
-                    zoom: zoom,
-                    center: new google.maps.LatLng(location.lat(), location.lng()),
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
-                    mapTypeControl: false,
-                    scrollwheel: false
-                };
-
-                $scope.map = new google.maps.Map(document.getElementById('travelerMap'), mapOptions);
-                deleteMarkers();
-                myoverlay.setMap($scope.map);
-                getTravelers(0);
-                $(window).scroll(function() {
-                    $('#swappers').stop();
-                });
-            }
-        });
+            });
+        }
+        else{
+            getTravelers(0);
+            $(window).scroll(function() {
+                $('#swappers').stop();
+            });
+        }
     }
 
     init();
@@ -380,30 +393,34 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.filter.room = $scope.checkedRoomTypes;
         $scope.filter.from = $scope.city;
         $scope.filter.page = page;
+        $scope.filter.community = $scope.community;
         UsersService.getUsers($scope.filter).then(function(data){
             $scope.currentPage = page + 1;
             var travelers = data.users;
             $scope.exactMatchesLength = data.exactMatchesLength;
             $scope.totalUsers = data.total;
+            $scope.newestUsers = data.newestUsers;
             $scope.page = parseInt(data.page);
             $scope.exactMatchesLimit = ($scope.pageSize * ($scope.page + 1)) - $scope.exactMatchesLength <= $scope.pageSize?$scope.pageSize - (($scope.pageSize * ($scope.page + 1)) - $scope.exactMatchesLength):$scope.pageSize;
-            angular.forEach(travelers, function(value, key) {
-                var location = value.location;
-                var image = value.image;
-                var name = value.firstName;
-                var id = value._id;
-                var photos = value.photos;
-                value.address = value.city;
-                var marker = {
-                  id : id,
-                  desc : name,
-                  photos: photos,
-                  image : image,
-                  lat : location.lat,
-                  long : location.long
-                };
-                createMarker(marker);
-          });
+            if(!$scope.community){
+                angular.forEach(travelers, function(value, key) {
+                    var location = value.location;
+                    var image = value.image;
+                    var name = value.firstName;
+                    var id = value._id;
+                    var photos = value.photos;
+                    value.address = value.city;
+                    var marker = {
+                        id : id,
+                        desc : name,
+                        photos: photos,
+                        image : image,
+                        lat : location.lat,
+                        long : location.long
+                    };
+                    createMarker(marker);
+                });
+            }
           $scope.travelers = travelers;
           countPages();
           if($scope.travelers.length === 0 && !$scope.failedCity && $scope.filter.amenities.length === 0 && $scope.filter.room.length === 0 && !$scope.appliedFilters){

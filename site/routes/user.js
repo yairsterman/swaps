@@ -24,6 +24,7 @@ router.get('/getUsers', function(req, res, next) {
     let when = req.query.when;
     let amenities = req.query.amenities;
     let room = req.query.room;
+    let community = req.query.community;
     let params = {};
     let or = [];
 
@@ -65,6 +66,9 @@ router.get('/getUsers', function(req, res, next) {
         if(geo){
             params.country = {$regex: geo.country, $options: 'i'};
         }
+        if(community){
+            params.community = community;
+        }
         if(req.user){
             params._id = {"$ne": req.user._id};
         }
@@ -85,11 +89,23 @@ router.get('/getUsers', function(req, res, next) {
                 res.json(error);
             }
             else{
-                let matches = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
-                let sortedUsers = matches.exactMatches.concat(matches.closeMatches);
+                let matches;
+                let sortedUsers;
+                let exactMatchesLength;
+                let newestUsers
+                if(!community){
+                    matches = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
+                    sortedUsers = matches.exactMatches.concat(matches.closeMatches);
+                    exactMatchesLength = matches.exactMatches.length;
+                }
+                else{
+                    sortedUsers = users;
+                    exactMatchesLength = sortedUsers.length;
+                    newestUsers = getNewestUsers(sortedUsers);
+                }
                 let length = sortedUsers.length;
-                let exactMatchesLength = matches.exactMatches.length;
-                res.json({users: getPage(sortedUsers, page), total: length, page: page, exactMatchesLength:exactMatchesLength});
+
+                res.json({users: getPage(sortedUsers, page), total: length, page: page, exactMatchesLength:exactMatchesLength, newestUsers: newestUsers});
             }
         });
     });
@@ -419,5 +435,11 @@ function getPage(users, pageNum){
     users.splice(0, pageNum * USERS_PER_PAGE);
     return users;
 }
+
+function getNewestUsers(users){
+    let start = users.length - 1 - USERS_PER_PAGE < 0?0:users.length - 1 - USERS_PER_PAGE;
+    return users.slice(start, users.length).reverse();
+}
+
 
 module.exports = router;
