@@ -23,6 +23,7 @@ let login = require('./routes/login');
 let community = require('./routes/community');
 let blog = require('./routes/blog');
 let review = require('./routes/review');
+let coupon = require('./routes/coupon');
 let MongoStore = require('connect-mongo')(session);
 
 const app = express();
@@ -87,6 +88,7 @@ app.use('/auth', login);
 app.use('/community', community);
 app.use('/blog', blog);
 app.use('/review', review);
+app.use('/coupon', coupon);
 app.use('/', index);
 
 

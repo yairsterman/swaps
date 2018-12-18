@@ -32,6 +32,13 @@
     margin-bottom: 5px;
     transition: 0.2s ease;
     text-align: center;
+    &.link{
+      cursor: pointer;
+      text-decoration: underline;
+      &:hover{
+        color: #0e5d7c;
+      }
+    }
   }
   .user-credits{
     font-size: 26px;
@@ -68,8 +75,11 @@
     padding-top: 15px;
     width: 100%;
     text-align: center;
+    &.request{
+      padding-top: 0;
+    }
     .choose-amount{
-      padding-top: 10px;
+      padding: 20px 0;
       display: flex;
       align-items: center;
       justify-content: center;

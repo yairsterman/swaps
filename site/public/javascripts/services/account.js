@@ -405,4 +405,20 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
         return defer.promise;
     };
 
+    this.redeemCoupon = function(code) {
+        var defer = $q.defer();
+        $http.post('/coupon/redeemCoupon',{code: code}).then(function(data){
+                if(data.data.error){
+                    defer.reject(data.data.message);
+                }
+                else{
+                    defer.resolve(data.data);
+                }
+            },
+            function(err){
+                defer.reject(err);
+            });
+        return defer.promise;
+    };
+
 });

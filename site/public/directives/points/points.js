@@ -13,7 +13,7 @@ swapsApp.directive('points', function() {
     }
 });
 
-function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersService, alertify){
+function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersService, AccountService, alertify, $uibModal){
 
     $scope.amount = $scope.missing?$scope.missing:5;
     $scope.currentPoints = $rootScope.user.credit;
@@ -142,6 +142,32 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
             }
         }
         $scope.pay = false;
+    }
+
+    $scope.openCoupon = function(){
+        $scope.coupon = {};
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../pages/popups/coupon.html',
+            size: 'sm',
+            scope: $scope
+        })
+    };
+
+    $scope.redeemCoupon = function(){
+        AccountService.redeemCoupon($scope.coupon.code).then(function(data){
+            $rootScope.user = data.user;
+            $scope.user = $rootScope.user;
+            $scope.couponAmount = data.amount;
+            $scope.makeItRain = true;
+            $timeout(function(){
+                $scope.modelInstance.close();
+                $scope.makeItRain = false;
+            },5000);
+        },function(err){
+            $scope.coupon.code = undefined;
+            showAlert(err, true);
+        });
     }
 
     $scope.cost = $scope.calculatePrice($scope.amount);

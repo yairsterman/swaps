@@ -1,0 +1,22 @@
+<div class="coupon">
+    <div class="top-corner icon icon-delete" ng-click="$dismiss()"></div>
+    <div class="center">
+        <div ng-if="!makeItRain">
+            <div class="title">
+                Enter coupon code here:
+            </div>
+            <input class="form-control" type="text" ng-model="coupon.code">
+            <div class="btn btn-primary btn-buy" ng-click="redeemCoupon()" >
+                Get Coupon!
+            </div>
+        </div>
+        <div ng-if="makeItRain">
+            <div class="coin-drop show">
+
+            </div>
+            <div class="title">
+                You received {{couponAmount}} Swap Credits!
+            </div>
+        </div>
+    </div>
+</div>

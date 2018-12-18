@@ -8,7 +8,7 @@
     <div class="sub-title" ng-if="pay && !request">
         Get {{amount}} more Swap Credits
     </div>
-    <div class="buy-credits" ng-hide="pay">
+    <div class="buy-credits {{request?'request':''}}" ng-hide="pay">
         <div class="sub-title" ng-if="request">
             You must purchase at least {{missing}} more Swap Credits in order to complete this action.
         </div>
@@ -29,6 +29,10 @@
                 <strong>15 Swap Credits</strong> for <strong>$22.50</strong>
             </div>
         </div>
+        <div class="sub-title link" ng-click="openCoupon()">
+            <br ng-if="!request">
+            Do you have a coupon?
+        </div>
         <div class="choose-amount">
             <div class="subtract {{missing?(amount <= missing?'disabled':''):amount <= 1?'disabled':''}}" ng-click="subtractAmount()">
                 <i class="fa fa-minus"></i>
@@ -40,9 +44,9 @@
                 <i class="fa fa-plus"></i>
             </div>
         </div>
-        <div class="coin-drop {{makeItRain?'show':''}}" ng-if="!request">
+        <!--<div class="coin-drop {{makeItRain?'show':''}}" ng-if="!request">-->
 
-        </div>
+        <!--</div>-->
         <div class="btn btn-primary btn-buy {{makeItRain?'glow':''}}" ng-click="buyCredits()">
             Buy
         </div>
