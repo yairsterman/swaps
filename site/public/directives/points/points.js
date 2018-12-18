@@ -155,11 +155,19 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
     };
 
     $scope.redeemCoupon = function(){
+        if($scope.processing ){
+           return;
+        }
+        $scope.processing = true;
         AccountService.redeemCoupon($scope.coupon.code).then(function(data){
             $rootScope.user = data.user;
             $scope.user = $rootScope.user;
             $scope.couponAmount = data.amount;
             $scope.makeItRain = true;
+            $scope.currentPoints = $scope.user.credit;
+            if($scope.missing){
+                $scope.hideCredits();
+            }
             $timeout(function(){
                 $scope.modelInstance.close();
                 $scope.makeItRain = false;
@@ -167,6 +175,8 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
         },function(err){
             $scope.coupon.code = undefined;
             showAlert(err, true);
+        }).finally(function(){
+            $scope.processing = false;
         });
     }
 

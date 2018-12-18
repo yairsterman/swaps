@@ -41,7 +41,7 @@ router.post('/redeemCoupon', function (req, res, next) {
             return res.json(error);
         }
         let now = moment.utc().valueOf();
-        if(now > coupon.expiration || coupon.users.indexOf(userId.toString())){
+        if(now > coupon.expiration || coupon.users.indexOf(userId.toString()) != -1){
             error.message = "Coupon Expired";
             return res.json(error);
         }
@@ -58,11 +58,11 @@ router.post('/redeemCoupon', function (req, res, next) {
                 path: 'requests',
                 match: {status: {$ne: Data.getRequestStatus().canceled}},
                 select: Data.getRequestData(),
-                populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: id}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: id}} }]
+                populate: [{path: 'user1', select: Data.getRequestUserData(), match: {_id: {$ne: userId}} },{path: 'user2', select: Data.getRequestUserData(), match: {_id: {$ne: userId}} }]
             })
             .exec(function (err, user) {
                 if (err) return next(err);
-                res.json(user);
+                res.json({user: user, amount: coupon.amount});
                 coupon.users.push(user._id);
                 coupon.save();
             });

@@ -6,16 +6,16 @@
                 Enter coupon code here:
             </div>
             <input class="form-control" type="text" ng-model="coupon.code">
-            <div class="btn btn-primary btn-buy" ng-click="redeemCoupon()" >
+            <div class="btn btn-primary btn-buy" ng-click="redeemCoupon()" ng-disabled="processing">
                 Get Coupon!
             </div>
         </div>
         <div ng-if="makeItRain">
-            <div class="coin-drop show">
-
-            </div>
             <div class="title">
                 You received {{couponAmount}} Swap Credits!
+            </div>
+            <div class="coin-drop">
+
             </div>
         </div>
     </div>
