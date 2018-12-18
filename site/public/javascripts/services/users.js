@@ -51,6 +51,22 @@ swapsApp.service('UsersService', function($http, $q){
         });
     };
 
+    this.getCommunityUsers = function(community) {
+        var dfr = $q.defer();
+        $http.get('user/getCommunityUsers?community='+community).then(function(data){
+                if(data.data && data.data.err){
+                    defer.reject(data.data.error);
+                }
+                else{
+                    dfr.resolve(data.data);
+                }
+            },
+            function(err){
+                dfr.reject({error: true, msg: err});
+            });
+        return dfr.promise;
+    };
+
     this.getNewUsers = function() {
         return $http.get('user/get-new-users').then(function(data){
             return data;

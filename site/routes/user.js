@@ -92,8 +92,7 @@ router.get('/getUsers', function(req, res, next) {
                 let matches;
                 let sortedUsers;
                 let exactMatchesLength;
-                let newestUsers
-                if(!community){
+                if(!community || (community && geo)){
                     matches = UserSearch.sortUsers(req, users, {geo:geo, dates: when, guests:guests});
                     sortedUsers = matches.exactMatches.concat(matches.closeMatches);
                     exactMatchesLength = matches.exactMatches.length;
@@ -101,22 +100,36 @@ router.get('/getUsers', function(req, res, next) {
                 else{
                     sortedUsers = users;
                     exactMatchesLength = sortedUsers.length;
-                    newestUsers = getNewestUsers(sortedUsers);
                 }
                 let length = sortedUsers.length;
 
-                res.json({users: getPage(sortedUsers, page), total: length, page: page, exactMatchesLength:exactMatchesLength, newestUsers: newestUsers});
+                res.json({users: getPage(sortedUsers, page), total: length, page: page, exactMatchesLength:exactMatchesLength});
             }
         });
     });
 });
 
+router.get('/getCommunityUsers', function(req, res, next) {
+    let community = req.query.community;
+    let params = {};
+    setRequiredParams(params);
+    params.community = community;
+    User.find(params, Data.getVisibleUserData().accessible).sort({updated_at: -1})
+        .exec(function (err, users) {
+            if (err) return next(err);
+            res.json({users: getPage(users, 0), total: users.length});
+        });
+});
+
 router.get('/get-all-users', function(req, res, next) {
-    var params = {};
+    let params = {};
     setRequiredParams(params);
     User.find(params, Data.getVisibleUserData().accessible).limit(10)
         .exec(function (err, users) {
-            if (err) return next(err);
+            if (err){
+                error.message = "error finding users";
+                res.json(error);
+            }
             res.json({users: users});
         });
 });

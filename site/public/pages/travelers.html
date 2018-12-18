@@ -117,7 +117,38 @@
     <div class="people-and-map">
         <div class="">
             <div class="row mg-0">
-                <div class="travelers-list col-md-8 col-sm-12" id="swappers" scroll-action="" action="openHelpSearch()">
+                <div class="map-view col-xs-12 visible-xs" ng-if="community">
+                    <div class="community-travelers">
+                        <div class="community-travelers-photo" style="background-image: url({{user.community.photo}})">
+                        </div>
+                        <div class="community-travelers-title">
+                            <span class="community-name">{{user.community.name}} Community</span>
+                        </div>
+                        <div class="">
+                            <div class="members-amount">
+                                You & {{totalMembers}} Members
+                            </div>
+                            <div class="members-profile">
+                                <div ng-repeat="member in communityMembers" class="member-photo-area">
+                                    <a href="/profile/{{member._id}}" target="_blank">
+                                        <div class="member-photo" style="background-image: url({{member.image}})" >
+
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-members">
+                            Search members by location:
+                        </div>
+
+                        <div class="search-field">
+                            <input type="text" class="form-control" placeholder="Anywhere" id="searchCityCommunityMobile" ng-model="$parent.city" autocomplete city="true" auto-search="autoSearch()">
+                            <div class="icon icon-infocenter"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="travelers-list col-md-8 col-sm-12 col-xs-12" id="swappers" scroll-action="" action="openHelpSearch()">
                     <div class="loader-container {{loading?'':'disappear'}}" >
                         <div class="cssload-loader">
                             <div class="cssload-inner cssload-one"></div>
@@ -140,7 +171,7 @@
                             </div>
                         </div>
                         <div class= "traveler-col col-sm-6 col-xs-12" ng-if="exactMatchesLength != totalUsers && pageSize * (page + 1) - exactMatchesLength <= pageSize" ng-repeat="traveler in travelers | limitTo: pageSize: exactMatchesLimit" id="{{traveler._id}}" ng-mouseover="scaleImage(traveler.image)" ng-mouseleave="shrinkImage(traveler.image)">
-                            <swapper-home traveler="traveler"></swapper-home>
+                            <swapper-home traveler="traveler" hide-community="community"></swapper-home>
                         </div>
                         <div class="title" ng-if="travelers.length === 0 && !failedCity">
                             Sorry we couldn't find a home with these specific filters, <br>try widening your search
@@ -161,36 +192,37 @@
                     </div>
                 </div>
                 <!--------------------------------------------------MAP SECTION--------------------------------------------->
-                <div class="map-view col-md-4 col-xs-12 hidden-xs" style="overflow-x: hidden;" ng-if="!community">
-                    <div class="map" id="travelerMap"></div>
-                </div>
-                <div class="map-view col-md-4 col-xs-12 community-travelers" ng-if="community">
-                    <div class="community-travelers-photo" style="background-image: url({{user.community.photo}})">
-
-                    </div>
-                    <div class="community-travelers-title">
-                        <span class="community-name">{{user.community.name}} community</span>
-                    </div>
-                    <div class="community-travelers-title">
-                        <div class="members-amount">
-                            {{totalUsers}} Members
+                <div class="map-view col-md-4 col-xs-12 hidden-xs" >
+                    <div class="community-travelers" ng-if="community">
+                        <div class="community-travelers-photo" style="background-image: url({{user.community.photo}})">
                         </div>
-                        <div class="members-profile">
-                            <div ng-repeat="newUser in newestUsers">
-                                <div class="member-photo" style="background-image: url({{newUser.image}})">
+                        <div class="community-travelers-title">
+                            <span class="community-name">{{user.community.name}} Community</span>
+                        </div>
+                        <div class="">
+                            <div class="members-amount">
+                                You & {{totalMembers}} Members
+                            </div>
+                            <div class="members-profile">
+                                <div ng-repeat="member in communityMembers" class="member-photo-area">
+                                    <a href="/profile/{{member._id}}" target="_blank">
+                                        <div class="member-photo" style="background-image: url({{member.image}})" >
 
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="search-members">
-                        Search members by location:
-                    </div>
+                        <div class="search-members">
+                            Search members by location:
+                        </div>
 
-                    <div class="search-field">
-                        <input type="text" class="form-control" placeholder="Anywhere" id="searchCityCommunity" ng-model="$parent.city" autocomplete city="true" auto-search="autoSearch()">
-                        <div class="icon icon-infocenter"></div>
+                        <div class="search-field">
+                            <input type="text" class="form-control" placeholder="Anywhere" id="searchCityCommunity" ng-model="$parent.city" autocomplete city="true" auto-search="autoSearch()">
+                            <div class="icon icon-infocenter"></div>
+                        </div>
                     </div>
+                    <div class="map {{community?'half-height':''}}" id="travelerMap"></div>
                 </div>
             </div>
                 <!--<div class="row">-->

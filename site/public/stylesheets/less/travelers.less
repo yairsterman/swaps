@@ -465,24 +465,32 @@
 	}
 	.map-view{
 		padding: 0 0 0 5px;
+		height: 78vh;
+		overflow-y: scroll;
 		@media @mobile {
 			padding: 0;
+			height: auto;
 		}
-		&.community-travelers{
-			padding-top: 15px;
-			height: 78vh;
-			box-shadow: 4px 0px 12px -9px inset;
+		.community-travelers{
+			padding: 15px 0;
+			height: auto;
+			//box-shadow: 4px 0px 12px -9px inset;
+			@media @mobile {
+				padding: 10px;
+			}
 			.community-travelers-photo{
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: cover;
 				width: 100%;
 				height: 260px;
+				@media @mobile {
+					height: 180px;
+				}
 			}
 			.community-travelers-title{
 				font-size: 18px;
 				font-weight: 500;
-				padding: 8px 0;
 				text-overflow: ellipsis;
 				color: #484848;
 				.community-name{
@@ -492,19 +500,16 @@
 				}
 			}
 			.members-amount{
-				font-size: 18px;
+				font-size: 14px;
 				font-weight: 500;
-				padding: 8px 0;
+				padding-bottom: 4px;
 				text-overflow: ellipsis;
 				color: #484848;
 			}
 			.members-profile{
 				display: flex;
-				&:first-child{
-					margin-left: 0;
-				}
+				padding-bottom: 4px;
 				.member-photo{
-					margin-left: -15px;
 					background-position: center;
 					background-repeat: no-repeat;
 					background-size: cover;
@@ -512,10 +517,24 @@
 					width: 50px;
 					height: 50px;
 					border-radius: 50%;
+					cursor: pointer;
+				}
+				.member-photo-area{
+					margin-left: -15px;
+					transition: 0.3s ease;
+					&:first-child{
+						margin-left: 0;
+					}
 					&:hover{
-						margin-right: -15px;
+						margin-right: 10px;
+						//margin-top: -5px;
 					}
 				}
+			}
+			.search-members{
+				padding-bottom: 6px;
+				font-size: 16px;
+				color: #616161;
 			}
 			.search-field{
 				padding-right: 25px;
@@ -533,11 +552,6 @@
 					-webkit-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
 					-moz-box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
 					box-shadow: 5px 4px 12px -8px rgba(0,0,0,0.5);
-				}
-				.search-members{
-					padding: 20px 0 10px 0;
-					font-size: 16px;
-					color: #616161;
 				}
 				.icon{
 					position: absolute;
@@ -558,6 +572,9 @@
 		}
 		@media @mobile {
 			height: 50vw;
+		}
+		&.half-height{
+			height: 32vh;
 		}
 		#travelerMarkerLayer {
 			img{
