@@ -17,7 +17,7 @@ const SIGNITURE = '<div class="swaps-signature" style="padding:6vw;line-height: 
     '<div>Tel Aviv, Israel</div></div>';
 const INVITE = '<div class="swaps-invite" style="text-align:center; background: rgb(14,93,124); background: -moz-linear-gradient(-55deg, rgba(14,93,124,1) 40%, rgba(11,143,76,1) 100%);  background: -webkit-linear-gradient(-55deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); background: linear-gradient(145deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); padding:2vw 6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="'+INVITE_FRIENDS+'">'+
     '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 22px;color: #ffffff;">Get Swap Credits!</div>' +
-    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #ffffff;">Up to $50 for every friend you invite</div>' +
+    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #ffffff;">Up to 15 Swap Credits for every friend you invite</div>' +
     '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #FACC5C;">Log in to invite friends</div>' +
     ' </a></div></div>';
 const TOP = `<div class="swaps-logo" style="width:100px; height: 100px; margin:auto; padding: 20px 0;"><img style="width:100px; height: 100px;" src="${LOGO}"></div>`;
@@ -42,7 +42,7 @@ var messages = {
         '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', thanks for joining Swaps. <br>' +
         'You are almost ready to start Swapping, be sure to complete your profile and add all the necessary information ' +
         'so you can request a Swap and allow users to view your profile.' +
-        (token?'<br><br>Please verify your email bellow</div>':'') +
+        (token?'<br><br>Please verify your email bellow':'') + '</div>' +
         '<a class="no-decoration" style="text-decoration: none;" href="' + (token?VERIFY_EMAIL + token: ACCOUNT) + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">'+(token?'Verify Email':'Complete Profile')+'</div></a>' +
         '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
@@ -253,7 +253,7 @@ var messages = {
             case 0:
                 if(days == 3){
                     title = 'Getting ready for your swap';
-                    text = `Only three days left! <br>We hope you already have everything ready for ${oneWay?'your guest':'your trip to ' + city}.` +
+                    text = `Only three days left! <br>We hope you already have everything ready for ${oneWay?'your guest':'your trip to ' + city}. ` +
                          `Make sure you\'ve exchanged all necessary details with your ${oneWay?'guest':'host'}`;
                 }
                 if(days == 1){
