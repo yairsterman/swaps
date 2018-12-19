@@ -22,6 +22,7 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
 
     const DAY = 1000*60*60*24;
     $scope.day = DAY;
+    $scope.now = new Date().getTime();
 
     const SUCCESS = 'Changes saved successfully';
 

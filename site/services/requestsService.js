@@ -548,6 +548,10 @@ module.exports.cancelRequest = function(requestId, userId, message, automatic){
             request = _request;
             user1 = request.user1;
             user2 = request.user2;
+
+            if(request.checkin < now){
+                throw ('Can\'t cancel request');
+            }
             // transaction1 = request.transactionUser1;
             // transaction2 = request.transactionUser1;
             // if status is pending and the call came from user2 then send decline message
@@ -565,7 +569,7 @@ module.exports.cancelRequest = function(requestId, userId, message, automatic){
         })
         .then(function(updated){
             if (!updated.ok) {
-                defer.reject("Request not updated");
+                throw ("Request not updated");
             }
             // update users requests
             else {

@@ -463,7 +463,7 @@
                                                             <strong>Check out:</strong> {{getRequest(currentConversationId).checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                     </div>
-                                                    <div class="">
+                                                    <div class="" ng-if="!getRequest(currentConversationId).checkin || getRequest(currentConversationId).checkin > now">
                                                         <div class="cancel-request" ng-click="cancelRequest(getRequest(currentConversationId))">
                                                             {{requestStatus(currentConversationId) == 0 && getRequest(currentConversationId).user1 != null?'Decline request':'Cancel request'}}
                                                         </div>
@@ -525,7 +525,7 @@
                                                             <strong>Check out:</strong> {{getRequest(currentConversationId).checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4 col-xs-12">
+                                                    <div class="col-sm-4 col-xs-12" ng-if="!getRequest(currentConversationId).checkin || getRequest(currentConversationId).checkin > now">
                                                         <div class="cancel-request" ng-click="cancelRequest(getRequest(currentConversationId))">
                                                             {{requestStatus(currentConversationId) == 0 && getRequest(currentConversationId).user1 != null?'Decline request':'Cancel request'}}
                                                         </div>
