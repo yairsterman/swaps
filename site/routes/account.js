@@ -340,7 +340,7 @@ router.post('/update-travel-info', function (req, res, next) {
 
         let toUpdate = {$set: updatedInfo};
 
-        findOneAndUpdate(id, toUpdate, res);
+        findOneAndUpdate(travelId, toUpdate, res, 'travelingInformation._id');
     });
 });
 
@@ -813,9 +813,14 @@ function completeReferral(user) {
 }
 
 
-function findOneAndUpdate(id, toUpdate, res) {
+function findOneAndUpdate(id, toUpdate, res, idToSet) {
     let dfr = Q.defer();
-    User.findOneAndUpdate({_id: id}, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})
+    let query = {_id: id};
+    if(idToSet){
+        query = {};
+        query[idToSet] = id;
+    }
+    User.findOneAndUpdate(query, toUpdate, {new: true, projection: Data.getVisibleUserData().restricted})
         .populate({
             path: 'community',
             select: Data.getCommunityData(),
