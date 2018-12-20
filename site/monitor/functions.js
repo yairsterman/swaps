@@ -267,6 +267,10 @@ module.exports.emailReview = function () {
                                 });
                             break;
                         default:
+                            request.update({tokenUser1: config.EXPIRED_TOKEN, tokenUser2: config.EXPIRED_TOKEN, status: data.getRequestStatus().complete})
+                                .then(function(){
+
+                                });
                             break;
                     }
                 }
