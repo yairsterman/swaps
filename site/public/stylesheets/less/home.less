@@ -323,10 +323,13 @@
 			font-size: 56px;
 			font-weight: 500;
 			height: 170px;
-			opacity: 0;
-			animation: fade 2s forwards;
-			-webkit-animation: fade 2s forwards;
-			animation-delay: 1s;
+			opacity: 1;
+			&.animate{
+				opacity: 0;
+				animation: fade 2s forwards;
+				-webkit-animation: fade 2s forwards;
+				animation-delay: 1s;
+			}
 			@media @mobile {
 				height: 115px;
 			}
@@ -339,26 +342,35 @@
 			font-size: 32px;
 			margin-top: -40px;
 			line-height: 1.2em;
-			opacity: 0;
-			animation: fade-right 1s forwards;
-			-webkit-animation: fade-right 1s forwards;
-			animation-delay: 1.5s;
+			&.animate{
+				opacity: 0;
+				animation: fade-right 1s forwards;
+				-webkit-animation: fade-right 1s forwards;
+				animation-delay: 1.5s;
+			}
 			@media @mobile {
 				font-size: 21px;
 				margin-top: -28px;
 			}
 		}
 		.points-container-border{
-			width: 0%;
+			width: 8%;
 			padding-top: 6px;
 			border-bottom: 3px solid rgba(255,255,255,1);
-			animation: fade-right-stretch 0.6s forwards;
-			-webkit-animation: fade-right-stretch 0.6s forwards;
-			animation-delay: 2s;
-			@media @mobile {
-				animation: fade-right-stretch-xs 0.6s forwards;
-				-webkit-animation: fade-right-stretch-xs 0.6s forwards;
+			&.animate{
+				width: 0%;
+				animation: fade-right-stretch 0.6s forwards;
+				-webkit-animation: fade-right-stretch 0.6s forwards;
 				animation-delay: 2s;
+			}
+			@media @mobile {
+				width: 16%;
+				&.animate {
+					width: 0%;
+					animation: fade-right-stretch-xs 0.6s forwards;
+					-webkit-animation: fade-right-stretch-xs 0.6s forwards;
+					animation-delay: 2s;
+				}
 			}
 		}
 	}
@@ -586,16 +598,21 @@
 			margin-bottom: 1vw;
 		}
 		.where-label{
-			opacity: 0;
-			animation: fade-up 1s forwards;
-			-webkit-animation: fade-up 1s forwards;
-			animation-delay: 2.5s;
+			&.animate{
+				opacity: 0;
+				animation: fade-up 1s forwards;
+				-webkit-animation: fade-up 1s forwards;
+				animation-delay: 2.5s;
+			}
 		}
 		.search-input{
-			opacity: 0;
-			animation: fade-up 1s forwards;
-			-webkit-animation: fade-up 1s forwards;
-			animation-delay: 3s;
+			position: relative;
+			&.animate{
+				opacity: 0;
+				animation: fade-up 1s forwards;
+				-webkit-animation: fade-up 1s forwards;
+				animation-delay: 3s;
+			}
 		}
 		label{
 			color: #ffffff;

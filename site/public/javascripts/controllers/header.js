@@ -95,7 +95,8 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         if(path == 'account/messages'){
             $scope.unread = 0;
         }
-	   $location.url('/' + path);
+        $rootScope.alreadyEntered = true;
+        $location.url('/' + path);
 	}
 
 	$scope.logout = function(){

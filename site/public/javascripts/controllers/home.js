@@ -14,6 +14,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
     $scope.duration = $rootScope.search.duration;
+    $scope.alreadyEntered = $rootScope.alreadyEntered;
     // $scope.rangeLabel = 'Dates';
 
     $scope.cities = [
@@ -117,6 +118,7 @@ swapsApp.controller('homeController', function($scope, $rootScope, $location, $w
     }
 
     $scope.go = function(path){
+        $rootScope.alreadyEntered = true;
         $(window).unbind('scroll');
         $('.navbar').removeClass('sticky');
         $rootScope.homepage = false;
