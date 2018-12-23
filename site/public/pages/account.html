@@ -535,9 +535,9 @@
                                         </div>
                                         <div class="message-area">
                                             <div class="conversation-messages" id="{{currentConversationId}}">
-                                                <div class="conversation-message {{conversation.id == user._id && !conversation.isRequest && !conversation.isConfirm && !conversation.isCancel?'user-message':''}} {{conversation.isRequest?'request':''}} {{conversation.isConfirm?'confirm':''}} {{conversation.isCancel?'cancel':''}}"
+                                                <div class="conversation-message {{conversation.id == user._id && !conversation.isRequest && !conversation.isConfirm && !conversation.isCancel?'user-message':''}} {{conversation.isRequest?'request':''}} {{conversation.isConfirm?'confirm':''}} {{conversation.isCancel?'cancel':''}} {{conversation.isInfo?'info':''}}"
                                                      ng-repeat="conversation in currentConversation.messages">
-                                                    <div class="photo" style="background-image:url('{{conversation.id==user._id?user.image:profile.image}}')" ng-if="!conversation.isRequest && !conversation.isConfirm && !conversation.isCancel">
+                                                    <div class="photo" style="background-image:url('{{conversation.id==user._id?user.image:profile.image}}')" ng-if="!conversation.isRequest && !conversation.isConfirm && !conversation.isCancel && !conversation.isInfo">
                                                     </div>
                                                     <div class="conversation">
                                                         <div class="text" ng-bind-html="trustAsHtml(conversation.message)">

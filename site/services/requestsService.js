@@ -483,9 +483,12 @@ function updateUserTravelInfo(user, dates, request){
 function removeCanceledRequest(user, request){
     let dfr = Q.defer();
     let toUpdate = {
-        oneWaySwapDays: (user._id.toString() === request.user1._id.toString())?request.oneWay?user.oneWaySwapDays - request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays2
+        '$pull': {requests: request._id}
+    };
+    if(request.status == Data.getRequestStatus().confirmed){
+        toUpdate['$set'] = {oneWaySwapDays: (user._id.toString() === request.user1._id.toString())?request.oneWay?user.oneWaySwapDays - request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays1:user.oneWaySwapDays + request.oneWaySwapDays2};
     }
-    User.update({_id: user._id}, {$pull: {requests: request._id}, $set: toUpdate})
+    User.update({_id: user._id}, toUpdate)
         .then(function (updated) {
             if (!updated.ok) {
                 dfr.reject('User not updated');
