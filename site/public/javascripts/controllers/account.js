@@ -508,6 +508,9 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             return -1;
         }
         var requests = $scope.requests.filter(function(request){
+            if(request.status === 4){
+                return false;
+            }
             if(request.user1){ //user was the request recipient
                 return request.user1._id == id;
             }
@@ -526,6 +529,9 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
             return null;
         }
         var requests = $scope.requests.filter(function(request){
+            if(request.status === 4){
+                return false;
+            }
             if(request.user1){ //user was the request recipient
                 return request.user1._id == id;
             }

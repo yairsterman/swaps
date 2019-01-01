@@ -379,7 +379,7 @@
                                                             <div class="request-dates" ng-if="requestStatus(message.id) == 0" uib-tooltip="{{getRequest(message.id).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(message.id).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(message.id).proposition.endRange].displayName+ ' Weekend within this range.':getRequest(message.id).proposition.rangeLabel == 'Date Range'?(getRequest(message.id).proposition.startRange != getRequest(message.id).proposition.endRange?getRequest(message.id).proposition.startRange+' - ' +getRequest(message.id).proposition.endRange:getRequest(message.id).proposition.startRange) + ' nights within this range.':'Exact dates'}}" tooltip-placement="left" tooltip>
                                                                 {{getRequest(message.id).proposition.checkin | date: 'MMMM d'}} - {{getRequest(message.id).proposition.checkout | date: 'MMMM d'}}
                                                             </div>
-                                                            <div class="request-dates" ng-if="requestStatus(message.id) > 0">
+                                                            <div class="request-dates" ng-if="requestStatus(message.id) > 0 && requestStatus(message.id) < 4">
                                                                 {{getRequest(message.id).checkin | date: 'MMMM d'}} - {{getRequest(message.id).checkout | date: 'MMMM d'}}
                                                             </div>
                                                         </div>
@@ -413,25 +413,25 @@
                                 <div class="col-sm-5 col-xs-12">
                                     <div class="messages-and-status hidden-xs">
                                         <div class="status">
-                                            <div class="set-swap" ng-if="!getRequest(currentConversationId)">
+                                            <div class="set-swap" ng-if="!currentConversationRequest">
                                                 <div class="btn btn-primary btn-swap" ng-click="setSwap(currentConversationId)" ng-disabled="saving">
-                                                    Reqeust Swap
+                                                    Request Swap
                                                 </div>
                                             </div>
-                                            <div class="status-action" ng-switch="requestStatus(currentConversationId)">
+                                            <div class="status-action" ng-if="currentConversationRequest" ng-switch="currentConversationRequest.status">
                                                 <div ng-switch-when="0" class="align-center">
-                                                    <div class="request-status pending" ng-if="getRequest(currentConversationId).user1 == null">
+                                                    <div class="request-status pending" ng-if="currentConversationRequest.user1 == null">
                                                         Request pending
                                                     </div>
-                                                    <div class="btn request-status-button approve" ng-if="getRequest(currentConversationId).user1 != null" ng-click="approveRequest($event, currentConversationId)">
+                                                    <div class="btn request-status-button approve" ng-if="currentConversationRequest.user1 != null" ng-click="approveRequest($event, currentConversationId)">
                                                         Approve
                                                     </div>
                                                 </div>
                                                 <div ng-switch-when="1" class="align-center">
-                                                    <div class="request-status confirmation" ng-if="getRequest(currentConversationId).user1 != null">
+                                                    <div class="request-status confirmation" ng-if="currentConversationRequest.user1 != null">
                                                         Awaiting Confirmation
                                                     </div>
-                                                    <div class="btn request-status-button confirm" ng-if="getRequest(currentConversationId).user1 == null" ng-click="confirmRequest($event, currentConversationId)">
+                                                    <div class="btn request-status-button confirm" ng-if="currentConversationRequest.user1 == null" ng-click="confirmRequest($event, currentConversationId)">
                                                         Confirm
                                                     </div>
                                                 </div>
@@ -441,31 +441,31 @@
                                                         <div class="icon icon-check"></div>
                                                     </div>
                                                 </div>
-                                                <div class="dates-and-cancel" ng-if="getRequest(currentConversationId)">
-                                                    <div class="" ng-if="getRequest(currentConversationId).oneWay">
+                                                <div class="dates-and-cancel" ng-if="currentConversationRequest">
+                                                    <div class="" ng-if="currentConversationRequest.oneWay">
                                                         <div class="request-dates">
-                                                            One way Swap by {{getRequest(currentConversationId).user1 == null?'you':getRequest(currentConversationId).user1.firstName}} at {{getRequest(currentConversationId).user1 == null?getRequest(currentConversationId).user2.firstName+"'s":'your'}} home
+                                                            One way Swap by {{currentConversationRequest.user1 == null?'you':currentConversationRequest.user1.firstName}} at {{currentConversationRequest.user1 == null?currentConversationRequest.user2.firstName+"'s":'your'}} home
                                                         </div>
                                                     </div>
-                                                    <div class="" ng-if="requestStatus(currentConversationId) == 0">
+                                                    <div class="" ng-if="currentConversationRequest.status == 0">
                                                         <div class="request-dates">
-                                                            {{getRequest(currentConversationId).proposition.checkin | date: 'EEEE, MMMM d, yyyy'}} - {{getRequest(currentConversationId).proposition.checkout | date: 'EEEE, MMMM d, yyyy'}}
+                                                            {{currentConversationRequest.proposition.checkin | date: 'EEEE, MMMM d, yyyy'}} - {{currentConversationRequest.proposition.checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
-                                                        <div class="request-dates" ng-if="getRequest(currentConversationId).proposition.rangeLabel != 'Exact Dates'">
-                                                            <strong>Flexible dates:</strong> {{getRequest(currentConversationId).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(currentConversationId).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(currentConversationId).proposition.endRange].displayName+ ' Weekend within this range.':(getRequest(currentConversationId).proposition.startRange != getRequest(currentConversationId).proposition.endRange?getRequest(currentConversationId).proposition.startRange+' - ' +getRequest(currentConversationId).proposition.endRange:getRequest(currentConversationId).proposition.startRange) + ' nights within this range.'}}
+                                                        <div class="request-dates" ng-if="currentConversationRequest.proposition.rangeLabel != 'Exact Dates'">
+                                                            <strong>Flexible dates:</strong> {{currentConversationRequest.proposition.rangeLabel == 'Weekends'?data.weekendStart[currentConversationRequest.proposition.startRange].displayName+' - ' +data.weekendEnd[currentConversationRequest.proposition.endRange].displayName+ ' Weekend within this range.':(currentConversationRequest.proposition.startRange != currentConversationRequest.proposition.endRange?currentConversationRequest.proposition.startRange+' - ' +currentConversationRequest.proposition.endRange:currentConversationRequest.proposition.startRange) + ' nights within this range.'}}
                                                         </div>
                                                     </div>
-                                                    <div class="" ng-if="requestStatus(currentConversationId) > 0">
+                                                    <div class="" ng-if="currentConversationRequest && (currentConversationRequest.status > 0 && currentConversationRequest.status < 4)">
                                                         <div class="request-dates">
-                                                            <strong>Check in: </strong> {{getRequest(currentConversationId).checkin | date: 'EEEE, MMMM d, yyyy'}}
+                                                            <strong>Check in: </strong> {{currentConversationRequest.checkin | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                         <div class="request-dates">
-                                                            <strong>Check out:</strong> {{getRequest(currentConversationId).checkout | date: 'EEEE, MMMM d, yyyy'}}
+                                                            <strong>Check out:</strong> {{currentConversationRequest.checkout | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
                                                     </div>
-                                                    <div class="" ng-if="!getRequest(currentConversationId).checkin || getRequest(currentConversationId).checkin > now">
-                                                        <div class="cancel-request" ng-click="cancelRequest(getRequest(currentConversationId))">
-                                                            {{requestStatus(currentConversationId) == 0 && getRequest(currentConversationId).user1 != null?'Decline request':'Cancel request'}}
+                                                    <div class="" ng-if="currentConversationRequest && (!currentConversationRequest.checkin || currentConversationRequest.checkin > now)">
+                                                        <div class="cancel-request" ng-click="cancelRequest(currentConversationRequest)">
+                                                            {{currentConversationRequest.status == 0 && currentConversationRequest.user1 != null?'Decline request':'Cancel request'}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -517,7 +517,7 @@
                                                             <strong>Flexible dates:</strong> {{getRequest(currentConversationId).proposition.rangeLabel == 'Weekends'?data.weekendStart[getRequest(currentConversationId).proposition.startRange].displayName+' - ' +data.weekendEnd[getRequest(currentConversationId).proposition.endRange].displayName+ ' Weekend within this range.':(getRequest(currentConversationId).proposition.startRange != getRequest(currentConversationId).proposition.endRange?getRequest(currentConversationId).proposition.startRange+' - ' +getRequest(currentConversationId).proposition.endRange:getRequest(currentConversationId).proposition.startRange) + ' nights within this range.'}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-8 col-xs-12" ng-if="requestStatus(currentConversationId) > 0">
+                                                    <div class="col-sm-8 col-xs-12" ng-if="requestStatus(currentConversationId) > 0 && requestStatus(currentConversationId) < 4">
                                                         <div class="request-dates">
                                                             <strong>Check in: </strong> {{getRequest(currentConversationId).checkin | date: 'EEEE, MMMM d, yyyy'}}
                                                         </div>
