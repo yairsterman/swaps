@@ -138,11 +138,18 @@
 				background-color: #fff;
 				transition: 0.2s ease;
 				.what-is-swaps-gradient{
-					background-image: url('../../images/static/beach-girl.png');
-					background-position: left;
-					background-size: contain;
-					background-repeat: no-repeat;
+					position: relative;
 					height: 100%;
+                    .beach-girl{
+                      background-position: left;
+                      background-size: auto;
+                      background-repeat: no-repeat;
+                      position: absolute;
+                      width: 100%;
+                      height: 100%;
+                      left: -94px;
+                      bottom: -20px;
+                    }
 				}
 				.full-height{
 					height: 100%;
@@ -188,14 +195,14 @@
 							padding-bottom: 60px;
 						}
 						&.line-2{
-							margin-left: 50px;
+							//margin-left: 50px;
 							@media @mobile {
 								margin-left: 0;
 							}
 						}
 						&.line-3{
 							padding-bottom: 0;
-							margin-left: 100px;
+							//margin-left: 100px;
 							@media @mobile {
 								margin-left: 0;
 							}
@@ -400,7 +407,7 @@
 		}
 		@media @mobile {
 			width: 100%;
-			margin-top: 24vh;
+			margin-top: 16vh;
 		}
 		.start-swapping{
 			padding-bottom: 10px;
@@ -790,7 +797,7 @@
 			color: #848a91;
 			font-weight: 400;
 			@media @mobile {
-				font-size: 30px;
+				font-size: 28px;
 				padding: 4vw;
 			}
 		}
@@ -800,6 +807,7 @@
 			padding-bottom: 40px;
 			color: #0e5d7c;
 			@media @mobile {
+                font-size: 18px;
 				padding: 0 10px;
 			}
 		}
