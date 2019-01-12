@@ -1,14 +1,10 @@
 @import 'media.less';
 
 .home-page{
-	//background: rgba(14,93,124,1); /* Old browsers */
-	//background: -moz-linear-gradient(top, rgba(14,93,124,1) 4%, rgba(255,255,255,1) 18%); /* FF3.6-15 */
-	//background: -webkit-linear-gradient(top, rgba(14,93,124,1) 4%, rgba(255,255,255,1) 18%); /* Chrome10-25,Safari5.1-6 */
-	//background: linear-gradient(to bottom, rgba(14,93,124,1) 4%, rgba(255,255,255,1) 18%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0072bf', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-	//background-position: top;
-	//background-size: contain;
-	//background-repeat: no-repeat;
+	background-image: url('../../images/static/home/home.jpg');
+	background-position: top;
+	background-repeat: no-repeat;
+	background-size: contain;
 	position: relative;
 	z-index: 1;
 	background-color: white;
@@ -29,10 +25,10 @@
 		background-size: auto;
 	}
 	.home-bg{
-		//background-image: url('../../images/static/home-bg.jpg');
-		//background-position: center;
+		//background-image: url('../../images/static/home/home.jpg');
+		//background-position: top;
 		//background-repeat: no-repeat;
-		//background-size: cover;
+		//background-size: contain;
 		width: 100%;
 		height: 70vw;
 		position: absolute;
@@ -76,22 +72,18 @@
 	.section{
 		padding-bottom: 4vw;
 		&.main-section{
-			background-image: url('../../images/static/home/beach_home.jpg');
-			background-position: top;
-			background-size: cover;
-			background-repeat: no-repeat;
-			padding-top: 70px;
-			height: 100vh;
-			width: 100%;
-			padding-bottom: 0;
-			//background-image: url('../../images/static/home.jpg');
-			//background-position: bottom;
+			//background-image: url('../../images/static/home/home.jpg');
+			//background-position: top;
 			//background-size: cover;
 			//background-repeat: no-repeat;
-			//background: -moz-linear-gradient(top, #fff 6%, rgba(255,255,255,0.8) 100%); /* FF3.6-15 */
-			//background: -webkit-linear-gradient(top, #fff 6%,rgba(255,255,255,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
-			//background: linear-gradient(to bottom, #fff 6%,rgba(255,255,255,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-			//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
+			padding-top: 70px;
+			height: 68vh;
+			width: 100%;
+			padding-bottom: 0;
+			background: -moz-linear-gradient(top, rgba(14,93,124,1) 0%,rgba(14,93,124,0) 70%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(14,93,124,1) 0%,rgba(14,93,124,0) 70%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(14,93,124,1) 0%,rgba(14,93,124,0) 70%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0E5D7C', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
 			position: relative;
 			min-height: 660px;
 			@media @mobile {
@@ -104,9 +96,9 @@
 			}
 		}
 		&.featured-homes{
-			//min-height: 40vw;
-			//background: -moz-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,1) 45%); /* FF3.6-15 */
-			//background: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 45%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(14,93,124,0.2) 10%, #fff 62%, #fff 100%);
+			background: -moz-linear-gradient(top, rgba(14,93,124,0.2) 10%, #fff 62%, #fff 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(14,93,124,0.2) 10%, #fff 62%, #fff 100%); /* Chrome10-25,Safari5.1-6 */
 			//background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,1) 45%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 			@media @mobile {
@@ -116,29 +108,41 @@
 				//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 			}
 			&.what-is{
-				background-color: rgba(14,93,124,0.1);
-				padding: 0;
+				background: linear-gradient(to top, rgba(14,93,124,0.2) 10%, #fff 62%, #fff 100%);
+				background: -moz-linear-gradient(bottom, rgba(14,93,124,0.2) 10%, #fff 62%, #fff 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(bottom, rgba(14,93,124,0.2) 10%, #fff 62%, #fff 100%); /* Chrome10-25,Safari5.1-6 */
+				padding: 20px 0;
+				.title{
+					font-size: 40px;
+					text-align: center;
+					color: #848a91;
+					font-weight: 400;
+					@media @mobile {
+						font-size: 30px;
+						padding: 4vw;
+					}
+				}
+				.sub-title{
+					font-size: 22px;
+					text-align: center;
+					color: #0e5d7c;
+					@media @mobile {
+						padding: 0 10px;
+					}
+				}
 			}
 			.what-is-swaps{
-				background-image: url('../../images/static/home/what-is-swaps.jpg');
-				background-position: left;
-				background-size: 840px;
-				background-repeat: no-repeat;
-				height: 100%;
-				@media @mobile {
-					background-size:cover;
-				}
+				box-shadow: 4px 0px 29px -10px;
+				width: 90%;
+				margin: auto;
+				background-color: #fff;
+				transition: 0.2s ease;
 				.what-is-swaps-gradient{
-					background: -moz-linear-gradient(left, rgba(255,255,255,0) 10%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
-					background: -webkit-linear-gradient(left, rgba(255,255,255,0) 10%,rgba(255,255,255,1) 62%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-					background: linear-gradient(to right, rgba(255,255,255,0) 10%,rgba(255,255,255,1) 62%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00cfdee4', endColorstr='#cfdee4',GradientType=1 ); /* IE6-9 */
-					@media @mobile {
-						background: -moz-linear-gradient(left, rgba(255,255,255,0.9),  rgba(255,255,255,1) 100%); /* FF3.6-15 */
-						background: -webkit-linear-gradient(left, rgba(255,255,255,0.9) 0, rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-						background: linear-gradient(to right, rgba(255,255,255,0.9) 0, rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-						filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00cfdee4', endColorstr='#cfdee4',GradientType=1 ); /* IE6-9 */
-					}
+					background-image: url('../../images/static/beach-girl.png');
+					background-position: left;
+					background-size: contain;
+					background-repeat: no-repeat;
+					height: 100%;
 				}
 				.full-height{
 					height: 100%;
@@ -159,14 +163,7 @@
 					height: 100%;
 				}
 				.explanation-text{
-					background: -webkit-linear-gradient(left, rgba(207,222,228,1) 0, rgba(255,255,255,1) 100%);
-					background: -moz-linear-gradient(left, rgba(207,222,228,1) 0, rgba(255,255,255,1) 100%); /* FF3.6-15 */
-					background: linear-gradient(to right, rgba(207,222,228,1) 0, rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
 					padding: 20px;
-					border-radius: 14px;
-					box-shadow: -4px 2px 12px -8px rgba(0,0,0,0.5);
-					-webkit-box-shadow: -4px 2px 12px -8px rgba(0,0,0,0.5);
 					.line{
 						font-family: 'Lato', sans-serif;
 						opacity: 0;
@@ -202,6 +199,10 @@
 							@media @mobile {
 								margin-left: 0;
 							}
+						}
+						.link{
+							text-decoration: underline;
+							color: #0E5D7C;
 						}
 					}
 				}
@@ -310,9 +311,9 @@
 	}
 
 	.title-container {
-		width: 80%;
+		width: 85%;
 		margin: auto;
-		padding: 80px 30px;
+		padding: 60px 10px;
 		@media @mobile {
 			width: 100%;
 			padding: 30px;
@@ -392,7 +393,7 @@
 	}
 	.find-swap {
 		width: 40%;
-		margin-top: 30vh;
+		margin-top: 10vh;
 		@media @tablet {
 			width: 50%;
 			left: 0;
@@ -616,7 +617,7 @@
 		}
 		label{
 			color: #ffffff;
-			font-size: 20px;
+			font-size: 22px;
 			font-weight: 500;
 			margin-bottom: 0;
 			padding: 10px 0;
@@ -767,7 +768,7 @@
 		.how-it-works-cover{
 			background-color: #ffffff;
 			padding: 0 8vw;
-			height: 56vw;
+			height: 44vw;
 			overflow: hidden;
 			transition: 2s ease;
 			@media @mobile {
@@ -794,8 +795,9 @@
 			}
 		}
 		.sub-title{
-			font-size: 20px;
+			font-size: 22px;
 			text-align: center;
+			padding-bottom: 40px;
 			color: #0e5d7c;
 			@media @mobile {
 				padding: 0 10px;
@@ -842,6 +844,9 @@
 			padding-left: 84%;
 			border-bottom: white solid;
 			height: 3%;
+		}
+		.join{
+			padding: 10px 0;
 		}
     }
 	.how-inner-ticket {

@@ -10,7 +10,8 @@
                 <!--<div class="start-swapping">Start Swapping</div>-->
                 <div class="row search-area" sticky-header>
                     <div class="search-field left col-sm-12 col-xs-12">
-                        <label class="where-label {{alreadyEntered?'':'animate'}}" for="searchCity">Where would you like to swap homes?</label>
+                        <label class="where-label {{alreadyEntered?'':'animate'}}" for="searchCity">Don’t overthink, travel. <br>Where do you want to go?
+                        </label>
                         <div class="search-input {{alreadyEntered?'':'animate'}}">
                             <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true" auto-search="autoSearch()">
                             <div class="icon icon-infocenter"></div>
@@ -19,107 +20,44 @@
                             </a>
                         </div>
                     </div>
-                    <!--<div class="search-field col-sm-6 col-xs-12 hidden-xs">-->
-                    <!--<label for="searchDate">When</label>-->
-                    <!--<div class="row flex">-->
-                    <!--<div class="col-xs-12 {{rangeLabel?'col-sm-7':'col-sm-12'}}">-->
-                    <!--<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" ng-change="changeDates()" model-format="modelFormat" find-travel="false" datepicker readonly="true">-->
-                    <!--<div class="glyphicon glyphicon-remove" ng-click="removeDates()" ng-if="search.date"></div>-->
-                    <!--<span class="flexible-departure">{{rangeLabel === 'Weekends'?'Next 4 weekends':rangeLabel === 'Within Range'?'Within next 2 months':rangeLabel === 'Dates' && search.startRange != 0 ?data.flexibleDates[search.startRange].value:''}}</span>-->
-                    <!--<span class="flexible-return">{{rangeLabel === 'Dates' && search.endRange != 0?data.flexibleDates[search.endRange].value:''}}</span>-->
-                    <!--</div>-->
-                    <!--<div class="{{rangeLabel?'col-xs-12 col-sm-5':'col-sm-0'}} xs-full-width">-->
-                    <!--<div class="dropdown">-->
-                    <!--<div class="flexible-dates" data-toggle="dropdown" ng-if="rangeLabel">-->
-                    <!--{{rangeLabel === 'Weekends'? data.weekendStart[search.startRange].value +'-'+data.weekendEnd[search.endRange].value :rangeLabel === 'Dates'?search.startRange != 0 || search.endRange != 0?'Flexible':'Exact dates':rangeLabel === 'Within Range'?(search.startRange != search.endRange?search.startRange +'-'+ search.endRange:search.startRange) + ' Nights': ''}}-->
-                    <!--<span class="glyphicon glyphicon-chevron-down"></span>-->
-                    <!--</div>-->
-                    <!--<div class="dropdown-menu" ng-if="rangeLabel">-->
-                    <!--<form name="rangeForm" class="range-wr" novalidate>-->
-                    <!--<div ng-if="rangeLabel === 'Weekends'" class="flex">-->
-                    <!--<div class="flex flex-row">-->
-                    <!--<label class="flexible-label">Departure: </label>-->
-                    <!--<select ng-model="search.startRange" class="form-control">-->
-                    <!--<option ng-repeat="x in data.weekendStart" value="{{x.id}}">{{x.value}}</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
-                    <!--<div class="flex flex-row">-->
-                    <!--<label class="flexible-label">Return: </label>-->
-                    <!--<select ng-model="search.endRange" class="form-control">-->
-                    <!--<option ng-repeat="x in data.weekendEnd" value="{{x.id}}">{{x.value}}</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div ng-if="rangeLabel === 'Dates'" class="flex">-->
-                    <!--<div class="flex flex-row">-->
-                    <!--<label class="flexible-label">Departure: </label>-->
-
-                    <!--<select ng-model="search.startRange" class="form-control">-->
-                    <!--<option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
-                    <!--<div class="flex flex-row">-->
-                    <!--<label class="flexible-label">Return: </label>-->
-                    <!--<select ng-model="search.endRange" class="form-control">-->
-                    <!--<option ng-repeat="x in data.flexibleDates" value="{{x.id}}">{{x.value}}</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div ng-if="rangeLabel === 'Within Range'" class="duration-wr">-->
-                    <!--<label class="flexible-label">Duration: </label>-->
-                    <!--<input type="text" class="form-control" placeholder="6-8" name="durationRange" ng-model="search.duration" ng-change="changeRange()">-->
-                    <!--<span class="nights">Nights</span>-->
-                    <!--</div>-->
-                    <!--</form>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="Anytime" id="searchDate" name="searchDate" ng-focus="openDate()" ng-model="search.date">&ndash;&gt;-->
-                    <!--<div class="icon icon-calender"></div>-->
-                    <!--</div>-->
-                    <!--<div class="search-field right col-sm-2 col-xs-12 ">-->
-                        <!--&lt;!&ndash;<label for="guests">Travelers</label>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="guests-search">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<input type="number" class="form-control guests" id="guests" placeholder="2" ng-model="search.guests" min="1" max="8">&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--<a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">-->
-                            <!--<button class="search hidden-xs" ng-click="searchSwap($event)">Search</button>-->
-                        <!--</a>-->
-                        <!--&lt;!&ndash;<div class="icon icon-man-small"></div>&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--<div class="no-padding col-sm-4 col-xs-12 visible-xs">-->
-                        <!--<button class="search" ng-click="searchSwap($event)">Search</button>-->
-                    <!--</div>-->
                 </div>
             </div>
-        <!--<div class="button-div container" scroll-to-top>-->
-            <!--<span class="icon icon-brownerrow"-->
-                  <!--style="cursor: pointer"></span>-->
-        <!--</div>-->
         </div>
     </div>
-    <div class="section featured-homes what-is">
-        <div class="what-is-swaps" scroll-animate>
-            <div class="what-is-swaps-gradient">
-                <div class="row full-width">
-                    <div class="col-sm-5 col-xs-0 full-height hidden-xs">
-                        <!--<div class="photo">-->
-                        <!--</div>-->
+    <div class="how-it-works">
+        <div class="how-it-works-cover">
+            <div class="inner-section row">
+                <div class="sub-title">Swapping homes is easy, secure, and cheap</div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="ticket-title">Use Your Home to Travel More</div>
+                    <div class="join">
+                        <div class="description-icon icon icon-house" scroll-animate></div>
                     </div>
-                    <div class="col-sm-7 col-xs-12">
-                        <div class="explanation-text">
-                            <h1 class="line line-1">
-                                Swaps is about creating a home swapping solution for travelers around the world.
-                            </h1>
-                            <h1 class="line line-2">
-                                Our platform offers wanderers at heart an easy, safe, and cheap way to live their dreams and travel anywhere.
-                            </h1>
-                            <h1 class="line line-3">
-                                It’s easy - You stay at their home, they stay at yours.
-                            </h1>
-                        </div>
+                    <div class="how-inner-sentences first" scroll-animate>
+                        Swapping is simple. You stay at their home when you travel, they stay at yours while your away
                     </div>
+                </div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="ticket-title">Get Swap Credits for Your Next Trip</div>
+                    <div class="join">
+                        <div class="description-icon icon icon-money" scroll-animate></div>
+                    </div>
+                    <div class="how-inner-sentences second" scroll-animate>
+                        Leaving home for a while? Let other Swappers stay at your place and gain Swap Credits for free.
+                    </div>
+                </div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="ticket-title">By Far the Best Way to Travel</div>
+                    <div class="join">
+                        <div class="description-icon icon icon-matos" scroll-animate></div>
+                    </div>
+                    <div class="how-inner-sentences third" scroll-animate>
+                        Swapping homes and using Swap Credits makes traveling cheaper and easier than ever before.
+                    </div>
+                </div>
+                <div class="col-xs-12" >
+                    <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
+                    <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
                 </div>
             </div>
         </div>
@@ -145,44 +83,35 @@
             </a>
         </div>
     </div>
-    <div class="how-it-works" img="'../../images/static/home/how-it-works.jpg'" lazy-load-image>
-        <div class="how-it-works-cover" bind-scroll-opacity>
-            <div class="inner-section row" scroll-animate>
-                <div class="title">How does it work?</div>
-                <div class="sub-title">Swapping homes is easy, secure, and cheap</div>
-                <div class="how-inner-ticket col-sm-4 col-xs-12">
-                    <div class="join">
-                        <div class="description-icon icon icon-house" scroll-animate></div>
+    <div class="section featured-homes what-is">
+        <div class="what-is-swaps" scroll-animate bind-scroll-opacity>
+            <div class="title">Swap Credits, Explained</div>
+            <div class="sub-title">we’ve designed the Swap Credits System to be as straightforward as possible</div>
+            <div class="swappers-border" scroll-animate></div>
+            <div class="what-is-swaps-gradient">
+                <div class="row full-width">
+                    <div class="col-sm-5 col-xs-0 full-height hidden-xs">
+                        <!--<div class="photo">-->
+                        <!--</div>-->
                     </div>
-                    <div class="ticket-title">It's Easy!</div>
-                    <div class="how-inner-sentences first" scroll-animate>
-                        List your home, find other Swappers or enter your travel plans so they can find you, and set up a perfect home swap
+                    <div class="col-sm-7 col-xs-12">
+                        <div class="explanation-text">
+                            <h1 class="line line-1">
+                                You use Swap Credits when you stay at another Swapper's home and gain Swap Credits when a Swapper stays at yours.
+                            </h1>
+                            <h1 class="line line-2">
+                                The value of each home is calculated based on our easy-to-understand <a class="link" href="/how-it-works#swapCredits" target="_blank"> Swap Credit System.</a>
+                            </h1>
+                            <h1 class="line line-3">
+                                By gaining enough Swap Credits, you can Swap for free!
+                            </h1>
+                        </div>
                     </div>
-                </div>
-                <div class="how-inner-ticket col-sm-4 col-xs-12">
-                    <div class="join">
-                        <div class="description-icon icon icon-keys" scroll-animate></div>
-                    </div>
-                    <div class="ticket-title">It's Secure!</div>
-                    <div class="how-inner-sentences second" scroll-animate>
-                        Your trip and your home are important to us, and we offer unique plans to cover you in cases of property damages or cancellations
-                    </div>
-                </div>
-                <div class="how-inner-ticket col-sm-4 col-xs-12">
-                    <div class="join">
-                        <div class="description-icon icon icon-money" scroll-animate></div>
-                    </div>
-                    <div class="ticket-title">It's Cheap!</div>
-                    <div class="how-inner-sentences third" scroll-animate>Save money for the important things in life and start experiencing the world. Signing up is completely free, and your first Swap is on us!</div>
-                </div>
-                <div class="col-xs-12" >
-                    <button class="start-button" ng-click="searchSwap($event)" ng-if="user._id">Start</button>
-                    <button class="start-button" ng-click="openLogin(true)" ng-if="!user._id">Join</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="section featured-homes" id="instagram">
+    <div class="section" id="instagram">
         <div class="title swappers">
             <span scroll-on-click>Check us out on Instagram</span>
             <div class="swappers-border" scroll-animate></div>

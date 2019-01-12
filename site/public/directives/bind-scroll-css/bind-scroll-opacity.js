@@ -15,18 +15,12 @@ swapsApp.directive('bindScrollOpacity', function() {
 
             var percentage = (docViewBottom - elemTop) / (size);
 
-            if((elemTop <= docViewBottom) && (docViewBottom < elemBottom + 100) && (percentage > 0.4)){
+            if((elemTop <= docViewBottom) && (docViewBottom < elemBottom + 100)){
 
                 // elm.css({'background-color':'rgba(255,255,255,'+ (1 - (percentage - 0.3)/ 0.7) +')'});
-                elm.css({'background-color':'rgba(255,255,255,0)'});
+                var num = percentage * 10;
+                elm.css({'box-shadow':(-6 +num) +'px '+(-4 +num)+'px 29px -10px'});
             }
-
-            if((elemTop <= docViewBottom) && (docViewBottom < elemBottom + 100) && (percentage < 0.4)){
-
-                // elm.css({'background-color':'rgba(255,255,255,'+ (1 - (percentage - 0.3)/ 0.7) +')'});
-                elm.css({'background-color':'rgba(255,255,255,1)'});
-            }
-
 
             return false;
         });
