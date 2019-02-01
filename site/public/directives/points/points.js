@@ -18,6 +18,7 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
     $scope.amount = $scope.missing?$scope.missing:1;
     $scope.currentPoints = $rootScope.user.credit;
     $scope.fraction = $rootScope.user.credit - Math.floor($rootScope.user.credit) > 0;
+    $scope.currentPoints = Math.floor($scope.currentPoints);
 
     $scope.go = function(){
 
@@ -164,6 +165,8 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
             $scope.couponAmount = data.amount;
             $scope.makeItRain = true;
             $scope.currentPoints = $scope.user.credit;
+            $scope.fraction = $rootScope.user.credit - Math.floor($rootScope.user.credit) > 0;
+            $scope.currentPoints = Math.floor($scope.currentPoints);
             if($scope.missing){
                 $scope.hideCredits();
             }
