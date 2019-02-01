@@ -192,9 +192,9 @@ const transactionMode = {
 };
 
 const creditInfo = {
-    priceFor1: 0.20,
-    priceFor2: 0.35,
-    priceFor3: 0.45,
+    priceFor1: 20,
+    priceFor2: 35,
+    priceFor3: 45,
     perNight: 1,
     perRoom: 1,
     perRoomCommission: 0.5,
