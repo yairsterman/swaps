@@ -122,8 +122,8 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
     function receiveMessage(event) {
         if(event.data == 'success'){
             showAlert('Purchase Successful');
-            $scope.amount = 5;
-            $scope.cost = $scope.amount * $scope.data.creditInfo.price;
+            $scope.amount = 1;
+            $scope.cost = $scope.amount * $scope.data.creditInfo.priceFor1;
             UsersService.getUser($rootScope.user._id).then(function(data){
 
                 $rootScope.user = data.data;
