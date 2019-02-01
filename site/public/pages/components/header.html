@@ -59,7 +59,14 @@
             </div>
             <div class="login sign-up credits" ng-if="user._id" uib-tooltip="You have {{$root.user.credit}} Swap Credits. Click to buy more" tooltip-placement="bottom" tooltip>
                 <a class="user-credits" href="/account/credits" ng-click="go('account/credits')">
-                    <div class="coins-amount">{{$root.user.credit}}</div>
+                    <div class="coins-amount">{{round($root.user.credit)}}
+                        <div class="frac" ng-if="fraction">
+                            <span>1</span>
+                            <span class="symbol">/</span>
+                            <span class="bottom">2</span>
+                        </div>
+                    </div>
+
                     <div class="coins">
                     </div>
                 </a>
@@ -112,9 +119,15 @@
                 </div>
                 <div class="user-area">
                     <div class="login-area">
-                        <div class="login sign-up credits" ng-if="user._id" uib-tooltip="You have {{$root.user.credit}} Swap Credits. Click to buy more" tooltip-placement="bottom" tooltip>
+                        <div class="login sign-up credits" ng-if="user._id" uib-tooltip="You have {{round($root.user.credit)}} Swap Credits. Click to buy more" tooltip-placement="bottom" tooltip>
                             <a class="user-credits" href="/account/credits" ng-click="go('account/credits')">
-                                <div class="coins-amount">{{$root.user.credit}}</div>
+                                <div class="coins-amount">{{round($root.user.credit)}}
+                                    <div class="frac" ng-if="fraction">
+                                        <span>1</span>
+                                        <span class="symbol">/</span>
+                                        <span class="bottom">2</span>
+                                    </div>
+                                </div>
                                 <div class="coins">
                                 </div>
                             </a>

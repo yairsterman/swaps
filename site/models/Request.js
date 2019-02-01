@@ -19,6 +19,8 @@ var schema = new Schema({
     guests2: Number,
     roomType1: Number,
     roomType2: Number,
+    rooms1: Number,
+    rooms2: Number,
     city1: String,
     city2: String,
     country1: String,

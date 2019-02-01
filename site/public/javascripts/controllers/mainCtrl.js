@@ -86,6 +86,10 @@ swapsApp.controller('mainController', function($scope, $rootScope, $location, Ut
             // ($scope.user.deposit || $scope.user.deposit === 0);
     }
 
+    $scope.round = function(x){
+        return Math.floor(x);
+    }
+
     $rootScope.profileComplete = $scope.profileComplete;
 
     if($location.url().indexOf('#swapCredits') != -1){

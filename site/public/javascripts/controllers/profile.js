@@ -446,7 +446,7 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
             }
             else{
                 setUpMarkers();
-                $scope.creditsAmount = Math.abs($scope.data.roomType[1].gain - $scope.data.roomType[$scope.profile.apptInfo.roomType].cost);
+                getGainCost();
                 $scope.ready = true;
             }
         });
@@ -457,10 +457,26 @@ swapsApp.controller('profileController', function($scope, $rootScope, $document,
         $scope.canSendRequest.status = false;
         setUpMarkers();
         checkRequestSent();
-        $scope.creditsAmount = Math.abs($scope.data.roomType[$scope.user.apptInfo.roomType].gain - $scope.data.roomType[$scope.profile.apptInfo.roomType].cost);
+        getGainCost();
         $timeout(function(){
             $scope.ready = true;
         },1000);
+    }
+
+    function getGainCost(){
+        var userRooms = 1
+        if($scope.user && $scope.user._id){
+            userRooms = $scope.user.apptInfo.rooms;
+        }
+        $scope.cost = $scope.profile.apptInfo.rooms * $scope.data.creditInfo.perRoom;
+        $scope.costFraction = $scope.cost > Math.floor($scope.cost);
+        $scope.gain = userRooms * $scope.data.creditInfo.perRoom - $scope.data.creditInfo.perRoomCommission;
+        $scope.gainFraction = $scope.gain > Math.floor($scope.gain);
+        $scope.creditsAmount = Math.abs($scope.gain - $scope.cost);
+        $scope.creditsAmountFraction = $scope.creditsAmount > Math.floor($scope.creditsAmount);
+        $scope.gain = Math.floor($scope.gain);
+        $scope.cost = Math.floor($scope.cost);
+        $scope.creditsAmount = Math.floor($scope.creditsAmount);
     }
 
     function openMatch(){

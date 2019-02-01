@@ -1,5 +1,6 @@
 @import 'media.less';
 
+
 .information-page{
   background-color: #ffffff;
   padding: 0 15% 60px 15%;
@@ -234,13 +235,37 @@
     cursor: pointer;
     text-decoration: underline;
   }
+  .frac {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    letter-spacing: 0.001em;
+    line-height: 1;
+    text-align: center;
+    padding-right: 4px;
+    font-size: 14px;
+    span {
+      display: block;
+      padding: 0.1em;
+
+    }
+    .symbol {
+      display: none;
+    }
+  }
   .cost{
     font-weight: 500;
     color: #e84f2f;
+    .bottom {
+      border-top: thin solid #e84f2f;
+    }
   }
   .gain{
     font-weight: 500;
     color: #22A854;
+    .bottom {
+      border-top: thin solid #22A854;
+    }
   }
   .gold{
     font-weight: 500;

@@ -340,6 +340,7 @@
 					}
 					.user-credits{
 						display: flex;
+						align-items: center;
 						@media @mobile {
 							flex-direction: column;
 						}
@@ -351,7 +352,7 @@
 						background-size: cover;
 						width: 25px;
 						height: 25px;
-						margin-bottom: 3px;
+						margin-bottom: 5px;
 						@media @mobile {
 							margin-bottom: 0;
 							margin-top: -6px;
@@ -365,6 +366,30 @@
 						text-align: center;
 						@media @mobile {
 							font-size: 14px;
+						}
+					}
+					.frac {
+						display: inline-block;
+						position: relative;
+						vertical-align: middle;
+						letter-spacing: 0.001em;
+						line-height: 1;
+						text-align: center;
+						padding-right: 4px;
+						font-size: 14px;
+						@media @mobile {
+							font-size: 11px;
+						}
+						span {
+							display: block;
+							padding: 0.1em;
+
+						}
+						.bottom {
+							border-top: thin solid #0e5d7c;
+						}
+						.symbol {
+							display: none;
 						}
 					}
 				}

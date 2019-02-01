@@ -580,15 +580,15 @@ swapsApp.controller('accountController', function($scope, $rootScope, $routePara
     }
 
     $scope.getCreditsAmount = function(request){
-        var paymentPerNight = request.user1?request.oneWay?0:$scope.data.roomType[request.roomType1].cost:$scope.data.roomType[request.roomType2].cost;
-        var gainPerNight = request.user1?$scope.data.roomType[request.roomType2].gain:request.oneWay?0:$scope.data.roomType[request.roomType1].gain;
+        var paymentPerNight = request.user1?request.oneWay?0:request.rooms1 * $scope.data.creditInfo.perRoom:request.rooms2 * $scope.data.creditInfo.perRoom;
+        var gainPerNight = request.user1?request.rooms2 * $scope.data.creditInfo.perRoom - $scope.data.creditInfo.perRoomCommission:request.oneWay?0:request.rooms1 * $scope.data.creditInfo.perRoom - $scope.data.creditInfo.perRoomCommission;
         var totalPayment = (paymentPerNight - gainPerNight) * request.nights;
         var res = {};
         res.totalPayment = Math.abs(totalPayment);
         res.gained = totalPayment < 0;
         res.notCharged = totalPayment == 0;
         return res;
-    };``
+    };
 
     $scope.getPage = function(page){
         $scope.messagePageStart = (page - 1) * $scope.messagePageSize;

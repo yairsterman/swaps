@@ -107,12 +107,12 @@
                     </div>
                     <div class="not-charged" ng-hide="requestSent" ng-if="profile.allowViewHome || profile.travelingInformation.length > 0">
                         <div ng-if="user && user._id">
-                            Swap homes with {{profile.firstName}} {{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'and gain ':'for'}}
-                            <span ng-if="creditsAmount == 0">FREE</span>
-                            <span ng-if="creditsAmount != 0"><span class="{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'cost'}}">{{creditsAmount}}</span> Swap Credits per night</span>
+                            Swap homes with {{profile.firstName}} {{gain > cost?'and gain ':'for'}}
+                            <span ng-if="creditsAmount == 0 && !creditsAmountFraction">FREE</span>
+                            <span ng-if="creditsAmount != 0 || creditsAmountFraction"><span class="{{gain > cost?'gain':'cost'}}">{{creditsAmount>0?creditsAmount:''}}<div class="frac" ng-if="creditsAmountFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span> {{creditsAmount > 1?'Swap Credits':'Swap Credit'}} per night</span>
                         </div>
                         <div ng-if="!user || !user._id">
-                            {{profile.firstName}}'s home costs <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}}</span> Swap Credits per night, Swap homes with {{profile.firstName}} and you can gain Swap Credits as well.
+                            {{profile.firstName}}'s home costs <span class="cost">{{cost}}</span> {{cost > 1?'Swap Credits':'Swap Credit'}} per night, Swap homes with {{profile.firstName}} and you can gain Swap Credits as well.
                         </div>
                         <div class="credit-explanation" ng-click="openCreditExplanation()">
                             Why is this?
@@ -164,7 +164,7 @@
                                 <div class="home-info">
                                     <div class="icon icon-door"></div>
                                     <div class="bed-count simple-apt-info-content">{{profile.apptInfo.rooms}}
-                                        {{profile.apptInfo.rooms > 1?'Rooms':'Room'}}
+                                        {{profile.apptInfo.rooms > 1?'Bedrooms':'Bedroom'}}
                                     </div>
                                 </div>
                                 <div class="home-info">
@@ -336,6 +336,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                     <div>
                         <div class="row">

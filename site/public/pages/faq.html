@@ -163,60 +163,91 @@
                 <div class="underline"></div>
             </div>
             <span class="collapse" id="valueSystem">
-                The value of each Swapper’s home is calculated based on our easy-to-understand Swap Credit system, you use Swap credits when you stay at another Swapper's home and you gain credits when a Swapper stays at yours:
+                    The value of each Swapper’s home is calculated based on our easy-to-understand Swap Credit system, you use Swap credits when you stay at another Swapper's home and you gain credits when a Swapper stays at yours:
                 <br>
                 <br>
                 <table class="swap-value">
                     <thead>
-                        <th>Room Type</th>
+                        <th>Rooms</th>
                         <th>Cost</th>
                         <th>Gain</th>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                Shared Room
+                                1 Bedroom
                             </td>
                             <td class="cost">
-                                10 Swap Credits (per night)
+                                1 Swap Credit (per night)
                             </td>
                             <td class="gain">
-                                5 Swap Credits (per night)
+                                <div class="frac">
+                                    <span>1</span>
+                                    <span class="symbol">/</span>
+                                    <span class="bottom">2</span>
+                                </div>
+                                Swap Credits (per night)
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                Single Room
+                                2 Bedrooms
                             </td>
                             <td class="cost">
-                                15 Swap Credits (per night)
+                                2 Swap Credits (per night)
                             </td>
                             <td class="gain">
-                                10 Swap Credits (per night)
+                                1<div class="frac">
+                                    <span>1</span>
+                                    <span class="symbol">/</span>
+                                    <span class="bottom">2</span>
+                                </div>
+                                Swap Credits (per night)
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                Entire Place
+                                3 Bedrooms
                             </td>
                             <td class="cost">
-                                20 Swap Credits (per night)
+                                3 Swap Credits (per night)
                             </td>
                             <td class="gain">
-                                15 Swap Credits (per night)
+                                2<div class="frac">
+                                    <span>1</span>
+                                    <span class="symbol">/</span>
+                                    <span class="bottom">2</span>
+                                </div>
+                                Swap Credits (per night)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                4+ Bedrooms
+                            </td>
+                            <td class="cost">
+                                4 Swap Credits (per night)
+                            </td>
+                            <td class="gain">
+                                3<div class="frac">
+                                    <span>1</span>
+                                    <span class="symbol">/</span>
+                                    <span class="bottom">2</span>
+                                </div>
+                                Swap Credits (per night)
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <br>
                 <br>
-                For example, if you’re offering Swappers an Entire Place <span class="gain">(gain 15 Swap Credits)</span>, and you Swap homes with George who is offering a Shared Room <span class="cost">(cost 10 Swap Credits)</span>, you will gain a total of <span class="gain">5 Swap Credits</span> per night. (<span class="gain">15</span> - <span class="cost">10</span> = <span class="gain">5</span>)
+                For example, if you’re offering Swappers 3 rooms <span class="gain">(gain 2<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credits)</span>, and you Swap homes with George who is offering 1 room <span class="cost">(cost 1 Swap Credit)</span>, you will gain a total of <span class="gain">1<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credits</span> per night. (<span class="gain">2<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span> - <span class="cost">1</span> = <span class="gain">1<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span>)
                 <br>
                 <br>
-                On the other hand, if you’re offering Swappers a Single Room <span class="gain">(gain 10 Swap Credits)</span>, and you Swap homes with Sharon who is offering an Entire Place <span class="cost">(cost 20 Swap Credits)</span>, you will pay a total of <span class="cost">10 Swap Credits</span> per night (<span class="cost">20</span> - <span class="gain">10</span> = <span class="cost">10</span>)
+                On the other hand, if you’re offering Swappers 1 room <span class="gain">(gain <div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> a Swap Credit)</span>, and you Swap homes with Sharon who is offering 2 rooms <span class="cost">(cost 2 Swap Credits)</span>, you will pay a total of <span class="cost">1<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credits</span> per night (<span class="cost">2</span> - <span class="gain"><div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span> = <span class="cost">1<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span>)
                 <br>
                 <br>
-                In one-way Swaps, the host doesn't pay for a swap since they aren't staying at the other Swapper's home, therefore, the host will only gain credits. So if you’re offering a Single Room <span class="gain">(gain 10 Swap Credits)</span>, and Felix stays at your place, you gain a total of <span class="gain">10 Swap Credits</span> per night.
+                In one-way Swaps, the host doesn't pay for a swap since they aren't staying at the other Swapper's home, therefore, the host will only gain credits. So if you’re offering 2 rooms <span class="gain">(gain 1<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credits)</span>, and Felix stays at your place, you gain a total of <span class="gain">1<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credits</span> per night.
                 <br>
                 <br>
                 By gaining enough Swap Credits for offering your home to others, you can actually travel for free on your next trip!
@@ -226,7 +257,7 @@
                 <span ng-if="!$root.user">
                     <br>
                     <br>
-                    <strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first 10 Swap Credits for free!
+                    <strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first Swap Credit for free!
                 </span>
             </span>
             <div class="clickable sub-title" data-toggle="collapse" href="#homeWorth" aria-expanded="false" aria-controls="homeWorth">
@@ -246,24 +277,21 @@
                 <br>
                 <ul>
                     <li>
-                        <strong>1 Swap Credit</strong> for <strong>$2.50</strong> <a href="/account/credits">Buy Now</a>
+                        <strong>1 Swap Credit</strong> for <strong>$20</strong> <a href="/account/credits">Buy Now</a>
                     </li>
                     <li>
-                        <strong>5 Swap Credits</strong> for <strong>$10.00</strong> ($2.00 per Swap Credit) <a href="/account/credits">Buy Now</a>
+                        <strong>2 Swap Credits</strong> for <strong>$35</strong> ($17<div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> per Swap Credit) <a href="/account/credits">Buy Now</a>
                     </li>
                     <li>
-                        <strong>10 Swap Credits</strong> for <strong>$17.50</strong> ($1.75 per Swap Credit) <a href="/account/credits">Buy Now</a>
-                    </li>
-                    <li>
-                        <strong>15 Swap Credits</strong> for <strong>$22.50</strong> ($1.50 per Swap Credit) <a href="/account/credits">Buy Now</a>
+                        <strong>3 Swap Credits</strong> for <strong>$45</strong> ($15 per Swap Credit) <a href="/account/credits">Buy Now</a>
                     </li>
                 </ul>
                 <br>
                 <br>
-                Additionally, with our premium <span class="gold">Swaps Gold</span> service you will <span class="gold"> get 20 Swap Credits for only $25.00, every month!</span> That’s just <strong>$1.25 per Swap Credit, every month!</strong> <a href="/account/credits">Buy Now</a>
+                Additionally, with our premium <span class="gold">Swaps Gold</span> service you will <span class="gold"> get 2 Swap Credits for only $20, every month!</span> That’s just <strong>$10 per Swap Credit, every month!</strong> <a href="/account/credits">Buy Now</a>
                 <br>
                 <br>
-                <span ng-if="!$root.user"><strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first 10 Swap Credits for free!
+                <span ng-if="!$root.user"><strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first Swap Credit for free!
                     <br>
                     <br>
                 </span>

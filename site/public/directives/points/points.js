@@ -15,8 +15,9 @@ swapsApp.directive('points', function() {
 
 function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersService, AccountService, alertify, $uibModal){
 
-    $scope.amount = $scope.missing?$scope.missing:5;
+    $scope.amount = $scope.missing?$scope.missing:1;
     $scope.currentPoints = $rootScope.user.credit;
+    $scope.fraction = $rootScope.user.credit - Math.floor($rootScope.user.credit) > 0;
 
     $scope.go = function(){
 
@@ -38,7 +39,7 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
     $scope.addAmount = function(){
         $scope.amount++;
         var price = $scope.calculatePrice($scope.amount);
-        $scope.smoothNumberTransition('cost', parseFloat((price).toFixed(2)), 0.1);
+        $scope.smoothNumberTransition('cost', parseFloat((price).toFixed(2)), 1);
         $scope.makeItRain = true;
         $timeout(function(){
             $scope.makeItRain = false;
@@ -58,17 +59,15 @@ function pointsController($scope, $rootScope, $sce, $timeout, $interval, UsersSe
         }
         $scope.amount--;
         var price = $scope.calculatePrice($scope.amount);
-        $scope.smoothNumberTransition('cost', parseFloat((price).toFixed(2)), 0.1);
+        $scope.smoothNumberTransition('cost', parseFloat((price).toFixed(2)), 1);
     };
 
     $scope.calculatePrice = function(amount){
         var price = 0;
-        price += Math.floor(amount/15) * $scope.data.creditInfo.priceFor15;
-        amount = amount % 15;
-        price += Math.floor(amount/10) * $scope.data.creditInfo.priceFor10;
-        amount = amount % 10;
-        price += Math.floor(amount/5) * $scope.data.creditInfo.priceFor5;
-        amount = amount % 5;
+        price += Math.floor(amount/3) * $scope.data.creditInfo.priceFor3;
+        amount = amount % 3;
+        price += Math.floor(amount/2) * $scope.data.creditInfo.priceFor2;
+        amount = amount % 2;
         price += amount * $scope.data.creditInfo.priceFor1;
         return price;
     }

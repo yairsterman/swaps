@@ -173,7 +173,7 @@ const visibleRequestData ={
 
 const requestUserData = 'firstName image photos _id apptInfo country city reviews rating occupation';
 
-const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit roomType1 roomType2';
+const requestData = 'guests1 guests2 user1 user2 nights checkin checkout proposition status oneWay deposit roomType1 roomType2 rooms1 rooms2';
 const communityData = 'name _id photo';
 
 
@@ -192,13 +192,14 @@ const transactionMode = {
 };
 
 const creditInfo = {
-    priceFor1: 2.5,
-    priceFor5: 10,
-    priceFor10: 17.5,
-    priceFor15: 22.5,
-    perNight: 5,
-    perNightOneWay: 10,
-    oneWayCommission: 5,
+    priceFor1: 0.20,
+    priceFor2: 0.35,
+    priceFor3: 0.45,
+    perNight: 1,
+    perRoom: 1,
+    perRoomCommission: 0.5,
+    maxRoomPay: 4,
+    maxRoomGain: 3.5,
 };
 
 const genders =[

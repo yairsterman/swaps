@@ -5,9 +5,15 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 	$scope.homepage = $rootScope.homepage;
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
+    $scope.fraction = false;
 
 	if($rootScope.user && $rootScope.user.city){
 		$rootScope.userCity = $rootScope.user.city;
+    }
+	if($rootScope.user){
+	    if($rootScope.user.credit - Math.floor($rootScope.user.credit) > 0){
+	        $scope.fraction = true;
+        }
     }
 	$scope.fly ={
 		guests: 2
@@ -17,6 +23,14 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
             guests: 2
         };
 	}
+
+    $scope.$watch('$root.user', function(){
+        if($rootScope.user){
+            if($rootScope.user.credit - Math.floor($rootScope.user.credit) > 0){
+                $scope.fraction = true;
+            }
+        }
+    });
 
 	function successFunction(position) {
         var lat = position.coords.latitude;
@@ -79,6 +93,9 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
 		if($scope.user && $scope.user.city){
 			$rootScope.userCity = $scope.user.city;
 	    }
+        if($rootScope.user.credit - Math.floor($rootScope.user.credit) > 0){
+            $scope.fraction = true;
+        }
 		else{
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
@@ -120,11 +137,18 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
     $scope.$on('login-success', function(event, args) {
         $scope.user = $rootScope.user;
         $rootScope.userCity = $scope.user.city;
+        if($rootScope.user.credit - Math.floor($rootScope.user.credit) > 0){
+            $scope.fraction = true;
+        }
         getUnreadMessages();
     });
 
     $scope.toHtml = function(html){
         return $sce.trustAsResourceUrl(html);
+    }
+
+    $scope.round = function(x){
+        return Math.floor(x);
     }
 
     function getUnreadMessages(){

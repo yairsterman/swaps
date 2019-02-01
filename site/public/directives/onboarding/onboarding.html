@@ -172,9 +172,9 @@
                             {{room.displayName}}
                         </select>
                     </div>
-                    <div class="gain">
-                        You will gain {{data.roomType[user.apptInfo.roomType].gain}} Swap Credits for every night a Swapper stays at your place <a class="credits-link" href="/how-it-works#swapCredits" target="_blank">What are Swap Credits?</a>
-                    </div>
+                    <!--<div class="gain">-->
+                        <!--You will gain {{data.roomType[user.apptInfo.roomType].gain}} Swap Credits for every night a Swapper stays at your place <a class="credits-link" href="/how-it-works#swapCredits" target="_blank">What are Swap Credits?</a>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -230,9 +230,9 @@
                         <div class="col-sm-3 col-xs-3 basics">
                             <div class="name-with-icon">
                                 <div class="icon icon-door-small hidden-xs"></div>
-                                <div class="basics-name">Rooms</div>
+                                <div class="basics-name">Bedrooms</div>
                             </div>
-                            <input class="form-control" id="rooms" type="number" min="1" max="8"
+                            <input class="form-control" id="rooms" type="number" min="1" max="4" step="1"
                                    ng-model="user.apptInfo.rooms">
                         </div>
                         <div class="col-sm-3 col-xs-3 basics">

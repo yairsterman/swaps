@@ -32,6 +32,7 @@ module.exports.sendRequest = function(params, user) {
     let guests = params.guests;
     let oneWay = params.oneWay;
     let roomType = user.apptInfo.roomType;
+    let rooms = user.apptInfo.rooms;
     let city = user.city;
     let country = user.country;
     let now = Date.now();
@@ -83,6 +84,7 @@ module.exports.sendRequest = function(params, user) {
                 status: Data.getRequestStatus().pending,
                 guests: guests,
                 roomType: roomType,
+                rooms: rooms,
                 nights: nights,
                 oneWay: oneWay,
                 city: city,
@@ -276,6 +278,7 @@ function saveRequest(requestDetails){
         },
         guests1: requestDetails.guests,
         roomType1: requestDetails.roomType,
+        rooms1: requestDetails.rooms,
         nights: requestDetails.nights,
         plan: requestDetails.plan,
         oneWay: requestDetails.oneWay,
@@ -347,7 +350,7 @@ function acceptRequest(params, request){
             error.message = "No dates specified";
             throw (error);
         }
-        if(!request.oneWay && request.user2.credit < util.getTotalPaymentAmount(request.roomType1, request.user2.apptInfo.roomType, nights)){
+        if(!request.oneWay && request.user2.credit < util.getTotalPaymentAmount(request.rooms1, request.user2.apptInfo.rooms, nights)){
             error.message = `You do not have enough Swap Credits to trade in for this swap`;
             throw (error);
         }
@@ -356,6 +359,7 @@ function acceptRequest(params, request){
                 let set = {
                     guests2: guests,
                     roomType2: request.user2.apptInfo.roomType,
+                    rooms2: request.user2.apptInfo.rooms,
                     verifyTransactionUser2: params.transactionId, // user2 is accepting
                     checkin: departure,
                     checkout : returnDate,
@@ -754,12 +758,12 @@ function refundCredits(user1, user2, request, declined){
     let amountUser2;
 
     if(request.oneWay){
-        amountUser1 = util.getTotalPaymentAmount(request.roomType2, request.roomType1, request.nights, true);
-        amountUser2 = util.getTotalPaymentAmount(request.roomType1, request.roomType2, request.nights, true, true);
+        amountUser1 = util.getTotalPaymentAmount(request.rooms2, request.rooms1, request.nights, true);
+        amountUser2 = util.getTotalPaymentAmount(request.rooms1, request.rooms2, request.nights, true, true);
     }
     else{
-        amountUser1 = util.getTotalPaymentAmount(request.roomType2, request.roomType1, request.nights);
-        amountUser2 = util.getTotalPaymentAmount(request.roomType1, request.roomType2, request.nights);
+        amountUser1 = util.getTotalPaymentAmount(request.rooms2, request.rooms1, request.nights);
+        amountUser2 = util.getTotalPaymentAmount(request.rooms1, request.rooms2, request.nights);
     }
 
     updateCredits(user1._id, amountUser1)
@@ -789,17 +793,17 @@ function chargeCredits(request){
     let amount;
 
     if(request.oneWay){
-        if(user1.credit < util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights, true)){
+        if(user1.credit < util.getTotalPaymentAmount(request.rooms2, request.rooms1, nights, true)){
             dfr.reject(`Insufficient points for ${user1.firstName}`);
             return dfr.promise;
         }
     }
     else{
-        if(user1.credit < util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights)){
+        if(user1.credit < util.getTotalPaymentAmount(request.rooms2, request.rooms1, nights)){
             dfr.reject(`Insufficient points for ${user1.firstName}`);
             return dfr.promise;
         }
-        if(user2.credit < util.getTotalPaymentAmount(request.roomType1, request.roomType2, nights)){
+        if(user2.credit < util.getTotalPaymentAmount(request.rooms1, request.rooms2, nights)){
             dfr.reject(`Insufficient points for ${user2.firstName}`);
             return dfr.promise;
         }
@@ -808,19 +812,19 @@ function chargeCredits(request){
     checkAvailability(user1._id, user2._id, request.checkin, request.checkout)
         .then(function() {
             if(request.oneWay){ // one way swap, only user1 is staying at user2
-                amount = -(util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights, true));
+                amount = -(util.getTotalPaymentAmount(request.rooms2, request.rooms1, nights, true));
             }
             else{
-                amount = -(util.getTotalPaymentAmount(request.roomType2, request.roomType1, nights));
+                amount = -(util.getTotalPaymentAmount(request.rooms2, request.rooms1, nights));
             }
             return updateCredits(user1._id, amount);
         })
         .then(function(){
             if(request.oneWay){ // user2 gets what's left from payment after the commission
-                amount = -(util.getTotalPaymentAmount(request.roomType1, request.roomType2, nights, true, true));
+                amount = -(util.getTotalPaymentAmount(request.rooms1, request.rooms2, nights, true, true));
             }
             else{
-                amount = -(util.getTotalPaymentAmount(request.roomType1, request.roomType2, nights));
+                amount = -(util.getTotalPaymentAmount(request.rooms1, request.rooms2, nights));
             }
             return updateCredits(user2._id, amount);
         })

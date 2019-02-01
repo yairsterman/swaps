@@ -101,7 +101,7 @@ module.exports.init = function () {
                             bedType: 1
                         },
                         deposit: 0,
-                        credit: 10,
+                        credit: 2,
                         oneWaySwapDays: 0,
                         IP: req.headers['x-forwarded-for'] || req.headers['x-real-ip']
                     });
@@ -176,7 +176,7 @@ module.exports.init = function () {
                             bedType: 1
                         },
                         deposit: 0,
-                        credit: 10,
+                        credit: 2,
                         oneWaySwapDays: 0,
                         paymentInfo: {},
                         IP: req.headers['x-forwarded-for'] || req.headers['x-real-ip']
@@ -251,7 +251,7 @@ module.exports.init = function () {
                                 bedType: 1
                             },
                             deposit: 0,
-                            credit: 10,
+                            credit: 2,
                             oneWaySwapDays: 0,
                             IP: req.headers['x-forwarded-for'] || req.headers['x-real-ip']
                         });

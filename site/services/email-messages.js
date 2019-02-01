@@ -17,7 +17,7 @@ const SIGNITURE = '<div class="swaps-signature" style="padding:6vw;line-height: 
     '<div>Tel Aviv, Israel</div></div>';
 const INVITE = '<div class="swaps-invite" style="text-align:center; background: rgb(14,93,124); background: -moz-linear-gradient(-55deg, rgba(14,93,124,1) 40%, rgba(11,143,76,1) 100%);  background: -webkit-linear-gradient(-55deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); background: linear-gradient(145deg, rgba(14,93,124,1) 40%,rgba(11,143,76,1) 100%); padding:2vw 6vw;line-height: 1.4"><div><a class="no-decoration pointer" style="cursor:pointer;text-decoration: none;" href="'+INVITE_FRIENDS+'">'+
     '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 22px;color: #ffffff;">Get Swap Credits!</div>' +
-    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #ffffff;">Up to 15 Swap Credits for every friend you invite</div>' +
+    '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #ffffff;">Up to 2 Swap Credits for every friend you invite</div>' +
     '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #FACC5C;">Log in to invite friends</div>' +
     ' </a></div></div>';
 const TOP = `<div class="swaps-logo" style="width:100px; height: 100px; margin:auto; padding: 20px 0;"><img style="width:100px; height: 100px;" src="${LOGO}"></div>`;
@@ -201,7 +201,7 @@ var messages = {
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Referral complete </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + referrer.firstName + ', Thanks for referring your friend '+user.firstName+' to Swaps<br>' +
             'we are glad to inform you that ' + user.firstName + ' has successfully posted their home!<br>' +
-            '5 Swap Credits will be added to your credit.' +
+            '1 Swap Credit will be added to your credit.' +
             '<br><br>Keep on spreading the word!</div>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
@@ -209,8 +209,8 @@ var messages = {
     invitation: function(user, link){
         return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Invitation to Swaps </div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hi there, your friend ' + user.firstName + ', invited you to join Swaps!<br>' +
-            'You’ll get 5 Swap Credits when you post your home on Swaps.<br>' +
-            user.firstName + ' will also get 5 Swap Credits.<br></div>' +
+            'You’ll get 1 Swap Credit when you post your home on Swaps.<br>' +
+            user.firstName + ' will also get 1 Swap Credit.<br></div>' +
             '<a class="no-decoration" style="text-decoration: none;" href="' + link + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Join</div></a>' +
             '</div>' + SIGNITURE + STYLE + '</div>'
     },

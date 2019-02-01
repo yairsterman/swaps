@@ -28,12 +28,10 @@ module.exports.purchaseCredits = function(userId, amount){
 
 module.exports.calculateCreditAmount = function(price){
     let amount = 0;
-    amount += Math.floor(price/Data.getCreditInfo().priceFor15) * 15;
-    price = price % Data.getCreditInfo().priceFor15;
-    amount += Math.floor(price/Data.getCreditInfo().priceFor10) * 10;
-    price = price % Data.getCreditInfo().priceFor10;
-    amount += Math.floor(price/Data.getCreditInfo().priceFor5) * 5;
-    price = price % Data.getCreditInfo().priceFor5;
+    amount += Math.floor(price/Data.getCreditInfo().priceFor3) * 3;
+    price = price % Data.getCreditInfo().priceFor3;
+    amount += Math.floor(price/Data.getCreditInfo().priceFor2) * 2;
+    price = price % Data.getCreditInfo().priceFor2;
     amount += Math.floor(price/Data.getCreditInfo().priceFor1) * 1;
     return amount;
 }

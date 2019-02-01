@@ -20,9 +20,11 @@ module.exports.calculateNightsBetween = function(date1, date2) {
     return Math.ceil(difference_ms / DAYS);
 };
 
-module.exports.getTotalPaymentAmount = function(roomTypeCost, roomTypeGain, nights, oneWay, showGain) {
-    let cost = data.getRoomType()[roomTypeCost].cost;
-    let gain = data.getRoomType()[roomTypeGain].gain;
+module.exports.getTotalPaymentAmount = function(rooms1, rooms2, nights, oneWay, showGain) {
+    rooms1 = rooms1 > data.getCreditInfo().maxRoomPay?data.getCreditInfo().maxRoomPay:rooms1;
+    rooms2 = rooms2 > data.getCreditInfo().maxRoomPay?data.getCreditInfo().maxRoomPay:rooms2;
+    let cost = rooms1 * data.getCreditInfo().perRoom;
+    let gain = (rooms2 * data.getCreditInfo().perRoom) - data.getCreditInfo().perRoomCommission;
 
     if(oneWay){
         if(showGain){

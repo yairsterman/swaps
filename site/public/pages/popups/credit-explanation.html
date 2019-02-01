@@ -7,42 +7,73 @@
     </div>
     <table class="swap-value">
         <thead>
-        <th>Room Type</th>
+        <th>Rooms</th>
         <th>Cost</th>
         <th>Gain</th>
         </thead>
         <tbody>
         <tr>
             <td>
-                Shared Room
+                1 Bedroom
             </td>
             <td class="cost">
-                10 Swap Credits (per night)
+                1 Swap Credit (per night)
             </td>
             <td class="gain">
-                5 Swap Credits (per night)
+                <div class="frac">
+                    <span>1</span>
+                    <span class="symbol">/</span>
+                    <span class="bottom">2</span>
+                </div>
+                Swap Credits (per night)
             </td>
         </tr>
         <tr>
             <td>
-                Single Room
+                2 Bedrooms
             </td>
             <td class="cost">
-                15 Swap Credits (per night)
+                2 Swap Credits (per night)
             </td>
             <td class="gain">
-                10 Swap Credits (per night)
+                1<div class="frac">
+                    <span>1</span>
+                    <span class="symbol">/</span>
+                    <span class="bottom">2</span>
+                </div>
+                Swap Credits (per night)
             </td>
         </tr>
         <tr>
             <td>
-                Entire Place
+                3 Bedrooms
             </td>
             <td class="cost">
-                20 Swap Credits (per night)
+                3 Swap Credits (per night)
             </td>
             <td class="gain">
-                15 Swap Credits (per night)
+                2<div class="frac">
+                    <span>1</span>
+                    <span class="symbol">/</span>
+                    <span class="bottom">2</span>
+                </div>
+                Swap Credits (per night)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4+ Bedrooms
+            </td>
+            <td class="cost">
+                4 Swap Credits (per night)
+            </td>
+            <td class="gain">
+                3<div class="frac">
+                    <span>1</span>
+                    <span class="symbol">/</span>
+                    <span class="bottom">2</span>
+                </div>
+                Swap Credits (per night)
             </td>
         </tr>
         </tbody>
@@ -51,13 +82,13 @@
         <br>
         <br>
         <div ng-if="user && user._id">
-            You’re offering a{{data.roomType[user.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[user.apptInfo.roomType].displayName}} (<span class="gain">gain {{data.roomType[user.apptInfo.roomType].gain}} Swap Credits</span>), <br>{{profile.firstName}} is offering a{{data.roomType[profile.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[profile.apptInfo.roomType].displayName}} (<span class="cost">cost {{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span>), <br>you will {{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'pay'}} a total of <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{creditsAmount}} Swap Credits</span> per night. (<span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[user.apptInfo.roomType].gain:data.roomType[profile.apptInfo.roomType].cost}}</span> - <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'gain':'cost'}}">{{data.roomType[user.apptInfo.roomType].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[profile.apptInfo.roomType].cost:data.roomType[user.apptInfo.roomType].gain}}</span> = <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[user.apptInfo.roomType].gain?'cost':'gain'}}">{{creditsAmount}}</span>)
+            You’re offering {{user.apptInfo.rooms}} {{user.apptInfo.rooms > 1 ? 'rooms':'room'}} (<span class="gain">gain {{gain>0?gain:''}}<div class="frac" ng-if="gainFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit{{gain == 1 && !gainFraction || gain < 1 && gainFraction ?'':'s'}}</span>), <br>{{profile.firstName}} is offering {{profile.apptInfo.rooms}} {{profile.apptInfo.rooms > 1 ? 'rooms':'room'}} (<span class="cost">cost {{cost>0?cost:''}}<div class="frac" ng-if="costFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit{{cost == 1 && !costFraction || cost < 1 && costFraction ?'':'s'}}</span>), <br>you will {{gain > cost?'gain':'pay'}} a total of <span class="{{cost > gain?'cost':'gain'}}">{{creditsAmount>0?creditsAmount:''}}<div class="frac" ng-if="creditsAmountFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit{{creditsAmount == 1 && !creditsAmountFraction || creditsAmount < 1 && creditsAmountFraction ?'':'s'}}</span> per night. (<span class="{{cost > gain?'cost':'gain'}}">{{gain > cost?gain>0?gain:'':cost>0?cost:''}}<div class="frac" ng-if="gain > cost?gainFraction:costFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span></span> - <span class="{{cost > gain?'gain':'cost'}}">{{gain > cost?cost>0?cost:'':gain>0?gain:''}}<div class="frac" ng-if="gain > cost?costFraction:gainFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span> = <span class="{{cost > gain?'cost':'gain'}}">{{creditsAmount>0?creditsAmount:''}}<div class="frac" ng-if="creditsAmountFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span>)
         </div>
         <div ng-if="!user || !user._id">
-            For example, if you’re offering a{{data.roomType[1].type == 'EntirePlace'?'n':''}} {{data.roomType[1].displayName}} (<span class="gain">gain {{data.roomType[1].gain}} Swap Credits</span>), and {{profile.firstName}} is offering a{{data.roomType[profile.apptInfo.roomType].type == 'EntirePlace'?'n':''}} {{data.roomType[profile.apptInfo.roomType].displayName}} (<span class="cost">cost {{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span>), you will {{data.roomType[1].gain > data.roomType[profile.apptInfo.roomType].cost?'gain':'pay'}} a total of <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'cost':'gain'}}">{{creditsAmount}} Swap Credits</span> per night. <br>(<span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'cost':'gain'}}">{{data.roomType[1].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[1].gain:data.roomType[profile.apptInfo.roomType].cost}}</span> - <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'gain':'cost'}}">{{data.roomType[1].gain > data.roomType[profile.apptInfo.roomType].cost?data.roomType[profile.apptInfo.roomType].cost:data.roomType[1].gain}}</span> = <span class="{{data.roomType[profile.apptInfo.roomType].cost > data.roomType[1].gain?'cost':'gain'}}">{{creditsAmount}}</span>)
+            For example, if you’re offering 1 room (<span class="gain">gain <div class="frac"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit</span>), and {{profile.firstName}} is offering {{profile.apptInfo.rooms}} {{profile.apptInfo.rooms > 1 ? 'rooms':'room'}} (<span class="cost">cost {{cost>0?cost:''}}<div class="frac" ng-if="costFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit{{cost == 1 && !costFraction || cost < 1 && costFraction ?'':'s'}}</span>), you will {{gain > cost?'gain':'pay'}} a total of <span class="{{cost > gain?'cost':'gain'}}">{{creditsAmount>0?creditsAmount:''}}<div class="frac" ng-if="creditsAmountFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit{{creditsAmount == 1 && !creditsAmountFraction || creditsAmount < 1 && creditsAmountFraction ?'':'s'}}</span> per night. (<span class="{{cost > gain?'cost':'gain'}}">{{gain > cost?gain>0?gain:'':cost>0?cost:''}}<div class="frac" ng-if="gain > cost?gainFraction:costFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span> - <span class="{{cost > gain?'gain':'cost'}}">{{gain > cost?cost>0?cost:'':gain>0?gain:''}}<div class="frac" ng-if="gain > cost?costFraction:gainFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span> = <span class="{{cost > gain?'cost':'gain'}}">{{creditsAmount>0?creditsAmount:''}}<div class="frac" ng-if="creditsAmountFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div></span>)
         </div>
         <br>
-        If you wish to request a <strong class="one-way" aria-hidden="true" uib-tooltip="Stay at {{profile.firstName}}'s home without offering your home in exchange." tooltip-placement="top" tooltip> one-way Swap</strong>, You will pay the full cost without gaining credits since you are not offering your home in exchange. So for a one-way Swap you will pay for {{profile.firstName}}'s {{data.roomType[profile.apptInfo.roomType].displayName}} <span class="cost">{{data.roomType[profile.apptInfo.roomType].cost}} Swap Credits</span> per night.
+        If you wish to request a <strong class="one-way" aria-hidden="true" uib-tooltip="Stay at {{profile.firstName}}'s home without offering your home in exchange." tooltip-placement="top" tooltip> one-way Swap</strong>, You will pay the full cost without gaining credits since you are not offering your home in exchange. So for a one-way Swap you will pay for {{profile.firstName}}'s {{data.roomType[profile.apptInfo.roomType].displayName}} <span class="cost">{{cost}} <div class="frac" ng-if="costFraction"><span>1</span><span class="symbol">/</span><span class="bottom">2</span></div> Swap Credit{{cost> 1?'s':''}}</span> per night.
         <br>
         <br>
         <span ng-if="!user || !user._id">
