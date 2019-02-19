@@ -1,7 +1,8 @@
 var login = null;
-swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, AccountService, MessageService, $timeout) {
+swapsApp.controller('loginController', function($scope, $routeParams, $rootScope, $window, $location, UsersService, $uibModal, AccountService, CommunityService, $timeout) {
     login = $scope;
     $rootScope.externalLogin = $routeParams.external;
+    $scope.embedded = $routeParams.embedded;
     if($rootScope.externalLogin){
         $scope.signin = $rootScope.externalLogin;
     }
@@ -13,6 +14,18 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
     $scope.credentials = {};
     $scope.passwordType = 'password';
     $scope.eyeIcon = 'fa-eye';
+
+    if($routeParams.code){
+        CommunityService.getCommunity($routeParams.code).then(function(community){
+            $scope.community = community;
+            $scope.subTitle = 'Welcome ' + community.name + ' member,<br> join us and start Swapping now'
+        }, function(){
+
+        });
+    }
+    if($scope.embedded){
+        $('.fb-messenger-icon').addClass('hide');
+    }
 
     $scope.close = function(){
         $scope.modelInstance.close();
@@ -45,8 +58,13 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
                     controller: 'onboardingController'
                 }).closed.then(function(){
                     if($rootScope.externalLogin){
-                        $rootScope.externalLogin = false;
-                        $location.url('/');
+                        if($scope.embedded){
+                            $scope.openNewWindow();
+                        }
+                        else{
+                            $rootScope.externalLogin = false;
+                            $location.url('/');
+                        }
                     }
                 });
             }
@@ -160,6 +178,16 @@ swapsApp.controller('loginController', function($scope, $routeParams, $rootScope
 
     $scope.setToFalse = function(variable){
         $scope[variable] = false;
+    };
+
+    $scope.openNewWindow = function(){
+        if(!$scope.embedded){
+            $rootScope.externalLogin = false;
+            $scope.go('');
+        }
+        else{
+            $window.open('https://swapshome.com' , '_blank');
+        }
     };
 
     $scope.terms = function(){

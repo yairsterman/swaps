@@ -15,6 +15,7 @@
                         <div class="search-input {{alreadyEntered?'':'animate'}}">
                             <input type="text" class="form-control" placeholder="Anywhere" id="searchCity" ng-model="search.where" autocomplete city="true" auto-search="autoSearch()">
                             <div class="icon icon-infocenter"></div>
+                            <div class="icon icon-infocenter"></div>
                             <a href="/travelers/{{search.where}}?dates={{search.when}}&guests={{search.guests}}">
                                 <button class="search" ng-click="searchSwap($event)">Search</button>
                             </a>
@@ -85,7 +86,7 @@
     </div>
     <div class="section featured-homes what-is">
         <div class="what-is-swaps" scroll-animate bind-scroll-opacity>
-            <div class="title">Swap Credits, Explained</div>
+            <div class="title">Swap Credits</div>
             <div class="sub-title">we’ve designed the Swap Credits System to be as straightforward as possible</div>
             <div class="swappers-border" scroll-animate></div>
             <div class="what-is-swaps-gradient">

@@ -55,7 +55,8 @@ $routeProvider
     })
     .when('/login', {
         templateUrl : '/pages/login.html',
-        controller  : 'loginController'
+        controller  : 'loginController',
+        reloadOnSearch: false
     })
     .when('/verify-email/:token', {
         templateUrl: '/pages/verify-email.html',

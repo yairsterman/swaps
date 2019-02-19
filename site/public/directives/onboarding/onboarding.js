@@ -1,5 +1,7 @@
-swapsApp.controller('onboardingController', function($scope, $rootScope, $location, $sce,AccountService, alertify) {
+swapsApp.controller('onboardingController', function($scope, $rootScope, $routeParams, $location, $sce,AccountService, alertify) {
     $scope.user = $rootScope.user;
+    $scope.embedded = $routeParams.embedded;
+    $scope.communityCode = $routeParams.code;
     $scope.numOfFiles = 0;
     $scope.community = {};
 
@@ -13,6 +15,14 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
     if($rootScope.externalLogin){
         if($location.search().referer){
             $scope.referrer = true;
+        }
+        if($scope.communityCode){
+            AccountService.setCommunity($scope.communityCode).then(function(data){
+                $rootScope.user = data;
+                $scope.user = $rootScope.user;
+            },function(err){
+                alertify.error(err);
+            })
         }
     }
 
@@ -53,8 +63,13 @@ swapsApp.controller('onboardingController', function($scope, $rootScope, $locati
 
     $scope.closeModel = function(){
         if($rootScope.externalLogin){
-            $rootScope.externalLogin = false;
-            $location.url('/travelers');
+            if($scope.embedded){
+                window.open('https://swapshome.com/', 'newwindow');
+            }
+            else{
+                $rootScope.externalLogin = false;
+                $location.url('/travelers');
+            }
         }
         $scope.$dismiss();
     }

@@ -1,24 +1,25 @@
-<div class="login-page" ng-style="{'height': innerHeight}">
-    <div class="title-container">
-        <div class="title-swaps" style="background-image: url('../images/logotype.svg')"></div>
-        <div class="points-container">
-            Home is Wherever<div></div>
-            <div class="points-container-border"></div>
+<div class="login-page {{embedded?'embedded':''}}" ng-style="{'height': innerHeight}">
+    <div ng-if="!embedded || (embedded && loggedIn)">
+        <div class="title-container">
+            <div class="title-swaps" style="background-image: url('../images/logotype.svg')"></div>
+            <div class="points-container">
+                Home is Wherever<div></div>
+                <div class="points-container-border"></div>
+            </div>
+        </div>
+        <div class="description">
+            <span class="swaps">Swaps</span> allows you to easily and securely <br>
+            exchange homes with people all over the world. <br>
+            Start swapping today and save a ton of money on your travels!
         </div>
     </div>
-    <div class="description">
-        <span class="swaps">Swaps</span> allows you to easily and securely <br>
-        exchange homes with people all over the world. <br>
-        Start swapping today and save a ton of money on your travels!
-    </div>
-    <div class="login-model" ng-if="!loggedIn">
+    <div class="login-model {{embedded && !isEmailLogin?'embedded':''}} {{loggedIn?'loggedIn':''}}" ng-if="!loggedIn">
         <div class="" ng-if="!isEmailLogin">
             <div class="title">
                 Join Swaps
                 <div class="underline"></div>
             </div>
-            <div class="sub-title">
-                In just a few steps you could find your next Swap
+            <div class="sub-title" ng-bind-html="subTitle | trustAsHtml">
             </div>
             <div class="button-signin">
                 <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
@@ -92,7 +93,7 @@
             </div>
         </div>
     </div>
-    <div class="description after-signup">
-        Already signed up? <a class="link" ng-click="$root.externalLogin = false; go('')">Go to site</a>
+    <div class="description after-signup {{embedded && loggedIn?'embedded':''}}" ng-if="!embedded || loggedIn || (embedded && !isEmailLogin)">
+        Already signed up? <a class="link" ng-click="openNewWindow()">Go to site</a>
     </div>
 </div>

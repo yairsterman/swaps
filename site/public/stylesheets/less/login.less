@@ -2,6 +2,9 @@
 .login-model{
   min-height: 420px;
   position: relative;
+  &.embedded{
+    margin-top: 40px !important;
+  }
   .top-corner{
     position: absolute;
     top: -10px;
@@ -240,6 +243,11 @@
     font-weight: 300;
     &.after-signup{
       color: #333;
+    }
+    &.embedded{
+      position: absolute;
+      width: 95%;
+      bottom: 20px;
     }
     @media @mobile {
       font-size: 16px;

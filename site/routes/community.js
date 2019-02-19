@@ -20,4 +20,11 @@ router.post('/createCommunity', function (req, res, next) {
     });
 });
 
+router.get('/getCommunity/:code', function (req, res, next) {
+    Community.findOne({code: req.params.code}, {name: true}, function (err, _community) {
+        if (err) return res.json(err);
+        res.json(_community);
+    });
+});
+
 module.exports = router;
