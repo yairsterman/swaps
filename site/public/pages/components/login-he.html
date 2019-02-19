@@ -1,0 +1,100 @@
+<div class="login-page {{embedded?'embedded':''}}" ng-style="{'height': innerHeight}">
+    <div ng-if="!embedded || (embedded && loggedIn)">
+        <div class="title-container">
+            <div class="title-swaps" style="background-image: url('../images/logotype.svg')"></div>
+            <div class="points-container">
+                Home is Wherever<div></div>
+                <div class="points-container-border"></div>
+            </div>
+        </div>
+        <div class="description" style="direction:rtl">
+            <span class="swaps">Swaps</span> מאפשר לך בקלות ובבטיחות <br>
+            להחליף דירות עם אנשים סביב העולם <br>
+            התחילו להחליף היום וחסכו מלא כסף בטיולים
+        </div>
+    </div>
+    <div class="login-model {{embedded && !isEmailLogin?'embedded':''}} {{loggedIn?'loggedIn':''}}" ng-if="!loggedIn">
+        <div class="" ng-if="!isEmailLogin">
+            <div class="title">
+                <span class="swaps">Swaps</span> הצטרף ל
+                <div class="underline"></div>
+            </div>
+            <div class="sub-title">
+                בעוד כמה צעדים פשוטים תוכלו למצוא את החילוף הבא
+            </div>
+            <div class="button-signin" >
+                <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()" style="padding-left:18px"><i class="fa fa-facebook-square"></i><span style="padding-right:10px"> Facebook </span>  רישום באמצעות </button>
+            </div>
+            <div class="button-signin">
+                <button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()" style="padding-left:0"><div class="google-icon" style="margin-right: 22px;"></div> <span style="padding-right:10px"> Google </span> רישום באמצעות </button>
+            </div>
+            <div class="sub-title">
+                או
+            </div>
+            <div class="button-signin bottom">
+                <button type="button" class="btn btn-default login-button email-button" ng-click="goToEmailLogin()" style="padding-left:18px"><i class="fa fa-envelope" style="padding-right:44px"></i>רישום באמצעות אימייל</button>
+            </div>
+            <div class="bottom" style="direction:rtl">
+                בהצטרפות לאתר הנכם מסכימים <br><span class="link" ng-click="terms()">לתנאי השימוש</span>
+                <span class="link" ng-click="policy()">ולמדיניות פרטיות</span>
+            </div>
+        </div>
+        <div class="email-login" ng-if="isEmailLogin">
+            <div class="title">
+                <span class="swaps">Swaps</span> הצטרף ל
+                <div class="underline"></div>
+            </div>
+            <form name="signupForm" style="direction:rtl">
+                <div class="row">
+                    <div class="form-group col-xs-6">
+                        <label class="control-label listing-label" for="lastName">שם משפחה:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="setToFalse('lastNameInvalid')" ng-model="credentials.lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <label class="control-label listing-label" for="firstName" name="firstName">שם פרטי:
+                        </label>
+                        <div class="">
+                            <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="setToFalse('firstNameInvalid')" ng-model="credentials.firstName" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="email">דוא״ל:
+                    </label>
+                    <div class="">
+                        <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="setToFalse('emailInvalid')" ng-model="credentials.email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="password">סיסמה:
+                        <span class="explanation">לפחות 6 תווים</span>
+                    </label>
+                    <div class="password">
+                        <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="setToFalse('passwordInvalid')" placeholder="" minlength="6" ng-model="credentials.password" required style="padding-right: 15px;padding-left: 40px;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="confirmPassword">אימות סיסמה:
+                        <span class="error" ng-if="passwordsMismatch">Passwords don't match</span>
+                    </label>
+                    <div class="">
+                        <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="setToFalse('confirmPasswordInvalid')" placeholder="" ng-model="credentials.confirmPassword" required style="padding-right: 15px;padding-left: 40px;">
+                    </div>
+                </div>
+            </form>
+            <div class="error" ng-if="error">{{error}}</div>
+            <div class="button-signin">
+                <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>רישום באמצעות אימייל</button>
+            </div>
+            <div class="bottom"  style="direction:rtl">
+                חזרה ל<span class="link" ng-click="backToSocial()">רישום רשתות חברתיות</span>
+            </div>
+        </div>
+    </div>
+    <div class="description after-signup {{embedded && loggedIn?'embedded':''}}" ng-if="!embedded || loggedIn || (embedded && !isEmailLogin)" style="direction:rtl">
+        כבר נרשמתם?  <a class="link" ng-click="openNewWindow()"> בקרו באתר </a>
+    </div>
+</div>

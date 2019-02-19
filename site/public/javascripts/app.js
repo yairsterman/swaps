@@ -58,6 +58,11 @@ $routeProvider
         controller  : 'loginController',
         reloadOnSearch: false
     })
+    .when('/login-he', {
+        templateUrl : '/pages/components/login-he.html',
+        controller  : 'loginController',
+        reloadOnSearch: false
+    })
     .when('/verify-email/:token', {
         templateUrl: '/pages/verify-email.html',
         controller: 'verifyEmailController'
