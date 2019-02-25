@@ -47,7 +47,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // connect to MongoDB
 
-mongoose.connect(config.mongoUrl,{useMongoClient: true}).then(function () {
+mongoose.connect(config.mongoUrl,{user: config.mongoUser, pass: config.mongoPassword, useMongoClient: true}).then(function () {
     console.log('connection successful');
 }).catch(function (err) {
     console.error(err);

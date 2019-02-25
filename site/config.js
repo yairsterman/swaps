@@ -35,6 +35,9 @@ let config = {
 
     EXPIRED_TOKEN: '*EXPIRED*',
 
+    mongoUser: 'swapshomedbowner',
+    mongoPassword: 'A&<7vF@f',
+
     // mongoUrl: 'mongodb://18.221.167.219/test', // for dev
     mongoUrl: 'mongodb://127.0.0.1/test', // for production
 
