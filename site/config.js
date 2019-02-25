@@ -1,7 +1,7 @@
 // noinspection JSAnnotator
 let config = {
     tranzillaTokenSupplier: 'swapshomtok',
-    tranzillaTokenPassword: 'cyrUkT3',
+    tranzillaTokenPassword: 'cyrUkT4',
     tranzillaSupplier: 'swapshom',
     tranzillaPassword: 'QWavKI9',
     TranzilaPW: 'FGf4ygrh',
