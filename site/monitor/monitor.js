@@ -6,7 +6,7 @@ let functions = require('./functions');
 //todo: remove when merging with app.js so we don't connect twice
 mongoose.Promise = global.Promise;
 
-mongoose.connect(config.mongoUrl,{useMongoClient: true}).then(function () {
+mongoose.connect(config.mongoUrl,{user: config.mongoUser, pass: config.mongoPassword, useMongoClient: true}).then(function () {
     console.log('connection successful');
 }).catch(function (err) {
     console.error(err);
