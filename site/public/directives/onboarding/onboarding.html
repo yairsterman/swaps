@@ -128,6 +128,11 @@
                 </div>
                 <div ng-if="user.facebookId">
                     <div class="form-group">
+                        <label class="control-label listing-label" uib-tooltip="This will be used to show your age" tooltip-placement="right" tooltip>Birthday:
+                        </label>
+                        <input class="datepicker form-control" name="birthday" ng-model="user.birthday" birthday="user.birthday" birthday-picker>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label listing-label" for="email" data-toggle="tooltip" title="Enter a valid email" data-placement="right" tooltip>Email:
                             <span class="asterisk">*</span>
                         </label>

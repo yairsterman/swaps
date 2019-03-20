@@ -37,11 +37,10 @@ module.exports.init = function () {
             clientID: config.FACEBOOK_APP_ID,
             clientSecret: config.FACEBOOK_APP_SECRET,
             callbackURL: config.baseUrl + "/auth/facebook/callback",
-            profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name', 'gender', 'birthday'],
+            profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'name'],
             passReqToCallback: true
         },
         function (req, accessToken, refreshToken, profile, done) {
-            console.log(profile);
             let query = {};
             query['facebookId'] = profile.id;
             if (profile._json.email) {
@@ -74,13 +73,12 @@ module.exports.init = function () {
                     });
                 }
                 else {
-                    const gender = getGender(profile.gender);
                     user = new User({
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
                         displayName: profile.displayName,
-                        gender: gender,
-                        birthday: profile._json.birthday,
+                        gender: 0,
+                        birthday: '01/01/1999',
                         email: profile._json.email,
                         facebookId: profile.id,
                         occupation: '',
@@ -132,7 +130,6 @@ module.exports.init = function () {
             passReqToCallback: true
         },
         function (req, accessToken, refreshToken, profile, done) {
-            console.log(profile);
             User.findOne({$or: [{googleId: profile.id}, {email: profile.emails[0].value}]}, function (err, user) {
                 if (err) return done(err);
                 if (user) {

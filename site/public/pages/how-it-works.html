@@ -1,38 +1,68 @@
 <div class="information-page">
     <div class="sub-title pa-55">
-        What is Swaps all about?
+        What is Swaps?
         <div class="underline"></div>
     </div>
     <div class="text">
-        <span class="swaps">Swaps</span>  is creating a home swapping solution for a new generation of travelers. Our platform offers a simple, affordable, and fun way to live out your dreams and experience the world. With Swaps, your home is anywhere.
+        <span class="swaps">Swaps</span>  is an easy, affordable, and fun solution for young travelers, allowing you to live out your dreams and experience the world.
         <br>
         <br>
-        When you Swap, you don’t have to worry about your home while you travel, and you don’t end up blowing your budget on cookie-cutter hotel rooms or other expensive rental options. Even if you travel only a few days each year, Swaps will save you literally hundreds of dollars, ensure your home and personal belongings are secure while your away, and provide you with a convenient, safe, and comfortable place to stay wherever you go. Swaps makes you a local anywhere, and lets you make the most of what traveling has to offer.        <br>
-        <br>
-        <strong>Swap Credits</strong>
-        <br>
-        <br>
-        In order to offer Swappers more Swap options, our Swaps Credit system allows you to set up one-way Swaps as well. If you’re traveling, Swap Credits allow you to stay at other Swappers’ homes even if you haven't found someone to stay at yours. If your hosting, Swap Credits allow you to offer your home to other Swappers and accumulate Swap Credits for your next trip, for free! You can use the Swap Credits on your next trip and save even more money during your travels. <a ng-click="showCreditsSection()" href="how-it-works#swapCredits"> Click here for more information about Swap Credits.</a>
+        <span ng-if="!$root.user"><strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first 2 Swap Credits <strong>for free!</strong><br>
+        <br></span>
+        With <span class="swaps">Swaps</span>, your home is anywhere.
         <br>
         <br>
-        <strong>Security</strong>
+        In fact, you can even <strong>Swap <a ng-click="showCreditsSection()" href="how-it-works#swapCredits"> for free.</a></strong>
         <br>
         <br>
-        In order to ensure that all Swappers, their homes, and their belongings are safe during travels, Swaps asks you to set aside a security deposit before your trip to cover for possible property damages or cancelations. <strong>The entire sum of the deposit is returned to you after your trip</strong>. In fact, the security deposit never even leaves your bank account, so you can rest easy. <a ng-click="showSecuritySection()" href="how-it-works#securityDeposit"> Click here for more information about the Swaps security deposit.</a>
+        How? It’s simple.
         <br>
         <br>
-        For a <strong>ridiculously low price</strong>, Swaps will give you the peace of mind you need in order to live life with no excuses and travel the world with no regrets.
+        When you <strong>Swap</strong>, you don’t have to worry about your home while you travel, or blow your budget on expensive rentals and hotels. Even if you travel only a few days each year, <span class="swaps">Swaps</span> will save you literally hundreds of dollars, ensure your home and personal belongings are secure while your away, and provide you with a convenient, safe, and comfortable place to stay wherever you go.
         <br>
+        <br>
+        <span class="swaps">Swaps</span> gives you the peace of mind you need to live life with no excuses and travel the world with no regrets.
+    </div>
+    <div class="sub-title pa-55">
+        Swap Credits
+        <div class="underline"></div>
+    </div>
+    <div class="text">
+        In order to offer <strong>Swappers</strong> more options, our <span class="swaps">Swaps</span> Credit System allows for one-way Swaps as well.
+        <br>
+        <br>
+        The Swaps Credit System is easy to understand:
+        <br>
+        <br>
+        <strong>1 Swap Credit = 1 Room for 1 Night</strong>
+        <br>
+        <br>
+        If you’re traveling, Swap Credits allow you to stay at other <strong>Swappers’</strong> homes even if you haven't found someone to stay at yours.
+        <br>
+        <br>
+        If you’re hosting, Swap Credits allow you to offer your home to other <strong>Swappers</strong> and accumulate Swap Credits for your next trip.
+        <br>
+        <br>
+        With enough Swap Credits, you can <strong>Swap <a ng-click="showCreditsSection()" href="how-it-works#swapCredits"> for free.</a></strong>
+        <br>
+        <br>
+        <a ng-click="showCreditsSection()" href="how-it-works#swapCredits"> Click here for more information about Swap Credits.</a>
+        <br>
+        <br>
+        <strong>Already a Swaps Member?</strong>
         <br>
         <a href="/travelers">Start Swapping!</a>
         <br>
         <br>
-        <span ng-if="!$root.user"><strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first 2 Swap Credits for free!<br>
+        <strong>Haven’t signed up yet?</strong>
+        <br>
+        <span><strong><span class="swaps" style="outline: none" ng-click="openLogin(true)">Join now</span></strong> and get your first 2 Swap Credits <strong>for free!</strong><br>
         <br></span>
-        <span>Something still bugging you? Check out our FAQ section below:</span>
+        All clear?
+        <br>
+        If not, check out our FAQ section below:
         <br>
         <br>
-        <!--<a href="/faq">Check out our FAQ page</a>, or contact us at <a href="mailto:info@swapshome.com">info@Swapshome.com</a>.-->
     </div>
     <div class="text">
         <div class="clickable secondary-title" data-toggle="collapse" href="#topQuestions" aria-expanded="false" aria-controls="topQuestions">

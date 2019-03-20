@@ -11,7 +11,7 @@ let utils = require('../utils/util');
 
 
 router.get('/facebook',
-    passport.authenticate('facebook', {scope: ['user_birthday', 'email']}));
+    passport.authenticate('facebook', {scope: ['email']}));
 
 router.get('/facebook/callback',
     passport.authenticate('facebook', {failureRedirect: '/'}), function (req, res) {
