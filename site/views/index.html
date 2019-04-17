@@ -98,6 +98,7 @@
     <script src="/javascripts/controllers/verifyEmail.js" defer></script>
     <script src="/javascripts/controllers/review.js" defer></script>
     <script src="/javascripts/controllers/inviteFriends.js" defer></script>
+    <script src="/javascripts/controllers/landingPage.js" defer></script>
 	<script type="text/javascript" src="/javascripts/jquery.ui.widget.js" async defer></script>
 	<script type="text/javascript" src="/javascripts/jquery.iframe-transport.js" async defer></script>
 	<script type="text/javascript" src="/javascripts/jquery.fileupload.js" async defer></script>
@@ -128,8 +129,30 @@
     <!--</script>-->
     <!-- Tranzila Verified END -->
 
+    <!--Swaps Facebook pixel-->
+
+    <!--&lt;!&ndash; Facebook Pixel Code &ndash;&gt;-->
+    <!--<script async>-->
+        <!--!function(f,b,e,v,n,t,s)-->
+        <!--{if(f.fbq)return;n=f.fbq=function(){n.callMethod?-->
+            <!--n.callMethod.apply(n,arguments):n.queue.push(arguments)};-->
+            <!--if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';-->
+            <!--n.queue=[];t=b.createElement(e);t.async=!0;-->
+            <!--t.src=v;s=b.getElementsByTagName(e)[0];-->
+            <!--s.parentNode.insertBefore(t,s)}(window, document,'script',-->
+            <!--'https://connect.facebook.net/en_US/fbevents.js');-->
+        <!--fbq('init', '2121458118141360');-->
+        <!--fbq('track', 'PageView');-->
+    <!--</script>-->
+
+    <!--<noscript><img height="1" width="1" style="display:none"-->
+                   <!--src="https://www.facebook.com/tr?id=2121458118141360&ev=PageView&noscript=1"-->
+    <!--/></noscript>-->
+    <!--&lt;!&ndash; End Facebook Pixel Code &ndash;&gt;-->
+
+    <!--Daniel Facebook pixel-->
     <!-- Facebook Pixel Code -->
-    <script async>
+    <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -138,12 +161,11 @@
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2121458118141360');
+        fbq('init', '1448824442074586');
         fbq('track', 'PageView');
     </script>
-
     <noscript><img height="1" width="1" style="display:none"
-                   src="https://www.facebook.com/tr?id=2121458118141360&ev=PageView&noscript=1"
+                   src="https://www.facebook.com/tr?id=1448824442074586&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
 
@@ -193,21 +215,21 @@
     // document.getElementsByTagName("head")[0].appendChild(mf);
     // })();
 
-    // window._mfq = window._mfq || [];
-    // (function() {
-    //     var mf = document.createElement("script");
-    //     mf.type = "text/javascript"; mf.async = true;
-    //     mf.src = "//cdn.mouseflow.com/projects/9e5beb24-8ab1-42f2-8a8b-d7f2a88ac918.js";
-    //     document.getElementsByTagName("head")[0].appendChild(mf);
-    // })();
+    window._mfq = window._mfq || [];
+    (function() {
+        var mf = document.createElement("script");
+        mf.type = "text/javascript"; mf.async = true;
+        mf.src = "//cdn.mouseflow.com/projects/9e5beb24-8ab1-42f2-8a8b-d7f2a88ac918.js";
+        document.getElementsByTagName("head")[0].appendChild(mf);
+    })();
 
-   window._mfq = window._mfq || [];
-   (function() {
-       var mf = document.createElement("script");
-       mf.type = "text/javascript"; mf.async = true;
-       mf.src = "//cdn.mouseflow.com/projects/c39d6feb-eb2d-4279-89a0-0a6cb6ac15a3.js";
-       document.getElementsByTagName("head")[0].appendChild(mf);
-   })();
+   // window._mfq = window._mfq || [];
+   // (function() {
+   //     var mf = document.createElement("script");
+   //     mf.type = "text/javascript"; mf.async = true;
+   //     mf.src = "//cdn.mouseflow.com/projects/c39d6feb-eb2d-4279-89a0-0a6cb6ac15a3.js";
+   //     document.getElementsByTagName("head")[0].appendChild(mf);
+   // })();
 </script>
 
 <!--==========messenger widget==========-->

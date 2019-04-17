@@ -75,6 +75,10 @@ $routeProvider
     .when('/review/:token', {
         templateUrl : '/pages/review.html',
         controller  : 'reviewController'
+    })
+    .when('/signup', {
+        templateUrl : '/pages/components/landing-page.html',
+        controller  : 'landingController'
     });
 
     $locationProvider.html5Mode(true);
