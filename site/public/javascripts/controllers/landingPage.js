@@ -7,6 +7,13 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
     $scope.innerHeight = $window.innerHeight;
     $scope.phase = 'first';
 
+    $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv'];
+
+    $scope.search = {};
+
+    $scope.localeFormat = 'MMM DD';
+    $scope.modelFormat = 'MM/DD/YYYY';
+
     $scope.go = function(path){
         $rootScope.externalLogin = false;
         $location.url('/' + path);
@@ -16,7 +23,18 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
         switch($scope.phase) {
             case 'first':
                 $scope.phase = 'where';
+                break;
+            case 'where':
+                $scope.phase = 'when';
+                break;
+            case 'when':
+                $scope.phase = 'who';
+                break;
         }
+    }
+
+    $scope.setCity = function(place){
+        $scope.search.where = place;
     }
 
     $scope.$on('auth-return', function(event, args) {

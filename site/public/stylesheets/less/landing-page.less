@@ -60,11 +60,13 @@
     position: absolute;
     top: 200px;
     width: 100%;
+    height: 350px;
     &.in{
       animation: swipeFromRight 0.2s linear forwards;
       -webkit-animation: swipeFromRight 0.2s linear forwards;
     }
     &.animate-out{
+      z-index: -1;
       animation: swipeLeft 0.2s linear forwards;
       -webkit-animation: swipeLeft 0.2s linear forwards;
     }
@@ -99,6 +101,8 @@
     .button-container{
       width: 100%;
       text-align: center;
+      position: absolute;
+      bottom: 0;
       .next{
         font-size: 26px;
         width: 300px;
@@ -115,6 +119,63 @@
         font-weight: bold;
       }
     }
+    .places{
+      width: 40%;
+      margin: auto;
+      .places-buttons{
+        width: 80%;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        .place{
+          background-color: #fff;
+          border: 1px solid #0e5d7c;
+          padding: 5px 20px;
+          border-radius: 4px;
+          color: #0e5d7c;
+          font-size: 18px;
+          margin-right: 10px;
+          margin-top: 10px;
+          white-space: nowrap;
+          box-shadow: 2px 2px 15px -5px #000;
+          transition: 0.4s ease;
+          cursor: pointer;
+          &:hover{
+            box-shadow: 1px 1px 6px -5px #000;
+            transform: scale(0.95);
+          }
+          &.clicked{
+            background-color: #0e5d7c;
+            color: #fff;
+          }
+        }
+      }
+      .location{
+        position: relative;
+        width: 300px;
+        margin: 30px auto;
+        .form-control{
+          padding-left: 45px;
+          border-radius: 0;
+          border: none;
+          color: #0e5d7c;
+          font-size: 18px;
+          box-shadow: none;
+          height: 42px;
+          background-color: #fff;
+        }
+        .icon{
+          transform: scale(.7);
+          bottom: 5px;
+          left: 10px;
+          position: absolute;
+        }
+      }
+    }
+  }
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #0E5D7C;
   }
 }
 

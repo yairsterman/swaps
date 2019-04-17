@@ -25,21 +25,57 @@
                 </div>
             </div>
         </div>
-        <div class="section in {{phase !== 'where'?'animate-out':''}}" ng-if="phase === 'where'">
+        <div class="section in {{phase !== 'where'?'animate-out':''}}" ng-if="phase !== 'first'">
             <div class="description">
-                <div class="title">Your Home Opens Doors to a World of Experiences
+                <div class="title">OK, first question, where do you want to go?
                 </div>
-                <div class="sub-title">Our super cool A.I. will show you where you could be traveling right now
+            </div>
+            <div class="places">
+                <div class="places-buttons">
+                    <div class="place {{search.where === place?'clicked':''}}" ng-repeat="place in places" ng-click="setCity(place)">
+                        {{place}}
+                    </div>
                 </div>
-                <div class="free">For Free!
+                <div class="location">
+                    <input type="text" class="form-control" placeholder="Another location" id="searchCity" ng-model="search.where" autocomplete city="true">
+                    <div class="icon icon-infocenter"></div>
                 </div>
             </div>
             <div class="button-container">
                 <div class="button btn btn-primary next" ng-click="next()">
-                    Check it Out
+                    Next Step
                 </div>
-                <div class="under-button-text">
-                    Quick. Simple. Safe.
+            </div>
+        </div>
+        <div class="section in {{phase !== 'when'?'animate-out':''}}" ng-if="phase !== 'where'">
+            <div class="description">
+                <div class="title">Cool!
+                </div>
+                <div class="title">Next up, when do you want to travel?
+                </div>
+            </div>
+            <div class="dates">
+                <div class="calendar" ng-model="search.date" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next" ng-click="next()">
+                    Next Step
+                </div>
+            </div>
+        </div>
+        <div class="section in {{phase !== 'who'?'animate-out':''}}" ng-if="phase !== 'when'">
+            <div class="description">
+                <div class="title">Cool!
+                </div>
+                <div class="title">Next up, when do you want to travel?
+                </div>
+            </div>
+            <div class="dates">
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next" ng-click="next()">
+                    Next Step
                 </div>
             </div>
         </div>
