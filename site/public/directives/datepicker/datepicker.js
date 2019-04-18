@@ -17,6 +17,8 @@ swapsApp.directive('datepicker', function() {
             start: '=?',
             end: '=?',
             request: '=?',
+            autoApply: '=?',
+            opens: '=?',
             parentEl: '=?',
         },
         link: function(scope, element, attrs, model) {
@@ -73,9 +75,9 @@ swapsApp.directive('datepicker', function() {
                     // so save the dates that are set and override the defaults
                     scope.currentDatesWhen = scope.swapDates.when;
                     scope.currentDates = scope.swapDates.date;
-                    element.daterangepicker({
-                        autoApply: true,
-                        opens: 'right',
+                    var options = {
+                        autoApply: typeof scope.autoApply !== 'undefined'?scope.autoApply:true,
+                        opens: scope.opens?scope.opens:'right',
                         startDate: now,
                         locale: {
                             format: scope.localeFormat,
@@ -88,7 +90,11 @@ swapsApp.directive('datepicker', function() {
                         showCustomRangeLabel: true,
                         alwaysShowCalendars: true,
                         autoUpdateInput: true
-                    });
+                    };
+                    if(scope.parentEl){
+                        options.parentEl = '.' + scope.parentEl;
+                    }
+                    element.daterangepicker(options);
                     element.on('apply.daterangepicker', function(ev, picker) {
                         scope.swapDates.when = picker.startDate.format(scope.modelFormat) + ' - ' + picker.endDate.format(scope.modelFormat);
                         if(picker.chosenLabel == 'Weekends'){

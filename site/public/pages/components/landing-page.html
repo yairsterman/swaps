@@ -1,13 +1,13 @@
 <div class="landing-page" ng-style="{'height': innerHeight}">
     <div class="inner-gradient">
         <div class="title-container {{phase !== 'first'?'animate':''}}">
-            <div class="title-swaps" style="background-image: url('../../images/logotype.svg')"></div>
+            <div class="title-swaps" style="background-image: url('../../images/logotypeBlue.svg')"></div>
             <div class="points-container">
                 Home is Wherever<div></div>
                 <div class="points-container-border"></div>
             </div>
         </div>
-        <div class="section {{phase !== 'first'?'animate-out':''}}">
+        <div class="section first-section {{phase !== 'first'?'animate-out':''}}">
             <div class="description">
                 <div class="title">Your Home Opens Doors to a World of Experiences
                 </div>
@@ -42,125 +42,137 @@
                 </div>
             </div>
             <div class="button-container">
-                <div class="button btn btn-primary next" ng-click="next()">
+                <div class="button btn btn-primary next {{search.where?'':'disabled'}}" ng-click="next()">
                     Next Step
                 </div>
             </div>
         </div>
-        <div class="section in {{phase !== 'when'?'animate-out':''}}" ng-if="phase !== 'where'">
+        <div class="section dates-section in {{phase !== 'when'?'animate-out':''}}" ng-show="phase !== 'where'">
             <div class="description">
                 <div class="title">Cool!
                 </div>
                 <div class="title">Next up, when do you want to travel?
                 </div>
             </div>
-            <div class="dates">
-                <div class="calendar" ng-model="search.date" id="searchDate" name="searchDate" ng-model="search.date" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" datepicker>
+            <div class="sign-up-dates">
+                <div class="calendar" ng-model="search.date" id="searchDate" name="searchDate"  parent-el="'dates-section'" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" opens="'center'" auto-apply="false" datepicker>
                 </div>
             </div>
-            <div class="button-container">
-                <div class="button btn btn-primary next" ng-click="next()">
+            <div class="button-container under-calendar">
+                <div class="button btn btn-primary next {{search.where?'':'disabled'}}" ng-click="next()">
                     Next Step
                 </div>
             </div>
         </div>
         <div class="section in {{phase !== 'who'?'animate-out':''}}" ng-if="phase !== 'when'">
             <div class="description">
-                <div class="title">Cool!
-                </div>
-                <div class="title">Next up, when do you want to travel?
+                <div class="title">Will anyone be joining you on your trip?
                 </div>
             </div>
-            <div class="dates">
+            <div class="travelers">
+                <div>
+                    <div class="single-checkbox">
+                        <div class="things-checkbox" ng-click="search.alone = true">
+                            <div class="check icon icon-check {{search.alone?'checked':''}}"></div>
+                        </div>
+                        Nope, just me
+                    </div>
+                </div>
+                <div>
+                    <div class="single-checkbox">
+                        <div class="things-checkbox" ng-click="search.alone = false">
+                            <div class="check icon icon-check {{!search.alone?'checked':''}}"></div>
+                        </div>
+                        <input type="number" class="form-control guests" id="guests" placeholder="0" ng-model="search.guests" min="1" max="8">
+                        More travelers
+                    </div>
+                </div>
             </div>
             <div class="button-container">
-                <div class="button btn btn-primary next" ng-click="next()">
+                <div class="button btn btn-primary next {{search.alone || (!search.alone && search.guests)?'':'disabled'}}" ng-click="next()">
                     Next Step
                 </div>
             </div>
         </div>
     </div>
-    <div class="login-model {{embedded && !isEmailLogin?'embedded':''}} {{loggedIn?'loggedIn':''}}" ng-if="!loggedIn">
-        <div class="" ng-if="!isEmailLogin">
-            <div class="title">
-                Join Swaps
-                <div class="underline"></div>
-            </div>
-            <div class="sub-title" ng-bind-html="subTitle | trustAsHtml">
-            </div>
-            <div class="button-signin">
-                <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>
-            </div>
-            <div class="button-signin">
-                <button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div>Join with Google</button>
-            </div>
-            <div class="sub-title">
-                Or
-            </div>
-            <div class="button-signin bottom">
-                <button type="button" class="btn btn-default login-button email-button" ng-click="goToEmailLogin()"><i class="fa fa-envelope"></i>Join with Email</button>
-            </div>
-            <div class="bottom">
-                By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
-                and <span class="link" ng-click="policy()">Privacy Policy</span>
-            </div>
-        </div>
-        <div class="email-login" ng-if="isEmailLogin">
-            <div class="title">
-                Join Swaps
-                <div class="underline"></div>
-            </div>
-            <form name="signupForm">
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <label class="control-label listing-label" for="firstName" name="firstName">First Name:
-                        </label>
-                        <div class="">
-                            <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="setToFalse('firstNameInvalid')" ng-model="credentials.firstName" required>
-                        </div>
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <label class="control-label listing-label" for="lastName">Last Name:
-                        </label>
-                        <div class="">
-                            <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="setToFalse('lastNameInvalid')" ng-model="credentials.lastName" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label listing-label" for="email">Email:
-                    </label>
-                    <div class="">
-                        <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="setToFalse('emailInvalid')" ng-model="credentials.email" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label listing-label" for="password">Password:
-                        <span class="explanation">Must contain at least 6 characters</span>
-                    </label>
-                    <div class="password">
-                        <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="setToFalse('passwordInvalid')" placeholder="" minlength="6" ng-model="credentials.password" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label listing-label" for="confirmPassword">Confirm Password:
-                        <span class="error" ng-if="passwordsMismatch">Passwords don't match</span>
-                    </label>
-                    <div class="">
-                        <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="setToFalse('confirmPasswordInvalid')" placeholder="" ng-model="credentials.confirmPassword" required>
-                    </div>
-                </div>
-            </form>
-            <div class="error" ng-if="error">{{error}}</div>
-            <div class="button-signin">
-                <button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>Join with Email</button>
-            </div>
-            <div class="bottom">
-                Back to <span class="link" ng-click="backToSocial()">Social Sign up</span>
-            </div>
-        </div>
-    </div>
-    <div class="description after-signup {{embedded && loggedIn?'embedded':''}}" ng-if="!embedded || loggedIn || (embedded && !isEmailLogin)">
-        Already signed up? <a class="link" ng-click="openNewWindow()">Go to site</a>
-    </div>
+    <!--<div class="login-model {{embedded && !isEmailLogin?'embedded':''}} {{loggedIn?'loggedIn':''}}" ng-if="!loggedIn">-->
+        <!--<div class="" ng-if="!isEmailLogin">-->
+            <!--<div class="title">-->
+                <!--Join Swaps-->
+                <!--<div class="underline"></div>-->
+            <!--</div>-->
+            <!--<div class="sub-title" ng-bind-html="subTitle | trustAsHtml">-->
+            <!--</div>-->
+            <!--<div class="button-signin">-->
+                <!--<button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>-->
+            <!--</div>-->
+            <!--<div class="button-signin">-->
+                <!--<button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div>Join with Google</button>-->
+            <!--</div>-->
+            <!--<div class="sub-title">-->
+                <!--Or-->
+            <!--</div>-->
+            <!--<div class="button-signin bottom">-->
+                <!--<button type="button" class="btn btn-default login-button email-button" ng-click="goToEmailLogin()"><i class="fa fa-envelope"></i>Join with Email</button>-->
+            <!--</div>-->
+            <!--<div class="bottom">-->
+                <!--By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>-->
+                <!--and <span class="link" ng-click="policy()">Privacy Policy</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="email-login" ng-if="isEmailLogin">-->
+            <!--<div class="title">-->
+                <!--Join Swaps-->
+                <!--<div class="underline"></div>-->
+            <!--</div>-->
+            <!--<form name="signupForm">-->
+                <!--<div class="row">-->
+                    <!--<div class="form-group col-xs-6">-->
+                        <!--<label class="control-label listing-label" for="firstName" name="firstName">First Name:-->
+                        <!--</label>-->
+                        <!--<div class="">-->
+                            <!--<input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="setToFalse('firstNameInvalid')" ng-model="credentials.firstName" required>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group col-xs-6">-->
+                        <!--<label class="control-label listing-label" for="lastName">Last Name:-->
+                        <!--</label>-->
+                        <!--<div class="">-->
+                            <!--<input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="setToFalse('lastNameInvalid')" ng-model="credentials.lastName" required>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label listing-label" for="email">Email:-->
+                    <!--</label>-->
+                    <!--<div class="">-->
+                        <!--<input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="setToFalse('emailInvalid')" ng-model="credentials.email" required>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label listing-label" for="password">Password:-->
+                        <!--<span class="explanation">Must contain at least 6 characters</span>-->
+                    <!--</label>-->
+                    <!--<div class="password">-->
+                        <!--<input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="setToFalse('passwordInvalid')" placeholder="" minlength="6" ng-model="credentials.password" required>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label listing-label" for="confirmPassword">Confirm Password:-->
+                        <!--<span class="error" ng-if="passwordsMismatch">Passwords don't match</span>-->
+                    <!--</label>-->
+                    <!--<div class="">-->
+                        <!--<input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="setToFalse('confirmPasswordInvalid')" placeholder="" ng-model="credentials.confirmPassword" required>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
+            <!--<div class="error" ng-if="error">{{error}}</div>-->
+            <!--<div class="button-signin">-->
+                <!--<button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>Join with Email</button>-->
+            <!--</div>-->
+            <!--<div class="bottom">-->
+                <!--Back to <span class="link" ng-click="backToSocial()">Social Sign up</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>

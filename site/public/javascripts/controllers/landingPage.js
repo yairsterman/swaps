@@ -25,9 +25,13 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
                 $scope.phase = 'where';
                 break;
             case 'where':
+                $timeout(function(){
+                    $('.calendar').click();
+                },100);
                 $scope.phase = 'when';
                 break;
             case 'when':
+                $scope.search.alone = true;
                 $scope.phase = 'who';
                 break;
         }

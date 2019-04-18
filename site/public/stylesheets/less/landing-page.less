@@ -2,6 +2,7 @@
 .landing-page{
   position: relative;
   height: 100%;
+  //background-color: #fff;
   background-image: url('../../images/static/landing.jpg');
   background-position: center;
   background-size: cover;
@@ -10,16 +11,15 @@
     position: relative;
     height: 100%;
     padding: 20px;
-    background: -webkit-linear-gradient(top, #0e5d7c 10%, rgba(255,255,255,0.8) 100%);
-    background: linear-gradient(to bottom, #0e5d7c 10%, rgba(255,255,255,0.8) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0e5d7c', endColorstr='#66ffffff', GradientType=0);
+    background: -webkit-linear-gradient(bottom, #0e5d7c -25%, rgba(255,255,255,0.85) 100%);
+    background: linear-gradient(to top, #0e5d7c -25%, rgba(255,255,255,0.85) 100%);
   }
   .title-container {
     width: 380px;
     margin: auto;
     &.animate{
-      animation: moveLeftCorner 0.6s linear forwards;
-      -webkit-animation: moveLeftCorner 0.6s linear forwards;
+      animation: moveLeftCorner 0.3s linear forwards;
+      -webkit-animation: moveLeftCorner 0.3s linear forwards;
     }
     @media @mobile {
       width: 100%;
@@ -27,7 +27,7 @@
     }
     .title-swaps {
       background-repeat: no-repeat;
-      color: #fff;
+      color: #0e5d7c;
       font-size: 56px;
       font-weight: 500;
       height: 150px;
@@ -36,7 +36,7 @@
       }
     }
     .points-container {
-      color: #fff;
+      color: #0e5d7c;
       font-weight: 400;
       padding: 5px 0;
       font-size: 24px;
@@ -49,7 +49,7 @@
       .points-container-border{
         width: 12%;
         padding-top: 12px;
-        border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+        border-bottom: 3px solid rgba(14,93,124,.5);
         @media @mobile {
           width: 24%;
         }
@@ -58,9 +58,12 @@
   }
   .section{
     position: absolute;
-    top: 200px;
+    top: 120px;
     width: 100%;
     height: 350px;
+    &.first-section{
+      top: 200px;
+    }
     &.in{
       animation: swipeFromRight 0.2s linear forwards;
       -webkit-animation: swipeFromRight 0.2s linear forwards;
@@ -74,7 +77,7 @@
       text-align: center;
       padding-top: 10px;
       padding-bottom: 20px;
-      color: #fff;
+      color: #0e5d7c;
       font-size: 18px;
       font-weight: 300;
       @media @mobile {
@@ -82,12 +85,12 @@
         padding-bottom: 15px;
       }
       .title{
-        color: #fff;
+        color: #0e5d7c;
         font-size: 36px;
         font-weight: bold;
       }
       .sub-title{
-        color: #fff;
+        color: #0e5d7c;
         padding-top: 20px;
         font-size: 22px;
       }
@@ -101,15 +104,25 @@
     .button-container{
       width: 100%;
       text-align: center;
-      position: absolute;
-      bottom: 0;
+      margin-top: 40px;
+      &.under-calendar{
+        margin-top: 334px;
+      }
       .next{
         font-size: 26px;
         width: 300px;
         &:hover{
-          background-color: #fff;
-          border-color: #0e5d7c;
-          color: #0e5d7c;
+          background-color: #227392;
+          border-color: #227392;
+        }
+        &.disabled{
+          background-color: lightgrey;
+          opacity: 0.7;
+          cursor: initial;
+          &:hover{
+            background-color: lightgrey;
+            border-color: #227392;
+          }
         }
       }
       .under-button-text{
@@ -158,8 +171,8 @@
         .form-control{
           padding-left: 45px;
           border-radius: 0;
-          border: none;
           color: #0e5d7c;
+          border: 1px solid #0e5d7c;
           font-size: 18px;
           box-shadow: none;
           height: 42px;
@@ -173,9 +186,105 @@
         }
       }
     }
+    .sign-up-dates{
+      width: 100%;
+      .calendar{
+        width: 100px;
+        height: 1px;
+        margin: auto;
+      }
+    }
+    .travelers{
+      display: flex;
+      margin: auto;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      .single-checkbox{
+        display: flex;
+        align-items: center;
+        color: #0E5D7C;
+        padding: 4px 0;
+        margin: 0 20px;
+        &.not-included{
+          opacity: 0.4;
+        }
+        .text{
+          width: 50%;
+          font-size: 14px;
+        }
+        .things-checkbox{
+          position: relative;
+          border: 1px solid rgba(14,93,124,0.4);
+          margin-right: 8px;
+          margin-top: 2px;
+          width: 20px;
+          height: 20px;
+          &:focus{
+            outline: none;
+          }
+          &.no-border{
+            border: none;
+            cursor: auto;
+          }
+        }
+        .check{
+          position: absolute;
+          top: -8px;
+          left: 5px;
+          transform: scale(0);
+          transition: 0.3s ease;
+          &:focus{
+            outline: none;
+          }
+          &.checked{
+            transform: scale(1.5);
+          }
+        }
+        .guests{
+          margin-right: 10px;
+          width: 60px;
+          padding: 6px 4px 6px 12px;
+        }
+      }
+      .icon{
+        margin-right: 10px;
+      }
+    }
   }
   ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: #0E5D7C;
+  }
+}
+
+.daterangepicker{
+  &::before {
+    display: none;
+  }
+  &::after {
+    display: none;
+  }
+  &.openscenter{
+    table{
+      position: relative;
+    }
+    tbody{
+      &::after {
+        content: none;
+      }
+      td{
+        color: initial;
+        &.in-range{
+          color: #333;
+        }
+        &.start-date, &.end-date{
+          color: #fff;
+        }
+      }
+    }
+  }
+  .range_inputs{
+    display: none;
   }
 }
 
@@ -204,7 +313,7 @@
   100% {
     position: absolute;
     left: 0;
-    top: 0;
+    top: -30px;
     transform: scale(0.4);
   }
 }
