@@ -184,17 +184,13 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
             return;
         }
         $scope.searching = true;
-        AccountService.editProfile($scope.user).then(function(data){
+        $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
+        AccountService.editListing($scope.user).then(function(data){
             $rootScope.user = data;
             $scope.user = $rootScope.user;
-            $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
-            AccountService.editListing($scope.user).then(function(data){
-                $rootScope.user = data;
-                $scope.user = $rootScope.user;
-                $timeout(function(){
-                    $scope.go(`travelers/${$scope.search.where}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
-                },8000)
-            });
+            $timeout(function(){
+                $scope.go(`travelers/${$scope.search.where}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
+            },8000)
         });
     }
 
