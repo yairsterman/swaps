@@ -189,7 +189,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
             $rootScope.user = data;
             $scope.user = $rootScope.user;
             $timeout(function(){
-                $scope.go(`travelers/${$scope.search.where}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
+                $scope.go(`travelers${($scope.search.where === 'Anywhere!'?'':'/'+$scope.search.where)}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
             },8000)
         });
     }
