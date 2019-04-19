@@ -2,10 +2,14 @@
     if (window.opener) {
         window.opener.focus();
 
-      if(window.opener.login.loginCallBack) {
+      if(window.opener.login && window.opener.login.loginCallBack) {
       	var userId = '<%= userId %>';
         window.opener.login.loginCallBack(userId);
       }
+        if(window.opener.signup && window.opener.signup.loginCallBack) {
+            var userId = '<%= userId %>';
+            window.opener.signup.loginCallBack(userId);
+        }
     }
 
     window.close();

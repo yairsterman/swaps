@@ -78,7 +78,8 @@ $routeProvider
     })
     .when('/signup', {
         templateUrl : '/pages/components/landing-page.html',
-        controller  : 'landingController'
+        controller  : 'landingController',
+        reloadOnSearch: false
     });
 
     $locationProvider.html5Mode(true);

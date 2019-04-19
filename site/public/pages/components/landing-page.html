@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="location">
-                    <input type="text" class="form-control" placeholder="Another location" id="searchCity" ng-model="search.where" autocomplete city="true">
+                    <input type="text" class="form-control {{error?'error':''}}" ng-change="unsetError()" placeholder="Another location" id="searchCity" ng-model="search.where" autocomplete city="true">
                     <div class="icon icon-infocenter"></div>
                 </div>
             </div>
@@ -55,11 +55,11 @@
                 </div>
             </div>
             <div class="sign-up-dates">
-                <div class="calendar" ng-model="search.date" id="searchDate" name="searchDate"  parent-el="'dates-section'" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" opens="'center'" auto-apply="false" datepicker>
+                <div class="calendar" ng-change="unsetError()" ng-model="search.date" id="searchDate" name="searchDate"  parent-el="'dates-section'" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" opens="'center'" datepicker>
                 </div>
             </div>
             <div class="button-container under-calendar">
-                <div class="button btn btn-primary next {{search.where?'':'disabled'}}" ng-click="next()">
+                <div class="button btn btn-primary next {{search.when?'':'disabled'}}" ng-click="next()">
                     Next Step
                 </div>
             </div>
@@ -83,7 +83,7 @@
                         <div class="things-checkbox" ng-click="search.alone = false">
                             <div class="check icon icon-check {{!search.alone?'checked':''}}"></div>
                         </div>
-                        <input type="number" class="form-control guests" id="guests" placeholder="0" ng-model="search.guests" min="1" max="8">
+                        <input type="number" class="form-control guests {{error?'error':''}}" ng-change="unsetError()" id="guests" placeholder="0" ng-model="search.guests" min="1" max="8">
                         More travelers
                     </div>
                 </div>
@@ -94,85 +94,188 @@
                 </div>
             </div>
         </div>
+        <div class="section in {{phase !== 'flight'?'animate-out':''}}" ng-if="phase !== 'who'">
+            <div class="description">
+                <div class="title">Have you booked a flight yet?
+                </div>
+            </div>
+            <div class="travelers">
+                <div>
+                    <div class="single-checkbox">
+                        <div class="things-checkbox" ng-click="search.flight = false">
+                            <div class="check icon icon-check {{!search.flight?'checked':''}}"></div>
+                        </div>
+                        No, not yet
+                    </div>
+                </div>
+                <div>
+                    <div class="single-checkbox">
+                        <div class="things-checkbox" ng-click="search.flight = true">
+                            <div class="check icon icon-check {{search.flight?'checked':''}}"></div>
+                        </div>
+                        Yes, I have
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next" ng-click="next()">
+                    Next Step
+                </div>
+            </div>
+        </div>
+        <div class="section in {{phase !== 'almost-done'?'animate-out':''}}" ng-if="phase !== 'flight'">
+            <div class="description">
+                <div class="sub-title">Good job!
+                </div>
+                <div class="title">Almost done...
+                </div>
+                <div class="sub-title">
+                    Now tell us a bit about yourself and your
+                <br>home so we can find your perfect Swap match
+
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next" ng-click="next()">
+                    Let’s do this!
+                </div>
+            </div>
+        </div>
+        <div class="section in sign-up {{phase !== 'sign-up'?'animate-out':''}}" ng-if="phase !== 'almost-done'">
+            <div class="login-model">
+                <div class="email-login">
+                    <div class="title">
+                        Quick Sign Up!
+                        <div class="underline"></div>
+                    </div>
+                    <div class="sub-title">
+                        So we can let you know about Swap matches
+                    </div>
+                    <form name="signupForm">
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <div class="">
+                                    <input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="First Name" ng-focus="setToFalse('firstNameInvalid')" ng-model="credentials.firstName" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <div class="">
+                                    <input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="Last Name" ng-focus="setToFalse('lastNameInvalid')" ng-model="credentials.lastName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="Email" ng-focus="setToFalse('emailInvalid')" ng-model="credentials.email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="password">
+                                <input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" placeholder="Password" ng-focus="setToFalse('passwordInvalid')"  ng-model="credentials.password" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="setToFalse('confirmPasswordInvalid')" placeholder="Confirm Password" ng-model="credentials.confirmPassword" required>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="error" ng-if="error">{{error}}</div>
+                    <div class="sub-title">
+                    Or sign up with:
+                    </div>
+                    <div class="social">
+                        <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i></button>
+                        <button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div></button>
+                    </div>
+                    <div class="button-container">
+                        <div class="button btn btn-primary next" ng-click="EmailLogin(signupForm)">
+                            Next Step
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>
+                        and <span class="link" ng-click="policy()">Privacy Policy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section in {{phase !== 'credits'?'animate-out':''}}" ng-if="phase !== 'sign-up'">
+            <div class="description">
+                <div class="title">Great! You deserve Swap Credits
+                </div>
+                <div class="sub-title">
+                    Here are 2 Swap Credits <strong><a target="_blank" href="how-it-works#swapCredits">[learn more]</a></strong>
+                    <br>a little gift from us before we move on :)
+
+                </div>
+                <div class="coins"></div>
+                <div class="sub-title">
+                    2 credits
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next" ng-click="next()">
+                    On to the last step!
+                </div>
+            </div>
+        </div>
+        <div class="section in sign-up {{phase !== 'details'?'animate-out':''}}" ng-if="phase !== 'credits'">
+            <div ng-if="!searching">
+                <div class="description">
+                    <div class="sub-title">Last Step! Home Details
+                    </div>
+                </div>
+                <div class="home-details">
+                    <div class="form-group">
+                        <label class="control-label listing-label" for="address" uib-tooltip="Where you live" tooltip-placement="right" tooltip>My Address:
+                        </label>
+                        <input class="form-control" id="address" type="text" placeholder="Enter Your home address" ng-model="user.address" autocomplete>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label listing-label" for="title" uib-tooltip="A short description of your home" tooltip-placement="right" tooltip>Home Title:
+                            <span class="explanation"></span>
+                        </label>
+                        <div class="">
+                            <input class="form-control" type="text" id="title" placeholder="{{user.firstName}}'s Beautiful Home" ng-model="user.apptInfo.title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label listing-label" uib-tooltip="The type of room you are offering" tooltip-placement="right" tooltip>Room Type:<br>
+                            <span class="explanation"></span>
+                        </label>
+                        <div class="">
+                            <select class="form-control room-type" id="roomType" ng-model="user.apptInfo.roomType"
+                                    ng-options="room.id as room.displayName for room in data.roomType">
+                                {{room.displayName}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label listing-label" >How many people can stay at your place while your away?
+                        </label>
+                        <div>
+                            <input class="form-control swappers" id="swappers" type="number" min="1" max="8" ng-model="user.apptInfo.guests">
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <div class="button btn btn-primary next find {{user.address && user.address !== '' && user.apptInfo.title && user.apptInfo.title !== '' && user.apptInfo.guests && user.apptInfo.guests > 0 && user.apptInfo.roomType !== undefined?'':'disabled'}}" ng-click="findMatches()">
+                        Find me a home to Swap!
+                    </div>
+                </div>
+            </div>
+            <div class="loader-container" ng-if="searching">
+                <div class="cssload-loader">
+                    <div class="cssload-inner cssload-one"></div>
+                    <div class="cssload-inner cssload-two"></div>
+                    <div class="cssload-inner cssload-three"></div>
+                </div>
+                <div class="description">
+                    <div class="title">Searching...
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!--<div class="login-model {{embedded && !isEmailLogin?'embedded':''}} {{loggedIn?'loggedIn':''}}" ng-if="!loggedIn">-->
-        <!--<div class="" ng-if="!isEmailLogin">-->
-            <!--<div class="title">-->
-                <!--Join Swaps-->
-                <!--<div class="underline"></div>-->
-            <!--</div>-->
-            <!--<div class="sub-title" ng-bind-html="subTitle | trustAsHtml">-->
-            <!--</div>-->
-            <!--<div class="button-signin">-->
-                <!--<button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i>Join with Facebook</button>-->
-            <!--</div>-->
-            <!--<div class="button-signin">-->
-                <!--<button type="button" class="btn btn-default login-button google-button" ng-click="GoogleLogin()"><div class="google-icon"></div>Join with Google</button>-->
-            <!--</div>-->
-            <!--<div class="sub-title">-->
-                <!--Or-->
-            <!--</div>-->
-            <!--<div class="button-signin bottom">-->
-                <!--<button type="button" class="btn btn-default login-button email-button" ng-click="goToEmailLogin()"><i class="fa fa-envelope"></i>Join with Email</button>-->
-            <!--</div>-->
-            <!--<div class="bottom">-->
-                <!--By Joining Swaps you agree to our <br><span class="link" ng-click="terms()">Terms and Conditions</span>-->
-                <!--and <span class="link" ng-click="policy()">Privacy Policy</span>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="email-login" ng-if="isEmailLogin">-->
-            <!--<div class="title">-->
-                <!--Join Swaps-->
-                <!--<div class="underline"></div>-->
-            <!--</div>-->
-            <!--<form name="signupForm">-->
-                <!--<div class="row">-->
-                    <!--<div class="form-group col-xs-6">-->
-                        <!--<label class="control-label listing-label" for="firstName" name="firstName">First Name:-->
-                        <!--</label>-->
-                        <!--<div class="">-->
-                            <!--<input class="form-control {{firstNameInvalid?'error':''}}" type="text" id="firstName" name="firstName" placeholder="" ng-focus="setToFalse('firstNameInvalid')" ng-model="credentials.firstName" required>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group col-xs-6">-->
-                        <!--<label class="control-label listing-label" for="lastName">Last Name:-->
-                        <!--</label>-->
-                        <!--<div class="">-->
-                            <!--<input class="form-control {{lastNameInvalid?'error':''}}" type="text" id="lastName" name="lastName" placeholder="" ng-focus="setToFalse('lastNameInvalid')" ng-model="credentials.lastName" required>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label listing-label" for="email">Email:-->
-                    <!--</label>-->
-                    <!--<div class="">-->
-                        <!--<input class="form-control {{emailInvalid?'error':''}}" type="email" id="email" name="email" placeholder="" ng-focus="setToFalse('emailInvalid')" ng-model="credentials.email" required>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label listing-label" for="password">Password:-->
-                        <!--<span class="explanation">Must contain at least 6 characters</span>-->
-                    <!--</label>-->
-                    <!--<div class="password">-->
-                        <!--<input class="form-control {{passwordInvalid?'error':''}}" type="{{passwordType}}" id="password" name="password" ng-focus="setToFalse('passwordInvalid')" placeholder="" minlength="6" ng-model="credentials.password" required>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label listing-label" for="confirmPassword">Confirm Password:-->
-                        <!--<span class="error" ng-if="passwordsMismatch">Passwords don't match</span>-->
-                    <!--</label>-->
-                    <!--<div class="">-->
-                        <!--<input class="form-control {{confirmPasswordInvalid?'error':''}}" type="password" id="confirmPassword" name="confirmPassword" ng-focus="setToFalse('confirmPasswordInvalid')" placeholder="" ng-model="credentials.confirmPassword" required>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</form>-->
-            <!--<div class="error" ng-if="error">{{error}}</div>-->
-            <!--<div class="button-signin">-->
-                <!--<button type="button" class="btn btn-default login-button email-button signup" ng-click="EmailLogin(signupForm)"><i class="fa fa-envelope"></i>Join with Email</button>-->
-            <!--</div>-->
-            <!--<div class="bottom">-->
-                <!--Back to <span class="link" ng-click="backToSocial()">Social Sign up</span>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>
