@@ -11,6 +11,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
     $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv'];
 
     $scope.search = {};
+    $scope.credentials = {};
 
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
