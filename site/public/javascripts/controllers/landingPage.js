@@ -1,12 +1,25 @@
 var signup = null;
-swapsApp.controller('landingController', function($scope, $rootScope, $location, Utils, $uibModal, $window, $timeout,UsersService, AccountService, $interval) {
+swapsApp.controller('landingController', function($scope, $rootScope, $routeParams, $location, Utils, $uibModal, $window, $timeout,UsersService, AccountService, $interval) {
     signup = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = false;
     $scope.data = $rootScope.data;
     $rootScope.externalLogin = true;
     $scope.innerHeight = $window.innerHeight;
-    $scope.phase = 'first';
+    $scope.currentPhase = $routeParams.phase? parseInt($routeParams.phase): 1;
+    $scope.phases = [
+        {id: 0, section: ''},
+        {id: 1, section: 'first'},
+        {id: 2, section: 'where'},
+        {id: 3, section: 'when'},
+        {id: 4, section: 'who'},
+        {id: 5, section: 'flight'},
+        {id: 6, section: 'almost-done'},
+        {id: 7, section: 'sign-up'},
+        {id: 8, section: 'credits'},
+        {id: 9, section: 'details'},
+    ];
+    $scope.phase = $scope.phases[$scope.currentPhase].section;
 
     $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv'];
 
@@ -16,6 +29,13 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
     $('.fb-messenger-icon').addClass('hide');
+
+    $scope.$watch('$routeParams.phase', function(oldVal, newVal){
+        if(newVal > oldVal){
+            $scope.currentPhase--;
+            $scope.phase = $scope.phases[$scope.currentPhase].section;
+        }
+    });
 
     $scope.go = function(path){
         $rootScope.externalLogin = false;
@@ -68,6 +88,9 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
                 $scope.phase = 'details';
                 break;
         }
+        $scope.currentPhase++;
+        $location.url('/signup?phase=' + $scope.currentPhase);
+
     }
 
     $scope.findMatches = function(){
