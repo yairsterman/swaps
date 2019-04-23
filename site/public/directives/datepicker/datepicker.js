@@ -19,6 +19,7 @@ swapsApp.directive('datepicker', function() {
             request: '=?',
             autoApply: '=?',
             opens: '=?',
+            unlinked: '=?',
             parentEl: '=?',
         },
         link: function(scope, element, attrs, model) {
@@ -93,6 +94,9 @@ swapsApp.directive('datepicker', function() {
                     };
                     if(scope.parentEl){
                         options.parentEl = '.' + scope.parentEl;
+                    }
+                    if(scope.unlinked){
+                        options.linkedCalendars = false;
                     }
                     element.daterangepicker(options);
                     element.on('apply.daterangepicker', function(ev, picker) {

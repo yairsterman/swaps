@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="sign-up-dates">
-                <div class="calendar" ng-change="unsetError()" ng-model="search.date" id="searchDate" name="searchDate"  parent-el="'dates-section'" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" opens="'center'" datepicker>
+                <div class="calendar" ng-change="unsetError()" ng-model="search.date" id="searchDate" name="searchDate"  parent-el="'dates-section'" swap-dates="search" locale-format="localeFormat" model-format="modelFormat" find-travel="false" opens="'center'" unlinked="$root.isMobile" datepicker>
                 </div>
             </div>
             <div class="button-container under-calendar">

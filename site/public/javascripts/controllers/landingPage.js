@@ -15,9 +15,11 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
 
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
+    $('.fb-messenger-icon').addClass('hide');
 
     $scope.go = function(path){
         $rootScope.externalLogin = false;
+        $('.fb-messenger-icon').removeClass('hide');
         $location.url('/' + path);
     }
 
@@ -146,8 +148,8 @@ swapsApp.controller('landingController', function($scope, $rootScope, $location,
 
     $scope.FBLogin = function(){
         $location.search('login','facebook');
-        // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
 
     $scope.GoogleLogin = function(){
