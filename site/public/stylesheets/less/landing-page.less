@@ -9,12 +9,14 @@
   background-repeat: no-repeat;
   .inner-gradient{
     position: relative;
+    overflow: hidden;
     height: 100%;
     padding: 20px;
     background: -webkit-linear-gradient(top, #ffffff -25%, rgba(255,255,255,0.9) 125%);
     background: linear-gradient(to bottom, #ffffff -25%, rgba(255,255,255,0.9) 125%);
     @media @mobile {
       padding: 10px;
+      overflow: initial;
     }
   }
   .partners{
@@ -91,7 +93,7 @@
     width: ~'calc(100% - 40px)';
     height: 350px;
     @media @mobile {
-      top: 60px;
+      top: 80px;
       width: ~'calc(100% - 20px)';
     }
     &.first-section{
@@ -99,6 +101,11 @@
       @media @mobile {
         top: 150px;
       }
+    }
+    &.date-section{
+      @media @mobile {
+        top: 60px;
+      };
     }
     &.in{
       animation: swipeFromRight 0.2s linear forwards;
