@@ -6,7 +6,8 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.data = $rootScope.data;
     $rootScope.externalLogin = true;
     $scope.innerHeight = $window.innerHeight;
-    $scope.currentPhase = $routeParams.phase? parseInt($routeParams.phase): 1;
+    $scope.communityCode = $routeParams.community;
+    $scope.currentPhase = 1;
     $scope.phases = [
         {id: 0, section: ''},
         {id: 1, section: 'first'},
@@ -28,11 +29,23 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
 
     $scope.localeFormat = 'MMM DD';
     $scope.modelFormat = 'MM/DD/YYYY';
-    $('.fb-messenger-icon').addClass('hide');
 
-    $scope.$watch('$routeParams.phase', function(oldVal, newVal){
-        if(newVal > oldVal){
-            $scope.currentPhase--;
+    $scope.init = function(){
+        $('.fb-messenger-icon').addClass('hide');
+
+        $('.calendar').on('apply.daterangepicker', function(ev, picker) {
+            $('.daterangepicker').removeClass('error');
+        });
+
+        if($routeParams.phase){
+            $location.url('/signup' + ($scope.communityCode?`/${$scope.communityCode}`:''));
+        }
+    };
+
+
+    $scope.$on('$routeUpdate', function($event, next, current) {
+        if($routeParams.phase){
+            $scope.currentPhase = parseInt($routeParams.phase);
             $scope.phase = $scope.phases[$scope.currentPhase].section;
         }
     });
@@ -46,9 +59,6 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.next = function(){
         $scope.error = false;
         switch($scope.phase) {
-            case 'first':
-                $scope.phase = 'where';
-                break;
             case 'where':
                 if(!$scope.search.where){
                     $scope.error = true;
@@ -57,7 +67,6 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 $timeout(function(){
                     $('.calendar').click();
                 },100);
-                $scope.phase = 'when';
                 break;
             case 'when':
                 if(!$scope.search.when){
@@ -65,7 +74,6 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                     return;
                 }
                 $scope.search.alone = true;
-                $scope.phase = 'who';
                 break;
             case 'who':
                 if(!$scope.search.alone && (!$scope.search.guests || $scope.search.guests < 1)){
@@ -73,33 +81,16 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                     return;
                 }
                 $scope.search.flight = false;
-                $scope.phase = 'flight';
-                break;
-            case 'flight':
-                $scope.phase = 'almost-done';
-                break;
-            case 'almost-done':
-                $scope.phase = 'sign-up';
-                break;
-            case 'sign-up':
-                $scope.phase = 'credits';
-                break;
-            case 'credits':
-                $scope.phase = 'details';
                 break;
         }
         $scope.currentPhase++;
-        $location.url('/signup?phase=' + $scope.currentPhase);
+        $location.url('/signup'+ ($scope.communityCode?`/${$scope.communityCode}`:'') +'?phase=' + $scope.currentPhase);
 
     }
 
     $scope.findMatches = function(){
         saveProfileChanges();
     };
-
-    $('.calendar').on('apply.daterangepicker', function(ev, picker) {
-        $('.daterangepicker').removeClass('error');
-    });
 
     $scope.unsetError = function(){
         $scope.error = false;
@@ -121,6 +112,13 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.loginCallBack = function(){
         $scope.next();
         UsersService.getUser().then(function(data){
+            if($scope.communityCode){
+                AccountService.setCommunity($scope.communityCode).then(function(data){
+                    $rootScope.user = data;
+                    $scope.user = $rootScope.user;
+                },function(err){
+                })
+            }
             $rootScope.user = data.data;
             $scope.user = $rootScope.user;
             $scope.loggedIn = true;
@@ -171,8 +169,8 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
 
     $scope.FBLogin = function(){
         $location.search('login','facebook');
-        window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
 
     $scope.GoogleLogin = function(){
