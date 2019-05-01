@@ -77,3 +77,7 @@ module.exports.notEnoughOneWaySwapDays = function(user, nights, isOneWay){
     return(user.oneWaySwapDays + nights > ALLOWED_ONE_WAY_SWAP_DAYS);
 }
 
+module.exports.randomNumber = function(max){
+    return Math.floor(Math.random() * Math.floor(max));
+};
+

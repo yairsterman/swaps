@@ -2,6 +2,8 @@ let URLSafeBase64 = require('urlsafe-base64');
 let sha1 = require('sha1');
 //use to delete photos from cloudinary
 let cloudinary = require('cloudinary');
+//migrating to cloudinary class
+let _cloudinary = require('../services/cloudinary');
 
 let express = require('express');
 let router = express.Router();
@@ -138,8 +140,14 @@ router.post('/edit-listing', function (req, res, next) {
         dfr.resolve();
     }
 
-    dfr.promise.then(function () {
+    dfr.promise.then(async () => {
+        if(req.user.photos.length === 0){
+            update.photos = [];
+            let photo = await _cloudinary.getRandomCityPhoto(update.city?update.city:req.user.city);
+            update.photos.push(photo);
+        }
         let toUpdate = {$set: update};
+
         findOneAndUpdate(id, toUpdate, res);
     }, function (err) {
         error.message = err;
@@ -359,15 +367,15 @@ router.post('/remove-travel-info', function (req, res, next) {
 });
 
 router.post('/delete-photo', function (req, res, next) {
-    var id = req.user.id;
-    var url = req.body.url;
+    let id = req.user.id;
+    let url = req.body.url;
     User.findOne({_id: id}, function (err, user) {
         if (err) throw err;
         else {
             if (user) {
-                var photos = user.photos;
-                var index = user.photos.indexOf(url);
-                if (index != -1) {
+                let photos = user.photos;
+                let index = user.photos.indexOf(url);
+                if (index !== -1) {
                     photos.splice(index, 1);
                     User.update({_id: id}, {$set: {photos: photos}}, {
                         new: true,
@@ -393,7 +401,10 @@ router.post('/delete-photo', function (req, res, next) {
                                 res.json(error);
                             }
                             else {
-                                var fileName = req.user.id + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.'));
+                                if(_cloudinary.isSystemPhoto(url)){
+                                    return res.json(user);
+                                }
+                                let fileName = req.user.id + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.'));
                                 cloudinary.v2.uploader.destroy(fileName, function (error, result) {
                                     if (error || result.result != 'ok') {
                                         if (!error)

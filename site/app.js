@@ -11,6 +11,7 @@ let fs = require('fs');
 
 let emailService = require('./services/email');
 let passportService = require('./services/passport');
+let cloudinary = require('./services/cloudinary');
 let config = require('./config');
 
 let index = require('./routes/index');
@@ -123,6 +124,8 @@ emailService.init();
 app.listen(3000,function () {
     console.log("listening on 3000");
 });
+
+cloudinary.config(config.cloudinaryName, config.cloudinaryKey, config.cloudinarySecret);
 
 //compile less files
 
