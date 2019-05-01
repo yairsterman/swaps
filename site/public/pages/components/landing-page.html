@@ -89,7 +89,7 @@
                         <div class="things-checkbox" ng-click="search.alone = false">
                             <div class="check icon icon-check {{!search.alone?'checked':''}}"></div>
                         </div>
-                        <input type="number" class="form-control guests {{error?'error':''}}" ng-change="unsetError()" id="guests" placeholder="0" ng-model="search.guests" min="1" max="8">
+                        <input type="number" class="form-control guests {{error?'error':''}}" ng-change="unsetError()" id="guests" placeholder="1" ng-model="search.guests" min="1" max="8">
                         More travelers
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="sub-title">
                     Now tell us a bit about yourself and your
-                <br>home so we can find your perfect Swap match
+                    <br>home so we can find your perfect Swap match
 
                 </div>
             </div>
@@ -188,7 +188,7 @@
                     </form>
                     <div class="error" ng-if="error">{{error}}</div>
                     <div class="sub-title">
-                    Or sign up with:
+                        Or sign up with:
                     </div>
                     <div class="social">
                         <button type="button" class="btn btn-default login-button facebook-button" ng-click="FBLogin()"><i class="fa fa-facebook-square"></i></button>

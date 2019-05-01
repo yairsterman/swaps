@@ -7,6 +7,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $rootScope.externalLogin = true;
     $scope.innerHeight = $window.innerHeight;
     $scope.communityCode = $routeParams.community;
+    $scope.referer = $routeParams.referer;
     $scope.currentPhase = 1;
     $scope.phases = [
         {id: 0, section: ''},
@@ -24,7 +25,9 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
 
     $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv'];
 
-    $scope.search = {};
+    $scope.search = {
+        guests: 1
+    };
     $scope.credentials = {};
 
     $scope.localeFormat = 'MMM DD';
@@ -40,12 +43,27 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
         if($routeParams.phase){
             $location.url('/signup' + ($scope.communityCode?`/${$scope.communityCode}`:''));
         }
-    };
 
+        angular.element($window).bind('resize', function(){
+
+            $scope.innerHeight = $window.innerHeight;
+
+            // manuall $digest required as resize event
+            // is outside of angular
+            $scope.$digest();
+        });
+    };
 
     $scope.$on('$routeUpdate', function($event, next, current) {
         if($routeParams.phase){
-            $scope.currentPhase = parseInt($routeParams.phase);
+            if($rootScope.user && $rootScope.user._id &&
+                ($scope.currentPhase === 8 || $scope.currentPhase === 7) &&
+                $scope.currentPhase > parseInt($routeParams.phase)){
+                $scope.currentPhase = 6;
+            }
+            else{
+                $scope.currentPhase = parseInt($routeParams.phase);
+            }
             $scope.phase = $scope.phases[$scope.currentPhase].section;
         }
     });
@@ -82,6 +100,11 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 }
                 $scope.search.flight = false;
                 break;
+            case 'almost-done':
+                if($rootScope.user && $rootScope.user._id){
+                    $scope.currentPhase = 8;
+                }
+                break;
         }
         $scope.currentPhase++;
         $location.url('/signup'+ ($scope.communityCode?`/${$scope.communityCode}`:'') +'?phase=' + $scope.currentPhase);
@@ -112,18 +135,18 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.loginCallBack = function(){
         $scope.next();
         UsersService.getUser().then(function(data){
-            if($scope.communityCode){
+            $rootScope.user = data.data;
+            $scope.user = $rootScope.user;
+            if($scope.communityCode && !$scope.user.community){
                 AccountService.setCommunity($scope.communityCode).then(function(data){
                     $rootScope.user = data;
                     $scope.user = $rootScope.user;
                 },function(err){
                 })
             }
-            $rootScope.user = data.data;
-            $scope.user = $rootScope.user;
             $scope.loggedIn = true;
-            if($location.search().referer){
-                AccountService.setReferral($location.search().referer);
+            if($scope.referer){
+                AccountService.setReferral($scope.referer);
             }
             $rootScope.$broadcast('login-success');
         });
@@ -213,6 +236,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
             $rootScope.user = data;
             $scope.user = $rootScope.user;
             $timeout(function(){
+                $rootScope.showInviteFriends = true;
                 $scope.go(`travelers${($scope.search.where === 'Anywhere!'?'':'/'+$scope.search.where)}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
             },8000)
         });

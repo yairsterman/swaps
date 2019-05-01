@@ -312,10 +312,29 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         $scope.markers.push(marker);
     }
 
+    $scope.openInviteFriends = function(){
+        if(!$scope.user || !$scope.user._id){
+            return;
+        }
+        $scope.modelInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '../../pages/invite-friends.html',
+            size: 'lg',
+            controller: 'inviteFriendsController',
+            windowClass: 'invite-modal',
+            scope: $scope
+        });
+        $rootScope.showInviteFriends = false;
+        delete $rootScope.showInviteFriends;
+    }
+
 
     var myoverlay;
 
     function init(){
+        if($rootScope.showInviteFriends){
+            $scope.openInviteFriends();
+        }
         var zoom = 13;
         var center = $scope.city;
         if(!$scope.city){
@@ -498,6 +517,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         });
         $scope.firedHelpSearch = true;
     }
+
 
     function getCommunityUsers(){
         UsersService.getCommunityUsers($scope.community).then(function(data){
