@@ -48,7 +48,7 @@ function getCityFolder(city){
         case 'New York':
             return folder + 'New-York';
         case 'Tel Aviv':
-        case 'Tel Aviv Yafo':
+        case 'Tel Aviv-Yafo':
             return folder + 'Tel-Aviv';
         case 'London':
             return folder + 'London';
