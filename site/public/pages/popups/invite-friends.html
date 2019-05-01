@@ -1,0 +1,50 @@
+<div class="invite-friends popup" ng-init="init()">
+    <div class="information-area" ng-if="user._id">
+        <div class="loader-container {{loading?'':'disappear'}}" >
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+        </div>
+        <div class="permanent-info">
+            <div class="title">
+                Before we show your matches, why not share Swaps with friends and get more Swap Credits?
+            </div>
+        </div>
+        <div class="text text-align-center">
+            You get <strong>2 Credits</strong> for every friend that signs up using your link.
+            <br>You get another <strong>2 Credits</strong> when they complete their first Swap.
+        </div>
+        <div class="referral-link">
+            <div class="send-emails">
+                <input class="form-control" type="text" placeholder="Enter email addresses comma separated" ng-model="inputs.emails">
+                <div class="btn-primary invert-btn send-invites-btn {{sending || !inputs.emails || inputs.emails == ''?'disabled':''}}" ng-click="sendInvites();" ng-disabled="sending || !inputs.emails || inputs.emails == ''">Send Invites</div>
+            </div>
+            <div class="or">
+                or
+            </div>
+            <div class="share-link">
+                <div class="share-text">
+                    Share your link:
+                </div>
+
+                <div class="copy-link">
+                    <input class="form-control" type="text" ng-model="referralLink" id="referralLink">
+                    <div class="btn-primary copy" ng-click="copyText('referralLink')">Copy</div>
+                </div>
+                <!--<div class="btn-primary facebook-post" ng-click="postFacebook()">-->
+                    <!--Facebook<i class="fa fa-facebook-square"></i>-->
+                <!--</div>-->
+            </div>
+            <div class="text" ng-if="referralError">
+                Couldn't get referral link please try again later
+            </div>
+        </div>
+    </div>
+    <div class="bottom-btn">
+        <div class="button btn-primary show-results" ng-click="modelInstance.close()">
+            Alright, I’m ready to see my matches!
+        </div>
+    </div>
+</div>

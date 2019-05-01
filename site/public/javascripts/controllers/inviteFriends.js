@@ -88,6 +88,7 @@ swapsApp.controller('inviteFriendsController', function($scope, $rootScope, $rou
         $scope.init();
     });
 
+
     function showAlert(msg, error){
         if(!error){
             alertify.success(msg);

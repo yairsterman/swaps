@@ -7,6 +7,13 @@
   background-size: cover;
   min-height: 90vh;
   position: relative;
+  &.popup{
+    background: white;
+    min-height: auto;
+    .information-area{
+      box-shadow: none;
+    }
+  }
   .background-friends{
     height: auto;
     width: 100%;
@@ -39,6 +46,15 @@
     color: #0e5d7c;
     @media @mobile {
       font-size: 22px;
+    }
+  }
+  .sub-title{
+    color: #0e5d7c;
+    padding-top: 20px;
+    font-size: 22px;
+    @media @mobile {
+      padding-top: 10px;
+      font-size: 16px;
     }
   }
   .underline{
@@ -210,5 +226,13 @@
     @media @mobile {
       padding: 10px;
     }
+  }
+  .show-results{
+    width: auto;
+    margin: auto;
+    max-width: 430px;
+    padding: 5px 20px;
+    white-space: nowrap;
+    font-size: 22px;
   }
 }

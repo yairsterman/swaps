@@ -23,7 +23,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     ];
     $scope.phase = $scope.phases[$scope.currentPhase].section;
 
-    $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv'];
+    $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv', 'London'];
 
     $scope.search = {
         guests: 1
@@ -238,7 +238,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
             $timeout(function(){
                 $rootScope.showInviteFriends = true;
                 $scope.go(`travelers${($scope.search.where === 'Anywhere!'?'':'/'+$scope.search.where)}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
-            },8000)
+            },2000)
         });
     }
 

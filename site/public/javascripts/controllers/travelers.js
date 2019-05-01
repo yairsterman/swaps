@@ -318,7 +318,7 @@ swapsApp.controller('travelersController', ['$scope', '$rootScope', '$location',
         }
         $scope.modelInstance = $uibModal.open({
             animation: true,
-            templateUrl: '../../pages/invite-friends.html',
+            templateUrl: '../../pages/popups/invite-friends.html',
             size: 'lg',
             controller: 'inviteFriendsController',
             windowClass: 'invite-modal',
