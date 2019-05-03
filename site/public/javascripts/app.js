@@ -76,7 +76,7 @@ $routeProvider
         templateUrl : '/pages/review.html',
         controller  : 'reviewController'
     })
-    .when('/signup/:community?', {
+    .when('/signup/:type?/:community?', {
         templateUrl : '/pages/components/landing-page.html',
         controller  : 'landingController',
         reloadOnSearch: false

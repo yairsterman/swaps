@@ -1,5 +1,5 @@
 var signup = null;
-swapsApp.controller('landingController', function($scope, $rootScope, $routeParams, $location, Utils, $uibModal, $window, $timeout,UsersService, AccountService, $interval) {
+swapsApp.controller('landingController', function($scope, $rootScope, $routeParams, $location, Utils, $uibModal, $window, $timeout,UsersService, AccountService, alertify) {
     signup = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = false;
@@ -8,7 +8,9 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.innerHeight = $window.innerHeight;
     $scope.communityCode = $routeParams.community;
     $scope.referer = $routeParams.referer;
+    $scope.type = $routeParams.type;
     $scope.currentPhase = 1;
+    $scope.numOfFiles = 0;
     $scope.phases = [
         {id: 0, section: ''},
         {id: 1, section: 'first'},
@@ -21,6 +23,36 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
         {id: 8, section: 'credits'},
         {id: 9, section: 'details'},
     ];
+    if($scope.type === '2'){
+        $scope.phases = [
+            {id: 0, section: ''},
+            {id: 1, section: 'first'},
+            {id: 2, section: 'pre-login'},
+            {id: 3, section: 'sign-up'},
+            {id: 4, section: 'credits'},
+            {id: 5, section: 'where'},
+            {id: 6, section: 'when'},
+            {id: 7, section: 'who'},
+            {id: 8, section: 'flight'},
+            {id: 9, section: 'details'},
+        ];
+    }
+    if($scope.type === '3'){
+        $scope.phases= [
+            {id: 0, section: ''},
+            {id: 1, section: 'first'},
+            {id: 2, section: 'where'},
+            {id: 3, section: 'when'},
+            {id: 4, section: 'who'},
+            {id: 5, section: 'flight'},
+            {id: 6, section: 'almost-done'},
+            {id: 7, section: 'sign-up'},
+            {id: 8, section: 'credits'},
+            {id: 9, section: 'details'},
+            {id: 10, section: 'basics'},
+            {id: 11, section: 'photo'},
+        ];
+    }
     $scope.phase = $scope.phases[$scope.currentPhase].section;
 
     $scope.places = ['Anywhere!', 'Berlin', 'New York', 'Amsterdam', 'Tel Aviv', 'London'];
@@ -41,7 +73,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
         });
 
         if($routeParams.phase){
-            $location.url('/signup' + ($scope.communityCode?`/${$scope.communityCode}`:''));
+            $location.url(`/signup/${$scope.type}${($scope.communityCode?'/'+$scope.communityCode:'')}`);
         }
 
         angular.element($window).bind('resize', function(){
@@ -57,9 +89,9 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.$on('$routeUpdate', function($event, next, current) {
         if($routeParams.phase){
             if($rootScope.user && $rootScope.user._id &&
-                ($scope.currentPhase === 8 || $scope.currentPhase === 7) &&
+                ($scope.phases[$scope.currentPhase].section === 'sign-in' || $scope.phases[$scope.currentPhase].section === 'credits') &&
                 $scope.currentPhase > parseInt($routeParams.phase)){
-                $scope.currentPhase = 6;
+                $scope.currentPhase = $scope.type === '2'?1:6;
             }
             else{
                 $scope.currentPhase = parseInt($routeParams.phase);
@@ -101,17 +133,18 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 $scope.search.flight = false;
                 break;
             case 'almost-done':
+            case 'pre-login':
                 if($rootScope.user && $rootScope.user._id){
-                    $scope.currentPhase = 8;
+                    $scope.currentPhase += 2;
                 }
                 break;
         }
         $scope.currentPhase++;
-        $location.url('/signup'+ ($scope.communityCode?`/${$scope.communityCode}`:'') +'?phase=' + $scope.currentPhase);
-
-    }
+        $location.url(`/signup/${$scope.type}${($scope.communityCode?'/'+$scope.communityCode:'')}?phase=${$scope.currentPhase}`);
+    };
 
     $scope.findMatches = function(){
+        $scope.phase = '';
         saveProfileChanges();
     };
 
@@ -141,6 +174,9 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 AccountService.setCommunity($scope.communityCode).then(function(data){
                     $rootScope.user = data;
                     $scope.user = $rootScope.user;
+                    if(!$scope.user.apptInfo.amenities.length || $scope.user.apptInfo.amenities.length === 0){
+                        $scope.user.apptInfo.amenities = [0,1,4];
+                    }
                 },function(err){
                 })
             }
@@ -192,8 +228,8 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
 
     $scope.FBLogin = function(){
         $location.search('login','facebook');
-        // window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
-        window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
+        window.popup = window.open('http://localhost:3000/auth/facebook', 'newwindow', 'width=640, height=400');
+        // window.popup = window.open('https://swapshome.com/auth/facebook', 'newwindow', 'width=640, height=400');
     };
 
     $scope.GoogleLogin = function(){
@@ -225,6 +261,15 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
         // ($scope.user.deposit || $scope.user.deposit === 0);
     }
 
+    function showAlert(msg, error){
+        if(!error){
+            alertify.success(msg);
+        }
+        else{
+            alertify.error(msg);
+        }
+    }
+
 
     function saveProfileChanges(){
         if(!($scope.user.address && $scope.user.address !== '' && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' && $scope.user.apptInfo.guests && $scope.user.apptInfo.roomType !== undefined && $scope.user.apptInfo.guests > 0)){
@@ -239,6 +284,75 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 $rootScope.showInviteFriends = true;
                 $scope.go(`travelers${($scope.search.where === 'Anywhere!'?'':'/'+$scope.search.where)}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
             },2000)
+        });
+    }
+
+    function add_uploadButton(e, data){
+        $scope.uploadStarted = false;
+        $scope.imageProgress = 0;
+        if(data.files[0].type.indexOf('image') === -1){
+            showAlert('Wrong file type, only images are allowed', true);
+            return;
+        }
+        $scope.saving = true;
+        AccountService.getUploadToken().then(function( token ) {
+            $scope.numOfFiles++;
+            data.formData = token;
+            data.submit();
+            $scope.uploadStarted = true;
+        },function(){
+            $scope.saving = false;
+        });
+    }
+
+    function change_uploadbutton(e, data){
+        if(data.files.length > 8 - $scope.user.photos.length) {
+            showAlert('You can only have 8 images', true);
+            return false;
+        }
+    }
+
+    function fileuploaddone_uploadbutton(e, data){
+        AccountService.uploadCompleted({url: data.result.url, public_id: data.result.public_id}).then(function( result ) {
+            $rootScope.user = result;
+            $scope.user = $rootScope.user;
+        },function(err){
+            showAlert('Failed to upload photo, please try again later', true);
+        })
+        .finally(function(){
+            $scope.numOfFiles--;
+            if($scope.numOfFiles === 0){//uploaded all photos
+                showAlert('Photos Uploaded Successfully', false);
+                $scope.saving = false;
+                $scope.uploadStarted = false;
+            }
+        });
+    }
+
+    function uploadFail(err, data){
+        $scope.numOfFiles--;
+        if($scope.numOfFiles === 0){//uploaded all photos
+            $scope.saving = false;
+            $scope.$apply();
+        }
+        showAlert('Could not upload photo', true);
+    }
+
+    $scope.initUploadButton =function(){
+
+        $.cloudinary.config({ cloud_name: 'swaps', secure: true});
+        $('.cloudinary-fileupload').fileupload({
+            add: add_uploadButton,
+            change: change_uploadbutton,
+            done: fileuploaddone_uploadbutton,
+            fail: uploadFail,
+            maxFileSize: 20000000,                        // 20MB is an example value
+            loadImageMaxFileSize: 20000000,               // default is 10MB
+            acceptFileTypes: /(\.|\/)(jpe?g|png)$/i
+        });
+        $('.cloudinary-fileupload').bind('fileuploadprogressall', function(e, data) {
+            $scope.imageProgress = Math.round((data.loaded * 100.0) / data.total);
+            $scope.$apply();
         });
     }
 

@@ -31,7 +31,20 @@
                 </div>
             </div>
         </div>
-        <div id="where" class="section in {{phase !== 'where'?'animate-out':''}}" ng-if="phase !== 'first'">
+        <div id="pre-login" class="section first-section {{phase !== 'pre-login'?'animate-out':''}}" ng-if="phase === 'pre-login'">
+            <div class="description">
+                <div class="title">Let us know a bit about your home
+                </div>
+                <div class="sub-title">So we can find a perfect match for you
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next" ng-click="next()">
+                    Lets do this!
+                </div>
+            </div>
+        </div>
+        <div id="where" class="section in {{phase !== 'where'?'animate-out':''}}" ng-if="phase === 'where'">
             <div class="description">
                 <div class="title">OK, first question, where do you want to go?
                 </div>
@@ -53,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div id="when" class="section dates-section in {{phase !== 'when'?'animate-out':''}}" ng-show="phase == 'when'">
+        <div id="when" class="section dates-section in {{phase !== 'when'?'animate-out':''}}" ng-show="phase === 'when'">
             <div class="description">
                 <div class="title">Cool!
                 </div>
@@ -222,56 +235,143 @@
             </div>
             <div class="button-container">
                 <div class="button btn btn-primary next" ng-click="next()">
-                    On to the last step!
+                    {{type !== '2'?'On to the last step!':'First Question'}}
                 </div>
             </div>
         </div>
         <div id="details"  class="section in sign-up {{phase !== 'details'?'animate-out':''}}" ng-show="phase === 'details'">
-            <div ng-if="!searching">
-                <div class="description">
-                    <div class="sub-title">Last Step! Home Details
+            <div class="description">
+                <div class="sub-title">{{type !== '3'?'Last Step! Home Details':'Your home details'}}
+                </div>
+            </div>
+            <div class="home-details">
+                <div class="form-group">
+                    <label class="control-label listing-label" for="address" uib-tooltip="Where you live" tooltip-placement="right" tooltip>My Address:
+                    </label>
+                    <input class="form-control" id="address" type="text" placeholder="Enter Your home address" ng-model="user.address" autocomplete>
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" for="title" uib-tooltip="A short description of your home" tooltip-placement="right" tooltip>Home Title:
+                        <span class="explanation"></span>
+                    </label>
+                    <div class="">
+                        <input class="form-control" type="text" id="title" placeholder="{{user.firstName}}'s Beautiful Home" ng-model="user.apptInfo.title">
                     </div>
                 </div>
-                <div class="home-details">
-                    <div class="form-group">
-                        <label class="control-label listing-label" for="address" uib-tooltip="Where you live" tooltip-placement="right" tooltip>My Address:
-                        </label>
-                        <input class="form-control" id="address" type="text" placeholder="Enter Your home address" ng-model="user.address" autocomplete>
+                <div class="form-group">
+                    <label class="control-label listing-label" uib-tooltip="The type of room you are offering" tooltip-placement="right" tooltip>Room Type:<br>
+                        <span class="explanation"></span>
+                    </label>
+                    <div class="">
+                        <select class="form-control room-type" id="roomType" ng-model="user.apptInfo.roomType"
+                                ng-options="room.id as room.displayName for room in data.roomType">
+                            {{room.displayName}}
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label listing-label" for="title" uib-tooltip="A short description of your home" tooltip-placement="right" tooltip>Home Title:
-                            <span class="explanation"></span>
-                        </label>
-                        <div class="">
-                            <input class="form-control" type="text" id="title" placeholder="{{user.firstName}}'s Beautiful Home" ng-model="user.apptInfo.title">
+                </div>
+                <div class="form-group">
+                    <label class="control-label listing-label" >How many people can stay at your place while your away?
+                    </label>
+                    <div>
+                        <input class="form-control swappers" id="swappers" type="number" min="1" max="8" ng-model="user.apptInfo.guests">
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button btn btn-primary next find {{user.address && user.address !== '' && user.apptInfo.title && user.apptInfo.title !== '' && user.apptInfo.guests && user.apptInfo.guests > 0 && user.apptInfo.roomType !== undefined?'':'disabled'}}" ng-click="type !== '3'?findMatches():next()">
+                    {{type !== '3'?'Find me a home to Swap!':'Next Step'}}
+                </div>
+            </div>
+        </div>
+        <div id="basics" class="section in {{phase !== 'basics'?'animate-out':''}}" ng-if="phase === 'basics'">
+            <div class="basic-information">
+                <div class="description">
+                    <div class="sub-title">What else do you have at your home?
+                    </div>
+                    <div class="row basics-top">
+                        <div class="col-sm-4 col-xs-4 basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-door hidden-xs"></div>
+                                <div class="basics-name">Bedrooms</div>
+                                <input class="form-control" id="rooms" type="number" min="1" max="4" step="1"
+                                       ng-model="user.apptInfo.rooms">
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-4 basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-bed hidden-xs"></div>
+                                <div class="basics-name">Beds</div>
+                                <input class="form-control" id="beds" type="number" min="1" max="8"
+                                       ng-model="user.apptInfo.beds">
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-4 basics">
+                            <div class="name-with-icon">
+                                <div class="icon icon-duck hidden-xs"></div>
+                                <div class="basics-name">Baths</div>
+                                <input class="form-control" id="baths" type="number" min="1" max="8"
+                                       ng-model="user.apptInfo.baths">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label listing-label" uib-tooltip="The type of room you are offering" tooltip-placement="right" tooltip>Room Type:<br>
-                            <span class="explanation"></span>
-                        </label>
-                        <div class="">
-                            <select class="form-control room-type" id="roomType" ng-model="user.apptInfo.roomType"
-                                    ng-options="room.id as room.displayName for room in data.roomType">
-                                {{room.displayName}}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label listing-label" >How many people can stay at your place while your away?
-                        </label>
-                        <div>
-                            <input class="form-control swappers" id="swappers" type="number" min="1" max="8" ng-model="user.apptInfo.guests">
+                    <div class="">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <checkbox items="data.amenities" model="user.apptInfo.amenities"></checkbox>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="button-container">
-                    <div class="button btn btn-primary next find {{user.address && user.address !== '' && user.apptInfo.title && user.apptInfo.title !== '' && user.apptInfo.guests && user.apptInfo.guests > 0 && user.apptInfo.roomType !== undefined?'':'disabled'}}" ng-click="findMatches()">
-                        Find me a home to Swap!
+                    <div class="button btn btn-primary next" ng-click="next()">
+                        Next Step
                     </div>
                 </div>
             </div>
-            <div class="loader-container" ng-if="searching">
+        </div>
+        <div id="photo" class="section in {{phase !== 'photo'?'animate-out':''}}" ng-if="phase === 'photo'">
+            <div class="basic-information photos">
+                <div class="description">
+                    <div class="title">
+                        Do you have any photos of your home on this device?
+                    </div>
+                    <div class="sub-title">
+                        If you do - upload them here.<br>
+                        If not, no worries - we'll upload a temporary photo for you.
+                    </div>
+                    <div class="photos-area">
+                        <div class="box has-advanced-upload" ng-if="user.photos.length < 3">
+                            <div class="loader-wrapper" ng-if="saving">
+                                <div class="loader">
+
+                                </div>
+                            </div>
+                            <div class="box__input">
+                                <input class="cloudinary-fileupload" id="file" data-ng-init="initUploadButton()" ng-if="user.photos.length < 3" data-cloudinary-field="image_id"
+                                       data-max-chunk-size="52428800" data-update-path="google.com"
+                                       data-url="https://api.cloudinary.com/v1_1/swaps/auto/upload" multiple="multiple" name="file" type="file" />
+                                <label for="file" class="choose-file"><strong>Choose files</strong><span class="box__dragndrop"> or drag them here.</span></label>
+                            </div>
+                        </div>
+                        <div class="uploaded-photos row">
+                            <div class="col-sm-12 col-xs-12 photo" style="background-image: url({{user.photos[0]}})"></div>
+                        </div>
+                    </div>
+                    <div class="progress" ng-if="uploadStarted">
+                        <div class="progress-bar" ng-style="{'width': imageProgress + '%'}">
+
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <div class="button btn btn-primary next find" ng-click="findMatches()">
+                            Find me a home to Swap!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" ng-if="searching">
+            <div class="loader-container">
                 <div class="cssload-loader">
                     <div class="cssload-inner cssload-one"></div>
                     <div class="cssload-inner cssload-two"></div>

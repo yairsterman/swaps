@@ -168,6 +168,128 @@
         }
       }
     }
+    .basic-information{
+      width: 680px;
+      margin: auto;
+      .basics-top{
+        margin: 10px 0;
+      }
+      .basics{
+        .name-with-icon{
+          display: flex;
+          align-items: end;
+          margin-bottom: 4px;
+          .icon-bed-small{
+            height: 21px;
+          }
+        }
+        .form-control{
+          width: auto;
+          @media @mobile {
+            padding: 6px;
+          }
+        }
+        .basics-name{
+          font-size: 18px;
+          text-align: left;
+          color: #0e5d7c;
+          margin: 0 10px;
+          padding-top: 6px;
+        }
+      }
+      checkbox {
+        .checkbox-wrapper{
+          justify-content: space-evenly;
+        }
+        .single-checkbox{
+          width: 33%;
+          @media @mobile {
+            width: 50%;
+          }
+        }
+      }
+    }
+    .photos{
+      position: relative;
+      .photos-area{
+        position: relative;
+      }
+      .photos-title{
+        font-size: 22px;
+        font-weight: 300;
+        text-align: center;
+        padding-bottom: 10px;
+        @media @mobile {
+          font-size: 20px;
+        }
+      }
+      .photos-sub-title{
+        font-size: 15px;
+        text-align: center;
+        padding-bottom: 20px;
+        font-weight: 300;
+        @media @mobile {
+          font-size: 14px;
+        }
+      }
+      .box{
+        background-color: rgba(255,255,255,0.4);
+        z-index: 1;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        &.has-advanced-upload {
+          outline: 2px dashed grey;
+          outline-offset: -10px;
+          .box__dragndrop {
+            display: inline;
+            color: grey;
+            font-weight: 400;
+          }
+        }
+        .cloudinary-fileupload{
+          opacity: 0;
+        }
+        .choose-file{
+          color: #0E5D7C;
+          cursor: pointer;
+          text-align: center;
+          font-size: 18px;
+          margin-top: 40px;
+        }
+      }
+      .uploaded-photos{
+        margin: auto;
+        .photo{
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          height: 300px;
+          border: 1px solid grey;
+          @media @mobile {
+            height: 220px;
+          }
+        }
+      }
+      .progress{
+        width: 200px;
+        margin: 10px auto;
+        height: 12px;
+        .progress-bar{
+          height: 12px;
+          background-color: #0e5d7c;
+        }
+      }
+      .loader-wrapper{
+        position: absolute;
+        background-color: rgba(169,169,169,0.7);
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 10;
+      }
+    }
     .button-container{
       width: 100%;
       text-align: center;
