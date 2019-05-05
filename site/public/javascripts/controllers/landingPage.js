@@ -144,7 +144,6 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     };
 
     $scope.findMatches = function(){
-        $scope.phase = '';
         saveProfileChanges();
     };
 
@@ -275,6 +274,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
         if(!($scope.user.address && $scope.user.address !== '' && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' && $scope.user.apptInfo.guests && $scope.user.apptInfo.roomType !== undefined && $scope.user.apptInfo.guests > 0)){
             return;
         }
+        $scope.phase = '';
         $scope.searching = true;
         $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
         AccountService.editListing($scope.user).then(function(data){
