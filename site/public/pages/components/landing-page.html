@@ -283,31 +283,31 @@
                 </div>
             </div>
         </div>
-        <div id="basics" class="section in {{phase !== 'basics'?'animate-out':''}}" ng-if="phase === 'basics'">
+        <div id="basics" class="section in {{phase !== 'basics'?'animate-out':''}}" ng-show="phase === 'basics'">
             <div class="basic-information">
                 <div class="description">
                     <div class="sub-title">What else do you have at your home?
                     </div>
                     <div class="row basics-top">
-                        <div class="col-sm-4 col-xs-4 basics">
+                        <div class="col-sm-4 col-xs-12 basics">
                             <div class="name-with-icon">
-                                <div class="icon icon-door hidden-xs"></div>
+                                <div class="icon icon-door"></div>
                                 <div class="basics-name">Bedrooms</div>
                                 <input class="form-control" id="rooms" type="number" min="1" max="4" step="1"
                                        ng-model="user.apptInfo.rooms">
                             </div>
                         </div>
-                        <div class="col-sm-4 col-xs-4 basics">
+                        <div class="col-sm-4 col-xs-12 basics">
                             <div class="name-with-icon">
-                                <div class="icon icon-bed hidden-xs"></div>
+                                <div class="icon icon-bed"></div>
                                 <div class="basics-name">Beds</div>
                                 <input class="form-control" id="beds" type="number" min="1" max="8"
                                        ng-model="user.apptInfo.beds">
                             </div>
                         </div>
-                        <div class="col-sm-4 col-xs-4 basics">
+                        <div class="col-sm-4 col-xs-12 basics">
                             <div class="name-with-icon">
-                                <div class="icon icon-duck hidden-xs"></div>
+                                <div class="icon icon-duck"></div>
                                 <div class="basics-name">Baths</div>
                                 <input class="form-control" id="baths" type="number" min="1" max="8"
                                        ng-model="user.apptInfo.baths">
@@ -329,7 +329,7 @@
                 </div>
             </div>
         </div>
-        <div id="photo" class="section in {{phase !== 'photo'?'animate-out':''}}" ng-if="phase === 'photo'">
+        <div id="photo" class="section in {{phase !== 'photo'?'animate-out':''}}" ng-show="phase === 'photo'">
             <div class="basic-information photos">
                 <div class="description">
                     <div class="title">

@@ -9,6 +9,10 @@
   background-size: cover;
   background-repeat: no-repeat;
   overflow-x: hidden;
+  @media @mobile {
+    min-height: 850px;
+    overflow: initial;
+  }
   .inner-gradient{
     position: relative;
     height: 100%;
@@ -171,6 +175,9 @@
     .basic-information{
       width: 680px;
       margin: auto;
+      @media @mobile {
+        width: auto;
+      }
       .basics-top{
         margin: 10px 0;
       }
@@ -205,6 +212,7 @@
           width: 33%;
           @media @mobile {
             width: 50%;
+            justify-content: space-evenly;
           }
         }
       }
