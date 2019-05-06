@@ -8,7 +8,6 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  overflow-x: hidden;
   @media @mobile {
     min-height: 850px;
     overflow: initial;
@@ -303,9 +302,17 @@
       text-align: center;
       margin-top: 40px;
       &.under-calendar{
-        margin-top: 334px;
+        margin-top: 300px;
         @media @mobile {
           margin-top: 390px;
+        }
+        .single-checkbox{
+          margin: auto;
+          display: flex;
+          justify-content: center;
+          align-items: end;
+          padding: 10px;
+          font-size: 18px;
         }
       }
       .next{
@@ -410,6 +417,65 @@
         }
       }
     }
+    .single-checkbox{
+      display: flex;
+      align-items: center;
+      color: #0E5D7C;
+      padding: 4px 0;
+      margin: 0 20px;
+      @media @mobile {
+        margin: 0;
+      }
+      &.not-included{
+        opacity: 0.4;
+      }
+      .text{
+        width: 50%;
+        font-size: 14px;
+      }
+      .things-checkbox{
+        position: relative;
+        border: 1px solid rgba(14,93,124,0.4);
+        margin-right: 8px;
+        margin-top: 2px;
+        width: 20px;
+        height: 20px;
+        &:focus{
+          outline: none;
+        }
+        &.no-border{
+          border: none;
+          cursor: auto;
+        }
+      }
+      .check{
+        position: absolute;
+        top: -8px;
+        left: 5px;
+        transform: scale(0);
+        transition: 0.3s ease;
+        &:focus{
+          outline: none;
+        }
+        &.checked{
+          transform: scale(1.5);
+        }
+      }
+      .guests{
+        margin-right: 10px;
+        width: 60px;
+        padding: 6px 4px 6px 12px;
+        @media @mobile {
+          margin-right: 6px;
+          width: 40px;
+          padding: 4px;
+        }
+        &.error{
+          border: 1px solid #a94442;
+          box-shadow: 0 0 5px 0px #a94442
+        }
+      }
+    }
     .sign-up-dates{
       width: 100%;
       .calendar{
@@ -434,65 +500,6 @@
       }
       .flight{
         margin: 0 15px;
-      }
-      .single-checkbox{
-        display: flex;
-        align-items: center;
-        color: #0E5D7C;
-        padding: 4px 0;
-        margin: 0 20px;
-        @media @mobile {
-          margin: 0;
-        }
-        &.not-included{
-          opacity: 0.4;
-        }
-        .text{
-          width: 50%;
-          font-size: 14px;
-        }
-        .things-checkbox{
-          position: relative;
-          border: 1px solid rgba(14,93,124,0.4);
-          margin-right: 8px;
-          margin-top: 2px;
-          width: 20px;
-          height: 20px;
-          &:focus{
-            outline: none;
-          }
-          &.no-border{
-            border: none;
-            cursor: auto;
-          }
-        }
-        .check{
-          position: absolute;
-          top: -8px;
-          left: 5px;
-          transform: scale(0);
-          transition: 0.3s ease;
-          &:focus{
-            outline: none;
-          }
-          &.checked{
-            transform: scale(1.5);
-          }
-        }
-        .guests{
-          margin-right: 10px;
-          width: 60px;
-          padding: 6px 4px 6px 12px;
-          @media @mobile {
-            margin-right: 6px;
-            width: 40px;
-            padding: 4px;
-          }
-          &.error{
-            border: 1px solid #a94442;
-            box-shadow: 0 0 5px 0px #a94442
-          }
-        }
       }
       .icon{
         margin-right: 10px;

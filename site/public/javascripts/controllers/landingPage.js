@@ -1,5 +1,5 @@
 var signup = null;
-swapsApp.controller('landingController', function($scope, $rootScope, $routeParams, $location, Utils, $uibModal, $window, $timeout,UsersService, AccountService, alertify) {
+swapsApp.controller('landingController', function($scope, $rootScope, $routeParams, $location, Utils, $uibModal, $window, $anchorScroll, $timeout,UsersService, AccountService, alertify) {
     signup = $scope;
     $rootScope.homepage = false;
     $rootScope.searchPage = false;
@@ -119,7 +119,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 },100);
                 break;
             case 'when':
-                if(!$scope.search.when){
+                if(!$scope.search.when && $scope.search.date !== 1){
                     $('.daterangepicker').addClass('error');
                     return;
                 }
@@ -140,6 +140,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 break;
         }
         $scope.currentPhase++;
+        $anchorScroll();
         $location.url(`/signup/${$scope.type}${($scope.communityCode?'/'+$scope.communityCode:'')}?phase=${$scope.currentPhase}`);
     };
 
@@ -148,6 +149,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     };
 
     $scope.unsetError = function(){
+        $scope.search.date = undefined;
         $scope.error = false;
     }
 
@@ -282,7 +284,7 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
             $scope.user = $rootScope.user;
             $timeout(function(){
                 $rootScope.showInviteFriends = true;
-                $scope.go(`travelers${($scope.search.where === 'Anywhere!'?'':'/'+$scope.search.where)}?dates=${$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
+                $scope.go(`travelers${($scope.search.where === 'Anywhere!'?'':'/'+$scope.search.where)}?dates=${$scope.search.date===1?'undefined':$scope.search.when}&guests=${($scope.search.alone?1:$scope.search.guests+1)}`)
             },2000)
         });
     }

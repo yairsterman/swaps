@@ -78,7 +78,13 @@
                 </div>
             </div>
             <div class="button-container under-calendar">
-                <div class="button btn btn-primary next {{search.when?'':'disabled'}}" ng-click="next()">
+                <div class="single-checkbox">
+                    <div class="things-checkbox" ng-click="search.date?search.date = undefined:search.date = 1">
+                        <div class="check icon icon-check {{search.date === 1?'checked':''}}"></div>
+                    </div>
+                    I haven't decided yet
+                </div>
+                <div class="button btn btn-primary next {{search.when || search.date === 1?'':'disabled'}}" ng-click="next()">
                     Next Step
                 </div>
             </div>
