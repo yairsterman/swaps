@@ -42,7 +42,11 @@ swapsApp.controller('headerController', function($scope, $rootScope, $location, 
         $rootScope.$broadcast('geolocation-complete', {failed: true});
     }
 
-	var geocoder =  new google.maps.Geocoder();
+    var geocoder;
+
+    $scope.$watch('google', function(){
+        geocoder =  new google.maps.Geocoder();
+    });
 
 	var address = {
       types: ['address']
