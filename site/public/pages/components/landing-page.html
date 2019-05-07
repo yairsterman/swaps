@@ -254,14 +254,14 @@
                 <div class="form-group">
                     <label class="control-label listing-label" for="address" uib-tooltip="Where you live" tooltip-placement="right" tooltip>My Address:
                     </label>
-                    <input class="form-control" id="address" type="text" placeholder="Enter Your home address" ng-model="user.address" autocomplete>
+                    <input class="form-control {{addressError?'error':''}}" ng-change="unsetError()" id="address" type="text" placeholder="Enter Your home address" ng-model="user.address" autocomplete>
                 </div>
                 <div class="form-group">
                     <label class="control-label listing-label" for="title" uib-tooltip="A short description of your home" tooltip-placement="right" tooltip>Home Title:
                         <span class="explanation"></span>
                     </label>
                     <div class="">
-                        <input class="form-control" type="text" id="title" placeholder="{{user.firstName}}'s Beautiful Home" ng-model="user.apptInfo.title">
+                        <input class="form-control {{titleError?'error':''}}" ng-change="unsetError()" type="text" id="title" placeholder="{{user.firstName}}'s Beautiful Home" ng-model="user.apptInfo.title">
                     </div>
                 </div>
                 <div class="form-group">
@@ -269,7 +269,7 @@
                         <span class="explanation"></span>
                     </label>
                     <div class="">
-                        <select class="form-control room-type" id="roomType" ng-model="user.apptInfo.roomType"
+                        <select class="form-control room-type {{roomError?'error':''}}" ng-change="unsetError()" id="roomType" ng-model="user.apptInfo.roomType"
                                 ng-options="room.id as room.displayName for room in data.roomType">
                             {{room.displayName}}
                         </select>
@@ -279,7 +279,7 @@
                     <label class="control-label listing-label" >How many people can stay at your place while your away?
                     </label>
                     <div>
-                        <input class="form-control swappers" id="swappers" type="number" min="1" max="8" ng-model="user.apptInfo.guests">
+                        <input class="form-control swappers {{guestsError?'error':''}}" ng-change="unsetError()" id="swappers" type="number" min="1" max="8" ng-model="user.apptInfo.guests">
                     </div>
                 </div>
             </div>

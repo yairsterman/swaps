@@ -132,6 +132,20 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                 }
                 $scope.search.flight = false;
                 break;
+            case 'details':
+                if(!$scope.user.address || $scope.user.address === ''){
+                    return $scope.addressError = true
+                }
+                if(!$scope.user.apptInfo.title || $scope.user.apptInfo.title === ''){
+                    return $scope.titleError = true;
+                }
+                if(!$scope.user.apptInfo.guests || $scope.user.apptInfo.guests <= 0){
+                    return $scope.guestsError = true;
+                }
+                if($scope.user.apptInfo.roomType == undefined){
+                    return $scope.roomError = true;
+                }
+                break;
             case 'almost-done':
             case 'pre-login':
                 if($rootScope.user && $rootScope.user._id){
@@ -151,6 +165,10 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
     $scope.unsetError = function(){
         $scope.search.date = undefined;
         $scope.error = false;
+        $scope.addressError = false;
+        $scope.titleError = false;
+        $scope.guestsError = false;
+        $scope.roomError = false;
     }
 
     $scope.setCity = function(place){
@@ -273,9 +291,6 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
 
 
     function saveProfileChanges(){
-        if(!($scope.user.address && $scope.user.address !== '' && $scope.user.apptInfo.title && $scope.user.apptInfo.title !== '' && $scope.user.apptInfo.guests && $scope.user.apptInfo.roomType !== undefined && $scope.user.apptInfo.guests > 0)){
-            return;
-        }
         $scope.phase = '';
         $scope.searching = true;
         $scope.user.apptInfo.amenities = $scope.user.apptInfo.amenities.length>0?$scope.user.apptInfo.amenities:[0,1,4];
