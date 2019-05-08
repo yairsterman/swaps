@@ -102,11 +102,10 @@ swapsApp.service('MessageService', function($http, $q){
             recipientId: recipient,
         };
         return $http.post('message/readMessage', data).then(function(data){
-                return data;
-            },
-            function(){
-                console.log("error")
-            });
+            return data;
+        },
+        function(){
+            console.log("error");
+        });
     };
-
 });

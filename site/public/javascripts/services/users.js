@@ -94,7 +94,7 @@ swapsApp.service('UsersService', function($http, $q){
             }
         });
         return query;
-    }
+    };
 
 
 });

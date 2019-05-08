@@ -13,7 +13,7 @@ swapsApp.service('Utils', function($http){
         var data = {
             email: email,
             city: city
-        }
+        };
         return $http.post('utils/sendMailToInfo', data).then(function(data){
                 return data.data;
             },

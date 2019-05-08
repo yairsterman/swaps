@@ -1,4 +1,4 @@
-swapsApp.service('ReviewsService', function($http, $q, ) {
+swapsApp.service('ReviewsService', function($http, $q) {
 
     this.verifyToken = function(token) {
         var defer = $q.defer();
