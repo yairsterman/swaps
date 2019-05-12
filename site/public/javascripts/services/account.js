@@ -282,7 +282,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject(err);
         });
         return defer.promise;
-    }
+    };
 
     this.uploadCompleted = function(public_id) {
         var defer = $q.defer();
@@ -297,7 +297,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject(err);
         });
         return defer.promise;
-    }
+    };
 
     this.profileUploadCompleted = function(public_id) {
         var defer = $q.defer();
@@ -312,7 +312,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject(err);
         });
         return defer.promise;
-    }
+    };
 
     this.verifyEmail = function(token) {
         var defer = $q.defer();
@@ -327,7 +327,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject('Something went wrong');
         });
         return defer.promise;
-    }
+    };
 
     this.setReferral = function(token) {
         var defer = $q.defer();
@@ -342,7 +342,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject('Something went wrong');
         });
         return defer.promise;
-    }
+    };
 
     this.getReferralToken = function() {
         var defer = $q.defer();
@@ -357,7 +357,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject('Something went wrong');
         });
         return defer.promise;
-    }
+    };
 
     this.sendInvites = function(emails) {
         var defer = $q.defer();
@@ -372,7 +372,7 @@ swapsApp.service('AccountService', function($http, $rootScope, $q){
             defer.reject('Something went wrong');
         });
         return defer.promise;
-    }
+    };
 
     this.setAllowViewHome = function(allowViewHome) {
         var defer = $q.defer();
