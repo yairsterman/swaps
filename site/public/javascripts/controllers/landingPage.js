@@ -84,6 +84,10 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
             // is outside of angular
             $scope.$digest();
         });
+
+        UsersService.getFeaturedUsers().then(function(data) {
+            $scope.travelers = data.data.users;
+        });
     };
 
     $scope.$on('$routeUpdate', function($event, next, current) {

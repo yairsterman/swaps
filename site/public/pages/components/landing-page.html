@@ -1,4 +1,4 @@
-<div class="landing-page" ng-style="{'height': innerHeight}" ng-init="init()">
+<div class="landing-page {{phase === 'first'?'first':''}}" ng-init="init()">
     <div class="inner-gradient">
         <div class="title-container">
             <a href="https://www.swapshome.com" target="_blank">
@@ -11,21 +11,73 @@
                 </div>
             </a>
         </div>
-        <div id="first" class="section first-section {{phase !== 'first'?'animate-out':''}}">
+        <div id="first" class="section first-section {{phase !== 'first'?'animate-out':''}}" ng-if="phase === 'first'">
             <div class="description">
                 <div class="title">Your Home Opens Doors to a World of Experiences
                 </div>
-                <div class="sub-title">Our super cool Swap Bot will show you where you could be traveling right now
+                <div class="sub-title grey">Our Swap Bot will show you where you could be traveling right now
                 </div>
                 <div class="free">First trip is on us!
                 </div>
-            </div>
-            <div class="button-container">
-                <div class="button btn btn-primary next" ng-click="next()">
-                    Check it Out
+                <div class="button-container">
+                    <div class="button btn btn-primary next" ng-click="next()">
+                        Check it Out
+                    </div>
+                    <div class="under-button-text">
+                        Quick. Simple. Safe.
+                    </div>
                 </div>
-                <div class="under-button-text">
-                    Quick. Simple. Safe.
+            </div>
+            <div class="inner-section row">
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="ticket-title">Use Your Home to Travel</div>
+                    <div class="join">
+                        <div class="description-icon icon icon-house animated"></div>
+                    </div>
+                    <div class="how-inner-sentences first animated">
+                        You stay at their place, they stay at yours
+                    </div>
+                </div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="ticket-title">Get Swap Credits for Your Next Trip</div>
+                    <div class="join">
+                        <div class="description-icon icon icon-money animated"></div>
+                    </div>
+                    <div class="how-inner-sentences second animated">
+                        More Credits = More Swaps = More Trips
+                    </div>
+                </div>
+                <div class="how-inner-ticket col-sm-4 col-xs-12">
+                    <div class="ticket-title">Save Money, Start Swapping</div>
+                    <div class="join">
+                        <div class="description-icon icon icon-matos animated" ></div>
+                    </div>
+                    <div class="how-inner-sentences third animated">
+                        Follow your dreams and explore the world!
+                    </div>
+                </div>
+                <div class="col-xs-12" >
+                    <div class="button-container">
+                        <div class="button btn btn-primary invert-btn next" ng-click="next()">
+                            Let's Go!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-homes" id="featuredHomes">
+                <div class="title swappers">
+                    <span >Meet some new Swappers</span>
+                    <div class="swappers-border"></div>
+                </div>
+                <div class="travelers-list">
+                    <div class="mg-0 row">
+                        <div class= "traveler-col col-sm-4 col-xs-12 {{'traveler'+$index}}" ng-repeat="traveler in travelers |limitTo : 3" id="{{traveler._id}}" scroll-animate>
+                            <swapper-home traveler="traveler" lazy-load></swapper-home>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <div class="button btn btn-primary next" ng-click="next()" scroll-animate>See more Swappers</div>
                 </div>
             </div>
         </div>

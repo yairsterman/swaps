@@ -1,7 +1,7 @@
 @import 'media.less';
 .landing-page{
   position: relative;
-  height: 100%;
+  height: 100vh;
   min-height: 680px;
   //background-color: #fff;
   background-image: url('../../images/static/landing.jpg');
@@ -11,6 +11,9 @@
   @media @mobile {
     min-height: 850px;
     overflow: initial;
+  }
+  &.first{
+    background-color: white;
   }
   .inner-gradient{
     position: relative;
@@ -120,6 +123,15 @@
       animation: swipeLeft 0.2s linear forwards;
       -webkit-animation: swipeLeft 0.2s linear forwards;
     }
+    .title{
+      color: #0e5d7c;
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+      @media @mobile {
+        font-size: 24px;
+      }
+    }
     .description{
       text-align: center;
       padding-top: 10px;
@@ -131,14 +143,6 @@
         font-size: 16px;
         padding-bottom: 15px;
       }
-      .title{
-        color: #0e5d7c;
-        font-size: 36px;
-        font-weight: bold;
-        @media @mobile {
-          font-size: 24px;
-        }
-      }
       .sub-title{
         color: #0e5d7c;
         padding-top: 20px;
@@ -146,6 +150,9 @@
         @media @mobile {
           padding-top: 10px;
           font-size: 16px;
+        }
+        &.grey{
+          color: #848a91;
         }
       }
       .free{
@@ -295,62 +302,6 @@
         top: 0;
         left: 0;
         z-index: 10;
-      }
-    }
-    .button-container{
-      width: 100%;
-      text-align: center;
-      margin-top: 40px;
-      &.under-calendar{
-        margin-top: 300px;
-        @media @mobile {
-          margin-top: 390px;
-        }
-        .single-checkbox{
-          margin: auto;
-          display: flex;
-          justify-content: center;
-          align-items: end;
-          padding: 10px;
-          font-size: 18px;
-        }
-      }
-      .next{
-        font-size: 26px;
-        width: 300px;
-        cursor: pointer;
-        &:hover{
-          background-color: #227392;
-          border-color: #227392;
-        }
-        &.disabled{
-          background-color: lightgrey;
-          opacity: 0.7;
-          cursor: not-allowed;
-          &:hover{
-            background-color: lightgrey;
-            border-color: #227392;
-          }
-        }
-        &.find{
-          width: 400px;
-          &.disabled{
-            width: 400px;
-          }
-          @media @mobile {
-            width: 260px;
-            font-size: 19px;
-            &.disabled{
-              width: 260px;
-            }
-          }
-        }
-      }
-      .under-button-text{
-        padding-top: 10px;
-        font-size: 20px;
-        color: #0e5d7c;
-        font-weight: bold;
       }
     }
     .places{
@@ -542,6 +493,174 @@
     .cssload-loader{
       width: 140px;
       height: 140px;
+    }
+    .inner-section{
+      padding:  40px 0;
+      background-color: #ffffff;
+      border-top: 1px solid lightgrey;
+      border-bottom: 1px solid lightgrey;
+    }
+    .featured-homes{
+      padding:  40px 0;
+      background-color: #ffffff;
+    }
+    .how-inner-ticket {
+      float: left;
+      height: auto;
+      padding-top: 2%;
+      .ticket-title{
+        font-weight: 500;
+        color: #848a91;
+        text-align: center;
+        font-size: 18px;
+        padding-bottom: 20px;
+      }
+      .how-inner-sentences {
+        color: #0e5d7c;
+        text-align: center;
+        width: 80%;
+        line-height: 1.4;
+        margin: auto;
+        font-size: 20px;
+        font-weight: bold;
+        padding-bottom: 3%;
+        opacity: 0;
+        &.first{
+          &.animated{
+            animation: fadeIn 1s forwards;
+            -webkit-animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
+          }
+        }
+        &.second{
+          &.animated{
+            animation: fadeIn 1s forwards;
+            -webkit-animation: fadeIn 1s forwards;
+            animation-delay: 1s;
+            @media @mobile {
+              animation-delay: 0.5s;
+            }
+          }
+        }
+        &.third{
+          &.animated{
+            animation: fadeIn 1s forwards;
+            -webkit-animation: fadeIn 1s forwards;
+            animation-delay: 1.5s;
+            @media @mobile {
+              animation-delay: 0.5s;
+            }
+          }
+        }
+      }
+      .description-icon{
+        margin: auto;
+        transform: scale(0);
+        &.animated{
+          animation: bounce 1s;
+          transform: scale(0.8);
+        }
+      }
+    }
+    .travelers-list {
+      margin-left: ~'calc(4vw - 15px)';
+      margin-right: ~'calc(4vw - 15px)';
+      padding: 0 15px;
+      max-height: 390px;
+      overflow: hidden;
+      @media @mobile {
+        max-height: none;
+        height: auto;
+        margin: 0;
+      }
+      .traveler-col {
+        transition: 0.5s ease;
+        padding: 5px;
+        z-index: 0;
+        opacity: 0;
+        &.animated{
+          animation: fade-scale 1.5s forwards;
+          -webkit-animation: fade-scale 1.5s forwards;
+          &.traveler1 {
+            animation-delay: 0.6s;
+            @media @mobile {
+              animation-delay: 0s;
+            }
+          }
+          &.traveler2 {
+            animation-delay: 1.2s;
+            @media @mobile {
+              animation-delay: 0s;
+            }
+          }
+        }
+      }
+    }
+    .view-all{
+      padding-top: 2vw;
+      font-size: 20px;
+      text-align: center;
+      color: #0e5d7c;
+      &.animated{
+        animation: fade-up 2s ease forwards;
+        -webkit-animation: fade-up 2s ease forwards;
+      }
+    }
+    .button-container{
+      width: 100%;
+      text-align: center;
+      margin-top: 40px;
+      &.under-calendar{
+        margin-top: 300px;
+        @media @mobile {
+          margin-top: 390px;
+        }
+        .single-checkbox{
+          margin: auto;
+          display: flex;
+          justify-content: center;
+          align-items: end;
+          padding: 10px;
+          font-size: 18px;
+        }
+      }
+      .next{
+        font-size: 26px;
+        width: 300px;
+        cursor: pointer;
+        &:hover{
+          background-color: #227392;
+          border-color: #227392;
+        }
+        &.disabled{
+          background-color: lightgrey;
+          opacity: 0.7;
+          cursor: not-allowed;
+          &:hover{
+            background-color: lightgrey;
+            border-color: #227392;
+          }
+        }
+        &.find{
+          width: 400px;
+          &.disabled{
+            width: 400px;
+          }
+          @media @mobile {
+            width: 260px;
+            font-size: 19px;
+            &.disabled{
+              width: 260px;
+            }
+          }
+        }
+      }
+      .under-button-text{
+        padding: 10px 0;
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+      }
     }
   }
   ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
