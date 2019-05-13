@@ -1,26 +1,31 @@
 @import 'media.less';
 .landing-page{
   position: relative;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   min-height: 680px;
-  //background-color: #fff;
   background-image: url('../../images/static/landing.jpg');
-  background-position: center;
+  background-position: bottom;
   background-size: cover;
   background-repeat: no-repeat;
   @media @mobile {
-    min-height: 850px;
-    overflow: initial;
-  }
-  &.first{
-    background-color: white;
+    background-size: contain;
+    min-height: 0;
   }
   .inner-gradient{
     position: relative;
-    height: 100%;
-    padding: 20px;
-    background: -webkit-linear-gradient(top, #ffffff -25%, rgba(255,255,255,0.9) 125%);
-    background: linear-gradient(to bottom, #ffffff -25%, rgba(255,255,255,0.9) 125%);
+    height: 100vh;
+    padding: 20px 0 ;
+    background: -webkit-linear-gradient(top, #ffffff 0%, rgba(255,255,255,0.9) 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.9) 100%);
+    overflow-x: hidden;
+    &.first{
+      position: static;
+      overflow: initial;
+      @media @mobile {
+        position: initial;
+      }
+    }
     @media @mobile {
       padding: 10px;
       overflow: initial;
@@ -105,8 +110,13 @@
     }
     &.first-section{
       top: 200px;
+      width: auto;
+      height: auto;
       @media @mobile {
         top: 150px;
+        width: 100%;
+        height: 100%;
+        position: relative;
       }
     }
     &.date-section{
@@ -495,6 +505,7 @@
       height: 140px;
     }
     .inner-section{
+      margin: auto;
       padding:  40px 0;
       background-color: #ffffff;
       border-top: 1px solid lightgrey;
@@ -503,6 +514,7 @@
     .featured-homes{
       padding:  40px 0;
       background-color: #ffffff;
+      min-height: 550px;
     }
     .how-inner-ticket {
       float: left;
@@ -566,9 +578,10 @@
       margin-left: ~'calc(4vw - 15px)';
       margin-right: ~'calc(4vw - 15px)';
       padding: 0 15px;
-      max-height: 390px;
+      height: 390px;
       overflow: hidden;
       @media @mobile {
+        padding: 0;
         max-height: none;
         height: auto;
         margin: 0;
