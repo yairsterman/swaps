@@ -230,13 +230,13 @@ swapsApp.controller('landingController', function($scope, $rootScope, $routePara
                     $scope.error = "Wrong password";
                 }
             }
-            if($scope.signin && $scope.credentials.password !== $scope.credentials.confirmPassword){
+            if($scope.credentials.password !== $scope.credentials.confirmPassword){
                 $scope.confirmPasswordInvalid = true;
                 $scope.passwordsMismatch = true;
             }
             return;
         }
-        if($scope.signin && $scope.credentials.password !== $scope.credentials.confirmPassword){
+        if($scope.credentials.password !== $scope.credentials.confirmPassword){
             $scope.confirmPasswordInvalid = true;
             $scope.passwordsMismatch = true;
             return;
