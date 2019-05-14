@@ -78,7 +78,7 @@
             </div>
 
         </div>
-        <div id="pre-login" class="section in {{phase !== 'pre-login'?'animate-out':''}}" ng-if="phase === 'pre-login'">
+        <div id="pre-login" class="section in {{phase !== 'pre-login'?'animate-out':''}}" ng-show="phase === 'pre-login'">
             <div class="description">
                 <div class="title">Let us know a bit about your home
                 </div>
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div id="where" class="section in {{phase !== 'where'?'animate-out':''}}" ng-if="phase === 'where'">
+        <div id="where" class="section in {{phase !== 'where'?'animate-out':''}}" ng-show="phase === 'where'">
             <div class="description">
                 <div class="title">OK, first question, where do you want to go?
                 </div>
