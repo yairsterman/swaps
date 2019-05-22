@@ -14,6 +14,9 @@
     background-size: contain;
     min-height: 0;
   }
+  &.bg-white{
+    background: white;
+  }
   .inner-gradient{
     position: relative;
     height: 100vh;
@@ -70,7 +73,7 @@
     }
     .title-swaps {
       background-repeat: no-repeat;
-      color: #0e5d7c;
+      color: @primary_blue;
       font-size: 56px;
       font-weight: 500;
       height: 150px;
@@ -79,11 +82,11 @@
       }
     }
     .points-container {
-      color: #0e5d7c;
+      color: @primary_blue;
       font-weight: 400;
       padding: 5px 0;
       font-size: 24px;
-      margin-top: -40px;
+      margin-top: -44px;
       line-height: 1.2em;
       @media @mobile {
         font-size: 9px;
@@ -91,7 +94,7 @@
       }
       .points-container-border{
         width: 12%;
-        padding-top: 12px;
+        padding-top: 4px;
         border-bottom: 3px solid rgba(14,93,124,.5);
         @media @mobile {
           width: 12%;
@@ -115,7 +118,7 @@
       width: auto;
       height: auto;
       @media @mobile {
-        top: 150px;
+        top: 100px;
         width: 100%;
         height: 100%;
         position: relative;
@@ -136,19 +139,19 @@
       -webkit-animation: swipeLeft 0.2s linear forwards;
     }
     .title{
-      color: #0e5d7c;
-      font-size: 36px;
+      color: @primary_blue;
+      font-size: 42px;
       font-weight: bold;
       text-align: center;
       @media @mobile {
-        font-size: 24px;
+        font-size: 30px;
       }
     }
     .description{
       text-align: center;
       padding-top: 10px;
       padding-bottom: 20px;
-      color: #0e5d7c;
+      color: @primary_blue;
       font-size: 18px;
       font-weight: 300;
       @media @mobile {
@@ -156,22 +159,26 @@
         padding-bottom: 15px;
       }
       .sub-title{
-        color: #0e5d7c;
+        color: @primary_blue;
         padding-top: 20px;
-        font-size: 22px;
+        font-size: 24px;
+        font-weight: bold;
         @media @mobile {
           padding-top: 10px;
-          font-size: 16px;
+          font-size: 20px;
         }
         &.grey{
-          color: #848a91;
+          color: @primary_grey;
         }
       }
       .free{
-        color: #0e5d7c;
+        color: @primary_blue;
         padding-top: 20px;
-        font-size: 30px;
+        font-size: 32px;
         font-weight: bold;
+        @media @mobile {
+          font-size: 28px;
+        }
       }
       .text{
 
@@ -217,7 +224,7 @@
         .basics-name{
           font-size: 18px;
           text-align: left;
-          color: #0e5d7c;
+          color: @primary_blue;
           margin: 0 10px;
           padding-top: 6px;
         }
@@ -277,7 +284,7 @@
           opacity: 0;
         }
         .choose-file{
-          color: #0E5D7C;
+          color: @primary_blue;
           cursor: pointer;
           text-align: center;
           font-size: 18px;
@@ -303,7 +310,7 @@
         height: 12px;
         .progress-bar{
           height: 12px;
-          background-color: #0e5d7c;
+          background-color: @primary_blue;
         }
       }
       .loader-wrapper{
@@ -333,10 +340,10 @@
         }
         .place{
           background-color: #fff;
-          border: 1px solid #0e5d7c;
+          border: 1px solid @primary_blue;
           padding: 5px 20px;
           border-radius: 4px;
-          color: #0e5d7c;
+          color: @primary_blue;
           font-size: 18px;
           margin-right: 10px;
           margin-top: 10px;
@@ -349,7 +356,7 @@
             transform: scale(0.97);
           }
           &.clicked{
-            background-color: #0e5d7c;
+            background-color: @primary_blue;
             color: #fff;
           }
         }
@@ -361,8 +368,8 @@
         .form-control{
           padding-left: 45px;
           border-radius: 0;
-          color: #0e5d7c;
-          border: 1px solid #0e5d7c;
+          color: @primary_blue;
+          border: 1px solid @primary_blue;
           font-size: 18px;
           box-shadow: none;
           height: 42px;
@@ -383,7 +390,7 @@
     .single-checkbox{
       display: flex;
       align-items: center;
-      color: #0E5D7C;
+      color: @primary_blue;
       padding: 4px 0;
       margin: 0 20px;
       @media @mobile {
@@ -480,8 +487,8 @@
           font-size: 18px;
         }
         .form-control{
-          color: #0e5d7c;
-          border: 1px solid #0e5d7c;
+          color: @primary_blue;
+          border: 1px solid @primary_blue;
           font-size: 18px;
           box-shadow: none;
           height: 42px;
@@ -515,7 +522,7 @@
     }
     .featured-homes{
       padding:  40px 0;
-      background-color: #ffffff;
+      background-color: rgba(14,93,124,0.2);
       min-height: 550px;
     }
     .how-inner-ticket {
@@ -524,13 +531,13 @@
       padding-top: 2%;
       .ticket-title{
         font-weight: 500;
-        color: #848a91;
+        color: @primary_grey;
         text-align: center;
-        font-size: 18px;
+        font-size: 20px;
         padding-bottom: 20px;
       }
       .how-inner-sentences {
-        color: #0e5d7c;
+        color: @primary_blue;
         text-align: center;
         width: 80%;
         line-height: 1.4;
@@ -615,7 +622,7 @@
       padding-top: 2vw;
       font-size: 20px;
       text-align: center;
-      color: #0e5d7c;
+      color: @primary_blue;
       &.animated{
         animation: fade-up 2s ease forwards;
         -webkit-animation: fade-up 2s ease forwards;
@@ -640,7 +647,7 @@
         }
       }
       .next{
-        font-size: 26px;
+        font-size: 24px;
         width: 300px;
         cursor: pointer;
         &:hover{
@@ -672,14 +679,17 @@
       }
       .under-button-text{
         padding: 10px 0;
-        font-size: 20px;
-        color: #333;
+        font-size: 24px;
+        color: @primary_grey;
         font-weight: bold;
+        @media @mobile {
+          font-size: 20px;
+        }
       }
     }
   }
   ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: #0E5D7C;
+    color: @primary_blue;
     font-weight: lighter;
     opacity: 0.6;
   }
@@ -745,21 +755,22 @@
       width: auto;
     }
     .title{
-      color: #0E5D7C;
+      padding: 0;
+      color: @primary_blue;
     }
     .sub-title{
-      color: #0E5D7C;
-      font-size: 16px;
+      color: @primary_blue;
+      font-size: 20px;
       padding: 0;
       margin-bottom: 10px;
     }
     .form-control{
       height: 42px;
       font-size: 20px;
-      border: 1px solid #0e5d7c;
+      border: 1px solid @primary_blue;
     }
     ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-      color: #0E5D7C;
+      color: @primary_blue;
       font-weight: lighter;
       opacity: 0.6;
     }

@@ -1,4 +1,4 @@
-<div class="landing-page" ng-init="init()">
+<div class="landing-page {{phase === 'first'?'bg-white':''}}" ng-init="init()">
     <div class="inner-gradient {{phase === 'first'?'first':''}}">
         <div class="title-container">
             <a href="https://www.swapshome.com" target="_blank">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="button-container">
-                    <div class="button btn btn-primary next" ng-click="next()">See more Swappers</div>
+                    <div class="button btn btn-primary invert-btn next" ng-click="next()">See more Swappers</div>
                 </div>
             </div>
             <div class="inner-section row">
@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-xs-12" >
                     <div class="button-container">
-                        <div class="button btn btn-primary invert-btn next" ng-click="next()">
+                        <div class="button btn btn-primary next" ng-click="next()">
                             Let's Go!
                         </div>
                     </div>
@@ -294,7 +294,7 @@
         </div>
         <div id="details"  class="section in sign-up {{phase !== 'details'?'animate-out':''}}" ng-show="phase === 'details'">
             <div class="description">
-                <div class="sub-title">{{type !== '3'?'Last Step! Home Details':'Your home details'}}
+                <div class="title">{{type !== '3'?'Last Step! Home Details':'Your home details'}}
                 </div>
             </div>
             <div class="home-details">
