@@ -2,6 +2,7 @@ let config = require('../config');
 let utils = require('../utils/util');
 
 const ACCOUNT = config.baseUrl + '/account/edit';
+const LISTING = config.baseUrl + '/account/listing';
 const MY_SWAPS = config.baseUrl + '/account/upcoming-swaps';
 const SET_SWAPS = config.baseUrl + '/account/set-swap-dates';
 const SEARCH = config.baseUrl + '/travelers/Anywhere';
@@ -173,15 +174,6 @@ var messages = {
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
 
-    completeProfile: function(user, password){
-        return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Complete your profile </div></br>' +
-            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', thanks for using Swaps. <br>'+
-            'Well, here is a new one for now:<br>' +
-            `<strong>${password}<strong><br></div>` +
-            '<a class="no-decoration" style="text-decoration: none;" href="' + config.baseUrl + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Go to site</div></a>' +
-            '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
-    },
-
     review: function(user, token){
         return '<div style="background-color: #f3f4f5; padding: 6vw;">' + '<div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + ' <div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Review your Swap</div></br>' +
             '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">We hope you enjoyed your Swap with ' + user.firstName + ' and the rest of your trip. <br><br>' +
@@ -267,6 +259,22 @@ var messages = {
             '<a class="no-decoration" style="text-decoration: none;" href="' + MESSAGES + user._id +'"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;font-size: 20px; border-radius: 5px;">Message ' + user.firstName + '</div></a>' +
             '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
     },
+
+    /**
+     * Complete profile messages
+     */
+
+    completeProfile: function(user, token){
+        return '<div style="background-color: #f3f4f5; padding: 6vw;"><div class="swap-wrapper" style="text-align: center; padding:0 6vw 6vw 6vw;border-bottom: 1px solid rgba(199, 167, 104, 0.4); background-color: #ffffff;">' + TOP + '<div class="swap-title" style="text-align:center;font-size:30px;font-weight:bold;color:#0E5D7C;margin-bottom:15px">Complete Your Profile </div></br>' +
+            '<div class="swap-text" style="word-break: normal;line-height: 1.4;font-size: 18px;color: #484848;">Hey ' + user.firstName + ', thanks for joining Swaps. <br><br>' +
+            'We see you have recently requested to swap homes with Leah from London, United Kingdom <br><br>' +
+            '<div style="position:relative;width: 360px; height: 240px; margin:auto; "><img style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;object-fit: cover;" src="https://res.cloudinary.com/swaps/image/upload/w_1400,h_920,c_limit/v1556726413/placeholder-home/London/London4.jpg"></div><br><br>' +
+            'In order for Leah and other Swappers to see your request you must first complete your profile.<br><br>' +
+            'Follow the link bellow to fill out the essential information and upload photos of your home.' +
+            '<a class="no-decoration" style="text-decoration: none;" href="' + LISTING + '"><div class="swap-action-button" style="text-decoration: none;padding: 15px;color: white;text-align: center;margin: auto;background-color:#0E5D7C;width: 200px;margin-top: 20px;margin-bottom: 20px;font-size: 20px; border-radius: 5px;">'+('Complete Profile')+'</div></a>' +
+            '</div>' + INVITE + SIGNITURE + STYLE + '</div>'
+    }
+
 };
 
 

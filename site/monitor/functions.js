@@ -274,3 +274,11 @@ module.exports.emailReview = function () {
         })
     });
 };
+
+module.exports.completeProfile = function(){
+    User.find({_id:{$in:['5ce581d6f607154ea65522fa']}}, function (err, users) {
+        users.forEach(function (user) {
+            email.sendMail([user.email], 'Complete Your Profile', emailMessages.completeProfile(user));
+        });
+    });
+};
