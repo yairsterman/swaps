@@ -16,7 +16,7 @@ var emailService = {
 
     sendMail: function(emails, subject, body){
         var mailOptions = {
-            from: 'swaps@noreplay.com',
+            from: 'Swaps <info@swapshome.com>',
             to: emails,
             subject: subject,
             html: body
