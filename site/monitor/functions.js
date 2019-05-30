@@ -274,3 +274,11 @@ module.exports.emailReview = function () {
         })
     });
 };
+
+module.exports.completeProfile = function(){
+    User.find({_id:{$in:[]}}, function (err, users) {
+        users.forEach(function (user) {
+            email.sendMail([user.email], 'Complete Your Profile - Start Swapping!', emailMessages.completeProfile(user));
+        });
+    });
+};
