@@ -276,7 +276,7 @@ module.exports.emailReview = function () {
 };
 
 module.exports.completeProfile = function(){
-    User.find({_id:{$in:['5cc9608a533b8b037a79dd9c','5cce65cc2005d81470868180','5cce6d292005d81470868184','5cd13de3896ea240d48b5421','5cd14275896ea240d48b5422','5cd6e54d9ab19d59bae18f96','5cd6eabf9ab19d59bae18f97','5cd833a19ab19d59bae18f98','5cd850929ab19d59bae18f99','5cd8ed719ab19d59bae18f9a','5cd97ff49ab19d59bae18f9b','5cd9cbf99ab19d59bae18f9c','5cd9d9469ab19d59bae18f9d','5ce102c021f5e91a482052f5','5ce53fe2f607154ea65522f9','5ce60948f607154ea65522fb','5ce946adf607154ea65522fc','5ce95edef607154ea65522fd','5cea0f0af607154ea65522ff','5cea39cdf607154ea6552300','5cea59cdf607154ea6552301','5ceaba11f607154ea6552302','5ceadaa3f607154ea6552303','5ceaeec7f607154ea6552304','5ceb1f8ff607154ea6552306','5ceb51bef607154ea6552307','5ceb6abdf607154ea6552308','5ceb6e60f607154ea6552309','5ceb70abf607154ea655230a','5ceb885ef607154ea655230c']}}, function (err, users) {
+    User.find({_id:{$in:[]}}, function (err, users) {
         users.forEach(function (user) {
             email.sendMail([user.email], 'Complete Your Profile - Start Swapping!', emailMessages.completeProfile(user));
         });
